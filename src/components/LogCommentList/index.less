@@ -1,0 +1,284 @@
+.LogCommentList {
+  width: 100%;
+  padding: 10px;
+
+  .overflowText {
+    line-height: 20px;
+    font-size: 13px;
+    overflow: hidden;
+    text-overflow: clip;
+    word-break: break-all;
+    -webkit-line-clamp: 2; //这里就是设置超出几行隐藏
+    /* autoprefixer: off */
+    -webkit-box-orient: vertical;
+    /* autoprefixer: on */
+    display: -webkit-box; //根据不同标签display，有的不用加。或者设置成别的属性，自己可以随便试试
+  }
+
+  .center {
+    width: 100%;
+    border: 1px solid #e6e6e6;
+    margin-bottom: 10px;
+    border-radius: 3px;
+    -moz-box-shadow: 2px 2px 10px rgba(240, 242, 245, 1);
+    -webkit-box-shadow: 2px 2px 10px rgba(240, 242, 245, 1);
+    box-shadow: 2px 2px 10px rgba(240, 242, 245, 1);
+    font-size: 13px;
+    font-family: 'Arial Normal', 'Arial';
+    font-weight: 400;
+    color: #333333;
+
+    .centerTop {
+      width: 100%;
+      padding: 10px 70px 10px 20px;
+      border-bottom: 1px solid #e8e8e8;
+      color: #333;
+
+      .header {
+        margin-bottom: 10px;
+        position: relative;
+
+        .headerText {
+          line-height: 20px;
+          font-size: 13px;
+          display: inline-block;
+        }
+      }
+
+      .showCommentText {
+        display: block;
+        text-align: right;
+      }
+
+      .hideCommentText {
+        display: none;
+      }
+    }
+
+    .footer {
+      .footerRight {
+        width: 100%;
+        text-align: right;
+        line-height: 30px;
+        padding-right: 10px;
+      }
+
+      :global {
+        .ant-popover-content {
+          .ant-popover-inner-content {
+            padding: 12px 0;
+            width: 50px;
+
+            a {
+              width: 100%;
+              font-size: 12px;
+              display: inline-block;
+              padding: 0 10px;
+              text-align: center;
+            }
+
+            a:hover {
+              background-color: #ccc;
+            }
+          }
+        }
+      }
+    }
+
+    .centerListDiv {
+      width: 100%;
+      display: no;
+    }
+
+    .comment {
+      width: 100%;
+      padding: 0 20px;
+    }
+
+    .form {
+      transition: max-height linear 0.6s;
+      max-height: 4000px;
+      overflow: hidden;
+      opacity: 1;
+    }
+
+    .end {
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+    }
+
+    .footerInputDiv {
+      padding: 10px 20px;
+
+      .footerbtnDiv {
+        width: 100%;
+        text-align: right;
+        margin-top: 8px;
+      }
+    }
+
+    .comentWrap {
+      width: 100%;
+      padding: 10px 0 16px 0;
+      border-bottom: 1px dashed #e8e8e8;
+
+      .commentFlesDiv {
+        width: 100%;
+        display: flex;
+        justify-content: start;
+
+        .titleImg {
+          width: 50px;
+        }
+
+        .textDIv {
+          flex: 1;
+        }
+
+        .textDIvCenter {
+          width: 100%;
+          line-height: 20px;
+          font-size: 11px;
+          color: #666;
+          word-break: break-word;
+          word-wrap: break-word;
+        }
+
+        .textDIvEdit {
+          .textDIvCenter;
+        }
+      }
+    }
+  }
+
+  .nameColor {
+    font-size: 13px;
+    color: #cc8f14;
+    display: inline-block;
+    margin-right: 6px;
+  }
+
+  .nameUserColor {
+    .nameColor;
+    font-size: 15px;
+  }
+
+  .returnNameColor {
+    font-size: 12px;
+    color: #cc8f14;
+    display: inline-block;
+    margin-left: 10px;
+    cursor: pointer;
+  }
+
+  .timeColor {
+    display: inline-block;
+    font-size: 11px;
+    color: #cccccc;
+    margin: 0 6px;
+  }
+
+  .timeColorCenter {
+    .timeColor;
+    margin: 0;
+  }
+
+  .timeColorfoot {
+    .timeColor;
+    color: #999;
+    font-size: 10px;
+    margin-left: 0;
+  }
+
+  .cilckAllColor {
+    font-size: 11px;
+    color:#fe6a30;
+    cursor: pointer;
+  }
+
+  .cilckRighrColor {
+    font-size: 12px;
+    color: #fe6a30;
+    cursor: pointer;
+    margin-left: 8px;
+  }
+
+  .tagColor {
+    display: inline-block;
+    height: 16px;
+    line-height: 16px;
+    color: #fff;
+    font-size: 10px;
+    background-color: rgba(204, 204, 204, 1);
+    border-radius: 8px;
+    padding: 0 6px;
+    margin-right: 6px;
+  }
+
+  .tagColorOnline {
+    .tagColor;
+    background-color: rgba(19, 191, 156, 0.7);
+  }
+
+  .commentMention {
+    :global {
+      .ant-mentions-dropdown {
+        z-index: 9999;
+      }
+    }
+  }
+}
+.ctty span{
+  margin-right: 10px;
+  }
+  .cardSpan{
+    margin-left: 20px;
+    color: #769719;
+  }
+  .comWrap{
+    position: relative;
+  }
+  .comA{
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    width: 58px;
+    height: 58px;
+    transform: rotate(330deg);
+    font-family: "Arial Negreta", "Arial Normal", Arial;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 10px;
+    color: rgb(113, 199, 3);
+    text-align: center;
+    border: 1px solid rgb(113, 199, 3);
+    border-radius: 50%;
+    line-height: 20px
+  }
+  .comP{
+   margin-top: 10px;
+  }
+  .Pcont{
+    // overflow: hidden;
+    // text-overflow: ellipsis;
+    // display: -webkit-box;
+    // -webkit-line-clamp:2;
+    // word-break: break-all;
+    // /*! autoprefixer: off */
+    // -webkit-box-orient: vertical;
+  }
+  .pFont{
+    font-weight: 700;
+  }
+  .wer{
+    width: 35px;
+    height: 20px;
+    margin-top: -2px;
+  }
+  .margr{
+    margin: 0 10px;
+  }
+.davb{
+  color: #000AB3;
+}

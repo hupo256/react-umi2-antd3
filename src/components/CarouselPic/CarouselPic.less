@@ -1,0 +1,179 @@
+.picWrap {
+  position: relative;
+
+  .slick {
+    text-align: center;
+    width: 500px;
+    height: 450px;
+
+    img {
+      width: auto;
+      height: auto;
+      max-height: 100%;
+      max-width: 100%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate3d(-50%, -50%, 0);
+    }
+  }
+
+  .left {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    font-size: 26px;
+    margin-top: -13px;
+    color: #79c3ff;
+  }
+
+  .left .right:hover {
+    i {
+      color: #203282;
+    }
+  }
+
+  .right {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    font-size: 26px;
+    margin-top: -13px;
+    color: #79c3ff;
+  }
+
+  .picCarousel {
+    :global {
+      .slick-dots {
+        display: none !important;
+      }
+    }
+  }
+}
+.imgPrefiew{
+  // background:red;
+}
+:global {
+  .ant-carousel .slick-dots li {
+    background: #40a9ff;
+  }
+
+  .ant-carousel .slick-dots li.slick-active button {
+    background: #096dd9;
+  }
+
+  .ant-carousel .slick-slide {
+    position: relative;
+    height: 564px;
+  }
+ 
+
+.ant-upload-list-item-info{
+  position:relative;
+}
+  .ant-upload-list-picture-card .ant-upload-list-item-thumbnail img {
+    position: absolute;
+    left:0;
+    top:50%;
+    transform:translateY(-50%);
+    display: block;
+    width:100%;
+    height: initial;
+    // object-fit: cover;
+}
+}
+
+// 图片展示 商品库 商品详情
+.Rotation {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  padding: 20px 24px;
+
+  .ImgDiv {
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+  }
+
+  .nowImage {
+    width: auto;
+    height: auto;
+    max-height: 100%;
+    max-width: 100%;
+  }
+
+  .bottom {
+    width: 100%;
+    height: 66px;
+    margin-top: 12px;
+
+    .main {
+      height: 44px;
+      position: relative;
+      overflow: hidden;
+      padding: 0 20px;
+
+      .ProjectExpectedScol {
+        white-space: nowrap;
+        transition: transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1),
+          -webkit-transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+
+        .ProjectExpectedItem {
+          display: inline-block;
+          width: 50px;
+          height: 44px;
+          margin-left: 10px;
+          cursor: pointer;
+          text-align: center;
+          background-repeat: no-repeat;
+          background-size: 100% 100%;
+          border: 2px solid #fff;
+
+          .listImage {
+            width: auto;
+            height: auto;
+            max-height: 100%;
+            max-width: 100%;
+          }
+        }
+
+        .ProjectExpectedItemActive {
+          .ProjectExpectedItem;
+
+          border: 2px solid red;
+        }
+      }
+
+      .spancl {
+        width: 20px;
+        text-align: center;
+        display: inline-block;
+        height: 44px;
+        line-height: 44px;
+        background: #fff;
+        position: absolute;
+        font-size: 16px;
+        cursor: pointer;
+        z-index: 100;
+      }
+
+      span:hover {
+        color: #1890ff;
+
+        i:hover {
+          color: #1890ff;
+        }
+      }
+
+      .spanleft {
+        .spancl;
+        left: 0;
+      }
+
+      .spanright {
+        .spancl;
+        right: 0;
+      }
+    }
+  }
+}

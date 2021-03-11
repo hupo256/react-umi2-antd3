@@ -1,0 +1,84 @@
+.status{
+  cursor: pointer; 
+  padding: 2px 10px;
+  margin-right:16px;
+}
+.statusCur{
+  background:#fe6a30;
+  border-radius:4px;
+  color:#fff;
+}
+.siteTag{
+  padding: 2px 10px;
+  margin-right:16px;
+  border:1px solid #ccc;
+  border-radius:4px;
+  font-size:12px;
+}
+.siteTag1{
+  background-color: rgb(231, 247, 255);
+  border-color: rgb(145, 213, 255);
+  color: rgb(46, 154, 255);
+}
+.siteTag2{
+  background-color: rgb(246, 255, 237);
+    border-color: rgb(183, 235, 143);
+    color: rgb(112, 206, 70);
+}
+.siteTag3{
+  background-color: rgb(255, 242, 232);
+  border-color: rgb(255, 187, 150);
+  color: rgb(250, 86, 31);
+}
+.siteTag4{
+  background-color: rgb(255, 240, 246);
+    border-color: rgb(255, 173, 210);
+    color: rgb(237, 71, 163);
+}
+.coverImg{
+  .previewimg{
+    width:160px;
+    height:80px;
+    text-align: center;
+    line-height: 80px;
+    position:relative;
+    overflow:hidden;
+    cursor:pointer;
+    border:1px solid #eee;
+    img{
+      max-width:100%;
+      max-height:100%;
+      position:absolute;
+      left:50%;
+      top:50%;
+      transform:translate(-50%,-50%);
+    }
+    &:hover {
+      .picmodel{display:block;}
+    }
+    .picmodel{
+      display:none;
+      width:100%;
+      height:100%;
+      position:absolute;
+      left:0;
+      top:0;
+      background:rgba(0,0,0,.2);
+      >span{
+        display:block;
+        width:60%;
+        margin-left:20%;
+        margin-top:12px;
+        background:rgba(0,0,0,0.8);
+        color:#FFF;
+        text-align:center;
+        border-radius:4px;
+        font-size:12px;
+        height:20px;
+        line-height:20px;
+        cursor:pointer;
+        padding:2px 0;
+      }
+    }
+  }
+}

@@ -1,0 +1,41 @@
+.inputClass {
+  max-width: 260px;
+  display: inline-block;
+}
+
+.labelName {
+  line-height: 52px;
+  margin-right: 10px;
+}
+
+.labelRow {
+  padding-bottom: 10px;
+}
+
+.addBtn {
+  margin-top: 20px;
+  margin-left: 10px;
+}
+
+.red {
+  line-height: 32px;
+  color: red;
+  padding-bottom: 10px;
+}
+
+:global {
+  .editable-cell {
+    position: relative;
+  }
+
+  .editable-cell-value-wrap {
+    padding: 5px 12px;
+    cursor: pointer;
+  }
+
+  .editable-row:hover .editable-cell-value-wrap {
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    padding: 4px 11px;
+  }
+}

@@ -1,0 +1,196 @@
+.personnelWrop {
+  display: flex;
+
+  .treeLeft,
+  .treeRight {
+    flex: 1;
+
+    .treeBorder {
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      height: 430px;
+      overflow: auto;
+      margin-top: 6px;
+    }
+
+    .treeSearch {
+      padding: 10px;
+      position: relative;
+      z-index: 1;
+      padding-top: 40px;
+
+      .treeInput {
+        position: fixed;
+        background: #fff;
+        margin-top: -40px;
+        z-index: 1;
+        padding-top: 10px;
+        width: 334px;
+
+        .treeInputs {
+          padding: 0 30px;
+        }
+
+        .treeInputSearch {
+          position: absolute;
+          left: 10px;
+          bottom: 10px;
+        }
+
+        .treeSearchClose {
+          position: absolute;
+          right: 10px;
+          bottom: 8px;
+          cursor: pointer;
+        }
+      }
+
+      .leftMask {
+        position: fixed;
+        // left: 0;
+        // right: 0px;
+        // z-index: 2;
+        // bottom: 0;
+        // background: #fff;
+        // top: 50px;
+        // padding: 0 10px;
+        // overflow: auto;
+
+        width: 334px;
+        height: 386px;
+        top: 283px;
+        z-index: 2;
+        bottom: 0;
+        background: #fff;
+        top: 249px;
+        padding: 10px 0px;
+        overflow: auto;
+
+        .filterItem {
+          cursor: pointer;
+          height: 38px;
+          // line-height: 32px;
+          margin: 8px 0 6px 0;
+          padding: 0;
+
+          p {
+            height: 18px;
+            margin: 0;
+          }
+
+          .checkboxs {
+            display: inline-block;
+            vertical-align: inherit;
+          }
+
+          .checkWrap {
+            display: flex;
+            align-items: center;
+          }
+
+          :global {
+            .ant-checkbox {
+              vertical-align: super;
+            }
+          }
+        }
+      }
+
+      :global {
+        .ant-input-affix-wrapper .ant-input-suffix {
+          left: 10px;
+          right: 0;
+        }
+
+        .ant-input-affix-wrapper .ant-input:not(:last-child) {
+          padding-left: 30px;
+        }
+      }
+    }
+
+    .treeBottom {
+      padding: 0px 16px;
+      height: 40px;
+      line-height: 40px;
+      border-bottom: 1px solid #ccc;
+      box-sizing: border-box;
+      margin: 0;
+    }
+
+    >ul {
+      height: 388px;
+      box-sizing: border-box;
+      overflow-y: auto;
+      overflow-x: hidden;
+      border-radius: 6px;
+    }
+  }
+
+  .treeBtn {
+    width: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .treeUl {
+    padding: 0;
+
+    li {
+      line-height: 32px;
+      padding-left: 16px;
+      position: relative;
+
+      &:hover {
+        background: #e6f7ff;
+
+        .treeItemIcon {
+          color: #ccc;
+        }
+      }
+
+      .treeItemIcon {
+        position: absolute;
+        top: 9px;
+        right: 12px;
+        color: #e6e6e6;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .treeLeft {
+    margin-right: 20px;
+  }
+}
+
+.PersonnelModel {
+  :global {
+    .ant-tree li {
+      position: relative;
+    }
+
+    .ant-tree li .ant-tree-node-content-wrapper {
+      // padding-left: 20px;
+    }
+
+    .ant-tree li .ant-tree-node-content-wrapper.ant-tree-node-selected {
+      background-color: #fff;
+    }
+
+    .ant-tree li span.ant-tree-checkbox {
+      position: absolute;
+      padding-right: 260px;
+      padding-bottom: 5px;
+      padding-top: 6px;
+    }
+
+    .ant-tree-checkbox-checked::after {
+      border: 0px solid #1890ff;
+      animation: antCheckboxEffect 0s ease-in-out;
+      animation-fill-mode: backwards;
+      content: '';
+    }
+  }
+}

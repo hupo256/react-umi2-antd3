@@ -1,0 +1,93 @@
+@import '~antd/lib/style/themes/default.less';
+
+.main {
+  width: 368px;
+  margin: 0 auto;
+  @media screen and (max-width: @screen-sm) {
+    width: 95%;
+  }
+  input{
+    font-size: 16px;
+  }
+  .verification{
+    margin-top: 22px;
+    display: flex;
+    align-items: center;
+    a{
+      margin-left: 14px;
+    }
+  }
+  .icon {
+    font-size: 24px;
+    color: rgba(0, 0, 0, 0.2);
+    margin-left: 16px;
+    vertical-align: middle;
+    cursor: pointer;
+    transition: color 0.3s;
+
+    &:hover {
+      color: @primary-color;
+    }
+  }
+
+  .other {
+    text-align: left;
+    margin-top: 24px;
+    line-height: 22px;
+
+    .register {
+      float: right;
+    }
+  }
+}
+.totalRegister{
+  color:#fe6a30
+}
+.tableListFormv {
+  :global {
+    .ant-col-md-8 {
+      min-height: 60px;
+    }
+
+    .ant-form-inline .ant-form-item {
+      margin-bottom: 24px;
+      margin-right: 0;
+      display: flex;
+      padding-right: 10px;
+
+      > .ant-form-item-label {
+        height: 40px;
+      }
+      .ant-input{
+        height: 40px;
+      }
+      .ant-form-item-control {
+        height: 40px;
+      }
+    }
+
+    .ant-form-item-control-wrapper {
+      flex: 1;
+    }
+  }
+
+  .submitButtons {
+    display: block;
+    white-space: nowrap;
+    margin-bottom: 24px;
+  }
+}
+.maint{
+  position: relative;
+  height: 500px;
+  overflow-y: scroll;
+  padding: 20px;
+  h1{
+    text-align: center;
+  }
+ }
+ .mabt{
+  width: 100%;
+  text-align: center;
+  padding-top: 20px;
+ }

@@ -1,0 +1,353 @@
+@import '~antd/lib/style/themes/default.less';
+@pro-header-hover-bg: rgba(0, 0, 0, 0.025);
+
+.head {
+  width: 100%;
+  transition: background 0.3s, width 0.2s;
+  height: 64px;
+  padding: 0 12px 0 0;
+  box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+  position: relative;
+
+  :global {
+    .ant-menu-submenu.ant-menu-submenu-horizontal {
+      height: 100%;
+      padding-top: 9px;
+
+      .ant-menu-submenu-title {
+        height: 100%;
+      }
+    }
+  }
+
+  &.light {
+    background-color: #fff;
+  }
+
+  .main {
+    display: flex;
+    height: 64px;
+    padding-left: 0;
+
+    &.wide {
+      max-width: 1200px;
+      margin: auto;
+      padding-left: 4px;
+    }
+
+    .left {
+      flex: 1;
+      display: flex;
+    }
+
+    .right {
+      width: 324px;
+    }
+
+    .center {
+      flex: 1 1 0%;
+
+      .centerAdiv {
+        display: inline-block;
+        font-size: 16px;
+        font-weight: 700;
+        color: #666;
+        margin-left: 20px;
+      }
+
+      .centerAdivRigth {
+        .centerAdiv;
+        margin-left: 40px;
+      }
+
+      .centerAdivActive {
+        .centerAdiv;
+        color: #4766D9
+      }
+
+      .centerAdivRigthActive {
+        .centerAdivRigth;
+        color: #4766D9
+      }
+
+    }
+
+    .feedback {
+      margin-left: auto;
+      float: right;
+
+      a {
+        font-size: 14px;
+        color: #666666;
+        text-decoration: none;
+      }
+
+      a:hover {
+        // color: #fff;
+      }
+
+      :global {
+        .ant-badge-count {
+          right: 5px;
+        }
+
+        .ant-scroll-number-only {
+          vertical-align: middle;
+        }
+      }
+    }
+  }
+}
+
+.logo {
+  width: 165px;
+  height: 64px;
+  position: relative;
+  line-height: 64px;
+  transition: all 0.3s;
+  overflow: hidden;
+
+  img {
+    display: inline-block;
+    vertical-align: middle;
+    height: 32px;
+  }
+
+  h1 {
+    color: #fff;
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 16px;
+    margin: 0 0 0 12px;
+    font-weight: 400;
+  }
+}
+
+.light {
+  h1 {
+    color: #002140;
+  }
+}
+
+.feedback {
+  a {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.65);
+    text-decoration: underline;
+  }
+}
+
+.feedmadal {
+  .flexbox {
+    display: flex;
+
+    .imgbox {
+      flex: 1;
+      padding-right: 24px;
+      border-right: 1px solid #ccc;
+
+      img {
+        width: 100%;
+      }
+    }
+
+    .conbox {
+      flex: 1;
+      padding-left: 24px;
+
+      h4 {
+        border-left: 8px solid #1890ff;
+        padding-left: 8px;
+      }
+
+      p {
+        margin-bottom: 8px;
+        font-size: 12px;
+      }
+
+      .cont {
+        padding-left: 16px;
+        padding-right: 5px;
+        max-height: 525px;
+        overflow-y: auto;
+
+        .contop {
+          color: rgba(0, 0, 0, 0.65);
+          font-size: 12px;
+          font-weight: normal;
+          line-height: 24px;
+
+          a {
+            text-decoration: underline;
+          }
+        }
+      }
+
+      .controw {
+        margin-bottom: 20px;
+
+        p {
+          margin-bottom: 0;
+        }
+
+        div {
+          display: flex;
+          flex-wrap: wrap;
+
+          span {
+            font-size: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 5px 10px;
+            box-sizing: border-box;
+            margin-right: 10px;
+            margin-top: 10px;
+            color: #999999;
+            cursor: pointer;
+
+            b {
+              font-weight: normal;
+            }
+          }
+
+          .rowadd {
+            border-color: #1890ff;
+            color: #1890ff;
+          }
+        }
+      }
+
+      .fjload {
+        font-size: 12px;
+        color: #1890ff;
+      }
+    }
+  }
+}
+
+.TopNavHeader {
+  :global {
+    .ant-modal {
+      top: 65px;
+    }
+  }
+}
+
+i.trigger {
+  font-size: 20px;
+  height: 64px;
+  cursor: pointer;
+  transition: all 0.3s, padding 0s;
+  padding: 22px 24px;
+
+  &:hover {
+    background: #e6f7ff;
+  }
+}
+
+.messageRemind{
+  display: inline-block; 
+  margin-right: 10px;
+  position:relative;
+  .messageItemModel{
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    z-index:1000;
+  }
+  .messageItem{
+    position:absolute;
+    top:50px;
+    right:135px;
+    border:1px solid #eee;
+    background:#fff;
+    -moz-box-shadow:0px 0px 5px #ccc; 
+    -webkit-box-shadow:0px 0px 5px #ccc; 
+    box-shadow:0px 0px 5px #ccc;
+    width:200px;
+    ul{
+      margin:0;
+      padding:0;
+      li{
+        margin:0;
+        padding:0;
+        padding-left:40px;
+        border-bottom:1px solid #eee;
+        height:46px;
+        line-height:46px;
+        position:relative;
+        cursor:pointer;
+        .messagecont{
+          background:red;
+          border-radius:20px;
+          color:#fff;
+          font-size:12px;
+          padding:1px 6px;
+          position:absolute;
+          right:5px;
+          top:14px;
+          height:18px;
+          line-height:16px;
+        }
+        .messageIcon{
+          width:30px;
+          height:30px;
+          position:absolute;
+          left:5px;
+          top:8px;
+          border-radius:5px;
+          background:#0096fa;
+          color:#fff;
+          font-size:22px;
+          text-align:center;
+          line-height:30px;
+        }
+      }
+      li:hover{
+        background:#e6f7ff;
+      }
+      li:nth-child(2){
+        .messageIcon{
+          background:#f67687;
+        }
+      }
+      li:nth-child(3){
+        .messageIcon{
+          background:#ffa94c;
+        }
+      }
+      li:nth-child(5){
+        .messageIcon{
+          background:#73a0fa;
+        }
+      }
+      li:nth-child(6){
+        .messageIcon{
+          background:#8167f5;
+        }
+      }
+      li:nth-child(4){
+        .messageIcon{
+          background:#479ad0;
+        }
+      }
+    }
+  }
+}
+
+.badge{
+  position: absolute;
+  top: -6px;
+  right: -10px;
+  height: 16px;
+  min-width: 16px;
+  background: red;
+  text-align: center;
+  line-height: 16px;
+  font-size: 12px;
+  color: #fff;
+  border-radius: 8px;
+  padding: 0 3px;
+}
