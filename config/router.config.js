@@ -162,6 +162,31 @@ export default [
           // },
         ],
       },
+      // 配置
+      {
+        path: '/setting',
+        name: 'setting',
+        icon: 'setting',
+        // code: 'P2020010110010',
+        routes: [
+          {
+            path: '/setting',
+            redirect: '/setting/dictconfig',
+          },
+          // 字典配置
+          {
+            path: '/setting/dictconfig',
+            name: 'dictconfig',
+            component: './SystemSetting/DictConfig/DictConfig',
+          },
+          // 小程序授权
+          {
+            path: '/setting/miniprogram',
+            name: 'miniprogram',
+            component: './SystemSetting/MiniProgram/MiniProgram',
+          },
+        ],
+      },
       { path: '/noaccess', component: './User/NoAccess' },
       // exception/403
       {

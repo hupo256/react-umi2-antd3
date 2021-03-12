@@ -1,0 +1,43 @@
+.dict{
+  :global {
+    .ant-card-body {
+     padding: 24px 0; 
+    }
+  }
+  .dictWrap{
+    padding: 0;
+    display:flex;
+    .dictLeft{
+      width:165px;
+      .dictTabs{
+        width:100%;
+      }
+      :global {
+        .ant-tabs  .ant-tabs-left-bar {
+          width: 100%;
+        }
+        .ant-tabs .ant-tabs-left-bar .ant-tabs-tab {
+            text-align: left;
+        }
+        .ant-tabs .ant-tabs-left-bar .ant-tabs-tab {
+          padding: 8px 4px 8px 24px;
+        }
+        .ant-tabs-nav .ant-tabs-tab-active {
+          font-weight: 600;
+          background: #fff7f0;
+        }
+      }
+    }
+    .dictRight{
+      flex:1;
+      padding:0  20px;
+      border-left:1px solid #e8e8e8;
+      margin-left:-1px;
+      .dictHeader{
+        display:flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+      }
+    }
+  }
+}
