@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-03-02 11:49:34 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-03 14:54:27
+ * @Last Modified time: 2021-03-12 17:09:33
  * 未绑定小程序
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -14,10 +14,6 @@ import styles from './MiniProgram.less';
 @connect(({ MiniProgram }) => ({ MiniProgram }))
 class NotBound extends PureComponent {
   render() {
-    const { authorizationUrl } = this.props.MiniProgram;
-    console.log('====================================');
-    console.log(authorizationUrl);
-    console.log('====================================');
     return (
       <div className={styles.miniprogramWrap}>
         <div className={styles.content}>
@@ -45,10 +41,15 @@ class NotBound extends PureComponent {
     );
   }
   handleUrl = () => {
-    const { authorizationUrl } = this.props.MiniProgram;
-    if (authorizationUrl) {
-      window.location.href = authorizationUrl;
-    }
+    const { dispatch } = this.props;
+    const code = localStorage.getItem('auth');
+    const saasSellerCode = JSON.parse(code).companyCode;
+    dispatch({ type: 'MiniProgram/getAuthUrlModel', payload: { saasSellerCode } }).then(res => {
+      if (res && res.code === 200) {
+        alert(res.data.url);
+        window.location.href = res.data.url;
+      }
+    });
   };
 }
 

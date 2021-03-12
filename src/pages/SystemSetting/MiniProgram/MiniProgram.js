@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 10:32:27 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-12 10:40:19
+ * @Last Modified time: 2021-03-12 17:10:16
  * 小程序授权
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -26,7 +26,6 @@ class MiniProgram extends PureComponent {
     this.state = {
       activeKey: '1',
       leftactiveKey: 'baseinfo',
-      url: null,
     };
   }
 
@@ -34,19 +33,7 @@ class MiniProgram extends PureComponent {
     const { dispatch } = this.props;
     const code = localStorage.getItem('auth');
     const saasSellerCode = JSON.parse(code).companyCode;
-    dispatch({ type: 'MiniProgram/getAuthInfoModel', payload: { saasSellerCode } }).then(res => {
-      if (res && res.code === 200) {
-        if (!res.data.isAuthedWechatMini) {
-          dispatch({ type: 'MiniProgram/getAuthUrlModel', payload: { saasSellerCode } }).then(
-            res => {
-              if (res && res.code === 200) {
-                this.setState({ url: res.code.url });
-              }
-            }
-          );
-        }
-      }
-    });
+    dispatch({ type: 'MiniProgram/getAuthInfoModel', payload: { saasSellerCode } }).then(res => {});
   }
 
   render() {
@@ -107,18 +94,6 @@ class MiniProgram extends PureComponent {
   // 字段模块切换
   handleChangeTab = leftactiveKey => {
     this.setState({ leftactiveKey });
-    // 重置搜索数据
-    const { dispatch } = this.props;
-    // resetModel
-    // dispatch({
-    //   type: 'DictConfig/resetModel',
-    //   payload: {
-    //     DicList: {},
-    //     DicQuery: {},
-    //   },
-    // }).then(res => {
-    //   this.queryList({ dicModuleCode: activeKey, pageNum: 1, pageSize: 100 });
-    // });
   };
 }
 

@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-18 16:39:42 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-09 15:43:30
+ * @Last Modified time: 2021-03-12 15:03:42
  * 创建设计师
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -279,8 +279,11 @@ class DesignerLibraryAdd extends PureComponent {
           ...values,
         },
       }).then(res => {
-        message.success('创建成功');
-        history.go(-1);
+        if (res && res.code === 200) {
+          message.success('创建成功');
+          history.go(-1);
+        }
+
         // this.setState({ submitLoading: false });
         // if (res && res.code === 200) {
         //   // 清空缓存内容
