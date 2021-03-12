@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-03-02 11:49:34 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-12 17:09:33
+ * @Last Modified time: 2021-03-12 17:38:05
  * 未绑定小程序
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -46,7 +46,6 @@ class NotBound extends PureComponent {
     const saasSellerCode = JSON.parse(code).companyCode;
     dispatch({ type: 'MiniProgram/getAuthUrlModel', payload: { saasSellerCode } }).then(res => {
       if (res && res.code === 200) {
-        alert(res.data.url);
         window.location.href = res.data.url;
       }
     });
