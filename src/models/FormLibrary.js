@@ -1,111 +1,98 @@
 import {
-  specialCreate, //创建专题
-  specialStatus, //启用/停用
-  specialGet, //专题详情
-  specialModify, //编辑专题
-  pageList, //专题列表
-  specialCollocate, //配置专题
-  getCollocation, //获取专题配置
-  specialRemove, //删除专题
-  elementTree, //组件
+  formCreate, //创建表单
+  formStatus, //启用/停用
+  formGet, //表单详情
+  formModify, //编辑表单
+  formList, //表单列表
+  formCollocate, //配置表单
+  formgetCollocation, //获取表单配置
+  formRemove, //删除表单
 } from '@/services/FormLibrary';
 
 export default {
   namespace: 'FormLibrary',
 
   state: {
-    siteList: {},
-    siteListQuery: {},
-    siteDetail: {},
+    formList: {},
+    fromListQuery: {},
+    formDetail: {},
     collocationDetail: {},
-    elementTree: [],
     compentList: [],
     status: 1,
     fromData: {
       pageNum: 1,
       pageSize: 10,
       searchText: '',
-      specialStatus: '',
+      formStatus: '',
     },
   },
 
   effects: {
-    // 专题列表
+    // 表单列表
     *pageListModel({ payload }, { call, put }) {
-      const response = yield call(pageList, {
+      const response = yield call(formList, {
         ...payload,
       });
       yield put({
         type: 'upData',
-        payload: { siteList: (response && response.data) || {}, siteListQuery: { ...payload } },
+        payload: { formList: (response && response.data) || {}, fromListQuery: { ...payload } },
       });
       return response;
     },
-    // 专题详情
-    *specialGetModel({ payload }, { call, put }) {
-      const response = yield call(specialGet, {
+    // 表单详情
+    *formGetModel({ payload }, { call, put }) {
+      const response = yield call(formGet, {
         ...payload,
       });
       yield put({
         type: 'upData',
-        payload: { siteDetail: (response && response.data) || {} },
+        payload: { formDetail: (response && response.data) || {} },
       });
       return response;
     },
-    // 编辑专题
-    *specialModifyModel({ payload }, { call, put }) {
-      const response = yield call(specialModify, {
+    // 编辑表单
+    *formModifyModel({ payload }, { call, put }) {
+      const response = yield call(formModify, {
         ...payload,
       });
       return response;
     },
     // 启用/停用
-    *specialStatusModel({ payload }, { call, put }) {
-      const response = yield call(specialStatus, {
+    *formStatusModel({ payload }, { call, put }) {
+      const response = yield call(formStatus, {
         ...payload,
       });
       return response;
     },
-    // 创建专题
-    *specialCreateModel({ payload }, { call, put }) {
-      const response = yield call(specialCreate, {
+    // 创建表单
+    *formCreateModel({ payload }, { call, put }) {
+      const response = yield call(formCreate, {
         ...payload,
       });
       return response;
     },
-    // 删除专题
-    *specialRemoveModel({ payload }, { call, put }) {
-      const response = yield call(specialRemove, {
+    // 删除表单
+    *formRemoveModel({ payload }, { call, put }) {
+      const response = yield call(formRemove, {
         ...payload,
       });
       return response;
     },
-    // 配置专题
-    *specialGetModel({ payload }, { call, put }) {
-      const response = yield call(specialCollocate, {
+    // 配置表单
+    *formCollocateModel({ payload }, { call, put }) {
+      const response = yield call(formCollocate, {
         ...payload,
       });
       return response;
     },
     // 获取专题配置
-    *specialGetModel({ payload }, { call, put }) {
-      const response = yield call(getCollocation, {
+    *formgetCollocationModel({ payload }, { call, put }) {
+      const response = yield call(formgetCollocation, {
         ...payload,
       });
       yield put({
         type: 'upData',
         payload: { collocationDetail: (response && response.data) || {} },
-      });
-      return response;
-    },
-    // 组件
-    *elementTreeModel({ payload }, { call, put }) {
-      const response = yield call(elementTree, {
-        ...payload,
-      });
-      yield put({
-        type: 'upData',
-        payload: { elementTree: (response && response.data) || {} },
       });
       return response;
     },

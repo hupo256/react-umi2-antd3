@@ -1,189 +1,32 @@
-@import '~antd/lib/style/themes/default.less';
-@nav-header-height: 64px;
-.ser {
-  width: 600px !important;
-}
-
-.status{
-  overflow: hidden;
-  padding-top:10px;
-  margin-top: 20px;
-  border-top: 1px dashed #e8e8e8;
-}
-.fl{
-  float: left;
-  line-height: 32px;
-  width: 100px;
-}
-.flr{
-  float: left;
-}
-.twrap{
-  padding: 0px;
-  text-align: center;
-}
-.timg{
-  width: 70%;
-  margin: 20px auto;
-  display: block;
-}
-.ico1{
-  width: 6px;
-  height: 6px;
-  background: rgb(248, 158, 19);
-  display: inline-block;
-  vertical-align: middle;
-  margin-right: 8px;
-  border-radius: 3px;
-}
-.ico2{
-  width: 6px;
-  height: 6px;
-  background: rgb(70, 187, 22);
-  display: inline-block;
-  vertical-align: middle;
-  margin-right: 8px;
-  border-radius: 3px;
-}
-.ico3{
-  width: 6px;
-  height: 6px;
-  background: rgb(177, 177, 177);
-  display: inline-block;
-  vertical-align: middle;
-  margin-right: 8px;
-  border-radius: 3px;
-}
-.logo {
-  height: @nav-header-height;
-  position: relative;
-  line-height: @nav-header-height;
-  padding-left: (@menu-collapsed-width - 32px) / 2;
-  transition: all 0.3s;
-  background: #413E3D;
-  overflow: hidden;
-  img {
-    display: inline-block;
-    vertical-align: middle;
-    height: 32px;
-  }
-  h1 {
-    color: white;
-    display: inline-block;
-    vertical-align: middle;
-    font-size: 20px;
-    margin: 0 0 0 12px;
-    font-family: 'Myriad Pro', 'Helvetica Neue', Arial, Helvetica, sans-serif;
-    font-weight: 600;
-  }
-}
-.logoWrap{
-  height: 100%;
-  background: #413E3D;
+.bg{
+  background: rgba(0, 0, 0, 0.5);
   position: fixed;
-  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
   left: 0;
-  flex: 0 0 220px;
-  max-width: 220px;
-  min-width: 220px;
-  width: 220px;
-  z-index: 10;
-  :global {
-    .ant-menu-sub.ant-menu-inline > .ant-menu-item{
-      height: auto;
-    
-    }
-  }
+  top:0
 }
-.meg{
-  height:85%;
-  overflow-y: auto;
-  
-}
-.fixedWrap{
-position: absolute;
-left: 0;
-bottom: 0;
-width: 100%;
-padding:10px;
-}
-.logout{
-  float: right;
-  color: rgba(255, 255, 255, 0.65);
-  cursor: pointer;
-  line-height: 30px;
-  padding: 10px 0;
-}
-.logout:hover,.menuWrap:hover{
-  color:#fff;
-}
-.menuWrap{
-  float: left;
-  text-align: center;
-  margin-right: 6px;
-  cursor: pointer;
-}
-.iyt{
-  padding: 15px ;
-}
-.icotext{
-  height: 30px;
-  line-height: 30px;
-  padding-bottom: 10px;
-}
-.topicWrap{
-  display: flex;
-  flex: auto;
-}
-.confcont{
+.ConWrap{
+  position: fixed;
+  position: fixed;
   width: 100%;
-  text-align: center;
-  padding-left: 220px;
-  padding-bottom: 20px;
-}
-.confcont{
-  position: relative;
-}
-.phone{
-  width: 340px;
-  top: 32px;
-  left: 50%;
-  position: absolute;
-  margin-left: -160px;
-  border:10px solid #000;
-  box-sizing: border-box;
-  border-radius: 10px;
-}
-.phoneHead{
-  width: 320px;
-    height: 54px;
-    background: url(https://test.img.inbase.in-deco.com/crmx/filex/file/20210302/b6640ae69fc24cd881e8900dc33f2e70/Bitmap-7aabbb4a.svg) no-repeat;
-    position: relative;
-    padding-top: 25px;
-    box-sizing: border-box;
-}
-.phoneCont{
-  width: 100%;
-  height:100%;
-  transform: scale(1);
-}
-.tag{
-  color: #000;
-}
-.phoneBox{
-  width: 320px;
-  height: 650px;
-  background: #ccc;
-  overflow-y: auto;
-  overflow-x: hidden;
-  position: relative;
- 
-}
-.vieT{
-  position: absolute;
+  height: 100%;
+  z-index: 1001;
   left: 0;
-  top:0;
-  z-index: 100;
-  width: 100%;
-  
+  top:0
+}
+.Context{
+  margin: 100px auto;
+  width: 260px;
+}
+.btnWrap{
+  text-align: center;
+  margin-top: 100px;
+}
+.ViewDivForm{
+  background: #fff;
+}
+.ViewDiv{
+  margin-bottom: 10px;
 }

@@ -2,82 +2,146 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-01 16:27:39
+ * @Last Modified time: 2021-03-11 19:21:36
  * 专题库
  */
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Card, Steps } from 'antd';
-import { getQueryUrlVal } from '@/utils/utils';
-import PageHeaderWrapper from '@/components/PageHeaderWrapper';
-import CreateStepOne from './CreateCase/CreateStepOne';
-import CreateStepTwo from './CreateCase/CreateStepTwo';
-import CreateStepThree from './CreateCase/CreateStepThree';
-const { Step } = Steps;
-
-@connect(({ ProjectLibrary, loading }) => ({
-  ProjectLibrary,
-  loading: loading.effects['ProjectLibrary/pageList'],
+import { Modal, Form, Button, Input, message, Radio } from 'antd';
+const { TextArea } = Input;
+@connect(({ FormLibrary, loading }) => ({
+  FormLibrary,
 }))
-class ProjectLibrary extends PureComponent {
+@Form.create()
+class FormAdd extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {};
   }
 
-  componentDidMount() {
-    const activeKey = getQueryUrlVal('uid');
-    if (activeKey) {
-      const { dispatch } = this.props;
-      dispatch({
-        type: 'ProjectLibrary/specialGetModel',
-        payload: {
-          specialUid: activeKey,
-        },
-      });
-    }
-  }
+  componentDidMount() {}
   render() {
-    const {
-      ProjectLibrary: { status },
-    } = this.props;
-    let setp = Number(status);
+    const { visible, data } = this.props;
+    const { getFieldDecorator } = this.props.form;
+    const formItemLayout = {
+      labelCol: {
+        xs: { span: 24 },
+        sm: { span: 8 },
+      },
+      wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 16 },
+      },
+    };
     return (
       <div>
-        <PageHeaderWrapper>
-          <Card bordered={false}>
-            <Steps current={setp}>
-              <Step title="填写基本信息" />
-              <Step title="上传案例图片" />
-              <Step title="完成" />
-            </Steps>
-            {setp == 0 && <CreateStepOne handleOk={() => this.handleOk(1)} />}
-            {setp == 1 && <CreateStepTwo handleOk={() => this.handleOk(0)} />}
-            {setp == 2 && <CreateStepThree />}
-          </Card>
-        </PageHeaderWrapper>
+        <Modal title={'创建表单'} visible={visible} footer={null} width={600} closable={false}>
+          <Form {...formItemLayout} onSubmit={this.handleSubmit}>
+            <Form.Item label="专题标题">
+              {getFieldDecorator('formTitle', {
+                initialValue: data && data.formTitle,
+                rules: [
+                  {
+                    required: true,
+                    message: '请输入专题标题',
+                  },
+                  {
+                    max: 30,
+                    message: '限制1-30字符长度',
+                  },
+                ],
+              })(<Input placeholder="请输入案例标题" />)}
+            </Form.Item>
+            <Form.Item label="适用终端">
+              {getFieldDecorator('terminalType', {
+                initialValue: 0,
+                rules: [
+                  {
+                    required: true,
+                    message: '请选择适用终端',
+                  },
+                ],
+              })(
+                <Radio.Group>
+                  <Radio value={0}>是</Radio>
+                </Radio.Group>
+              )}
+            </Form.Item>
+            <Form.Item label="表单类型">
+              {getFieldDecorator('formType', {
+                initialValue: 0,
+                rules: [
+                  {
+                    required: true,
+                    message: '请选择表单类型',
+                  },
+                ],
+              })(
+                <Radio.Group>
+                  <Radio value={0}>浮窗</Radio>
+                </Radio.Group>
+              )}
+            </Form.Item>
+            <Form.Item label="专题说明">
+              {getFieldDecorator('formDescription', {
+                initialValue: data && data.formDescription,
+                rules: [{ required: false, message: '请输入专题说明' }],
+              })(<TextArea rows={4} placeholder="请输入专题说明" />)}
+            </Form.Item>
+            <div style={{ textAlign: 'center' }}>
+              <Button type="primary" htmlType="submit">
+                确认
+              </Button>
+              <Button
+                style={{ marginLeft: 20 }}
+                onClick={() => {
+                  this.handleCancel();
+                }}
+              >
+                取消
+              </Button>
+            </div>
+          </Form>
+        </Modal>
       </div>
     );
   }
-  handleOk(status) {
-    const { dispatch } = this.props;
-    const activeKey = getQueryUrlVal('uid');
-    if (activeKey) {
-      dispatch({
-        type: 'ProjectLibrary/specialGetModel',
-        payload: {
-          specialUid: activeKey,
-        },
-      });
-    }
-    dispatch({
-      type: 'ProjectLibrary/saveDataModel',
-      payload: {
-        key: 'status',
-        value: status,
-      },
-    });
+  handleCancel() {
+    this.props.handleCancel();
   }
+  handleSubmit = e => {
+    e.preventDefault();
+    this.props.form.validateFieldsAndScroll((err, values) => {
+      if (err) throw err;
+      const { dispatch, formUid } = this.props;
+      if (formUid !== '') {
+        values.formUid = formUid;
+        dispatch({
+          type: 'FormLibrary/formModifyModel',
+          payload: {
+            ...values,
+          },
+        }).then(res => {
+          if (res && res.code === 200) {
+            message.success('编辑成功', 2);
+            this.props.handleList();
+          }
+        });
+      } else {
+        dispatch({
+          type: 'FormLibrary/formCreateModel',
+          payload: {
+            ...values,
+          },
+        }).then(res => {
+          if (res && res.code === 200) {
+            message.success('创建成功', 2);
+            this.props.handleList();
+          }
+        });
+      }
+    });
+  };
 }
 
-export default ProjectLibrary;
+export default FormAdd;

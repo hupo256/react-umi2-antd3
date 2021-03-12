@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-01 19:42:23
+ * @Last Modified time: 2021-03-11 19:33:45
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -11,20 +11,26 @@ import router from 'umi/router';
 import { Card, Button, Icon, Row, Col, Input, message, Tag, Table, Popconfirm, Modal } from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { paginations, successIcon, waringInfo, errorIcon } from '@/utils/utils';
+import FormAdd from './FormComponent/FormAdd';
+import FormConfiguration from './FormComponent/FormConfiguration';
 import styles from './index.less';
 const Search = Input.Search;
 const { confirm } = Modal;
 import TagSelect from '@/components/TagSelect';
 
-@connect(({ ProjectLibrary, loading }) => ({
-  ProjectLibrary,
-  loading: loading.effects['ProjectLibrary/pageListModel'],
+@connect(({ FormLibrary, loading }) => ({
+  FormLibrary,
+  loading: loading.effects['FormLibrary/pageListModel'],
 }))
 class ProjectLibrary extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
       value: '',
+      visible: false,
+      title: '',
+      formUid: '',
+      data: '',
     };
   }
 
@@ -32,6 +38,7 @@ class ProjectLibrary extends PureComponent {
     this.getList();
   }
   render() {
+    const { visible, title, data, formUid } = this.state;
     return (
       <div>
         <PageHeaderWrapper>
@@ -41,36 +48,44 @@ class ProjectLibrary extends PureComponent {
               icon="plus"
               type="primary"
               onClick={() => {
-                const { dispatch } = this.props;
-                dispatch({
-                  type: 'ProjectLibrary/saveDataModel',
-                  payload: {
-                    key: 'status',
-                    value: 0,
-                  },
+                this.setState({
+                  visible: true,
+                  title: '创建表单',
+                  formUid: '',
+                  data: '',
                 });
-                router.push('/portal/contentmanagement/ProjectLibrary/add');
               }}
             >
-              创建专题
+              创建表单
             </Button>
             {this.renderTable()}
+            <FormAdd
+              visible={visible}
+              title={title}
+              data={data}
+              formUid={formUid}
+              handleCancel={this.handleCancel}
+              handleList={() => {
+                this.handleList();
+              }}
+            />
           </Card>
         </PageHeaderWrapper>
+        <FormConfiguration />
       </div>
     );
   }
   renderSearch() {
     const {
-      ProjectLibrary: { fromData },
+      FormLibrary: { fromData },
     } = this.props;
     let value = [];
-    value.push(fromData.specialStatus);
+    value.push(fromData.formStatus);
     return (
       <div className={styles.wrap}>
         <Search
           onSearch={value => this.thSearch(value)}
-          placeholder={'可通过专题标题/专题链接进行搜索'}
+          placeholder={'可通过表单标题进行搜索'}
           className={styles.ser}
           defaultValue={fromData.searchText}
         />
@@ -81,7 +96,7 @@ class ProjectLibrary extends PureComponent {
               <TagSelect.Option value="">全部</TagSelect.Option>
               <TagSelect.Option value="1">正常</TagSelect.Option>
               <TagSelect.Option value="2">停用</TagSelect.Option>
-              <TagSelect.Option value="0">未发布</TagSelect.Option>
+              <TagSelect.Option value="0">待配置</TagSelect.Option>
             </TagSelect>
           </div>
         </div>
@@ -90,24 +105,43 @@ class ProjectLibrary extends PureComponent {
   }
   renderTable() {
     const {
-      ProjectLibrary: { siteList },
+      FormLibrary: { formList },
       loading,
     } = this.props;
     const columns = [
       {
-        title: '专题',
-        dataIndex: 'specialTitle',
+        title: '表单标题',
+        dataIndex: 'formTitle',
       },
       {
-        title: '专题链接',
-        dataIndex: 'specialUrl',
+        title: '适用终端',
+        dataIndex: 'terminalType',
         render: (t, r) => {
-          return t;
+          let type;
+          switch (t) {
+            case 0:
+              type = '小程序';
+              break;
+            case 1:
+              type = 'PC';
+              break;
+            default:
+              type = '/';
+              break;
+          }
+          return type;
+        },
+      },
+      {
+        title: '表单类型',
+        dataIndex: 'formType',
+        render: (t, r) => {
+          return t === 0 ? '浮窗' : null;
         },
       },
       {
         title: '状态',
-        dataIndex: 'specialStatus',
+        dataIndex: 'formStatus',
         render: (t, r) => {
           let status;
           switch (t) {
@@ -115,7 +149,7 @@ class ProjectLibrary extends PureComponent {
               status = (
                 <span>
                   <span className={styles.ico1} />
-                  未发布
+                  待配置
                 </span>
               );
               break;
@@ -160,15 +194,7 @@ class ProjectLibrary extends PureComponent {
               <span
                 className="operateBtn"
                 onClick={() => {
-                  const { dispatch } = this.props;
-                  dispatch({
-                    type: 'ProjectLibrary/saveDataModel',
-                    payload: {
-                      key: 'status',
-                      value: 0,
-                    },
-                  });
-                  router.push(`/portal/contentmanagement/ProjectLibrary/add?uid=${r.specialUid}`);
+                  this.handleEdit(r);
                 }}
               >
                 编辑
@@ -186,17 +212,8 @@ class ProjectLibrary extends PureComponent {
                 删除
               </span>
               <span className="operateLine" />
-              <span
-                className="operateBtn"
-                onClick={() => {
-                  router.push(
-                    `/portal/contentmanagement/ProjectLibrary/ConfigurationTopic?&uid=${
-                      r.specialUid
-                    }`
-                  );
-                }}
-              >
-                配置专题
+              <span className="operateBtn" onClick={() => {}}>
+                配置表单
               </span>
             </div>
           );
@@ -207,11 +224,11 @@ class ProjectLibrary extends PureComponent {
       <Table
         loading={loading}
         style={{ marginTop: 20 }}
-        rowKey={record => record.specialUid}
-        dataSource={siteList && siteList.list}
+        rowKey={record => record.formUid}
+        dataSource={formList && formList.list}
         columns={columns}
         onChange={this.handleTableChange}
-        pagination={siteList && siteList.recordTotal > 10 ? paginations(siteList) : false}
+        pagination={formList && formList.recordTotal > 10 ? paginations(formList) : false}
       />
     );
   }
@@ -221,11 +238,11 @@ class ProjectLibrary extends PureComponent {
     }
     const {
       dispatch,
-      ProjectLibrary: { fromData },
+      FormLibrary: { fromData },
     } = this.props;
-    fromData.specialStatus = value[0];
+    fromData.formStatus = value[0];
     dispatch({
-      type: 'ProjectLibrary/saveDataModel',
+      type: 'FormLibrary/saveDataModel',
       payload: {
         key: 'fromData',
         value: fromData,
@@ -237,10 +254,10 @@ class ProjectLibrary extends PureComponent {
   getList = () => {
     const {
       dispatch,
-      ProjectLibrary: { fromData },
+      FormLibrary: { fromData },
     } = this.props;
     dispatch({
-      type: 'ProjectLibrary/pageListModel',
+      type: 'FormLibrary/pageListModel',
       payload: { ...fromData },
     });
   };
@@ -250,14 +267,16 @@ class ProjectLibrary extends PureComponent {
     const { dispatch } = this.props;
     const that = this;
     confirm({
-      title: status + '' === '0' ? '确认要停用当前工地吗？' : '确认要启用当前工地吗？',
+      title: status + '' === '0' ? '确认要停用当前表单吗？' : '确认要启用当前表单吗？',
       content:
-        status + '' === '0' ? '停用后，将无法看到当前专题界面' : '启用后，将可以查看到当前专题界面',
+        status + '' === '0'
+          ? '停用后，将无法关联当前表单(已关联的不受影响)'
+          : '启用后，将可以关联使用表单',
       icon: status === '1' ? successIcon : waringInfo,
       onOk() {
         dispatch({
-          type: 'ProjectLibrary/specialStatusModel',
-          payload: { specialUid: r.specialUid, specialStatus: r.specialStatus === 1 ? 2 : 1 },
+          type: 'FormLibrary/formStatusModel',
+          payload: { formUid: r.formUid, formStatus: r.formStatus === 1 ? 2 : 1 },
         }).then(res => {
           if (res && res.code === 200) {
             message.success('操作成功');
@@ -274,13 +293,13 @@ class ProjectLibrary extends PureComponent {
     const { dispatch } = this.props;
     const that = this;
     confirm({
-      title: '确认要删除当前专题吗?',
+      title: '确认要删除当前表单吗?',
       content: '删除后，已填写的内容将无法恢复，请确认是否要删除',
       icon: errorIcon,
       onOk() {
         dispatch({
-          type: 'ProjectLibrary/specialRemoveModel',
-          payload: { specialUid: r.specialUid },
+          type: 'FormLibrary/formRemoveModel',
+          payload: { formUid: r.formUid },
         }).then(res => {
           if (res && res.code === 200) {
             message.success('操作成功');
@@ -300,7 +319,7 @@ class ProjectLibrary extends PureComponent {
     } = this.props;
     fromData.searchText = value;
     dispatch({
-      type: 'ProjectLibrary/saveDataModel',
+      type: 'FormLibrary/saveDataModel',
       payload: {
         key: 'fromData',
         value: fromData,
@@ -312,12 +331,12 @@ class ProjectLibrary extends PureComponent {
   handleTableChange = pagination => {
     const {
       dispatch,
-      ProjectLibrary: { fromData },
+      FormLibrary: { fromData },
     } = this.props;
     fromData.pageNum = pagination.current;
     fromData.pageSize = pagination.pageSize;
     dispatch({
-      type: 'ProjectLibrary/saveDataModel',
+      type: 'FormLibrary/saveDataModel',
       payload: {
         key: 'fromData',
         value: fromData,
@@ -326,6 +345,37 @@ class ProjectLibrary extends PureComponent {
       this.getList();
     });
   };
+  handleCancel = () => {
+    this.setState({
+      visible: false,
+    });
+  };
+  handleList() {
+    this.setState(
+      {
+        visible: false,
+      },
+      () => {
+        this.getList();
+      }
+    );
+  }
+  handleEdit(t) {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'FormLibrary/formGetModel',
+      payload: { formUid: t.formUid },
+    }).then(res => {
+      if (res && res.code === 200) {
+        this.setState({
+          title: '编辑表单',
+          data: res.data,
+          visible: true,
+          formUid: t.formUid,
+        });
+      }
+    });
+  }
 }
 
 export default ProjectLibrary;

@@ -34,13 +34,13 @@ export async function getusersbyroles(params) {
 
 //获取uuid
 export async function getStrCode() {
-  return request(baseurl + '/api/v1/saas/login/getUuid', {
+  return request(baseurl + '/api/v1/sso/login/getUuid', {
     method: 'POST',
   });
 }
 // 验证码
 export async function getVerificationCode(params) {
-  return request(baseurl + '/api/v1/saas/login/verificationCode?uuid=' + params, {
+  return request(baseurl + '/api/v1/sso/login/verificationCode?uuid=' + params, {
     method: 'GET',
     //body: params,
   });
