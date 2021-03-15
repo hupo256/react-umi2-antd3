@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-01-28 17:56:05 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-03 17:33:24
+ * @Last Modified time: 2021-03-15 11:48:01
  * 状态变更记录
  */
 import React, { Component } from 'react';
@@ -19,7 +19,7 @@ class ChangeRecord extends Component {
     this.state = {};
   }
   componentDidMount() {
-    this.queryData({ pageNum: 1, trackCode: this.props.record.trackCode });
+    this.queryData({ pageNum: 1, trackUid: this.props.record.uid });
   }
 
   render() {
@@ -88,7 +88,7 @@ class ChangeRecord extends Component {
     );
   }
   handleTableChange = pagination => {
-    this.queryData({ pageNum: pagination.current, trackCode: this.props.record.trackCode });
+    this.queryData({ pageNum: pagination.current, trackUid: this.props.record.uid });
   };
   queryData = obj => {
     const { dispatch } = this.props;

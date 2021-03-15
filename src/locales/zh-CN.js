@@ -10,7 +10,7 @@ export default {
   'menu.setting': '配置',
   'menu.setting.dictconfig': '字典配置',
   'menu.setting.miniprogram': '小程序授权',
-  'menu.customer': '客户',
+  'menu.customer': '线索管理',
   'menu.customer.leadmanagement': '线索管理',
   'menu.project': '项目',
   'menu.project.manage': '项目列表',
