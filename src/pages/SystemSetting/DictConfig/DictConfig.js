@@ -2,13 +2,13 @@
  * @Author: zqm 
  * @Date: 2021-02-17 10:30:18 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-02-24 10:26:43
+ * @Last Modified time: 2021-03-15 10:13:26
  * 字典配置
  */
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
 import router from 'umi/router';
-import { Card, Button, Icon, Tabs, Table, Input, message ,Modal} from 'antd';
+import { Card, Button, Icon, Tabs, Table, Input, message, Modal } from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { DndProvider, DragSource, DropTarget } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -16,7 +16,7 @@ import { DragableBodyRow } from '../common/DragableBodyRow';
 import update from 'immutability-helper';
 import styles from './DictConfig.less';
 import CreateDict from './CreateDict';
-import { successIcon,waringInfo } from '@/utils/utils';
+import { successIcon, waringInfo } from '@/utils/utils';
 const { confirm } = Modal;
 const { Search } = Input;
 const { TabPane } = Tabs;
@@ -61,23 +61,23 @@ class DictConfig extends PureComponent {
       {
         title: '扩充描述1',
         dataIndex: 'extDescOne',
-        render:text=>{
-          return text||'/'
-        }
+        render: text => {
+          return <div style={{ maxWidth: 300, overflow: 'hidden' }}>{text || '/'}</div>;
+        },
       },
       {
         title: '扩充描述2',
         dataIndex: 'extDescTwo',
-        render:text=>{
-          return text||'/'
-        }
+        render: text => {
+          return <div style={{ maxWidth: 300, overflow: 'hidden' }}>{text || '/'}</div>;
+        },
       },
       {
         title: '状态',
         dataIndex: 'status',
-        render:t=>{
-          return t==='1'?'启用':'停用'
-        }
+        render: t => {
+          return t === '1' ? '启用' : '停用';
+        },
       },
       {
         title: '更新时间',
@@ -110,7 +110,7 @@ class DictConfig extends PureComponent {
       },
     ];
 
-console.log(successIcon);
+    console.log(successIcon);
     return (
       <div className={styles.dict}>
         <PageHeaderWrapper>
@@ -254,30 +254,31 @@ console.log(successIcon);
   };
   // 修改字典状态
   handleChangeStatus = r => {
-    const status = r.status
+    const status = r.status;
     const { dispatch } = this.props;
-    const that=this
-      confirm({
-        title:status==='1'?'确认要停用当前字段吗？':'确认要启用当前字段吗？',
-        content: status==='1'?'无法在案例、工地等功能【$字典名称】中选择当前字段（已选择不受影响）':'启用后，将可以在案例、工地等功能【字典名称】中选择当前字段',
-        icon:status==='2'?successIcon:waringInfo  ,
-        onOk() {
-          dispatch({
-            type: 'DictConfig/updateDicStatusModel',
-            payload: { dicUid: r.uid, status: status == '1' ? '2' : '1' },
-          }).then(res => {
-            if (res.code === 200) {
-              message.success('状态更改成功');
-              that.queryList({});
-            }
-          });
-        },
-        onCancel() {
-          console.log('Cancel');
-        },
-      });
-    
-    
+    const that = this;
+    confirm({
+      title: status === '1' ? '确认要停用当前字段吗？' : '确认要启用当前字段吗？',
+      content:
+        status === '1'
+          ? '无法在案例、工地等功能【$字典名称】中选择当前字段（已选择不受影响）'
+          : '启用后，将可以在案例、工地等功能【字典名称】中选择当前字段',
+      icon: status === '2' ? successIcon : waringInfo,
+      onOk() {
+        dispatch({
+          type: 'DictConfig/updateDicStatusModel',
+          payload: { dicUid: r.uid, status: status == '1' ? '2' : '1' },
+        }).then(res => {
+          if (res.code === 200) {
+            message.success('状态更改成功');
+            that.queryList({});
+          }
+        });
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
   };
 }
 

@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-04 14:08:09
+ * @Last Modified time: 2021-03-15 10:19:45
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -64,7 +64,7 @@ class CreateStepOne extends PureComponent {
     const { stepOne } = this.props.CaseLibrary;
 
     ['bedroom', 'liveroom', 'kitchen', 'bathroom'].forEach(item => {
-      this.setState({ [item]: (stepOne && stepOne.houseType && stepOne.houseType[item]) || 0 });
+      this.setState({ [item]: (stepOne && stepOne[item]) || 0 });
     });
   }
 
@@ -382,7 +382,10 @@ class CreateStepOne extends PureComponent {
             type: 'CaseLibrary/editCaseModel',
             payload: {
               ...values,
-              houseType: { bedroom, liveroom, kitchen, bathroom },
+              bedroom,
+              liveroom,
+              kitchen,
+              bathroom,
               uid: getQueryUrlVal('uid'),
             },
           }).then(res => {
@@ -396,7 +399,10 @@ class CreateStepOne extends PureComponent {
             payload: {
               stepOne: {
                 ...values,
-                houseType: { bedroom, liveroom, kitchen, bathroom },
+                bedroom,
+                liveroom,
+                kitchen,
+                bathroom,
               },
             },
           }).then(res => {
