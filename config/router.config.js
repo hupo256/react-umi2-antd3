@@ -53,6 +53,28 @@ export default [
           },
         ],
       },
+      // v1.1
+      // 客户
+      {
+        path: '/customer',
+        name: 'customer',
+        icon: 'user',
+        // code: 'P2020010110014',
+        routes: [
+          {
+            path: '/customer',
+            redirect: '/customer/companyinformation',
+          },
+          // 线索管理
+          {
+            path: '/customer/leadmanagement',
+            name: 'leadmanagement',
+            icon: 'retweet',
+            //code: 'P2020010110015',
+            component: './Customer/LeadManagement/LeadManagement',
+          },
+        ],
+      },
       // v2.0
       // 门户
       {
