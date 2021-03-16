@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-11 19:33:45
+ * @Last Modified time: 2021-03-16 11:48:07
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -31,6 +31,7 @@ class ProjectLibrary extends PureComponent {
       title: '',
       formUid: '',
       data: '',
+      visibleForm: false,
     };
   }
 
@@ -38,7 +39,7 @@ class ProjectLibrary extends PureComponent {
     this.getList();
   }
   render() {
-    const { visible, title, data, formUid } = this.state;
+    const { visible, title, data, formUid, visibleForm } = this.state;
     return (
       <div>
         <PageHeaderWrapper>
@@ -71,7 +72,13 @@ class ProjectLibrary extends PureComponent {
             />
           </Card>
         </PageHeaderWrapper>
-        <FormConfiguration />
+        {visibleForm ? (
+          <FormConfiguration
+            formUid={formUid}
+            handleCancel={this.handleCancelForm}
+            handleAdd={this.handleAddConfig}
+          />
+        ) : null}
       </div>
     );
   }
@@ -212,7 +219,12 @@ class ProjectLibrary extends PureComponent {
                 删除
               </span>
               <span className="operateLine" />
-              <span className="operateBtn" onClick={() => {}}>
+              <span
+                className="operateBtn"
+                onClick={() => {
+                  this.addFormConfiguration(r);
+                }}
+              >
                 配置表单
               </span>
             </div>
@@ -350,6 +362,11 @@ class ProjectLibrary extends PureComponent {
       visible: false,
     });
   };
+  handleCancelForm = () => {
+    this.setState({
+      visibleForm: false,
+    });
+  };
   handleList() {
     this.setState(
       {
@@ -375,6 +392,22 @@ class ProjectLibrary extends PureComponent {
         });
       }
     });
+  }
+  addFormConfiguration(t) {
+    this.setState({
+      formUid: t.formUid,
+      visibleForm: true,
+    });
+  }
+  handleAddConfig() {
+    this.setState(
+      {
+        visibleForm: false,
+      },
+      () => {
+        this.getList({});
+      }
+    );
   }
 }
 

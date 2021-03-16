@@ -42,7 +42,7 @@ export async function pageList(params) {
 }
 // 配置专题
 export async function specialCollocate(params) {
-  return request(baseurl + '/api/v1/saas/special/collocate', {
+  return request(baseurl + '/api/v1/wechat/special/collocate', {
     method: 'POST',
     body: params,
   });
@@ -64,6 +64,13 @@ export async function specialRemove(params) {
 // 组件
 export async function elementTree(params) {
   return request(baseurl + '/api/v1/wechat/magic/element/tree', {
+    method: 'POST',
+    body: params,
+  });
+}
+// 表单列表
+export async function formList(params) {
+  return request(baseurl + '/api/v1/wechat/form/list', {
     method: 'POST',
     body: params,
   });

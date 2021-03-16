@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-01 16:27:39
+ * @Last Modified time: 2021-03-15 20:23:51
  * 专题库
  */
 import React, { PureComponent } from 'react';
@@ -25,18 +25,7 @@ class ProjectLibrary extends PureComponent {
     this.state = {};
   }
 
-  componentDidMount() {
-    const activeKey = getQueryUrlVal('uid');
-    if (activeKey) {
-      const { dispatch } = this.props;
-      dispatch({
-        type: 'ProjectLibrary/specialGetModel',
-        payload: {
-          specialUid: activeKey,
-        },
-      });
-    }
-  }
+  componentDidMount() {}
   render() {
     const {
       ProjectLibrary: { status },

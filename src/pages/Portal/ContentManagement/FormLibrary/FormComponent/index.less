@@ -3,22 +3,22 @@
   position: fixed;
   width: 100%;
   height: 100%;
-  z-index: 1000;
+  
   left: 0;
   top:0
 }
 .ConWrap{
   position: fixed;
-  position: fixed;
   width: 100%;
   height: 100%;
-  z-index: 1001;
+
   left: 0;
   top:0
 }
 .Context{
   margin: 100px auto;
   width: 260px;
+  position: relative;
 }
 .btnWrap{
   text-align: center;
@@ -26,7 +26,228 @@
 }
 .ViewDivForm{
   background: #fff;
+ text-align: center; 
+ padding: 20px;
+ border-radius: 0 0 5px 5px;
+ cursor: pointer;
+ position: relative;
+}
+.ViewDivForms{
+  background: #fff;
+ text-align: center;
+ padding: 20px;
+ border-radius: 0 0 5px 5px;
+ cursor: pointer;
+ border:1px solid #FE6A30;
+ position: relative;
 }
 .ViewDiv{
   margin-bottom: 10px;
+}
+.changePic{
+  position: absolute;
+  top:68px;
+  left: 50%;
+  width: 88px;
+  height: 32px;
+  background: rgba(0, 0, 0, 0.7);
+  margin-left: -44px;
+  color: #fff;
+  text-align: center;
+  border-radius: 2px;
+  line-height: 32px;
+  cursor: pointer;
+}
+.borderWrap{
+  border:1px dotted #ccc
+}
+.picWrap{
+  cursor: pointer;
+}
+.roundLeftTop{
+  position: absolute;
+  left: -5px;
+  top:-5px;
+  width: 11px;
+  height: 11px;
+  background: #fff;
+  border:1px solid #FE6A30;
+  border-radius: 50%;
+ 
+}
+.roundRightTop{
+  position: absolute;
+  right: -5px;
+  top:-5px;
+  width: 11px;
+  height: 11px;
+  background: #fff;
+  border:1px solid #FE6A30;
+  border-radius: 50%;
+}
+.roundLeftBottom{
+  position: absolute;
+  left: -5px;
+  bottom:-5px;
+  width: 11px;
+  height: 11px;
+  background: #fff;
+  border:1px solid #FE6A30;
+  border-radius: 50%;
+}
+.roundRightBottom{
+  position: absolute;
+  right: -5px;
+  bottom:-5px;
+  width: 11px;
+  height: 11px;
+  background: #fff;
+  border:1px solid #FE6A30;
+  border-radius: 50%;
+}
+.FormWrap{
+position: absolute;
+ width: 300px;
+ left: 50%;
+ top:100px;
+ margin-left: 200px;
+ background:rgb(49,47,46);
+ color: #C1C1C1;
+ border-radius: 5px;
+}
+.dragWrap{
+  float: left;
+  font-size: 20px;
+}
+.tit{
+  float: left;
+  width: 80px;
+  line-height: 32px;
+  text-align: left;
+  padding: 0 10px;
+  margin-left: 10px;
+}
+.FormCont{
+  float: left;
+  margin-right: 10px;
+  line-height: 32px;
+  :global {
+    .ant-radio-wrapper{
+     color: #C1C1C1;
+    }
+  }
+}
+.dragCenWrap{
+  float:left;
+}
+.checkwraps{
+  padding-left: 10px;
+  :global{
+    .ant-checkbox-wrapper{
+      color: #fff;
+    }
+  }
+}
+.addForm{
+  padding-bottom: 15px;
+  padding-top: 15px;
+  position: relative;
+  text-align: center;
+  color: #FE6A30;
+  cursor: pointer;
+}
+.FormSave{
+  text-align: right;
+}
+.addSelect{
+  position: absolute;
+  background: #000;
+  left: 90px;
+  top:60px;
+  color: #fff;
+  width: 100px;
+  padding: 10px;
+  text-align: center;
+  line-height: 32px;
+  border-radius: 5px;
+}
+.addSelect a{
+  color: #fff;
+}
+.addSelect a:hover{
+  color: #fe6a30
+}
+.formWrapT{
+  padding: 10px;
+  border-bottom: 1px solid rgb(59, 59, 59);
+}
+.dragWraps{
+  float: right;
+  line-height: 32px;
+  cursor: pointer;
+  font-size: 16px;
+}
+.FormInput{
+  background:#413E3D ;
+  border-color: #413E3D;
+  color: #fff;
+}
+.FormWraw{
+  max-height: 500px;
+  overflow-y: auto;
+}
+.isList{
+  float: left;
+  width: 50%;
+  line-height: 48px;
+  color: #999;
+  text-align: center;
+  border-bottom: 1px solid rgb(59, 59, 59);
+  cursor: pointer;
+  color: #fff;
+  background: #413E3D;
+}
+.isLists{
+  float: left;
+  width: 50%;
+  line-height: 48px;
+  color: #999;
+  text-align: center;
+  border-bottom: 1px solid rgb(59, 59, 59);
+  cursor: pointer;
+  background: #353332;
+
+}
+.btnChanges{
+  padding: 20px 30px;
+}
+.btnColor{
+  width: 40px;
+  height: 32px;
+  border-radius: 4px;
+}
+.inputWrap{
+  float: left;
+  cursor: pointer;
+}
+.btnlabel{
+  float: left;
+  width: 80px;
+  line-height: 32px;
+}
+.SketchWrap{
+ position: relative;
+}
+.closeColor{
+  position:absolute;
+  right: 9px;
+  top:-11px;
+  cursor: pointer;
+  color: #FE6A30;
+  font-size: 20px;
+}
+.btnColorWrap{
+  float: left;
+  margin-right: 10px;
+  text-align: center;
 }

@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-11 15:19:40
+ * @Last Modified time: 2021-03-15 15:18:10
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -168,7 +168,7 @@ class ProjectLibrary extends PureComponent {
                       value: 0,
                     },
                   });
-                  router.push(`/portal/contentmanagement/ProjectLibrary/add?uid=${r.specialUid}`);
+                  router.push(`/portal/contentmanagement/ProjectLibrary/edit?uid=${r.specialUid}`);
                 }}
               >
                 编辑

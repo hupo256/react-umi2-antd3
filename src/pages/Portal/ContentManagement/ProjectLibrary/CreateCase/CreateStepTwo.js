@@ -2,14 +2,14 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-01 17:05:08
+ * @Last Modified time: 2021-03-15 14:16:36
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
 import router from 'umi/router';
 import { Form, Button } from 'antd';
-import { getUrl } from '@/utils/utils';
+import { getQueryUrlVal } from '@/utils/utils';
 import img from '@/assets/bgimg.png';
 import styles from '../index.less';
 class CreateStepTwo extends PureComponent {
@@ -30,7 +30,7 @@ class CreateStepTwo extends PureComponent {
             onClick={() => {
               const activeKey = getQueryUrlVal('uid');
               router.push(
-                `/portal/contentmanagement/ProjectLibrary/ConfigurationTopic?&$uid=${activeKey}`
+                `/portal/contentmanagement/ProjectLibrary/ConfigurationTopic?&uid=${activeKey}`
               );
             }}
           >
