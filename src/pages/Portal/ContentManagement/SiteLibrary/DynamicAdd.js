@@ -2,15 +2,16 @@
  * @Author: zqm 
  * @Date: 2021-02-20 10:46:16 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-12 18:59:10
+ * @Last Modified time: 2021-03-16 16:09:22
  * 创建动态
  */
 import React, { Component } from 'react';
 import { Modal, Row, Col, Input, message, Select, DatePicker, Icon } from 'antd';
 import { connect } from 'dva';
 import Upload from '@/components/Upload/Upload';
+import {getDay} from  '@/utils/utils';
 import RcViewer from 'rc-viewer';
-import router from 'umi/router';
+import moment from 'moment';
 const { TextArea } = Input;
 const { Option } = Select;
 
@@ -34,17 +35,19 @@ class DynamicAdd extends Component {
     };
   }
   componentDidMount() {
-    const { dispatch } = this.props;
+    const { dispatch ,status} = this.props;
     dispatch({
       type: 'DictConfig/queryDicModel',
       payload: { dicModuleCodes: 'DM001' },
     });
+    this.setState({ diaryDate: getDay() ,gongdiStage:status});
   }
   render() {
+    const dateFormat = 'YYYY-MM-DD';
     const {
       DictConfig: { dicData },
     } = this.props;
-    const { diaryContent, uploadVisible, coverImg, rep, diaryPics } = this.state;
+    const { diaryContent, uploadVisible, diaryDate, rep, diaryPics } = this.state;
     return (
       <Modal
         title="创建动态"
@@ -60,6 +63,7 @@ class DynamicAdd extends Component {
           </Col>
           <Col span={18}>
             <Select
+            value={this.state.gongdiStage||[]}
               onChange={this.handleSelectChange}
               style={{ width: '100%' }}
               placeholder="请选择所属阶段"
@@ -85,7 +89,7 @@ class DynamicAdd extends Component {
             施工日期：
           </Col>
           <Col span={18}>
-            <DatePicker placeholder="请选择施工日期" onChange={this.handleDateChange} />
+            <DatePicker value={moment(diaryDate, dateFormat)} allowClear={false} format={dateFormat} placeholder="请选择施工日期" onChange={this.handleDateChange} />
           </Col>
         </Row>
         <Row style={{ margin: '20px 0' }}>
@@ -178,7 +182,6 @@ class DynamicAdd extends Component {
     this.setState({ gongdiStage: value });
   };
   handleDateChange = (date, dateString) => {
-    console.log(dateString);
     this.setState({ diaryDate: dateString });
   };
 

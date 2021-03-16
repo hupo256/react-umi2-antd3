@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-12 19:23:29
+ * @Last Modified time: 2021-03-16 16:44:15
  * 创建工地
  */
 import React, { PureComponent, Fragment, Component } from 'react';
@@ -86,6 +86,14 @@ class CreateStepTwo extends Component {
       DictConfig: { dicData },
     } = this.props;
     const columns = [
+      {
+        title: '',
+        dataIndex: 'drag',
+        width:60,
+        render:(t,r)=>{
+          return <Icon type="drag" style={{fontSize:18}} />
+        }
+      },
       {
         title: '案例图片',
         dataIndex: 'path',
@@ -360,6 +368,7 @@ class CreateStepTwo extends Component {
           <Table
             columns={columns}
             dataSource={DicList}
+            rowKey={record => record.uid}
             components={this.components}
             onRow={(record, index) => {
               return {

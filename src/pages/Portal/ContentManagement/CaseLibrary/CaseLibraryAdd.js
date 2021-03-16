@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-02-25 16:11:38
+ * @Last Modified time: 2021-03-16 16:57:08
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -11,6 +11,7 @@ import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import CreateStepOne from './CreateCase/CreateStepOne';
 import CreateStepTwo from './CreateCase/CreateStepTwo';
 import CreateStepThree from './CreateCase/CreateStepThree';
+import { fixedTitle } from '@/utils/utils';
 const { Step } = Steps;
 class CaseLibraryAdd extends PureComponent {
   constructor(props) {
@@ -26,8 +27,8 @@ class CaseLibraryAdd extends PureComponent {
     const { step } = this.state;
     return (
       <div>
-        <PageHeaderWrapper>
-          <Card bordered={false}>
+        <PageHeaderWrapper  fixedTitle={fixedTitle()}>
+          <Card bordered={false} style={{marginTop:60}}>
             <Row style={{ margin: 20 }}>
               <Col span={4} />
               <Col span={16}>

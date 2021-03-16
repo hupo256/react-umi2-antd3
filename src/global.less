@@ -202,7 +202,18 @@ ol {
 }
   }
 }
-
+.depFormInputAfter{
+position:relative;
+}
+.depFormInputAfter::after {
+  position:absolute;
+  top:5px;
+  right:-35px;
+  margin-left: 4px;
+  font-size: 14px;
+  font-family: SimSun, sans-serif;
+  content: '万元';
+}
 .beforeStar::before {
   display: inline-block;
   margin-right: 4px;

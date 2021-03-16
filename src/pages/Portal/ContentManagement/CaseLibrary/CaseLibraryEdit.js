@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-25 14:14:21 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-02-25 15:13:03
+ * @Last Modified time: 2021-03-16 16:56:14
  * 案例编辑
  */
 import React, { Component } from 'react';
@@ -12,7 +12,7 @@ import CreateStepOne from './CreateCase/CreateStepOne';
 import CreateStepTwo from './CreateCase/CreateStepTwo';
 import styles from './CaseLibrary.less';
 import { connect } from 'dva';
-import { getQueryUrlVal } from '@/utils/utils';
+import { getQueryUrlVal,fixedTitle } from '@/utils/utils';
 
 const { TabPane } = Tabs;
 
@@ -46,7 +46,7 @@ class CaseLibraryEdit extends Component {
           style={{ paddingLeft: sessionStorage.collapsed == 'false' ? '256px' : '110px' }}
         >
           <Tabs
-            style={{ marginTop: 10, marginBottom: '-6px' }}
+            style={{ marginTop: 20, marginBottom: '-6px' }}
             activeKey={step}
             onChange={key => this.callback(key)}
           >
@@ -54,8 +54,8 @@ class CaseLibraryEdit extends Component {
             <TabPane tab="案例图片" key="tab2" />
           </Tabs>
         </div>
-        <PageHeaderWrapper>
-          <Card bordered={false} style={{ marginTop: 48 }}>
+        <PageHeaderWrapper   fixedTitle={fixedTitle()}>
+          <Card bordered={false} style={{ marginTop: 108 }}>
             {step === 'tab1' && (
               <CreateStepOne type="edit" handleOk={() => this.setState({ step: 1 })} />
             )}
