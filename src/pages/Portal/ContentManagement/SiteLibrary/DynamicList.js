@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-20 10:22:25 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-02-20 18:05:09
+ * @Last Modified time: 2021-03-12 18:24:27
  * 动态列表
  */
 import React, { Component } from 'react';
@@ -50,86 +50,88 @@ class DynamicList extends Component {
               创建动态
             </Button>
           </Card>
-          <Card bordered={false} style={{ marginTop: 20 }}>
-            {dynamicList &&
-              Array.isArray(dynamicList) &&
-              dynamicList.map(item => {
-                return (
-                  <div key={item.dicCode} style={{ marginBottom: 20 }}>
-                    <p>
-                      <span
-                        style={{
-                          display: 'inline-block',
-                          background: '#16317a',
-                          borderRadius: '0 20px 20px 0',
-                          color: '#fff',
-                          padding: ' 8px 26px 8px 16px',
-                          marginLeft: '-24px',
-                          marginBottom: 20,
-                        }}
-                      >
-                        {item.dicName}
-                      </span>
-                    </p>
-                    {item.pageList.list.map(items => {
-                      return (
-                        <div key={items.diaryUid}>
-                          <p>
-                            <Radio checked={true} />
-                            {items.diaryDate}
+          {dynamicList &&
+            Array.isArray(dynamicList) &&
+            dynamicList.length > 0 && (
+              <Card bordered={false} style={{ marginTop: 20 }}>
+                {dynamicList.map(item => {
+                  return (
+                    <div key={item.dicCode} style={{ marginBottom: 20 }}>
+                      <p>
+                        <span
+                          style={{
+                            display: 'inline-block',
+                            background: '#16317a',
+                            borderRadius: '0 20px 20px 0',
+                            color: '#fff',
+                            padding: ' 8px 26px 8px 16px',
+                            marginLeft: '-24px',
+                            marginBottom: 20,
+                          }}
+                        >
+                          {item.dicName}
+                        </span>
+                      </p>
+                      {item.pageList.list.map(items => {
+                        return (
+                          <div key={items.diaryUid}>
+                            <p>
+                              <Radio checked={true} />
+                              {items.diaryDate}
 
-                            <span
-                              style={{ float: 'right', cursor: 'pointer' }}
-                              onClick={() => {
-                                this.handleDiaryShow(
-                                  items.diaryUid,
-                                  items.appletsShow,
-                                  item.dicCode
-                                );
-                              }}
-                            >
-                              <Icon type={items.appletsShow ? 'eye-invisible' : 'eye'} />
-                              {items.appletsShow ? '隐藏' : '显示'}
-                            </span>
-                          </p>
-                          <p>{items.diaryContent}</p>
-                          {items.fileList &&
-                            Array.isArray(items.fileList) &&
-                            items.fileList.length > 0 && (
-                              <RcViewer
-                                options={{ title: false }}
-                                style={{ display: 'inline-block', verticalAlign: 'top' }}
-                              >
-                                {items.fileList.map((item, i) => {
-                                  return (
-                                    <img
-                                      className="rcviewer"
-                                      style={{ width: 102, height: 102 }}
-                                      key={i}
-                                      src={item.fileUrl}
-                                    />
+                              <span
+                                style={{ float: 'right', cursor: 'pointer' }}
+                                onClick={() => {
+                                  this.handleDiaryShow(
+                                    items.diaryUid,
+                                    items.appletsShow,
+                                    item.dicCode
                                   );
-                                })}
-                              </RcViewer>
-                            )}
-                        </div>
-                      );
-                    })}
-                    {item.pageList.recordTotal > 5 && (
-                      <Pagination
-                        size="small"
-                        pageSize={5}
-                        pageSizeOptions={5}
-                        onChange={(page, pageSize) =>
-                          this.handlePagination(page, pageSize, item.dicCode)
-                        }
-                        total={item.pageList.recordTotal}
-                      />
-                    )}
-                  </div>
-                );
-              })}
-          </Card>
+                                }}
+                              >
+                                <Icon type={items.appletsShow ? 'eye-invisible' : 'eye'} />
+                                {items.appletsShow ? '隐藏' : '显示'}
+                              </span>
+                            </p>
+                            <p>{items.diaryContent}</p>
+                            {items.fileList &&
+                              Array.isArray(items.fileList) &&
+                              items.fileList.length > 0 && (
+                                <RcViewer
+                                  options={{ title: false }}
+                                  style={{ display: 'inline-block', verticalAlign: 'top' }}
+                                >
+                                  {items.fileList.map((item, i) => {
+                                    return (
+                                      <img
+                                        className="rcviewer"
+                                        style={{ width: 102, height: 102 }}
+                                        key={i}
+                                        src={item.fileUrl}
+                                      />
+                                    );
+                                  })}
+                                </RcViewer>
+                              )}
+                          </div>
+                        );
+                      })}
+                      {item.pageList.recordTotal > 5 && (
+                        <Pagination
+                          size="small"
+                          pageSize={5}
+                          pageSizeOptions={5}
+                          onChange={(page, pageSize) =>
+                            this.handlePagination(page, pageSize, item.dicCode)
+                          }
+                          total={item.pageList.recordTotal}
+                        />
+                      )}
+                    </div>
+                  );
+                })}
+              </Card>
+            )}
         </PageHeaderWrapper>
 
         {visible && (

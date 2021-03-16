@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-04 15:01:34
+ * @Last Modified time: 2021-03-12 19:23:29
  * 创建工地
  */
 import React, { PureComponent, Fragment, Component } from 'react';
@@ -491,6 +491,10 @@ class CreateStepTwo extends Component {
   // 图片选择
   handleUploadOk = data => {
     const { DicList, record } = this.state;
+    const {
+      dispatch,
+      CaseLibrary: { stepOne },
+    } = this.props;
     if (record) {
       // 编辑
       const newDicList = DicList.map(item => {
@@ -512,7 +516,7 @@ class CreateStepTwo extends Component {
         item.categoryDicCode = null;
         item.colorDicCode = null;
         item.spaceDicCode = null;
-        item.styleDicCode = null;
+        item.styleDicCode = stepOne.styleDicCode;
         item.url = item.path;
         item.guid = guid();
         return item;

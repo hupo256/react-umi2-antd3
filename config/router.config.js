@@ -53,6 +53,7 @@ export default [
           },
         ],
       },
+     
       // v2.0
       // 门户
       {
@@ -165,6 +166,54 @@ export default [
           //     },
           //   ],
           // },
+        ],
+      },
+       // v1.1
+      // 客户
+      {
+        path: '/customer',
+        name: 'customer',
+        icon: 'retweet',
+        // code: 'P2020010110014',
+            component: './Customer/LeadManagement/LeadManagement',
+        // routes: [
+        //   {
+        //     path: '/customer',
+        //     redirect: '/customer/companyinformation',
+        //   },
+        //   // 线索管理
+        //   {
+        //     path: '/customer/leadmanagement',
+        //     name: 'leadmanagement',
+        //     icon: 'retweet',
+        //     //code: 'P2020010110015',
+        //     component: './Customer/LeadManagement/LeadManagement',
+        //   },
+        // ],
+      },
+      // 配置
+      {
+        path: '/setting',
+        name: 'setting',
+        icon: 'setting',
+        // code: 'P2020010110010',
+        routes: [
+          {
+            path: '/setting',
+            redirect: '/setting/dictconfig',
+          },
+          // 字典配置
+          {
+            path: '/setting/dictconfig',
+            name: 'dictconfig',
+            component: './SystemSetting/DictConfig/DictConfig',
+          },
+          // 小程序授权
+          {
+            path: '/setting/miniprogram',
+            name: 'miniprogram',
+            component: './SystemSetting/MiniProgram/MiniProgram',
+          },
         ],
       },
       { path: '/noaccess', component: './User/NoAccess' },

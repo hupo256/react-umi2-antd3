@@ -2,11 +2,11 @@
  * @Author: zqm 
  * @Date: 2021-02-20 10:46:16 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-04 16:40:07
+ * @Last Modified time: 2021-03-12 18:59:10
  * 创建动态
  */
 import React, { Component } from 'react';
-import { Modal, Row, Col, Input, message, Select, DatePicker } from 'antd';
+import { Modal, Row, Col, Input, message, Select, DatePicker, Icon } from 'antd';
 import { connect } from 'dva';
 import Upload from '@/components/Upload/Upload';
 import RcViewer from 'rc-viewer';
@@ -29,6 +29,7 @@ class DynamicAdd extends Component {
       uploadVisible: false,
       coverImg: null,
       rep: false,
+      editIndex: null,
       // gongdiUid: 'string'
     };
   }
@@ -105,24 +106,31 @@ class DynamicAdd extends Component {
             施工照片：
           </Col>
           <Col span={18}>
-            <div className="coverImg">
+            <div className="coverImgs">
               {diaryPics.length > 0 &&
-                diaryPics.map(item => {
+                diaryPics.map((item, index) => {
                   return (
-                    <div className="previewimg" key={item.url}>
-                      <img src={item.url} />
+                    <div className="previewimg previewimgs" key={item.path}>
+                      <img src={item.path} />
                       <div className="picmodel">
-                        <span onClick={() => this.setState({ uploadVisible: true, rep: true })}>
-                          更换图
+                        <span
+                          onClick={() =>
+                            this.setState({ uploadVisible: true, rep: true, editIndex: index })
+                          }
+                        >
+                          <Icon type="edit" />
                         </span>
                         <span
                           onClick={() => {
-                            this.setState({ rcviewer: item.url });
+                            this.setState({ rcviewer: item.path });
                             const { viewer } = this.refs.viewer;
                             viewer && viewer.show();
                           }}
                         >
-                          预览
+                          <Icon type="eye" />
+                        </span>
+                        <span onClick={() => this.handleDelete(index)}>
+                          <Icon type="delete" />
                         </span>
                       </div>
                     </div>
@@ -130,7 +138,11 @@ class DynamicAdd extends Component {
                 })}
 
               {diaryPics.length <= 9 && (
-                <div className="previewimg" onClick={() => this.setState({ uploadVisible: true })}>
+                <div
+                  className="previewimgs"
+                  style={{ border: '1px dashed #d9d9d9' }}
+                  onClick={() => this.setState({ uploadVisible: true })}
+                >
                   点击上传
                 </div>
               )}
@@ -188,7 +200,13 @@ class DynamicAdd extends Component {
       const { dispatch, record } = this.props;
       dispatch({
         type: 'SiteLibrary/createDynamicModel',
-        payload: { diaryPics, diaryContent, diaryDate, gongdiStage, gongdiUid: record.gongdiUid },
+        payload: {
+          diaryPics: diaryPics.map(item => item.path),
+          diaryContent,
+          diaryDate,
+          gongdiStage,
+          gongdiUid: record.gongdiUid,
+        },
       }).then(res => {
         if (res && res.code === 200) {
           message.success('创建成功');
@@ -220,12 +238,30 @@ class DynamicAdd extends Component {
 
   // 图片选择cance
   handleUploadCancel = () => {
-    this.setState({ uploadVisible: false, record: null, rep: false });
+    this.setState({ uploadVisible: false, record: null, rep: false, editIndex: null });
+  };
+  handleDelete = index => {
+    const { diaryPics } = this.state;
+    let datas = [...diaryPics];
+    datas.splice(index, 1);
+    this.setState({ diaryPics: datas });
   };
   // 图片选择
   handleUploadOk = data => {
-    this.setState({ diaryPics: data });
-    this.handleUploadCancel();
+    const { rep, editIndex, diaryPics } = this.state;
+    if (rep) {
+      // 编辑
+      let datas = [...diaryPics];
+      datas[editIndex] = data[0];
+      this.setState({ diaryPics: datas }, () => {
+        this.handleUploadCancel();
+      });
+    } else {
+      // 新增
+      this.setState({ diaryPics: [...diaryPics, ...data] }, () => {
+        this.handleUploadCancel();
+      });
+    }
   };
 }
 

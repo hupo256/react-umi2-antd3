@@ -1,0 +1,118 @@
+.otherSelect{
+  display:flex;
+  align-items:center;
+  .otherLabel{
+    width:60px;
+    font-size:12px;
+  }
+  .otherCont{
+    flex:1;
+    display:flex;
+    align-items:center;
+    margin-left:-30px;
+    >div{
+      flex:1;
+      display:flex;
+      align-items:center;
+      >span{
+        width:100px;
+        text-align:right;
+      }
+    }
+  }
+  .otherExpand{
+    width:80px;
+    font-size:12px;
+    text-align:right;
+    color:#fe6a30;
+    cursor:pointer;
+  }
+}
+.searchDiv{
+  position:relative;
+  width:100%;
+  .searchUl{
+    position:absolute;
+    margin:0;
+    padding:0;
+    left:0;
+    top:38px;
+    right:0;
+    z-index:1;
+    background:#fff;
+    -moz-box-shadow:0px 0px 5px #666; -webkit-box-shadow:0px 0px 5px #666; box-shadow:0px 0px 5px #666;
+    .searchLi{
+      cursor:pointer;
+      padding-left:10px;
+    }
+    .searchLi:hover{
+      background:#e6f7ff;
+    }
+  }
+}
+.operate{
+  color:#fe6a30;
+  >span:nth-child(odd){
+    cursor:pointer;
+  }
+}
+.tableStatus{
+  display:flex;
+  align-items:center;
+  >span:nth-child(1){
+    width:0;
+    height:0;
+    padding:0;
+    margin:0;
+    display:inline-block;
+    border:3px solid red;
+    border-radius:4px;
+    margin-right:6px;
+  }
+}
+.tableName{
+  >p{
+    padding:0;
+    margin:0;
+    line-height:20px;
+  }
+}
+.remark{
+  width: 300px;
+  text-overflow: -o-ellipsis-lastline;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  .remarkspan{
+    overflow: hidden;
+    text-overflow: clip;
+    word-break: break-all;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+  }
+}
+.statusItem{
+  padding:2px 9px;
+  margin-right:12px;
+  cursor:pointer;
+}
+.statusCurrent{
+  background:#fe6a30;
+  padding:2px 9px;
+  color:#fff;
+  border-radius:3px;
+}
+
+.CluesEdit{
+  display:flex;
+  margin-bottom: 20px;
+  >span:nth-child(1){
+    width:150px;
+    text-align:right;
+    padding-right:20px;
+  }
+}

@@ -2,15 +2,15 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:47:49 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-02-25 16:49:55
+ * @Last Modified time: 2021-03-12 19:36:57
  * 案例库
  */
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
 import router from 'umi/router';
-import { Card, Button, Icon, Divider, Table, Input, message,Modal } from 'antd';
+import { Card, Button, Icon, Divider, Table, Input, message, Modal } from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
-import { paginations, getUrl,successIcon,waringInfo } from '@/utils/utils';
+import { paginations, getUrl, successIcon, waringInfo } from '@/utils/utils';
 import styles from './CaseLibrary.less';
 const { confirm } = Modal;
 const { Search } = Input;
@@ -44,7 +44,15 @@ class CaseLibrary extends PureComponent {
         render: (t, r) => {
           return (
             <div style={{ display: 'flex' }}>
-              <img src={r.coverPicUrl} style={{ width: 100, height: 70, marginRight: 12 }} />
+              <img
+                src={r.coverPicUrl}
+                style={{
+                  width: 100,
+                  height: 70,
+                  marginRight: 12,
+                  objectFit: 'cover',
+                }}
+              />
               <div style={{ flex: 1 }}>
                 <p>{t}</p>
                 <p>
@@ -231,30 +239,31 @@ class CaseLibrary extends PureComponent {
   };
   // 切换状态
   handleChangeStatus = r => {
-   
-    const status = r.status
+    const status = r.status;
     const { dispatch } = this.props;
-    const that=this
+    const that = this;
     confirm({
-        title:status==='1'?'确认要停用当前案例吗？':'确认要启用当前案例吗？',
-        content: status==='1'?'停用后，将无法在案例模块和设计师模块显示当前案例！':'启用后，将会在案例模块和设计师模块显示当前案例！',
-        icon:status==='2'?successIcon:waringInfo  ,
-        onOk() {
-          dispatch({
-            type: 'CaseLibrary/updateCaseStatusModel',
-            payload: { uid: r.uid, status: r.status === '1' ? '2' : '1' },
-          }).then(res => {
-            if (res && res.code === 200) {
-              message.success('操作成功');
-              that.getList({});
-            }
-          });
-        },
-        onCancel() {
-          console.log('Cancel');
-        },
-      });
-    
+      title: status === '1' ? '确认要停用当前案例吗？' : '确认要启用当前案例吗？',
+      content:
+        status === '1'
+          ? '停用后，将无法在案例模块和设计师模块显示当前案例！'
+          : '启用后，将会在案例模块和设计师模块显示当前案例！',
+      icon: status === '2' ? successIcon : waringInfo,
+      onOk() {
+        dispatch({
+          type: 'CaseLibrary/updateCaseStatusModel',
+          payload: { uid: r.uid, status: r.status === '1' ? '2' : '1' },
+        }).then(res => {
+          if (res && res.code === 200) {
+            message.success('操作成功');
+            that.getList({});
+          }
+        });
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
   };
 }
 
