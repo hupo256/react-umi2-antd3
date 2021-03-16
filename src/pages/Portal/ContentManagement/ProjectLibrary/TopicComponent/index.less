@@ -6,7 +6,7 @@
   position: absolute;
   left: 50%;
   top:50%;
-  background: #000;
+  background: rgba(0, 0, 0, 0.7);
   border-radius: 5px;
   line-height: 30px;
   color: #fff;
@@ -17,24 +17,67 @@
 }
 .closePic{
   position: absolute;
-  right: 0;
-  top:0;
+  right: 5px;
+  top:5px;
   font-size: 20px;
   color: #fff;
 }
 .closePics{
   position: absolute;
   right: 0;
-  top:-8px;
+  top:5px;
   font-size: 20px;
   color: #fff;
 }
-
+.roundLeftTop{
+  position: absolute;
+  left: 0px;
+  top:-5px;
+  width: 11px;
+  height: 11px;
+  background: #fff;
+  border:1px solid #FE6A30;
+  border-radius: 50%;
+  z-index: 100;
+}
+.roundRightTop{
+  position: absolute;
+  right: 0px;
+  top:-5px;
+  width: 11px;
+  height: 11px;
+  background: #fff;
+  border:1px solid #FE6A30;
+  border-radius: 50%;
+  z-index: 100;
+}
+.roundLeftBottom{
+  position: absolute;
+  left: 0px;
+  bottom:-5px;
+  width: 11px;
+  height: 11px;
+  background: #fff;
+  border:1px solid #FE6A30;
+  border-radius: 50%;
+  z-index: 100;
+}
+.roundRightBottom{
+  position: absolute;
+  right: 0px;
+  bottom:-5px;
+  width: 11px;
+  height: 11px;
+  background: #fff;
+  border:1px solid #FE6A30;
+  border-radius: 50%;
+  z-index: 100;
+}
 /*FootComponent*/
 .footerWrap{
   position:fixed;
- left: 0;
- bottom: 0;
+  left: 0;
+  bottom: 0;
   width: 320px;
   background: rgba(0, 0, 0,0.5 );
   z-index: 100;
@@ -44,14 +87,11 @@
 .phoneWrap{
   float: left;
   color: #fff;
-  line-height: 32px;
-  padding-right: 15px;
-  border-right: 1px solid #fff;
-  margin-right: 15px;
+  width: 120px;
 }
 .btnWrap{
   float: left;
-  width: 180px;
+  width: 190px;
 }
 .btnChange{
   position:absolute;
@@ -81,8 +121,8 @@
 }
 .SketchWrap{
   position: absolute;
-  top:100px;
-  left:100px;
+  top:0px;
+  left:0px;
   color: #000;
   z-index: 100;
 }
@@ -96,12 +136,20 @@
 }
 /*ViewFormComponent*/
 .ViewForm{
-background:rgba(0, 0, 0,0.5 );
+//background:rgba(0, 0, 0,0.5 );
 width: 100%;
 position: absolute;
 cursor: move;
 height: 220px;
 z-index: 100;
+border:1px solid #fe6a30;
+}
+.ViewFormborder{
+  width: 100%;
+  position: absolute;
+  cursor: move;
+  height: 220px;
+  z-index: 100;
 }
 .ViewForms{
   padding: 10px;
@@ -111,25 +159,16 @@ z-index: 100;
   margin-bottom: 10px;
 }
 .btnChanges{
-  position:fixed;
-  right: -315px;
-  top:240px;
-  background: #000;
-  width: 300px;
-  height: 300px;
-  border-radius: 5px;
-  color: #fff;
-  padding: 10px;
+  padding: 20px 30px;
 }
 .FormWrap{
   position:fixed;
-  right: -365px;
+  right: -320px;
   top:0px;
-  background: rgb(31,31,31);
-  width: 350px;
+  background:rgb(49,47,46);
+  color: #C1C1C1;
+  width: 300px;
   border-radius: 5px;
-  color: #fff;
-  padding: 10px;
   text-align: left;
   cursor: pointer;
 }
@@ -144,8 +183,7 @@ z-index: 100;
 }
 .tit{
   float: left;
-  width: 90px;
-  background: rgb(66,66,66);
+  width: 80px;
   line-height: 32px;
   text-align: left;
   padding: 0 10px;
@@ -154,6 +192,12 @@ z-index: 100;
 .FormCont{
   float: left;
   margin-right: 10px;
+  line-height: 32px;
+  :global {
+    .ant-radio-wrapper{
+     color: #C1C1C1;
+    }
+  }
 }
 .dragCenWrap{
   float:left;
@@ -167,18 +211,21 @@ z-index: 100;
   }
 }
 .addForm{
-  padding-left: 30px;
-  padding-bottom: 20px;
+  padding-bottom: 15px;
+  padding-top: 15px;
   position: relative;
+  text-align: center;
+  color: #FE6A30;
+  cursor: pointer;
 }
 .FormSave{
   text-align: right;
 }
 .addSelect{
   position: absolute;
-  background: #000;
-  left: 30px;
-  top:30px;
+  background: #4C4948;
+  left: 90px;
+  top:60px;
   color: #fff;
   width: 100px;
   padding: 10px;
@@ -191,4 +238,92 @@ z-index: 100;
 }
 .addSelect a:hover{
   color: #fe6a30
+}
+.imgWrap{
+  border:1px solid #fe6a30;
+}
+.FormInput{
+  background:#413E3D ;
+  border-color: #413E3D;
+  color: #fff;
+}
+.FormWraw{
+  max-height: 500px;
+  overflow-y: auto;
+}
+.isList{
+  float: left;
+  width: 50%;
+  line-height: 48px;
+  color: #999;
+  text-align: center;
+  border-bottom: 1px solid rgb(59, 59, 59);
+  cursor: pointer;
+  color: #fff;
+  background: #413E3D;
+}
+.isLists{
+  float: left;
+  width: 50%;
+  line-height: 48px;
+  color: #999;
+  text-align: center;
+  border-bottom: 1px solid rgb(59, 59, 59);
+  cursor: pointer;
+  background: #353332;
+
+}
+.btnChanges{
+  padding: 20px 30px;
+}
+.btnColor{
+  width: 40px;
+  height: 32px;
+  border-radius: 4px;
+}
+.inputWrap{
+  float: left;
+  cursor: pointer;
+}
+.btnlabel{
+  float: left;
+  width: 80px;
+  line-height: 32px;
+}
+.SketchWrap{
+ position: relative;
+}
+.closeColor{
+  position:absolute;
+  right: 9px;
+  top:-11px;
+  cursor: pointer;
+  color: #FE6A30;
+  font-size: 20px;
+}
+.btnColorWrap{
+  float: left;
+  margin-right: 10px;
+  text-align: center;
+}
+.dragWraps{
+  float: right;
+  line-height: 32px;
+  cursor: pointer;
+  font-size: 16px;
+}
+.formWrapT{
+  padding: 10px;
+  border-bottom: 1px solid rgb(59, 59, 59);
+}
+.footerBorder{
+  border:1px solid #fe6a30;
+  position:fixed;
+  left: 0;
+  bottom: 0;
+  width: 320px;
+  background: rgba(0, 0, 0,0.5 );
+  z-index: 100;
+  padding: 10px 0;
+  cursor: pointer;
 }

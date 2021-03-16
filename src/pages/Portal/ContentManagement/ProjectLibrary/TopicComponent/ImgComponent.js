@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-05 17:51:35
+ * @Last Modified time: 2021-03-13 15:41:08
  * 创建工地
  */
 import React, { PureComponent } from 'react';
@@ -27,6 +27,7 @@ class ImgComponent extends PureComponent {
           onClick={() => {
             this.changePic();
           }}
+          className={data.checked === 1 ? styles.imgWrap : ''}
         >
           <img
             src={data.paramList[0].defaultValue}
@@ -34,6 +35,10 @@ class ImgComponent extends PureComponent {
             alt="logo"
             style={{ width: '100%' }}
           />
+          <div className={data.checked === 1 ? styles.roundLeftTop : ''} />
+          <div className={data.checked === 1 ? styles.roundRightTop : ''} />
+          <div className={data.checked === 1 ? styles.roundLeftBottom : ''} />
+          <div className={data.checked === 1 ? styles.roundRightBottom : ''} />
         </div>
         {data.checked === 1 ? (
           <span
@@ -42,6 +47,7 @@ class ImgComponent extends PureComponent {
               this.changePicStaus();
             }}
           >
+            <Icon type="sync" />
             更换图片
           </span>
         ) : (

@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-11 19:21:36
+ * @Last Modified time: 2021-03-16 11:48:06
  * 专题库
  */
 import React, { PureComponent } from 'react';
@@ -136,7 +136,7 @@ class FormAdd extends PureComponent {
         }).then(res => {
           if (res && res.code === 200) {
             message.success('创建成功', 2);
-            this.props.handleList();
+            this.props.handleList(res.data.formUid);
           }
         });
       }

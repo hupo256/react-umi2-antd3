@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-01 18:24:18
+ * @Last Modified time: 2021-03-15 20:27:16
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -19,26 +19,33 @@ const { TextArea } = Input;
 }))
 @Form.create()
 class CreateStepOne extends PureComponent {
-  state = { specialCoverImg: [], istrue: 1 };
+  state = { specialCoverImg: [], istrue: 0 };
 
   componentDidMount() {
-    const {
-      ProjectLibrary: { collocationDetail },
-    } = this.props;
     const { specialCoverImg } = this.state;
-    if (
-      collocationDetail &&
-      collocationDetail.specialCoverImg &&
-      collocationDetail.specialCoverImg !== ''
-    ) {
-      specialCoverImg.push({
-        uid: -1,
-        addr: collocationDetail.specialCoverImg,
-        thumbUrl: collocationDetail.specialCoverImg,
+    const activeKey = getQueryUrlVal('uid');
+    if (activeKey) {
+      const { dispatch } = this.props;
+      dispatch({
+        type: 'ProjectLibrary/specialGetModel',
+        payload: {
+          specialUid: activeKey,
+        },
+      }).then(res => {
+        if (res && res.code === 200) {
+          specialCoverImg.push({
+            uid: -1,
+            addr: res.data.specialCoverImg,
+            thumbUrl: res.data.specialCoverImg,
+          });
+          this.setState({
+            specialCoverImg,
+            istrue: 1,
+          });
+        }
       });
-
+    } else {
       this.setState({
-        specialCoverImg,
         istrue: 1,
       });
     }
@@ -59,8 +66,9 @@ class CreateStepOne extends PureComponent {
     const {
       ProjectLibrary: { collocationDetail },
     } = this.props;
-    const { specialCoverImg } = this.state;
-
+    const { specialCoverImg, istrue } = this.state;
+    console.log(specialCoverImg);
+    const activeKey = getQueryUrlVal('uid');
     return (
       <div style={{ paddingTop: 20 }}>
         <Form {...formItemLayout} onSubmit={this.handleSubmit}>
@@ -94,22 +102,26 @@ class CreateStepOne extends PureComponent {
               </Radio.Group>
             )}
           </Form.Item>
-          <Form.Item label="封面图">
-            {getFieldDecorator('specialCoverImg', {
-              initialValue: specialCoverImg,
-              rules: [{ required: false, message: '请上传封面图' }],
-            })(
-              <ImgUploads
-                name="specialCoverImg"
-                long={1}
-                uploadSuccess={(data, name) => this.uploadSuccess(data, name, 1)}
-                previewTitle="封面图"
-                type={'edit'}
-                accept=".png,.jpg,.jpeg,.gif"
-                defauleUrl={specialCoverImg}
-              />
-            )}
-          </Form.Item>
+          {istrue === 1 ? (
+            <Form.Item label="封面图">
+              {getFieldDecorator('specialCoverImg', {
+                initialValue: specialCoverImg,
+                rules: [{ required: false, message: '请上传封面图' }],
+              })(
+                <ImgUploads
+                  name="specialCoverImg"
+                  long={1}
+                  uploadSuccess={(data, name) => this.uploadSuccess(data, name, 1)}
+                  previewTitle="封面图"
+                  type={'edit'}
+                  accept=".png,.jpg,.jpeg,.gif"
+                  defauleUrl={specialCoverImg}
+                />
+              )}
+            </Form.Item>
+          ) : (
+            ''
+          )}
           <Form.Item label="专题说明">
             {getFieldDecorator('specialDescription', {
               initialValue: collocationDetail && collocationDetail.specialDescription,
@@ -120,7 +132,7 @@ class CreateStepOne extends PureComponent {
             <Col span={8} />
             <Col span={16}>
               <Button type="primary" htmlType="submit">
-                下一步
+                {activeKey ? '保存' : '下一步'}
               </Button>
             </Col>
           </Row>
@@ -171,7 +183,9 @@ class CreateStepOne extends PureComponent {
             ...values,
           },
         }).then(res => {
-          this.props.handleOk();
+          if (res && res.code === 200) {
+            router.push('/portal/contentmanagement/ProjectLibrary');
+          }
         });
       } else {
         dispatch({
@@ -180,7 +194,9 @@ class CreateStepOne extends PureComponent {
             ...values,
           },
         }).then(res => {
-          this.props.handleOk();
+          if (res && res.code === 200) {
+            this.props.handleOk();
+          }
         });
       }
     });

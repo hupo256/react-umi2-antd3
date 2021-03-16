@@ -8,6 +8,7 @@ import {
   getCollocation, //获取专题配置
   specialRemove, //删除专题
   elementTree, //组件
+  formList, //表单列表
 } from '@/services/ProjectLibrary';
 
 export default {
@@ -26,6 +27,10 @@ export default {
       pageSize: 10,
       searchText: '',
       specialStatus: '',
+    },
+    uspecialUrlData: {
+      uspecialUrl: '',
+      specialTitle: '',
     },
   },
 
@@ -48,7 +53,7 @@ export default {
       });
       yield put({
         type: 'upData',
-        payload: { siteDetail: (response && response.data) || {} },
+        payload: { collocationDetail: (response && response.data) || {} },
       });
       return response;
     },
@@ -81,21 +86,18 @@ export default {
       return response;
     },
     // 配置专题
-    *specialGetModel({ payload }, { call, put }) {
+    *specialCollocateModel({ payload }, { call, put }) {
       const response = yield call(specialCollocate, {
         ...payload,
       });
       return response;
     },
     // 获取专题配置
-    *specialGetModel({ payload }, { call, put }) {
+    *getCollocationModel({ payload }, { call, put }) {
       const response = yield call(getCollocation, {
         ...payload,
       });
-      yield put({
-        type: 'upData',
-        payload: { collocationDetail: (response && response.data) || {} },
-      });
+
       return response;
     },
     // 组件
@@ -106,6 +108,13 @@ export default {
       yield put({
         type: 'upData',
         payload: { elementTree: (response && response.data) || {} },
+      });
+      return response;
+    },
+    // 表单列表
+    *formListModel({ payload }, { call, put }) {
+      const response = yield call(formList, {
+        ...payload,
       });
       return response;
     },

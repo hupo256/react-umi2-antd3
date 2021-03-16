@@ -140,6 +140,11 @@ export default [
                 component: './Portal/ContentManagement/ProjectLibrary/ProjectLibraryAdd',
               },
               {
+                path: '/portal/contentmanagement/ProjectLibrary/edit',
+                PageHeaderName: '创建专题',
+                component: './Portal/ContentManagement/ProjectLibrary/ProjectLibraryEdit',
+              },
+              {
                 path: '/portal/contentmanagement/FormLibrary',
                 name: 'formLibrary',
                 component: './Portal/ContentManagement/FormLibrary/FormLibrary',
