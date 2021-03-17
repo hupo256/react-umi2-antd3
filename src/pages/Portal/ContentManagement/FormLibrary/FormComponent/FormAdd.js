@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-16 11:48:06
+ * @Last Modified time: 2021-03-17 11:33:56
  * 专题库
  */
 import React, { PureComponent } from 'react';
@@ -63,7 +63,7 @@ class FormAdd extends PureComponent {
                 ],
               })(
                 <Radio.Group>
-                  <Radio value={0}>是</Radio>
+                  <Radio value={0}>小程序</Radio>
                 </Radio.Group>
               )}
             </Form.Item>

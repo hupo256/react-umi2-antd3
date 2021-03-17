@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-15 20:27:16
+ * @Last Modified time: 2021-03-17 14:51:35
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -98,7 +98,7 @@ class CreateStepOne extends PureComponent {
               ],
             })(
               <Radio.Group>
-                <Radio value={0}>是</Radio>
+                <Radio value={0}>小程序</Radio>
               </Radio.Group>
             )}
           </Form.Item>
