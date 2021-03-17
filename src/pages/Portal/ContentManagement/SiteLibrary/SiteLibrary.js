@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:47:07 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-04 15:25:10
+ * @Last Modified time: 2021-03-16 16:13:25
  * 工地库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -133,7 +133,7 @@ class SiteLibrary extends PureComponent {
               <span
                 className="operateBtn"
                 onClick={() => {
-                  router.push(`/portal/contentmanagement/sitelibrary/dynamic?uid=${r.gongdiUid}`);
+                  router.push(`/portal/contentmanagement/sitelibrary/dynamic?uid=${r.gongdiUid}&status=${r.gongdiStage}`);
                 }}
               >
                 工地动态
@@ -157,7 +157,7 @@ class SiteLibrary extends PureComponent {
         </Menu.Item>
         <Menu.Item>
           <p
-            style={{ margin: 0 }}
+            style={{ margin: 0,display:'none' }}
             onClick={() => {
               this.setState({ porjectVisible: true });
             }}
@@ -226,6 +226,7 @@ class SiteLibrary extends PureComponent {
           <DynamicAdd
             record={record}
             visible={visible}
+            status={record.gongdiStage}
             handleOk={() => this.handleOk()}
             handleCancel={() => this.handleCancel()}
           />

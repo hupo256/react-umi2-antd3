@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-15 10:47:12
+ * @Last Modified time: 2021-03-16 15:29:22
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -238,7 +238,10 @@ class SiteLibraryAdd extends PureComponent {
               </Form.Item>
               <Form.Item label="工地说明">
                 {getFieldDecorator('gongdiDescription', {
-                  rules: [{ required: false, message: '请输入案例说明' }],
+                  rules: [ {
+                    max: 200,
+                    message: '限制0-200字符长度',
+                  }],
                 })(<TextArea rows={4} style={{ width: 400 }} placeholder="请输入案例说明" />)}
               </Form.Item>
               <Row>

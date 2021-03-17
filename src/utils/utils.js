@@ -782,7 +782,23 @@ function formatWeekDate(date) {
   return myyear + '-' + mymonth + '-' + myweekday;
 }
 //获取传递时间所处周开始到结束时间 ---end---
+//获取当前年-月-日
+export function getDay() {
+  let myDate = new Date();
+  let tYear = myDate.getFullYear();
+  let tMonth = myDate.getMonth();
+  const Day = myDate.getDate(); // 当前日
 
+  let m = tMonth + 1;
+  let n = Day
+  if (m.toString().length == 1) {
+    m = '0' + m;
+  }
+  if (n.toString().length == 1) {
+    n = '0' + n;
+  }
+  return tYear + '-' + m+ '-' + n;
+}
 // 分页配置
 export const paginations = data => {
   return {
@@ -840,7 +856,7 @@ export function fixedTitle() {
   const left = sessionStorage.collapsed == 'false' ? '220px' : '80px';
   return {
     padding: '16px 32px 0 32px',
-    borderBottom: '1px solid #e8e8e8',
+     borderBottom: '0px solid #e8e8e8',
     position: 'fixed',
     top: 64,
     right: 0,

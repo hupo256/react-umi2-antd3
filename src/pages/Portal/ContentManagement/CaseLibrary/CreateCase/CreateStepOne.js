@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-15 10:45:51
+ * @Last Modified time: 2021-03-16 15:25:00
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -275,15 +275,12 @@ class CreateStepOne extends PureComponent {
                 },
               ],
             })(
-              <div className="depFormInput">
-                <InputNumber
+                <InputNumber className="depFormInputAfter"
                   formatter={limitDecimals}
                   parser={limitDecimals}
                   style={{ width: 400 }}
                   placeholder="请输入装修造价（万元）"
                 />
-                <span> 万元</span>
-              </div>
             )}
           </Form.Item>
 

@@ -50,7 +50,7 @@ export default {
               },
             }) ||
             {},
-          stepTwo: (response && data) || {},
+          // stepTwo: (response && data) || [],
         },
       });
       return response;

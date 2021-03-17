@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 10:30:18 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-15 10:13:26
+ * @Last Modified time: 2021-03-16 14:44:28
  * 字典配置
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -54,6 +54,14 @@ class DictConfig extends PureComponent {
       DictConfig: { DicModuleList, DicList },
     } = this.props;
     const columns = [
+      {
+        title: '',
+        dataIndex: 'drag',
+        width:60,
+        render:(t,r)=>{
+          return <Icon type="drag" style={{fontSize:18}} />
+        }
+      },
       {
         title: '字段名称',
         dataIndex: 'name',
