@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-15 15:18:10
+ * @Last Modified time: 2021-03-18 15:29:07
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -97,17 +97,57 @@ class ProjectLibrary extends PureComponent {
       {
         title: '专题',
         dataIndex: 'specialTitle',
+        width: 300,
+        render: (t, r) => {
+          return (
+            <div style={{ display: 'flex' }}>
+              <img
+                src={r.specialCoverImg}
+                style={{
+                  width: 100,
+                  height: 70,
+                  marginRight: 12,
+                  objectFit: 'cover',
+                }}
+              />
+              <div style={{ flex: 1 }}>
+                <p>{t}</p>
+                <span className={`${styles.siteTag} ${styles.siteTag1}`}>小程序</span>
+              </div>
+            </div>
+          );
+        },
       },
       {
         title: '专题链接',
         dataIndex: 'specialUrl',
+        width: 400,
         render: (t, r) => {
-          return t;
+          return (
+            <div
+              className={styles.copy}
+              onClick={() => {
+                this.handleCopy(t);
+              }}
+            >
+              <p id="text">{t}</p>
+              <textarea id="input" className={styles.ipt} />
+              {t ? (
+                <div>
+                  <Icon type="copy" />
+                  <span style={{ marginLeft: 5 }}>复制链接</span>
+                </div>
+              ) : (
+                ''
+              )}
+            </div>
+          );
         },
       },
       {
         title: '状态',
         dataIndex: 'specialStatus',
+        with: 100,
         render: (t, r) => {
           let status;
           switch (t) {
@@ -142,6 +182,7 @@ class ProjectLibrary extends PureComponent {
       {
         title: '更新时间',
         dataIndex: 'updateTime',
+        with: 100,
         render: (t, r) => {
           return (
             <div>
@@ -154,6 +195,7 @@ class ProjectLibrary extends PureComponent {
       {
         title: '操作',
         dataIndex: 'operate',
+        with: 200,
         render: (t, r) => {
           return (
             <div className="operateWrap">
@@ -326,6 +368,14 @@ class ProjectLibrary extends PureComponent {
       this.getList();
     });
   };
+  handleCopy(t) {
+    var text = document.getElementById('text').innerText;
+    var input = document.getElementById('input');
+    input.value = text; // 修改文本框的内容
+    input.select(); // 选中文本
+    document.execCommand('copy'); // 执行浏览器复制命令
+    message.success('复制成功');
+  }
 }
 
 export default ProjectLibrary;

@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-16 11:29:46
+ * @Last Modified time: 2021-03-18 15:21:16
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -74,11 +74,16 @@ class ViewFormComponent extends PureComponent {
         });
     }
 
-    this.setState({
-      formList: data.paramList,
-      checkList,
-      checkSelectData,
-    });
+    this.setState(
+      {
+        formList: data.paramList,
+        checkList,
+        checkSelectData,
+      },
+      () => {
+        this.saveCheckList();
+      }
+    );
   }
 
   render() {
