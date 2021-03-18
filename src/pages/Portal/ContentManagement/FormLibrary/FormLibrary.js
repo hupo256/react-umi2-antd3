@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-16 11:48:07
+ * @Last Modified time: 2021-03-17 14:57:10
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -399,7 +399,7 @@ class ProjectLibrary extends PureComponent {
       visibleForm: true,
     });
   }
-  handleAddConfig() {
+  handleAddConfig = () => {
     this.setState(
       {
         visibleForm: false,
@@ -408,7 +408,7 @@ class ProjectLibrary extends PureComponent {
         this.getList({});
       }
     );
-  }
+  };
 }
 
 export default ProjectLibrary;
