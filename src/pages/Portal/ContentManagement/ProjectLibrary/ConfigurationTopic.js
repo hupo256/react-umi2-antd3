@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-16 11:30:16
+ * @Last Modified time: 2021-03-18 15:13:39
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -31,6 +31,7 @@ class ProjectLibrary extends PureComponent {
       istrue: 0,
       compentList: [],
       tags: [],
+      title: '',
     };
     /*定义两个值用来存放鼠标按下的地方距离元素上侧和左侧边界的值*/
     this.disX = 0;
@@ -48,16 +49,19 @@ class ProjectLibrary extends PureComponent {
     }).then(res => {
       if (res && res.code === 200) {
         res.data &&
+          res.data.elementList &&
           res.data.elementList.map((item, index) => {
             item.isEdit = true;
           });
-
         dispatch({
           type: 'ProjectLibrary/saveDataModel',
           payload: {
             key: 'compentList',
             value: res.data.elementList || [],
           },
+        });
+        this.setState({
+          title: res.data.specialTitle,
         });
       }
     });
@@ -89,7 +93,7 @@ class ProjectLibrary extends PureComponent {
     const {
       ProjectLibrary: { elementTree, compentList },
     } = this.props;
-    const { collapsed, istrue } = this.state;
+    const { collapsed, istrue, title } = this.state;
     const auth = JSON.parse(localStorage.getItem('auth'));
     const bigLogo = (auth && auth.logoBig) || logo;
     const smallLogo = (auth && auth.logoSmall) || logoImg;
@@ -231,7 +235,7 @@ class ProjectLibrary extends PureComponent {
         </div>
         <div className={styles.confcont}>
           <div className={styles.phone}>
-            <div className={styles.phoneHead}>1234</div>
+            <div className={styles.phoneHead}>{title}</div>
             <div className={styles.phoneCont}>
               <div
                 className={styles.phoneBox}
