@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 10:30:18 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-16 14:44:28
+ * @Last Modified time: 2021-03-16 18:14:44
  * 字典配置
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -118,7 +118,6 @@ class DictConfig extends PureComponent {
       },
     ];
 
-    console.log(successIcon);
     return (
       <div className={styles.dict}>
         <PageHeaderWrapper>
@@ -198,7 +197,6 @@ class DictConfig extends PureComponent {
     this.setState({ activeKey });
     // 重置搜索数据
     const { dispatch } = this.props;
-    // resetModel
     dispatch({
       type: 'DictConfig/resetModel',
       payload: {
@@ -283,9 +281,7 @@ class DictConfig extends PureComponent {
           }
         });
       },
-      onCancel() {
-        console.log('Cancel');
-      },
+      onCancel() {},
     });
   };
 }
