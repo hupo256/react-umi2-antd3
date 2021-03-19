@@ -1,8 +1,8 @@
 /*
  * @Author: zqm 
  * @Date: 2020-07-10 15:03:59 
- * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-01-29 19:45:59
+ * @Last Modified by: zqm
+ * @Last Modified time: 2021-03-18 18:38:00
  * 图片上传
  */
 import React, { Component } from 'react';
@@ -89,6 +89,7 @@ class Uploads extends Component {
     return picData;
   };
   uploadsucc(info, name) {
+    
     let imgList = [];
     let isUpload = false;
     if (info.file.status === 'done') {
