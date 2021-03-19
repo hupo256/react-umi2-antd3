@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:49:12 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-04 16:58:47
+ * @Last Modified time: 2021-03-19 12:12:19
  * 设计师库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -197,12 +197,12 @@ class DesignerLibrary extends PureComponent {
   }
   handleSrarchStatus = status => {
     this.setState({ status }, () => {
-      this.getList({ status });
+      this.getList({ status,pageNum:1 });
     });
   };
   handleSrarch = () => {
     const { searchWord } = this.state;
-    this.getList({ searchWord });
+    this.getList({ searchWord,pageNum:1 });
   };
   // 修改设计师状态
   handleChangeStatus = r => {
