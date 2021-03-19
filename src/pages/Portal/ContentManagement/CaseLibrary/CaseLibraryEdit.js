@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-25 14:14:21 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-16 16:56:14
+ * @Last Modified time: 2021-03-19 11:45:20
  * 案例编辑
  */
 import React, { Component } from 'react';
@@ -26,15 +26,7 @@ class CaseLibraryEdit extends Component {
   }
 
   componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'CaseLibrary/getCaseByUidModel',
-      payload: { uid: getQueryUrlVal('uid') },
-    });
-    dispatch({
-      type: 'CaseLibrary/queryCasePicListModel',
-      payload: { uid: getQueryUrlVal('uid') },
-    });
+    this.queryDetail()
   }
 
   render() {
@@ -73,6 +65,19 @@ class CaseLibraryEdit extends Component {
   }
   callback = step => {
     this.setState({ step });
+    // 获取数据
+    this.queryDetail()
   };
+  queryDetail=()=>{
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'CaseLibrary/getCaseByUidModel',
+      payload: { uid: getQueryUrlVal('uid') },
+    });
+    dispatch({
+      type: 'CaseLibrary/queryCasePicListModel',
+      payload: { uid: getQueryUrlVal('uid') },
+    });
+  }
 }
 export default CaseLibraryEdit;

@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:47:07 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-16 16:13:25
+ * @Last Modified time: 2021-03-19 12:12:53
  * 工地库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -239,12 +239,12 @@ class SiteLibrary extends PureComponent {
   }
   handleSrarchStatus = status => {
     this.setState({ status }, () => {
-      this.getList({ gongdiStatus: status === '0' ? 0 : status === '1' ? 1 : null });
+      this.getList({ gongdiStatus: status === '0' ? 0 : status === '1' ? 1 : null,pageNum:1 });
     });
   };
   handleSrarch = () => {
     const { searchWord } = this.state;
-    this.getList({ searchText: searchWord });
+    this.getList({ searchText: searchWord ,pageNum:1});
   };
   // 分页
   handleTableChange = pagination => {
