@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 10:30:18 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-19 16:56:47
+ * @Last Modified time: 2021-03-19 17:10:05
  * 字典配置
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -54,7 +54,7 @@ class DictConfig extends PureComponent {
   render() {
     const { activeKey, visible, searchWord,width} = this.state;
     const {
-      DictConfig: { DicModuleList, DicList },
+      DictConfig: {DicQuery, DicModuleList, DicList },
     } = this.props;
     const columns = [
       {
@@ -162,7 +162,19 @@ class DictConfig extends PureComponent {
                     style={{ width: 500 }}
                   />
                 </div>
-                <DndProvider backend={HTML5Backend}>
+                {DicQuery.searchWord&&DicQuery.searchWord.length>0&&<Table
+                  columns={columns}
+                  dataSource={DicList.list}
+                  onChange={this.handleTableChange}
+                  pagination={{
+                    pageSize: 100,
+                    hideOnSinglePage: true,
+                    current: DicList && DicList.curPage,
+                    total: DicList && DicList.recordTotal,
+                    showTotal: () => `共${DicList && DicList.recordTotal}条`,
+                  }}
+                />}
+                {!DicQuery.searchWord&&<DndProvider backend={HTML5Backend}>
                   <Table
                     columns={columns}
                     dataSource={DicList.list}
@@ -182,7 +194,7 @@ class DictConfig extends PureComponent {
                       showTotal: () => `共${DicList && DicList.recordTotal}条`,
                     }}
                   />
-                </DndProvider>
+                </DndProvider>}
               </div>
             </div>
           </Card>
@@ -211,9 +223,6 @@ class DictConfig extends PureComponent {
   // 字段模块切换
   handleChangeTab = activeKey => {
     this.setState({ activeKey });
-    console.log('====================================');
-    console.log(activeKey);
-    console.log('====================================');
     // 重置搜索数据
     const { dispatch } = this.props;
     // resetModel
