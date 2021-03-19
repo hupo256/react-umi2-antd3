@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-03-18 11:21:43 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-18 15:18:49
+ * @Last Modified time: 2021-03-19 11:26:40
  * 创建文章
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -35,9 +35,9 @@ const FormItem = Form.Item;
 const { TextArea } = Input;
 const { Option } = Select;
 
-@connect(({ DictConfig, DesignerLibrary, loading }) => ({
+@connect(({ DictConfig, ArticleLibrary, loading }) => ({
   DictConfig,
-  DesignerLibrary,
+  ArticleLibrary,
 }))
 @Form.create()
 class ArticleLibraryAdd extends PureComponent {
@@ -68,7 +68,7 @@ class ArticleLibraryAdd extends PureComponent {
   }
 
   render() {
-    const { status, coverImg, uploadVisible,dictionaries  } = this.state;
+    const { status, coverImg, uploadVisible,dictionaries  ,editorContent} = this.state;
     const { getFieldDecorator } = this.props.form;
     const {
       DictConfig: { dicData },
@@ -90,7 +90,7 @@ class ArticleLibraryAdd extends PureComponent {
           <Card bordered={false}>
             <Form {...formItemLayout} onSubmit={this.handleSubmit}>
               <Form.Item label="文章标题">
-                {getFieldDecorator('name', {
+                {getFieldDecorator('articleTitle', {
                   rules: [
                     {
                       required: true,
@@ -104,7 +104,7 @@ class ArticleLibraryAdd extends PureComponent {
                 })(<Input style={{ width: 400 }} placeholder="请输入文章标题" />)}
               </Form.Item>
               <Form.Item label="所属栏目">
-              {getFieldDecorator('styleDicCodes', {
+              {getFieldDecorator('articleDicCode', {
                 rules: [
                   {
                     required: true,
@@ -112,7 +112,7 @@ class ArticleLibraryAdd extends PureComponent {
                   },
                 ],
               })(
-                <Select mode="multiple" style={{ width: 400 }} placeholder="请选择所属栏目">
+                <Select  style={{ width: 400 }} placeholder="请选择所属栏目">
                   {dictionaries.map(item => {
                         return (
                           <Option value={item.code} key={item.uid}>
@@ -124,7 +124,7 @@ class ArticleLibraryAdd extends PureComponent {
               )}
             </Form.Item>
             <Form.Item label="封面图">
-                {getFieldDecorator('headPicUrl', {
+                {getFieldDecorator('articleCoverImg', {
                   rules: [
                     
                   ],
@@ -169,19 +169,16 @@ class ArticleLibraryAdd extends PureComponent {
               </Form.Item>
              
               <Form.Item label="文章正文">
-                {getFieldDecorator('mobile', {
+                {getFieldDecorator('articleContent', {
+                  initialValue: editorContent ||null,
                   rules: [
                     {
                       required: true,
                       message: '请输入文章正文',
                     },
-                    {
-                      pattern: regExpConfig.phone,
-                      message: '手机号码格式不正确!',
-                    },
                   ],
                 })(<BraftEditor
-                  defval={null}
+                  defval={editorContent}
                   editorCont={cont => {
                     this.handleEditorCont(cont);
                   }}
@@ -189,7 +186,7 @@ class ArticleLibraryAdd extends PureComponent {
                 )}
               </Form.Item>
               <Form.Item label="关键词">
-                {getFieldDecorator('position', {
+                {getFieldDecorator('articleTag', {
                   rules: [
                     {
                       max: 10,
@@ -202,7 +199,7 @@ class ArticleLibraryAdd extends PureComponent {
             
              
               <Form.Item label="文章说明">
-                {getFieldDecorator('designConcept', {
+                {getFieldDecorator('articleDescription', {
                   rules: [
                     {
                       max: 200,
@@ -254,11 +251,13 @@ class ArticleLibraryAdd extends PureComponent {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (err) throw err;
       console.log(values);
-      const { headPicUrl } = this.state;
+      const { editorContent } = this.state;
+      console.log('====================================');
+      console.log(editorContent);
+      console.log('====================================');
       const { dispatch } = this.props;
-      // createDesignerModel
       dispatch({
-        type: 'DesignerLibrary/createDesignerModel',
+        type: 'ArticleLibrary/createArticleModel',
         payload: {
           ...values,
         },
@@ -267,14 +266,6 @@ class ArticleLibraryAdd extends PureComponent {
           message.success('创建成功');
           history.go(-1);
         }
-
-        // this.setState({ submitLoading: false });
-        // if (res && res.code === 200) {
-        //   // 清空缓存内容
-        //   this.clearCache();
-        //   // 跳转到详情页
-        //   router.push(`/project/info/projectinformation?uid=${res.data.uid}`);
-        // }
       });
     });
   };
@@ -288,7 +279,7 @@ class ArticleLibraryAdd extends PureComponent {
     console.log(data);
     this.setState({ coverImg: data[0].path });
     this.props.form.setFieldsValue({
-      headPicUrl: data[0].path,
+      articleCoverImg: data[0].path,
     });
     this.handleUploadCancel();
   };

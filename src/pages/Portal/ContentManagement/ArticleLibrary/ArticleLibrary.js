@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:50:21 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-18 14:25:44
+ * @Last Modified time: 2021-03-19 11:40:13
  * 文章库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -16,9 +16,9 @@ const { confirm } = Modal;
 const { Search } = Input;
 const { TabPane } = Tabs;
 
-@connect(({ DictConfig,DesignerLibrary, loading }) => ({
-  DesignerLibrary,DictConfig,
-  Loading: loading.effects['DesignerLibrary/queryDesignerListModel'],
+@connect(({ DictConfig,ArticleLibrary, loading }) => ({
+  ArticleLibrary,DictConfig,
+  Loading: loading.effects['ArticleLibrary/getArticleListModel'],
 }))
 class ArticleLibrary extends PureComponent {
   constructor(props) {
@@ -32,7 +32,6 @@ class ArticleLibrary extends PureComponent {
   }
 
   componentDidMount() {
-    this.getList({ pageNum: 1 });
     // 获取字典数据 queryDicModel
     const { dispatch } = this.props;
     dispatch({
@@ -42,24 +41,25 @@ class ArticleLibrary extends PureComponent {
       if (res && res.code === 200) {
         const dictionaries = res.data['DM006'].filter(item => item.status !== '2');
         this.setState({ dictionaries,step: dictionaries[0].code});
+        this.getList({ articleDicCode:dictionaries[0].code ,pageNum: 1 });
       }
     });
   }
   render() {
     const {
       Loading,
-      DesignerLibrary: { DesignerList },
+      ArticleLibrary: { ArticleList },
     } = this.props;
 
     const columns = [
      
       {
         title: '文章标题',
-        dataIndex: 'name',
+        dataIndex: 'articleTitle',
       },
       {
         title: '状态',
-        dataIndex: 'status',
+        dataIndex: 'articleStatus',
         render: (t, r) => {
           return (
             <span style={{ position: 'relative', paddingLeft: 20 }}>
@@ -70,19 +70,19 @@ class ArticleLibrary extends PureComponent {
                   left: 0,
                   top: -20,
                   lineHeight: 1,
-                  color: t === '1' ? '#52c41a' : '#bfbfbf',
+                  color: t +''=== '1' ? '#52c41a' : '#bfbfbf',
                 }}
               >
                 ·
               </span>
-              {t === '1' ? '正常' : '停用'}
+              {t+'' === '1' ? '正常' : '停用'}
             </span>
           );
         },
       },
       {
         title: '更新时间',
-        dataIndex: 'operateTime',
+        dataIndex: 'updateTime',
         render: (t, r) => {
           return (
             <div>
@@ -101,14 +101,14 @@ class ArticleLibrary extends PureComponent {
               <span
                 className="operateBtn"
                 onClick={() =>
-                  router.push(`/portal/contentmanagement/designerlibrary/edit?uid=${r.uid}`)
+                  router.push(`/portal/contentmanagement/articlelibrary/edit?uid=${r.articleUid}`)
                 }
               >
                 编辑
               </span>
               <span className="operateLine" />
               <span className="operateBtn" onClick={() => this.handleChangeStatus(r)}>
-                {r.status === '1' ? '停用' : '启用'}{' '}
+                {r.articleStatus+'' === '1' ? '停用' : '启用'}{' '}
               </span>
             </div>
           );
@@ -183,10 +183,10 @@ class ArticleLibrary extends PureComponent {
               loading={Loading}
               style={{ marginTop: 20 }}
               rowKey={record => record.uid}
-              dataSource={DesignerList.list}
+              dataSource={ArticleList.list}
               columns={columns}
               onChange={this.handleTableChange}
-              pagination={(DesignerList && paginations(DesignerList)) || false}
+              pagination={(ArticleList && paginations(ArticleList)) || false}
             />
           </Card>
         </PageHeaderWrapper>
@@ -194,39 +194,41 @@ class ArticleLibrary extends PureComponent {
     );
   }
   callback = step => {
-    this.setState({ step });
+    this.setState({ step }, () => {
+      this.getList({ articleDicCode:step ,pageNum:1});
+    });
   };
 
   handleSrarchStatus = status => {
     this.setState({ status }, () => {
-      this.getList({ status });
+      this.getList({ articleStatus:status ,pageNum:1});
     });
   };
   handleSrarch = () => {
     const { searchWord } = this.state;
-    this.getList({ searchWord });
+    this.getList({searchText: searchWord,pageNum:1 });
   };
 
   // 修改设计师状态
   handleChangeStatus = r => {
-    const status = r.status;
+    const articleStatus = r.articleStatus+'';
     const { dispatch } = this.props;
     const that = this;
 
     confirm({
-      title: status === '1' ? '确认要停用当前设计师吗？' : '确认要启用当前设计师吗？',
+      title: articleStatus === '1' ? '确认要停用当前文章吗？' : '确认要启用当前文章吗？',
       content:
-        status === '1'
-          ? '停用后，将无法在设计师模块显示当前设计师，也无法在创建案例时选择当前设计师！'
-          : '启用后，将在设计师模块显示当前设计师，也可以在创建案例时选择当前设计师！',
-      icon: status === '2' ? successIcon : waringInfo,
+        articleStatus === '1'
+          ? '停用后，将无法在文章模块显示当前文章！'
+          : '启用后，将在文章模块显示当前文章！',
+      icon: articleStatus !== '1' ? successIcon : waringInfo,
       onOk() {
         dispatch({
-          type: 'DesignerLibrary/updateStatusModel',
-          payload: { uid: r.uid, status: r.status == '1' ? '2' : '1' },
+          type: 'ArticleLibrary/updateStatusModel',
+          payload: { articleUid: r.articleUid, articleStatus: r.articleStatus == '1' ? '0' : '1' },
         }).then(res => {
           if (res.code === 200) {
-            message.success(`${r.status == '1' ? '停用' : '启用'}成功`);
+            message.success(`${r.articleStatus == '1' ? '停用' : '启用'}成功`);
             that.getList({});
           }
         });
@@ -242,13 +244,14 @@ class ArticleLibrary extends PureComponent {
     this.getList({ pageNum: pagination.current, pageSize: pagination.pageSize });
   };
   getList = obj => {
+    const {step}=this.state
     const {
       dispatch,
-      DesignerLibrary: { DesignerListQuery },
+      ArticleLibrary: { ArticleListQuery },
     } = this.props;
     dispatch({
-      type: 'DesignerLibrary/queryDesignerListModel',
-      payload: { ...DesignerListQuery, ...obj },
+      type: 'ArticleLibrary/getArticleListModel',
+      payload: { ...ArticleListQuery, ...obj },
     });
   };
 }
