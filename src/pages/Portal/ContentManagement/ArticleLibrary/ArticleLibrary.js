@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:50:21 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-19 11:40:13
+ * @Last Modified time: 2021-03-19 14:21:52
  * 文章库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -100,8 +100,8 @@ class ArticleLibrary extends PureComponent {
             <div className="operateWrap">
               <span
                 className="operateBtn"
-                onClick={() =>
-                  router.push(`/portal/contentmanagement/articlelibrary/edit?uid=${r.articleUid}`)
+                onClick={() =>this.handleEdit(r)
+                 
                 }
               >
                 编辑
@@ -118,7 +118,7 @@ class ArticleLibrary extends PureComponent {
     const { status,step,dictionaries } = this.state;
     return (
       <div>
-      <div
+        <div
           className={styles.caseTab}
           style={{ paddingLeft: sessionStorage.collapsed == 'false' ? '256px' : '110px' }}
         >
@@ -135,7 +135,7 @@ class ArticleLibrary extends PureComponent {
           </Tabs>
         </div>
         <PageHeaderWrapper fixedTitle={fixedTitle()}>
-        <Card bordered={false} style={{ marginTop: 108 }}>
+          <Card bordered={false} style={{ marginTop: 108 }}>
             <Search
               placeholder="可通过文章标题 / 内容进行搜索"
               value={this.state.searchWord}
@@ -192,6 +192,17 @@ class ArticleLibrary extends PureComponent {
         </PageHeaderWrapper>
       </div>
     );
+  }
+  handleEdit=r=>{
+    // const { dispatch } = this.props;
+    // dispatch({
+    //   type: 'ArticleLibrary/getArticleDetailModel',
+    //   payload: {articleUid:r.articleUid },
+    // }).then(res=>{
+    //   if(res&&res.code===200){
+        router.push(`/portal/contentmanagement/articlelibrary/edit?uid=${r.articleUid}`)
+      // }
+    // });
   }
   callback = step => {
     this.setState({ step }, () => {
