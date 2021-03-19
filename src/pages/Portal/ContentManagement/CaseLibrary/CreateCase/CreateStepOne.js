@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-19 09:52:44
+ * @Last Modified time: 2021-03-19 10:11:44
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -134,7 +134,13 @@ class CreateStepOne extends PureComponent {
               initialValue: stepOne.designerUid || [],
               rules: [{ required: true, message: '请选择设计师' }],
             })(
-              <Select showSearch style={{ width: 400 }} placeholder="请输入设计师姓名进行检索">
+              <Select 
+              showSearch 
+              style={{ width: 400 }} 
+              placeholder="请输入设计师姓名进行检索" 
+              filterOption={(input, option) =>{
+               return option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+              }>
                 {DesignerList &&
                   DesignerList.list &&
                   DesignerList.list.map(item => {
