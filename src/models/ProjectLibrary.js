@@ -32,6 +32,7 @@ export default {
       uspecialUrl: '',
       specialTitle: '',
     },
+    specialUid: '',
   },
 
   effects: {

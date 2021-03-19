@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-15 14:16:36
+ * @Last Modified time: 2021-03-18 15:07:04
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -12,6 +12,9 @@ import { Form, Button } from 'antd';
 import { getQueryUrlVal } from '@/utils/utils';
 import img from '@/assets/bgimg.png';
 import styles from '../index.less';
+@connect(({ ProjectLibrary }) => ({
+  ProjectLibrary,
+}))
 class CreateStepTwo extends PureComponent {
   constructor(props) {
     super(props);
@@ -20,6 +23,9 @@ class CreateStepTwo extends PureComponent {
 
   componentDidMount() {}
   render() {
+    const {
+      ProjectLibrary: { specialUid },
+    } = this.props;
     return (
       <div>
         <div className={styles.twrap}>
@@ -28,9 +34,8 @@ class CreateStepTwo extends PureComponent {
             type="primary"
             style={{ marginRight: 20 }}
             onClick={() => {
-              const activeKey = getQueryUrlVal('uid');
               router.push(
-                `/portal/contentmanagement/ProjectLibrary/ConfigurationTopic?&uid=${activeKey}`
+                `/portal/contentmanagement/ProjectLibrary/ConfigurationTopic?&uid=${specialUid}`
               );
             }}
           >

@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-17 14:51:35
+ * @Last Modified time: 2021-03-18 15:24:00
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -50,7 +50,16 @@ class CreateStepOne extends PureComponent {
       });
     }
   }
-
+  componentWillUnmount() {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'ProjectLibrary/saveDataModel',
+      payload: {
+        key: 'collocationDetail',
+        value: {},
+      },
+    });
+  }
   render() {
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
@@ -125,7 +134,13 @@ class CreateStepOne extends PureComponent {
           <Form.Item label="专题说明">
             {getFieldDecorator('specialDescription', {
               initialValue: collocationDetail && collocationDetail.specialDescription,
-              rules: [{ required: false, message: '请输入专题说明' }],
+              rules: [
+                { required: false, message: '请输入专题说明' },
+                {
+                  max: 200,
+                  message: '限制1-200字符长度',
+                },
+              ],
             })(<TextArea rows={4} style={{ width: 400 }} placeholder="请输入专题说明" />)}
           </Form.Item>
           <Row>
@@ -196,6 +211,13 @@ class CreateStepOne extends PureComponent {
         }).then(res => {
           if (res && res.code === 200) {
             this.props.handleOk();
+            dispatch({
+              type: 'ProjectLibrary/saveDataModel',
+              payload: {
+                key: 'specialUid',
+                value: res.data.specialUid,
+              },
+            });
           }
         });
       }
