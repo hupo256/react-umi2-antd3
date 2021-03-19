@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:47:49 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-12 19:36:57
+ * @Last Modified time: 2021-03-19 11:42:49
  * 案例库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -215,12 +215,12 @@ class CaseLibrary extends PureComponent {
   }
   handleSrarchStatus = status => {
     this.setState({ status }, () => {
-      this.getList({ status });
+      this.getList({ status ,pageNum:1});
     });
   };
   handleSrarch = () => {
     const { searchWord } = this.state;
-    this.getList({ searchWord });
+    this.getList({ searchWord ,pageNum:1});
   };
 
   // 分页
