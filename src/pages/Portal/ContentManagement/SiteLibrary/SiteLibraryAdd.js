@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-16 15:29:22
+ * @Last Modified time: 2021-03-19 16:52:02
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -242,7 +242,7 @@ class SiteLibraryAdd extends PureComponent {
                     max: 200,
                     message: '限制0-200字符长度',
                   }],
-                })(<TextArea rows={4} style={{ width: 400 }} placeholder="请输入案例说明" />)}
+                })(<TextArea rows={4} style={{ width: 400 }} placeholder="请输入工地说明" />)}
               </Form.Item>
               <Row>
                 <Col span={8} />
