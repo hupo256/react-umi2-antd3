@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-16 16:44:15
+ * @Last Modified time: 2021-03-19 09:59:02
  * 创建工地
  */
 import React, { PureComponent, Fragment, Component } from 'react';
@@ -11,7 +11,7 @@ import router from 'umi/router';
 import { Form, Button, Icon, Input, message, Steps, Table, Select, Divider, Modal } from 'antd';
 import Upload from '@/components/Upload/Upload';
 import { DragableBodyRow } from '@/components/DragableBodyRow/DragableBodyRow';
-import { getQueryUrlVal, guid, waringInfo } from '@/utils/utils';
+import { getQueryUrlVal, guid, waringInfo,errorIcon } from '@/utils/utils';
 import { DndProvider, DragSource, DropTarget } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import styles from '../CaseLibrary.less';
@@ -50,10 +50,10 @@ class CreateStepTwo extends Component {
     } = this.props;
     dispatch({
       type: 'DictConfig/queryDicModel',
-      payload: { dicModuleCodes: 'DM001,DM002,DM003,DM004' },
+      payload: { dicModuleCodes: 'DM005,DM002,DM003,DM004' },
     }).then(res => {
       if (res && res.code === 200) {
-        const disabled1 = res.data['DM001'].filter(item => item.status === '2');
+        const disabled1 = res.data['DM005'].filter(item => item.status === '2');
         const disabled2 = res.data['DM002'].filter(item => item.status === '2');
         const disabled3 = res.data['DM003'].filter(item => item.status === '2');
         const disabled4 = res.data['DM004'].filter(item => item.status === '2');
@@ -296,8 +296,8 @@ class CreateStepTwo extends Component {
               placeholder="请选择类目"
             >
               {dicData &&
-                dicData['DM001'] &&
-                dicData['DM001'].map(item => {
+                dicData['DM005'] &&
+                dicData['DM005'].map(item => {
                   if (item.status === '1') {
                     return (
                       <Option value={item.code} key={item.uid}>
@@ -580,11 +580,25 @@ class CreateStepTwo extends Component {
     if (r.isCover) {
       message.error('当前案例图片为封面不能删除');
     } else {
-      let { DicList } = this.state;
-      const newList = DicList.filter(item => item.guid !== r.guid);
-      this.setState({ DicList: newList }, () => {
-        message.success('删除成功');
+          let { DicList } = this.state;
+          const that = this
+      confirm({
+        title: '确认要删除当前案例图片吗？',
+        content: '删除后，将无法在案例详情中看到当前案例图片，并有可能导致无法精准搜索出当前案例',
+        icon: errorIcon,
+        okText: '确定',
+        cancelText: '取消',
+        onOk() {
+          const newList = DicList.filter(item => item.guid !== r.guid);
+          that.setState({ DicList: newList }, () => {
+            message.success('删除成功');
+          });
+        },
+        onCancel() {
+          console.log('Cancel');
+        },
       });
+     
     }
   };
 
