@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:49:12 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-19 17:12:34
+ * @Last Modified time: 2021-03-19 17:25:37
  * 设计师库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -32,6 +32,10 @@ class DesignerLibrary extends PureComponent {
     const {
       DesignerLibrary: { DesignerListQuery },
     } = this.props;
+    this.setState({
+      searchWord: DesignerListQuery.searchWord,
+      status: DesignerListQuery.status,
+    })
     this.getList({ pageNum: 1,...DesignerListQuery });
   }
 
