@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-18 16:39:42 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-09 15:44:39
+ * @Last Modified time: 2021-03-22 19:41:44
  * 创建设计师
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -225,7 +225,11 @@ class DesignerLibraryEdit extends PureComponent {
                             >
                               <Icon type="eye" />
                             </span>
-                            <span onClick={() => this.setState({ coverImg: null })}>
+                            <span onClick={() =>{
+                              this.props.form.setFieldsValue({
+                                headPicUrl: '',
+                              });
+                               this.setState({ coverImg: null })}}>
                               <Icon type="delete" />
                             </span>
                           </div>
