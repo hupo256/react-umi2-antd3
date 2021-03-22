@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:49:12 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-04 16:58:47
+ * @Last Modified time: 2021-03-19 17:25:37
  * 设计师库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -29,7 +29,14 @@ class DesignerLibrary extends PureComponent {
   }
 
   componentDidMount() {
-    this.getList({ pageNum: 1 });
+    const {
+      DesignerLibrary: { DesignerListQuery },
+    } = this.props;
+    this.setState({
+      searchWord: DesignerListQuery.searchWord,
+      status: DesignerListQuery.status,
+    })
+    this.getList({ pageNum: 1,...DesignerListQuery });
   }
 
   render() {
@@ -197,12 +204,12 @@ class DesignerLibrary extends PureComponent {
   }
   handleSrarchStatus = status => {
     this.setState({ status }, () => {
-      this.getList({ status });
+      this.getList({ status,pageNum:1 });
     });
   };
   handleSrarch = () => {
     const { searchWord } = this.state;
-    this.getList({ searchWord });
+    this.getList({ searchWord,pageNum:1 });
   };
   // 修改设计师状态
   handleChangeStatus = r => {

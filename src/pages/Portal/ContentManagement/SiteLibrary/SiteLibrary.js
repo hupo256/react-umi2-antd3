@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:47:07 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-16 16:13:25
+ * @Last Modified time: 2021-03-19 16:51:51
  * 工地库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -30,17 +30,24 @@ class SiteLibrary extends PureComponent {
       record: null,
       porjectVisible: false,
       searchWord: null,
+      pageNum:1
     };
   }
 
   componentDidMount() {
-    this.getList({ pageNum: 1 });
+    const {
+      SiteLibrary: { siteListQuery },
+    } = this.props;
+    this.setState({status:siteListQuery.gongdiStatus||null,pageNum:siteListQuery.pageNum||1},()=>{
+      
+    this.getList({ pageNum: this.state.pageNum });
+    })
   }
 
   render() {
     const { status, visible, record, porjectVisible } = this.state;
     const {
-      SiteLibrary: { siteList },
+      SiteLibrary: { siteList,siteListQuery },
     } = this.props;
 
     const columns = [
@@ -143,6 +150,7 @@ class SiteLibrary extends PureComponent {
         },
       },
     ];
+    const isCompany = false
     const menu = (
       <Menu>
         <Menu.Item>
@@ -173,7 +181,7 @@ class SiteLibrary extends PureComponent {
           <Card bordered={false}>
             <Search
               placeholder="可通过工地标题 / 楼盘进行集联搜索"
-              value={this.state.searchWord}
+              value={this.state.searchWord||siteListQuery.searchText}
               onChange={e => this.setState({ searchWord: e.target.value })}
               onSearch={value => this.handleSrarch()}
               onPressEnter={() => this.handleSrarch()}
@@ -205,12 +213,18 @@ class SiteLibrary extends PureComponent {
           </Card>
 
           <Card bordered={false} style={{ marginTop: 20 }}>
+          {!isCompany?<Button type="primary" onClick={() => {
+            router.push(`/portal/contentmanagement/sitelibrary/add`);
+          }}>
+                <Icon type="plus" />
+                创建工地
+              </Button>:
             <Dropdown trigger={['click']} overlay={menu}>
               <Button type="primary">
                 <Icon type="plus" />
                 创建工地
               </Button>
-            </Dropdown>
+            </Dropdown>}
             <Table
               loading={false}
               style={{ marginTop: 20 }}
@@ -239,12 +253,12 @@ class SiteLibrary extends PureComponent {
   }
   handleSrarchStatus = status => {
     this.setState({ status }, () => {
-      this.getList({ gongdiStatus: status === '0' ? 0 : status === '1' ? 1 : null });
+      this.getList({ gongdiStatus: status === '0' ? 0 : status === '1' ? 1 : null,pageNum:1 });
     });
   };
   handleSrarch = () => {
     const { searchWord } = this.state;
-    this.getList({ searchText: searchWord });
+    this.getList({ searchText: searchWord ,pageNum:1});
   };
   // 分页
   handleTableChange = pagination => {

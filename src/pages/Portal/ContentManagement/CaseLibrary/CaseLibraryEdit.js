@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-25 14:14:21 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-16 16:56:14
+ * @Last Modified time: 2021-03-19 16:18:39
  * 案例编辑
  */
 import React, { Component } from 'react';
@@ -22,6 +22,7 @@ class CaseLibraryEdit extends Component {
     super(props);
     this.state = {
       step: 'tab1',
+      loading:true
     };
   }
 
@@ -30,6 +31,10 @@ class CaseLibraryEdit extends Component {
     dispatch({
       type: 'CaseLibrary/getCaseByUidModel',
       payload: { uid: getQueryUrlVal('uid') },
+    }).then(res=>{
+      if(res&&res.code===200){
+        this.setState({loading:false})
+      }
     });
     dispatch({
       type: 'CaseLibrary/queryCasePicListModel',
@@ -38,7 +43,7 @@ class CaseLibraryEdit extends Component {
   }
 
   render() {
-    const { step } = this.state;
+    const { step ,loading} = this.state;
     return (
       <div>
         <div
@@ -55,8 +60,8 @@ class CaseLibraryEdit extends Component {
           </Tabs>
         </div>
         <PageHeaderWrapper   fixedTitle={fixedTitle()}>
-          <Card bordered={false} style={{ marginTop: 108 }}>
-            {step === 'tab1' && (
+          {!loading&& <Card bordered={false} style={{ marginTop: 108 }}>
+            {step === 'tab1' &&(
               <CreateStepOne type="edit" handleOk={() => this.setState({ step: 1 })} />
             )}
             {step === 'tab2' && (
@@ -66,13 +71,31 @@ class CaseLibraryEdit extends Component {
                 handleBackStep={() => this.setState({ step: 0 })}
               />
             )}
-          </Card>
+          </Card>}
         </PageHeaderWrapper>
       </div>
     );
   }
   callback = step => {
-    this.setState({ step });
+    this.setState({ step },()=>{
+      setTimeout(() => {
+        
+      // 获取数据
+      this.queryDetail()
+      }, 500);
+    });
+    
   };
+  queryDetail=()=>{
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'CaseLibrary/getCaseByUidModel',
+      payload: { uid: getQueryUrlVal('uid') },
+    })
+    dispatch({
+      type: 'CaseLibrary/queryCasePicListModel',
+      payload: { uid: getQueryUrlVal('uid') },
+    });
+  }
 }
 export default CaseLibraryEdit;

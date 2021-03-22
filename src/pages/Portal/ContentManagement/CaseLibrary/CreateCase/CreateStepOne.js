@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-16 15:25:00
+ * @Last Modified time: 2021-03-19 16:11:23
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -63,6 +63,9 @@ class CreateStepOne extends PureComponent {
 
     const { stepOne } = this.props.CaseLibrary;
 
+    console.log('=stepOne===================================');
+    console.log(stepOne);
+    console.log('====================================');
     ['bedroom', 'liveroom', 'kitchen', 'bathroom'].forEach(item => {
       this.setState({ [item]: (stepOne && stepOne[item]) || 0 });
     });
@@ -134,7 +137,13 @@ class CreateStepOne extends PureComponent {
               initialValue: stepOne.designerUid || [],
               rules: [{ required: true, message: '请选择设计师' }],
             })(
-              <Select style={{ width: 400 }} placeholder="请输入设计师姓名进行检索">
+              <Select 
+              showSearch 
+              style={{ width: 400 }} 
+              placeholder="请输入设计师姓名进行检索" 
+              filterOption={(input, option) =>{
+               return option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+              }>
                 {DesignerList &&
                   DesignerList.list &&
                   DesignerList.list.map(item => {
@@ -289,7 +298,7 @@ class CreateStepOne extends PureComponent {
               initialValue: stepOne.caseDesc || '',
               rules: [
                 {
-                  max: 500,
+                  max: 200,
                   message: '最多可输入200位字符!',
                 },
               ],
