@@ -25,6 +25,7 @@ export default {
   'menu.portal.contentmanagement.formLibrary': '表单配置',
   'menu.portal.mysite': '我的网站',
   'menu.portal.mysite.sitepanel': '网站面板',
+  'menu.portal.myminiprogram': '我的小程序',
 
   'menu.home': '首页',
   'menu.list': '列表页',

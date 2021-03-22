@@ -67,6 +67,48 @@ export default [
             redirect: '/portal/contentmanagement',
           },
           {
+            path: '/portal/mysite',
+            name: 'mysite',
+            routes: [
+              {
+                path: '/portal/mysite',
+                redirect: '/portal/mysite/sitepanel',
+              },
+              {
+                path: '/portal/mysite/sitepanel',
+                name: 'sitepanel',
+                component: './Portal/MySIte/SitePanel/SitePanel',
+              },
+            ],
+          },
+          {
+            path: '/portal/miniprogram',
+            name: 'myminiprogram',
+            component: './Portal/MiniProgram/MiniProgram',
+            // routes: [
+            //   {
+            //     path: '/portal/miniprogram/tempselect',
+            //     PageHeaderName: '模板选择',
+            //     component: './Portal/MiniProgram/TempSelect',
+            //   },
+            //   {
+            //     path: '/portal/miniprogram/tempdetail',
+            //     PageHeaderName: '编辑模板',
+            //     component: './Portal/MiniProgram/TempDetail',
+            //   },
+            // ],
+          },
+          {
+            path: '/portal/miniprogram/tempselect',
+            PageHeaderName: '模板选择',
+            component: './Portal/MiniProgram/TempSelect',
+          },
+          {
+            path: '/portal/miniprogram/tempdetail',
+            PageHeaderName: '编辑模板',
+            component: './Portal/MiniProgram/TempDetail',
+          },
+          {
             path: '/portal/contentmanagement',
             name: 'contentmanagement',
             routes: [
@@ -160,22 +202,7 @@ export default [
                 component: './Portal/ContentManagement/FormLibrary/FormLibrary',
               },
             ],
-          },
-          // {
-          //   path: '/portal/mysite',
-          //   name: 'mysite',
-          //   routes: [
-          //     {
-          //       path: '/portal/mysite',
-          //       redirect: '/portal/mysite/sitepanel',
-          //     },
-          //     {
-          //       path: '/portal/mysite/sitepanel',
-          //       name: 'sitepanel',
-          //       component: './Portal/MySIte/SitePanel/SitePanel',
-          //     },
-          //   ],
-          // },
+          }
         ],
       },
        // v1.1
