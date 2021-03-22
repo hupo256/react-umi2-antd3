@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-18 15:24:00
+ * @Last Modified time: 2021-03-22 18:01:16
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -50,16 +50,7 @@ class CreateStepOne extends PureComponent {
       });
     }
   }
-  componentWillUnmount() {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'ProjectLibrary/saveDataModel',
-      payload: {
-        key: 'collocationDetail',
-        value: {},
-      },
-    });
-  }
+
   render() {
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {

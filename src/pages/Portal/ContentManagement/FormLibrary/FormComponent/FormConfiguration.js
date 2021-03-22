@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-13 14:57:03
+ * @Last Modified time: 2021-03-22 11:35:51
  * 专题库
  */
 import React, { PureComponent } from 'react';
@@ -24,19 +24,19 @@ class FormConfiguration extends PureComponent {
         {
           defaultValue: null,
           defaultValueUpdate: 1,
-          paramField: 'proprietorName',
+          paramField: 'trackName',
           paramName: '业主姓名',
           paramExtName: '业主姓名',
           paramRequired: 0,
           paramType: 'String',
           paramTips: '请输入业主姓名',
           paramUid: 'c834a6d6735411eb999e00505694ddf5',
-          paramValid: `{"type": "len", "maxLen": 4, "minLen": 2}`,
+          paramValid: null,
         },
         {
           defaultValue: null,
           defaultValueUpdate: 1,
-          paramField: 'buildingName',
+          paramField: 'trackAddress',
           paramName: '楼盘/楼宇',
           paramExtName: '楼盘/楼宇',
           paramTips: '请输入楼盘/楼宇',
@@ -48,14 +48,14 @@ class FormConfiguration extends PureComponent {
         {
           defaultValue: null,
           defaultValueUpdate: 1,
-          paramField: 'buildingArea',
+          paramField: 'trackArea',
           paramName: '建筑面积',
           paramExtName: '建筑面积',
           paramTips: '请输入建筑面积',
           paramRequired: 0,
           paramType: 'String',
           paramUid: '15949455735511eb999e00505694ddf5',
-          paramValid: `{"max": 99999.99, "min": 0, "type": "size"}`,
+          paramValid: null,
         },
       ],
       checkList: [],
@@ -99,14 +99,14 @@ class FormConfiguration extends PureComponent {
             {
               defaultValue: null,
               defaultValueUpdate: 1,
-              paramField: 'phoneNumber',
+              paramField: 'trackPhone',
               paramName: '联系电话',
               paramExtName: '联系电话',
               paramRequired: 1,
               paramType: 'String',
               paramTips: '请输入联系电话',
               paramUid: '81611418735411eb999e00505694ddf5',
-              paramValid: `{"exp":"^(((13[0-9])|(14[0-9])|(15[^4,\\D])|(16[0-9])|(17[0-9])|(18[0-9])|(19[0-9]))\\d{8})$", "type": "reg"}`,
+              paramValid: null,
             },
           ],
         },

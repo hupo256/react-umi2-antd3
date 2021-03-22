@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-18 15:29:07
+ * @Last Modified time: 2021-03-22 18:01:32
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -25,6 +25,7 @@ class ProjectLibrary extends PureComponent {
     super(props);
     this.state = {
       value: '',
+      searchWord: '',
     };
   }
 
@@ -49,6 +50,13 @@ class ProjectLibrary extends PureComponent {
                     value: 0,
                   },
                 });
+                dispatch({
+                  type: 'ProjectLibrary/saveDataModel',
+                  payload: {
+                    key: 'collocationDetail',
+                    value: {},
+                  },
+                });
                 router.push('/portal/contentmanagement/ProjectLibrary/add');
               }}
             >
@@ -69,10 +77,17 @@ class ProjectLibrary extends PureComponent {
     return (
       <div className={styles.wrap}>
         <Search
-          onSearch={value => this.thSearch(value)}
+          onSearch={() => this.thSearch()}
           placeholder={'可通过专题标题/专题链接进行搜索'}
           className={styles.ser}
+          onChange={e => this.setState({ searchWord: e.target.value })}
           defaultValue={fromData.searchText}
+          onPressEnter={() => {
+            this.thSearch();
+          }}
+          onBlur={() => {
+            this.thSearch();
+          }}
         />
         <div className={styles.status}>
           <div className={styles.fl}>状态：</div>
@@ -223,23 +238,31 @@ class ProjectLibrary extends PureComponent {
                   </span>
                 </span>
               ) : null}
-              <span className="operateLine" />
-              <span className="operateBtn" onClick={() => this.handleDelete(r)}>
-                删除
-              </span>
-              <span className="operateLine" />
-              <span
-                className="operateBtn"
-                onClick={() => {
-                  router.push(
-                    `/portal/contentmanagement/ProjectLibrary/ConfigurationTopic?&uid=${
-                      r.specialUid
-                    }`
-                  );
-                }}
-              >
-                配置专题
-              </span>
+              {r.specialStatus === 0 ? (
+                <span>
+                  <span className="operateLine" />
+                  <span className="operateBtn" onClick={() => this.handleDelete(r)}>
+                    删除
+                  </span>
+                </span>
+              ) : null}
+              {r.specialStatus === 0 ? (
+                <span>
+                  <span className="operateLine" />
+                  <span
+                    className="operateBtn"
+                    onClick={() => {
+                      router.push(
+                        `/portal/contentmanagement/ProjectLibrary/ConfigurationTopic?&uid=${
+                          r.specialUid
+                        }`
+                      );
+                    }}
+                  >
+                    配置专题
+                  </span>
+                </span>
+              ) : null}
             </div>
           );
         },
@@ -292,9 +315,9 @@ class ProjectLibrary extends PureComponent {
     const { dispatch } = this.props;
     const that = this;
     confirm({
-      title: status + '' === '0' ? '确认要停用当前专题吗？' : '确认要启用当前专题吗？',
+      title: status + '' === '1' ? '确认要停用当前专题吗？' : '确认要启用当前专题吗？',
       content:
-        status + '' === '0' ? '停用后，将无法看到当前专题界面' : '启用后，将可以查看到当前专题界面',
+        status + '' === '1' ? '停用后，将无法看到当前专题界面' : '启用后，将可以查看到当前专题界面',
       icon: status === '1' ? successIcon : waringInfo,
       onOk() {
         dispatch({
@@ -335,21 +358,26 @@ class ProjectLibrary extends PureComponent {
       },
     });
   };
-  thSearch(value) {
+  thSearch() {
     const {
       dispatch,
       ProjectLibrary: { fromData },
     } = this.props;
-    fromData.searchText = value;
-    dispatch({
-      type: 'ProjectLibrary/saveDataModel',
-      payload: {
-        key: 'fromData',
-        value: fromData,
-      },
-    }).then(() => {
-      this.getList();
-    });
+    const { searchWord } = this.state;
+    if (searchWord.length > 15) {
+      message.error('请输入15字以下的搜索内容');
+    } else {
+      fromData.searchText = searchWord;
+      dispatch({
+        type: 'ProjectLibrary/saveDataModel',
+        payload: {
+          key: 'fromData',
+          value: fromData,
+        },
+      }).then(() => {
+        this.getList();
+      });
+    }
   }
   handleTableChange = pagination => {
     const {
