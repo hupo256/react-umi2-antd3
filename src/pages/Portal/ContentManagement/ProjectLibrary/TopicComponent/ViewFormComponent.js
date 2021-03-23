@@ -2,13 +2,13 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-23 17:44:15
+ * @Last Modified time: 2021-03-23 18:03:44
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
 import router from 'umi/router';
-import { Form, Input, Button, Icon, Radio } from 'antd';
+import { Form, Input, Button, Icon, Radio, Popconfirm } from 'antd';
 import { SketchPicker } from 'react-color';
 import { getQueryUrlVal } from '@/utils/utils';
 import styles from './index.less';
@@ -135,12 +135,21 @@ class ViewFormComponent extends PureComponent {
                   <div className="clearfix" style={{ width: 144, float: 'left' }}>
                     <div className={styles.FormCont}>{item.paramName}</div>
                     {item.paramField !== 'trackPhone' ? (
-                      <div
-                        className={styles.dragWraps}
-                        onClick={() => this.onDeleteFrom(item, index)}
+                      <Popconfirm
+                        title="是否确删除当前字段?"
+                        onConfirm={() => {
+                          this.onDeleteFrom(item, index);
+                        }}
+                        onCancel={() => {
+                          this.cancel();
+                        }}
+                        okText="确认"
+                        cancelText="取消"
                       >
-                        <Icon type="delete" />
-                      </div>
+                        <div className={styles.dragWraps}>
+                          <Icon type="delete" />
+                        </div>
+                      </Popconfirm>
                     ) : null}
                   </div>
                 </div>
@@ -563,6 +572,9 @@ class ViewFormComponent extends PureComponent {
         value: [...compentList],
       },
     });
+  }
+  cancel(e) {
+    console.log(e);
   }
 }
 

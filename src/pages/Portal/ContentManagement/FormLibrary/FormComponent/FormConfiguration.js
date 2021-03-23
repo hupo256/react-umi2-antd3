@@ -2,12 +2,12 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-23 17:46:15
+ * @Last Modified time: 2021-03-23 18:05:02
  * 专题库
  */
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Modal, Form, Button, Input, message, Icon, Checkbox, Radio } from 'antd';
+import { Modal, Form, Button, Input, message, Icon, Popconfirm, Radio } from 'antd';
 import Upload from '@/components/Upload/Upload';
 import { SketchPicker } from 'react-color';
 import styles from './index.less';
@@ -158,12 +158,21 @@ class FormConfiguration extends PureComponent {
                   <div className="clearfix" style={{ width: 144, float: 'left' }}>
                     <div className={styles.FormCont}>{item.paramName}</div>
                     {item.paramField !== 'trackPhone' ? (
-                      <div
-                        className={styles.dragWraps}
-                        onClick={() => this.onDeleteFrom(item, index)}
+                      <Popconfirm
+                        title="是否确删除当前字段?"
+                        onConfirm={() => {
+                          this.onDeleteFrom(item, index);
+                        }}
+                        onCancel={() => {
+                          this.cancel();
+                        }}
+                        okText="确认"
+                        cancelText="取消"
                       >
-                        <Icon type="delete" />
-                      </div>
+                        <div className={styles.dragWraps}>
+                          <Icon type="delete" />
+                        </div>
+                      </Popconfirm>
                     ) : null}
                   </div>
                 </div>
@@ -635,6 +644,9 @@ class FormConfiguration extends PureComponent {
         showSelect: true,
       });
     }
+  }
+  cancel(e) {
+    console.log(e);
   }
   add() {
     const { elementList } = this.state;
