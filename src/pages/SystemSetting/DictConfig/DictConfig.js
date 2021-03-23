@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 10:30:18 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-23 09:56:17
+ * @Last Modified time: 2021-03-23 18:39:31
  * 字典配置
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -222,7 +222,7 @@ class DictConfig extends PureComponent {
   };
   // 字段模块切换
   handleChangeTab = activeKey => {
-    this.setState({ activeKey });
+    this.setState({ activeKey,searchWord:null });
     // 重置搜索数据
     const { dispatch } = this.props;
     dispatch({
