@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-23 10:55:41
+ * @Last Modified time: 2021-03-23 18:23:20
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -230,6 +230,7 @@ class CreateStepOne extends PureComponent {
                         onMouseUp={this.lockClose}
                       >
                         <Input
+                        value={this.state.name}
                           onChange={e => {
                             this.setState({ name: e.target.value });
                           }}
@@ -373,7 +374,7 @@ class CreateStepOne extends PureComponent {
           this.props.form.setFieldsValue({
             styleDicCode: res.data.code,
           });
-          this.setState({ open: false });
+          this.setState({ open: false ,name:null});
         }
       });
     }
