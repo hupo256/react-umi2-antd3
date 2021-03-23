@@ -123,6 +123,12 @@ export default {
       yield put({ type: 'upData', payload: { ...payload } });
       return true;
     },
+    *resetSearchModel({ payload }, { call, put }) {
+      yield put({
+        type: 'upData',
+        payload: {CaseListQuery: { ...payload }, },
+      });
+    },
   },
 
   reducers: {
