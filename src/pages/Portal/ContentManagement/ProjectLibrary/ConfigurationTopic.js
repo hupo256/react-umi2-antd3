@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-23 17:19:08
+ * @Last Modified time: 2021-03-23 18:47:15
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -99,10 +99,12 @@ class ProjectLibrary extends PureComponent {
     const smallLogo = (auth && auth.logoSmall) || logoImg;
     let newLog = !collapsed ? bigLogo : smallLogo;
     let open = [];
+    let companyPhone = '';
     let arr =
       elementTree &&
       elementTree.map((item, index) => {
         open.push(`${index}`);
+        companyPhone = item.companyPhone;
         let childern =
           item.elementList &&
           item.elementList.map((ite, idx) => {
@@ -165,6 +167,7 @@ class ProjectLibrary extends PureComponent {
                 data={item}
                 index={index}
                 handleCheck={data => this.handleCheck(data)}
+                companyPhone={companyPhone}
                 handleColor={(data, index, code) => this.handleColor(data, index, code)}
                 handleDeleteFoot={data => this.handleDeletePic(data)}
               />
@@ -267,6 +270,7 @@ class ProjectLibrary extends PureComponent {
     let ishow = 0;
     let left = 0;
     let top = 0;
+    console.log(ite);
     compentList &&
       compentList.map((item, index) => {
         if (item.elementType === 'MODAL' && ite.elementType === 'MODAL') {

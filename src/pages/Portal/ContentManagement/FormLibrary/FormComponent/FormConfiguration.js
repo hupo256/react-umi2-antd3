@@ -2,16 +2,17 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-23 18:05:02
+ * @Last Modified time: 2021-03-23 19:24:36
  * 专题库
  */
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 import { Modal, Form, Button, Input, message, Icon, Popconfirm, Radio } from 'antd';
+import { errorIcon } from '@/utils/utils';
 import Upload from '@/components/Upload/Upload';
 import { SketchPicker } from 'react-color';
 import styles from './index.less';
-
+const { confirm } = Modal;
 @connect(({ FormLibrary }) => ({
   FormLibrary,
 }))
@@ -158,21 +159,14 @@ class FormConfiguration extends PureComponent {
                   <div className="clearfix" style={{ width: 144, float: 'left' }}>
                     <div className={styles.FormCont}>{item.paramName}</div>
                     {item.paramField !== 'trackPhone' ? (
-                      <Popconfirm
-                        title="是否确删除当前字段?"
-                        onConfirm={() => {
+                      <div
+                        className={styles.dragWraps}
+                        onClick={() => {
                           this.onDeleteFrom(item, index);
                         }}
-                        onCancel={() => {
-                          this.cancel();
-                        }}
-                        okText="确认"
-                        cancelText="取消"
                       >
-                        <div className={styles.dragWraps}>
-                          <Icon type="delete" />
-                        </div>
-                      </Popconfirm>
+                        <Icon type="delete" />
+                      </div>
                     ) : null}
                   </div>
                 </div>
@@ -546,15 +540,28 @@ class FormConfiguration extends PureComponent {
     });
   }
   onDeleteFrom(item, index) {
-    const { elementList, checkSelectData } = this.state;
-    item.paramExtName = item.paramName;
-    item.paramTips = `请输入${item.paramExtName}`;
-    item.paramRequired = 0;
-    checkSelectData.push(item);
-    elementList[1].paramList.splice(index, 1);
-    this.setState({
-      elementList: [...elementList],
-      checkSelectData: [...checkSelectData],
+    const that = this;
+    confirm({
+      title: '确认要删除当前字段吗？',
+      content: '删除后，已填写的内容将无法恢复，请确认是否要删除',
+      icon: errorIcon,
+      cancelText: '取消',
+      okText: '确定',
+      onOk() {
+        const { elementList, checkSelectData } = that.state;
+        item.paramExtName = item.paramName;
+        item.paramTips = `请输入${item.paramExtName}`;
+        item.paramRequired = 0;
+        checkSelectData.push(item);
+        elementList[1].paramList.splice(index, 1);
+        that.setState({
+          elementList: [...elementList],
+          checkSelectData: [...checkSelectData],
+        });
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
     });
   }
   handleListChange(e, name, index) {
