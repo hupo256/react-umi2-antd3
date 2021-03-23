@@ -1,0 +1,59 @@
+.tembox {
+  padding-left: 0;
+  display: grid;
+  grid: auto auto/1fr 1fr 1fr 1fr;
+  justify-items: start;
+  grid-gap: 10px 0;
+
+  li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .imgbox {
+      position: relative;
+      img {
+        width: 180px;
+        height: 240px;
+        background: #f0f0f0;
+      }
+
+      span {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 2;
+        opacity: 0;
+        transition: all 0.4s ease 0.1s;
+        background: rgba(0, 0, 0, 0.5);
+
+        button {
+          cursor: pointer;
+          border: none;
+          background: #16c;
+          color: #fff;
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          border-radius: 4px;
+          line-height: 1;
+          padding: 5px 7px;
+          transform: translate3d(-50%, -50%, 0);
+        }
+      }
+
+      &:hover {
+        span {
+          opacity: 1;
+        }
+      }
+    }
+
+    p {
+      text-align: center;
+      margin-top: 10px;
+    }
+  }
+}

@@ -1,9 +1,9 @@
 /*
  * @Author: zqm 
- * @Date: 2021-02-15 15:47:49 
- * @Last Modified by: zqm
- * @Last Modified time: 2021-03-19 11:42:49
- * 案例库
+ * @Date: 2021-03-23 13:49:12 
+ * @Last Modified by: tdd
+ * @Last Modified time: 2021-03-23 13:49:12 
+ * 小程序UI模板
  */
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
@@ -11,84 +11,74 @@ import router from 'umi/router';
 import { Card, Button, Icon, Divider, Table, Input, message, Modal } from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { paginations, getUrl, successIcon, waringInfo } from '@/utils/utils';
-import styles from './CaseLibrary.less';
+import styles from './templates.less';
 const { confirm } = Modal;
 const { Search } = Input;
 
-@connect(({ CaseLibrary, loading }) => ({
-  CaseLibrary,
-  Loading: loading.effects['CaseLibrary/queryDesignerListModel'],
+@connect(({ DesignerLibrary, loading }) => ({
+  DesignerLibrary,
+  Loading: loading.effects['DesignerLibrary/queryDesignerListModel'],
 }))
-class CaseLibrary extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      searchWord: null,
-      status: null,
-    };
-  }
+class DesignerLibrary extends PureComponent {
+  state = {
+    searchWord: null,
+    status: null,
+  };
 
   componentDidMount() {
-    this.getList({ pageNum: 1 });
+    const {
+      DesignerLibrary: { DesignerListQuery },
+    } = this.props;
+    this.setState({
+      searchWord: DesignerListQuery.searchWord,
+      status: DesignerListQuery.status,
+    });
+    this.getList({ pageNum: 1, ...DesignerListQuery });
   }
 
   render() {
     const {
       Loading,
-      CaseLibrary: { CaseList },
+      DesignerLibrary: { DesignerList },
     } = this.props;
     const columns = [
       {
-        title: '案例',
-        dataIndex: 'title',
+        title: '设计师',
+        dataIndex: 'name',
         render: (t, r) => {
           return (
-            <div style={{ display: 'flex' }}>
-              <img
-                src={r.coverPicUrl}
-                style={{
-                  width: 100,
-                  height: 70,
-                  marginRight: 12,
-                  objectFit: 'cover',
-                }}
-              />
-              <div style={{ flex: 1 }}>
-                <p>{t}</p>
-                <p>
-                  {(r.bedroom && (
-                    <span className={`${styles.siteTag} ${styles.siteTag1}`}>
-                      {r.bedroom && `${r.bedroom}居室 `}
-                    </span>
-                  )) ||
-                    null}
-                  {(r.acreage && (
-                    <span className={`${styles.siteTag} ${styles.siteTag2}`}>
-                      {r.acreage}
-                      m²
-                    </span>
-                  )) ||
-                    null}
-                  {(r.decorationCost && (
-                    <span className={`${styles.siteTag} ${styles.siteTag3}`}>
-                      {r.decorationCost}万
-                    </span>
-                  )) ||
-                    null}
-                  {r.styleDic && (
-                    <span className={`${styles.siteTag} ${styles.siteTag4}`}>
-                      {r.styleDic.name}
-                    </span>
-                  )}
-                </p>
-              </div>
+            <div>
+              <span>{r.headPicUrl && <img className={styles.headPic} src={r.headPicUrl} />}</span>
+              <span>{t}</span>
             </div>
           );
         },
       },
       {
-        title: '设计师',
-        dataIndex: 'designerName',
+        title: '职级',
+        dataIndex: 'position',
+      },
+      {
+        title: '擅长风格',
+        dataIndex: 'styles',
+        render: (t, r) => {
+          return t.map((item, i) => {
+            return (
+              <span key={item.uid}>
+                {item.name}
+                {t.length - 1 == i ? '' : ','}
+              </span>
+            );
+          });
+        },
+      },
+      {
+        title: '从业年限',
+        dataIndex: 'workingTime',
+      },
+      {
+        title: '案例数',
+        dataIndex: 'caseNum',
       },
       {
         title: '状态',
@@ -133,9 +123,9 @@ class CaseLibrary extends PureComponent {
             <div className="operateWrap">
               <span
                 className="operateBtn"
-                onClick={() => {
-                  router.push(`/portal/contentmanagement/caselibrary/edit?uid=${r.uid}`);
-                }}
+                onClick={() =>
+                  router.push(`/portal/contentmanagement/designerlibrary/edit?uid=${r.uid}`)
+                }
               >
                 编辑
               </span>
@@ -154,7 +144,7 @@ class CaseLibrary extends PureComponent {
         <PageHeaderWrapper>
           <Card bordered={false}>
             <Search
-              placeholder="可通过案例标题进行搜索"
+              placeholder="可通过设计师姓名 / 联系电话进行搜索"
               value={this.state.searchWord}
               onChange={e => this.setState({ searchWord: e.target.value })}
               onSearch={value => this.handleSrarch()}
@@ -189,24 +179,20 @@ class CaseLibrary extends PureComponent {
             <Button
               type="primary"
               onClick={() => {
-                this.props.dispatch({
-                  type: 'CaseLibrary/resetDataModel',
-                  payload: { caseRes: {}, stepOne: {}, stepTwo: {} },
-                });
-                router.push(`/portal/contentmanagement/caselibrary/add`);
+                router.push(`/portal/contentmanagement/designerlibrary/add`);
               }}
             >
               <Icon type="plus" />
-              创建案例
+              创建设计师
             </Button>
             <Table
               loading={Loading}
               style={{ marginTop: 20 }}
               rowKey={record => record.uid}
-              dataSource={CaseList.list}
+              dataSource={DesignerList.list}
               columns={columns}
               onChange={this.handleTableChange}
-              pagination={(CaseList && paginations(CaseList)) || false}
+              pagination={(DesignerList && paginations(DesignerList)) || false}
             />
           </Card>
         </PageHeaderWrapper>
@@ -222,40 +208,26 @@ class CaseLibrary extends PureComponent {
     const { searchWord } = this.state;
     this.getList({ searchWord, pageNum: 1 });
   };
-
-  // 分页
-  handleTableChange = pagination => {
-    this.getList({ pageNum: pagination.current, pageSize: pagination.pageSize });
-  };
-  getList = obj => {
-    const {
-      dispatch,
-      CaseLibrary: { CaseListQuery },
-    } = this.props;
-    dispatch({
-      type: 'CaseLibrary/queryCaseListModel',
-      payload: { ...CaseListQuery, ...obj },
-    });
-  };
-  // 切换状态
+  // 修改设计师状态
   handleChangeStatus = r => {
     const status = r.status;
     const { dispatch } = this.props;
     const that = this;
+
     confirm({
-      title: status === '1' ? '确认要停用当前案例吗？' : '确认要启用当前案例吗？',
+      title: status === '1' ? '确认要停用当前设计师吗？' : '确认要启用当前设计师吗？',
       content:
         status === '1'
-          ? '停用后，将无法在案例模块和设计师模块显示当前案例！'
-          : '启用后，将会在案例模块和设计师模块显示当前案例！',
+          ? '停用后，将无法在设计师模块显示当前设计师，也无法在创建案例时选择当前设计师！'
+          : '启用后，将在设计师模块显示当前设计师，也可以在创建案例时选择当前设计师！',
       icon: status === '2' ? successIcon : waringInfo,
       onOk() {
         dispatch({
-          type: 'CaseLibrary/updateCaseStatusModel',
-          payload: { uid: r.uid, status: r.status === '1' ? '2' : '1' },
+          type: 'DesignerLibrary/updateStatusModel',
+          payload: { uid: r.uid, status: r.status == '1' ? '2' : '1' },
         }).then(res => {
-          if (res && res.code === 200) {
-            message.success('操作成功');
+          if (res.code === 200) {
+            message.success(`${r.status == '1' ? '停用' : '启用'}成功`);
             that.getList({});
           }
         });
@@ -265,6 +237,21 @@ class CaseLibrary extends PureComponent {
       },
     });
   };
+
+  // 分页
+  handleTableChange = pagination => {
+    this.getList({ pageNum: pagination.current, pageSize: pagination.pageSize });
+  };
+  getList = obj => {
+    const {
+      dispatch,
+      DesignerLibrary: { DesignerListQuery },
+    } = this.props;
+    dispatch({
+      type: 'DesignerLibrary/queryDesignerListModel',
+      payload: { ...DesignerListQuery, ...obj },
+    });
+  };
 }
 
-export default CaseLibrary;
+export default DesignerLibrary;

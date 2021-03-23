@@ -53,7 +53,7 @@ export default [
           },
         ],
       },
-     
+
       // v2.0
       // 门户
       {
@@ -151,6 +151,32 @@ export default [
               },
             ],
           },
+
+          {
+            path: '/portal/minProgram', // 定义左侧菜单栏 与 CN文件相匹配
+            name: 'minProgram',
+            routes: [
+              {
+                path: '/portal/minProgram', // 入口文件，要用redirect作标记，这相路由刷新时才能正确匹配模块下的子路由们
+                redirect: '/portal/minProgram/home',
+              },
+              {
+                path: '/portal/minProgram/home', // 接下来，path,name/PageHeaderName, component三要素常规配置
+                PageHeaderName: '当前模板',
+                component: './Portal/minProgram/home',
+              },
+              {
+                path: '/portal/minProgram/templates',
+                PageHeaderName: '选择模板',
+                component: './Portal/minProgram/templates',
+              },
+              {
+                path: '/portal/minProgram/edit',
+                PageHeaderName: '编辑模板',
+                component: './Portal/minProgram/edit',
+              },
+            ],
+          },
           // {
           //   path: '/portal/mysite',
           //   name: 'mysite',
@@ -168,14 +194,14 @@ export default [
           // },
         ],
       },
-       // v1.1
+      // v1.1
       // 客户
       {
         path: '/customer',
         name: 'customer',
         icon: 'retweet',
         // code: 'P2020010110014',
-            component: './Customer/LeadManagement/LeadManagement',
+        component: './Customer/LeadManagement/LeadManagement',
         // routes: [
         //   {
         //     path: '/customer',

@@ -26,6 +26,8 @@ export default {
   'menu.portal.mysite': '我的网站',
   'menu.portal.mysite.sitepanel': '网站面板',
 
+  'menu.portal.minProgram': '装企小程序',
+
   'menu.home': '首页',
   'menu.list': '列表页',
   'menu.profile': '详情页',
