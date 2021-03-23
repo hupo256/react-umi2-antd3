@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:47:07 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-19 16:51:51
+ * @Last Modified time: 2021-03-22 19:25:25
  * 工地库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -277,6 +277,7 @@ class SiteLibrary extends PureComponent {
 
   handleOk = () => {
     this.setState({ visible: false, record: null });
+    this.getList({});
   };
   handleCancel = () => {
     this.setState({ visible: false, record: null });

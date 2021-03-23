@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-18 16:39:42 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-12 15:03:42
+ * @Last Modified time: 2021-03-23 09:50:51
  * 创建设计师
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -46,6 +46,7 @@ class DesignerLibraryAdd extends PureComponent {
       status: null,
       coverImg: null,
       uploadVisible: false,
+      styleDicCodes:[]
     };
   }
 
@@ -59,7 +60,7 @@ class DesignerLibraryAdd extends PureComponent {
   }
 
   render() {
-    const { status, coverImg, uploadVisible } = this.state;
+    const { status, coverImg, uploadVisible,styleDicCodes } = this.state;
     const { getFieldDecorator } = this.props.form;
     const {
       DictConfig: { dicData },
@@ -146,7 +147,11 @@ class DesignerLibraryAdd extends PureComponent {
                     },
                   ],
                 })(
-                  <Select mode="multiple" style={{ width: 400 }} placeholder="请选择擅长风格">
+                  <Select mode="multiple" 
+                  style={{ width: 400 }} 
+                  placeholder="请选择擅长风格"
+                  onChange={value=>this.handleChange(value)}
+                  >
                     {dicData &&
                       dicData['DM002'] &&
                       dicData['DM002'].map(item => {
@@ -264,7 +269,21 @@ class DesignerLibraryAdd extends PureComponent {
       </div>
     );
   }
-
+  handleChange=value=>{
+    if(value.length<4){
+      this.props.form.setFieldsValue({
+        styleDicCodes:value,
+      });
+    }else{
+      message.info('最多支持选择3个')
+      this.props.form.setFieldsValue({
+        styleDicCodes:value,
+      });
+    }
+    // this.props.form.setFieldsValue({
+    //   styleDicCodes: data[0].path,
+    // });
+  }
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
@@ -273,6 +292,10 @@ class DesignerLibraryAdd extends PureComponent {
       const { headPicUrl } = this.state;
       const { dispatch } = this.props;
       // createDesignerModel
+      if(values.styleDicCodes.length>3){
+        message.error('擅长风格最多支持选择3个')
+        return false
+      }
       dispatch({
         type: 'DesignerLibrary/createDesignerModel',
         payload: {
@@ -284,13 +307,6 @@ class DesignerLibraryAdd extends PureComponent {
           history.go(-1);
         }
 
-        // this.setState({ submitLoading: false });
-        // if (res && res.code === 200) {
-        //   // 清空缓存内容
-        //   this.clearCache();
-        //   // 跳转到详情页
-        //   router.push(`/project/info/projectinformation?uid=${res.data.uid}`);
-        // }
       });
     });
   };
