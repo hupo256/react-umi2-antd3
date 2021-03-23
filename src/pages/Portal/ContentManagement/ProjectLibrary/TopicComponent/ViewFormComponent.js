@@ -2,13 +2,13 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-18 15:21:16
+ * @Last Modified time: 2021-03-23 18:03:44
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
 import router from 'umi/router';
-import { Form, Input, Button, Icon, Radio } from 'antd';
+import { Form, Input, Button, Icon, Radio, Popconfirm } from 'antd';
 import { SketchPicker } from 'react-color';
 import { getQueryUrlVal } from '@/utils/utils';
 import styles from './index.less';
@@ -30,19 +30,49 @@ class ViewFormComponent extends PureComponent {
       showSelect: false,
       checkTable: false,
       checkTable: 1,
+      arr: [
+        {
+          defaultValue: null,
+          defaultValueUpdate: 1,
+          paramField: 'trackName',
+          paramName: '业主姓名',
+          paramExtName: '业主姓名',
+          paramRequired: 1,
+          paramType: 'String',
+          paramTips: '请输入业主姓名',
+          paramUid: 'c834a6d6735411eb999e00505694ddf5',
+          paramValid: null,
+        },
+        {
+          defaultValue: null,
+          defaultValueUpdate: 1,
+          paramField: 'trackAddress',
+          paramName: '楼盘/楼宇',
+          paramExtName: '楼盘/楼宇',
+          paramTips: '请输入楼盘/楼宇',
+          paramRequired: 1,
+          paramType: 'String',
+          paramUid: '00b53e1d735511eb999e00505694ddf5',
+          paramValid: null,
+        },
+        {
+          defaultValue: null,
+          defaultValueUpdate: 1,
+          paramField: 'trackArea',
+          paramName: '建筑面积',
+          paramExtName: '建筑面积',
+          paramTips: '请输入建筑面积',
+          paramRequired: 1,
+          paramType: 'String',
+          paramUid: '15949455735511eb999e00505694ddf5',
+          paramValid: null,
+        },
+      ],
     };
   }
   componentDidMount() {
-    const {
-      data,
-      ProjectLibrary: { elementTree },
-    } = this.props;
-    const edit = getQueryUrlVal('edit');
-    let { checkList, checkSelectData } = this.state;
-    let arr =
-      elementTree[0] && elementTree[0].elementList[0]
-        ? elementTree[0].elementList[0].paramList
-        : [];
+    const { data } = this.props;
+    let { checkList, checkSelectData, arr } = this.state;
     arr.map((item, index) => {
       if (item.paramExtName === undefined) {
         item.paramExtName = item.paramName;
@@ -57,6 +87,7 @@ class ViewFormComponent extends PureComponent {
         return data.paramList.every(e => e.paramName != v.paramName);
       });
       checkSelectData.push(...arr3);
+      console.log(checkSelectData);
     } else {
       data.paramList &&
         data.paramList.map((item, index) => {
@@ -103,13 +134,22 @@ class ViewFormComponent extends PureComponent {
                   <div className={styles.tit}>字段</div>
                   <div className="clearfix" style={{ width: 144, float: 'left' }}>
                     <div className={styles.FormCont}>{item.paramName}</div>
-                    {item.paramField !== 'phoneNumber' ? (
-                      <div
-                        className={styles.dragWraps}
-                        onClick={() => this.onDeleteFrom(item, index)}
+                    {item.paramField !== 'trackPhone' ? (
+                      <Popconfirm
+                        title="是否确删除当前字段?"
+                        onConfirm={() => {
+                          this.onDeleteFrom(item, index);
+                        }}
+                        onCancel={() => {
+                          this.cancel();
+                        }}
+                        okText="确认"
+                        cancelText="取消"
                       >
-                        <Icon type="delete" />
-                      </div>
+                        <div className={styles.dragWraps}>
+                          <Icon type="delete" />
+                        </div>
+                      </Popconfirm>
                     ) : null}
                   </div>
                 </div>
@@ -137,7 +177,7 @@ class ViewFormComponent extends PureComponent {
                     />
                   </div>
                 </div>
-                {item.paramField !== 'phoneNumber' ? (
+                {item.paramField !== 'trackPhone' ? (
                   <div className="clearfix">
                     <div className={styles.tit}>是否必填</div>
                     <div className={styles.FormCont}>
@@ -351,7 +391,7 @@ class ViewFormComponent extends PureComponent {
                   <Icon type="plus-circle" />
                   <span style={{ marginLeft: 10 }}>
                     添加表单字段（
-                    {checkSelectData.length}
+                    {checkList.length}
                     /4）
                   </span>
                 </div>
@@ -532,6 +572,9 @@ class ViewFormComponent extends PureComponent {
         value: [...compentList],
       },
     });
+  }
+  cancel(e) {
+    console.log(e);
   }
 }
 

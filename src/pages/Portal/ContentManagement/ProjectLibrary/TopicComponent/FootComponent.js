@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-16 11:49:36
+ * @Last Modified time: 2021-03-23 17:36:04
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -334,7 +334,6 @@ class FootComponent extends PureComponent {
     );
   };
   handleList(data) {
-    console.log('data1111', data);
     this.setState({
       visibleForm: true,
       formUid: data,

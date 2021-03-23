@@ -2,12 +2,12 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-22 11:35:51
+ * @Last Modified time: 2021-03-23 18:05:02
  * 专题库
  */
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Modal, Form, Button, Input, message, Icon, Checkbox, Radio } from 'antd';
+import { Modal, Form, Button, Input, message, Icon, Popconfirm, Radio } from 'antd';
 import Upload from '@/components/Upload/Upload';
 import { SketchPicker } from 'react-color';
 import styles from './index.less';
@@ -27,7 +27,7 @@ class FormConfiguration extends PureComponent {
           paramField: 'trackName',
           paramName: '业主姓名',
           paramExtName: '业主姓名',
-          paramRequired: 0,
+          paramRequired: 1,
           paramType: 'String',
           paramTips: '请输入业主姓名',
           paramUid: 'c834a6d6735411eb999e00505694ddf5',
@@ -40,7 +40,7 @@ class FormConfiguration extends PureComponent {
           paramName: '楼盘/楼宇',
           paramExtName: '楼盘/楼宇',
           paramTips: '请输入楼盘/楼宇',
-          paramRequired: 0,
+          paramRequired: 1,
           paramType: 'String',
           paramUid: '00b53e1d735511eb999e00505694ddf5',
           paramValid: null,
@@ -52,7 +52,7 @@ class FormConfiguration extends PureComponent {
           paramName: '建筑面积',
           paramExtName: '建筑面积',
           paramTips: '请输入建筑面积',
-          paramRequired: 0,
+          paramRequired: 1,
           paramType: 'String',
           paramUid: '15949455735511eb999e00505694ddf5',
           paramValid: null,
@@ -114,7 +114,22 @@ class FormConfiguration extends PureComponent {
     };
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    const { data } = this.props;
+    const { checkSelectData } = this.state;
+    if (data) {
+      let arr3 = [];
+      if (data.elementList[1].paramList.length !== 4) {
+        arr3 = checkSelectData.filter(v => {
+          return data.elementList[1].paramList.every(e => e.paramField != v.paramField);
+        });
+      }
+      this.setState({
+        elementList: data.elementList,
+        checkSelectData: arr3,
+      });
+    }
+  }
   render() {
     const {
       showPic,
@@ -142,13 +157,22 @@ class FormConfiguration extends PureComponent {
                   <div className={styles.tit}>字段</div>
                   <div className="clearfix" style={{ width: 144, float: 'left' }}>
                     <div className={styles.FormCont}>{item.paramName}</div>
-                    {item.paramField !== 'phoneNumber' ? (
-                      <div
-                        className={styles.dragWraps}
-                        onClick={() => this.onDeleteFrom(item, index)}
+                    {item.paramField !== 'trackPhone' ? (
+                      <Popconfirm
+                        title="是否确删除当前字段?"
+                        onConfirm={() => {
+                          this.onDeleteFrom(item, index);
+                        }}
+                        onCancel={() => {
+                          this.cancel();
+                        }}
+                        okText="确认"
+                        cancelText="取消"
                       >
-                        <Icon type="delete" />
-                      </div>
+                        <div className={styles.dragWraps}>
+                          <Icon type="delete" />
+                        </div>
+                      </Popconfirm>
                     ) : null}
                   </div>
                 </div>
@@ -176,7 +200,7 @@ class FormConfiguration extends PureComponent {
                     />
                   </div>
                 </div>
-                {item.paramField !== 'phoneNumber' ? (
+                {item.paramField !== 'trackPhone' ? (
                   <div className="clearfix">
                     <div className={styles.tit}>是否必填</div>
                     <div className={styles.FormCont}>
@@ -436,7 +460,7 @@ class FormConfiguration extends PureComponent {
                     <Icon type="plus-circle" />
                     <span style={{ marginLeft: 10 }}>
                       添加表单字段（
-                      {checkSelectData.length}
+                      {elementList[1].paramList.length}
                       /4）
                     </span>
                   </div>
@@ -620,6 +644,9 @@ class FormConfiguration extends PureComponent {
         showSelect: true,
       });
     }
+  }
+  cancel(e) {
+    console.log(e);
   }
   add() {
     const { elementList } = this.state;
