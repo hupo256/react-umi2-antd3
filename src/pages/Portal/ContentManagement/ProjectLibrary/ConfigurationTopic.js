@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-18 15:13:39
+ * @Last Modified time: 2021-03-23 17:19:08
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -437,41 +437,70 @@ class ProjectLibrary extends PureComponent {
       ProjectLibrary: { compentList },
     } = this.props;
     if (compentList.length > 0) {
-      // let isTrue = 0;
-      // console.log(compentList);
-      // compentList.map((item, index) => {
-      //   if (item) {
+      let isTrue = 0;
+      let isTrueM = 0;
+      let isTrueF = 0;
+      let formUid = '';
+      compentList.map((item, index) => {
+        if (item.elementType === 'IMG') {
+          isTrue = 1;
+        }
 
-      //   }
-      // });
-      dispatch({
-        type: 'ProjectLibrary/specialCollocateModel',
-        payload: {
-          elementList: compentList,
-          specialUid: getQueryUrlVal('uid'),
-          saveType: 1,
-        },
-      }).then(res => {
-        if (res && res.code === 200) {
-          dispatch({
-            type: 'ProjectLibrary/saveDataModel',
-            payload: {
-              key: 'uspecialUrlData',
-              value: res.data,
-            },
-          });
-          dispatch({
-            type: 'ProjectLibrary/saveDataModel',
-            payload: {
-              key: 'status',
-              value: 2,
-            },
-          });
-          router.push('/portal/contentmanagement/ProjectLibrary/add');
+        if (item.elementType === 'MODAL') {
+          if (item.formUid) {
+            isTrueF = 1;
+            formUid = item.formUid;
+          }
+          isTrueM = 1;
         }
       });
+      if (isTrue === 0) {
+        return message.error('请添加图片广告组件');
+      }
+      if (isTrueM === 0) {
+        return message.error('请添加常驻底部组件');
+      }
+      if (isTrueF === 0) {
+        return message.error('请绑定浮窗表单');
+      }
+      if (isTrue === 1 && isTrueM === 1 && isTrueF === 1) {
+        dispatch({
+          type: 'ProjectLibrary/formBindModel',
+          payload: {
+            directType: 4,
+            directUid: getQueryUrlVal('uid'),
+            formUid: formUid,
+          },
+        });
+        dispatch({
+          type: 'ProjectLibrary/specialCollocateModel',
+          payload: {
+            elementList: compentList,
+            specialUid: getQueryUrlVal('uid'),
+            saveType: 1,
+          },
+        }).then(res => {
+          if (res && res.code === 200) {
+            dispatch({
+              type: 'ProjectLibrary/saveDataModel',
+              payload: {
+                key: 'uspecialUrlData',
+                value: res.data,
+              },
+            });
+            dispatch({
+              type: 'ProjectLibrary/saveDataModel',
+              payload: {
+                key: 'status',
+                value: 2,
+              },
+            });
+            router.push('/portal/contentmanagement/ProjectLibrary/add');
+          }
+        });
+      }
     } else {
-      message.error('请添加内容');
+      message.error('请添加组件');
     }
   }
   logoutSave() {
@@ -479,23 +508,37 @@ class ProjectLibrary extends PureComponent {
       dispatch,
       ProjectLibrary: { compentList },
     } = this.props;
-    if (compentList.length > 0) {
-      dispatch({
-        type: 'ProjectLibrary/specialCollocateModel',
-        payload: {
-          elementList: compentList,
-          specialUid: getQueryUrlVal('uid'),
-          saveType: 2,
-        },
-      }).then(res => {
-        if (res && res.code === 200) {
-          message.success('保存成功');
-          router.push('/portal/contentmanagement/ProjectLibrary');
+    let formUid = '';
+    compentList.map((item, index) => {
+      if (item.elementType === 'MODAL') {
+        if (item.formUid) {
+          formUid = item.formUid;
         }
+      }
+    });
+    if (formUid && formUid !== '') {
+      dispatch({
+        type: 'ProjectLibrary/formBindModel',
+        payload: {
+          directType: 4,
+          directUid: getQueryUrlVal('uid'),
+          formUid: formUid,
+        },
       });
-    } else {
-      message.error('请添加内容');
     }
+    dispatch({
+      type: 'ProjectLibrary/specialCollocateModel',
+      payload: {
+        elementList: compentList,
+        specialUid: getQueryUrlVal('uid'),
+        saveType: 2,
+      },
+    }).then(res => {
+      if (res && res.code === 200) {
+        message.success('保存成功');
+        router.push('/portal/contentmanagement/ProjectLibrary');
+      }
+    });
   }
 }
 

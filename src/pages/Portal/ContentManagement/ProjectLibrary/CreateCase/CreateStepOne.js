@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-22 18:01:16
+ * @Last Modified time: 2021-03-22 19:18:12
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -81,8 +81,8 @@ class CreateStepOne extends PureComponent {
                   message: '请输入专题标题',
                 },
                 {
-                  max: 30,
-                  message: '限制1-30字符长度',
+                  max: 8,
+                  message: '限制1-8字符长度',
                 },
               ],
             })(<Input style={{ width: 400 }} placeholder="请输入案例标题" />)}
@@ -181,6 +181,7 @@ class CreateStepOne extends PureComponent {
       values.specialCoverImg =
         values.specialCoverImg && values.specialCoverImg[0] ? values.specialCoverImg[0].addr : '';
       values.specialDescription = values.specialDescription ? values.specialDescription : '';
+
       if (activeKey) {
         values.specialUid = getQueryUrlVal('uid');
         dispatch({

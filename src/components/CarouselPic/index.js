@@ -20,6 +20,7 @@ export default class CarouselPic extends Component {
           </div>
         );
       });
+    console.log('inputData', inputData);
     return (
       <Modal
         width={800}
@@ -33,16 +34,20 @@ export default class CarouselPic extends Component {
           <Carousel ref="prics" initialSlide={initialSlide || 0} className={styles.imgPrefiew}>
             {Inputs}
           </Carousel>
-          <div className={styles.left} onClick={this.handlePrev}>
-            <a>
-              <Icon type="left-circle" />
-            </a>
-          </div>
-          <div className={styles.right} onClick={this.handleNext}>
-            <a>
-              <Icon type="right-circle" />
-            </a>
-          </div>
+          {inputData.length > 1 ? (
+            <div className={styles.left} onClick={this.handlePrev}>
+              <a>
+                <Icon type="left-circle" />
+              </a>
+            </div>
+          ) : null}
+          {inputData.length > 1 ? (
+            <div className={styles.right} onClick={this.handleNext}>
+              <a>
+                <Icon type="right-circle" />
+              </a>
+            </div>
+          ) : null}
         </div>
       </Modal>
     );
