@@ -2,13 +2,13 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-22 18:01:32
+ * @Last Modified time: 2021-03-23 19:03:33
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
 import router from 'umi/router';
-import { Card, Button, Icon, Row, Col, Input, message, Tag, Table, Popconfirm, Modal } from 'antd';
+import { Card, Button, Icon, Input, message, Table, Modal } from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { paginations, successIcon, waringInfo, errorIcon } from '@/utils/utils';
 import styles from './index.less';
@@ -289,6 +289,7 @@ class ProjectLibrary extends PureComponent {
       ProjectLibrary: { fromData },
     } = this.props;
     fromData.specialStatus = value[0];
+    fromData.pageNum = 1;
     dispatch({
       type: 'ProjectLibrary/saveDataModel',
       payload: {
@@ -368,6 +369,7 @@ class ProjectLibrary extends PureComponent {
       message.error('请输入15字以下的搜索内容');
     } else {
       fromData.searchText = searchWord;
+      fromData.pageNum = 1;
       dispatch({
         type: 'ProjectLibrary/saveDataModel',
         payload: {
@@ -397,9 +399,8 @@ class ProjectLibrary extends PureComponent {
     });
   };
   handleCopy(t) {
-    var text = document.getElementById('text').innerText;
-    var input = document.getElementById('input');
-    input.value = text; // 修改文本框的内容
+    let input = document.getElementById('input');
+    input.value = t; // 修改文本框的内容
     input.select(); // 选中文本
     document.execCommand('copy'); // 执行浏览器复制命令
     message.success('复制成功');
