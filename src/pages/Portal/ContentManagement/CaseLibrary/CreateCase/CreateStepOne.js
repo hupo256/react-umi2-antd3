@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-23 09:33:55
+ * @Last Modified time: 2021-03-23 10:55:41
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -42,6 +42,7 @@ class CreateStepOne extends PureComponent {
     bathroom: 0,
     name: null,
     disabled: [],
+    designerUid:[]
   };
 
   componentDidMount() {
@@ -69,10 +70,11 @@ class CreateStepOne extends PureComponent {
     ['bedroom', 'liveroom', 'kitchen', 'bathroom'].forEach(item => {
       this.setState({ [item]: (stepOne && stepOne[item]) || 0 });
     });
+    this.setState({designerUid:stepOne.designerUid})
   }
 
   render() {
-    const { status, name, disabled } = this.state;
+    const { status, name, disabled ,designerUid} = this.state;
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
@@ -134,29 +136,24 @@ class CreateStepOne extends PureComponent {
           </Form.Item>
           <Form.Item label="设计师">
             {getFieldDecorator('designerUid', {
-              initialValue: stepOne.designerUid || [],
+              initialValue:designerUid||[],
               rules: [{ required: true, message: '请选择设计师' }],
             })(
-              <Select 
-              showSearch 
-              style={{ width: 400 }} 
-              placeholder="请输入设计师姓名进行检索" 
-              filterOption={(input, option) =>{
-               return option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-              }>
-                {DesignerList &&
-                  DesignerList.list &&
-                  DesignerList.list.map(item => {
-                    if (item.status === '1') {
-                      return (
-                        <Option value={item.code} key={item.uid}>
-                          {item.name}
-                        </Option>
-                      );
-                    } else {
-                      return null;
+              <Select style={{ width: 400 }} placeholder="请选择设计师"  showSearch onChange={this.handleChange} filterOption={(input, option) =>{
+                 return option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                }>
+                {
+                      DesignerList &&
+                      DesignerList.list &&
+                      DesignerList.list.filter(items=>items.status === '1').map(item => {
+                          return (
+                            <Option value={item.uid} key={item.uid}>
+                              {item.name}
+                            </Option>
+                          );
+                       
+                      })
                     }
-                  })}
               </Select>
             )}
           </Form.Item>
@@ -325,6 +322,15 @@ class CreateStepOne extends PureComponent {
         </Form>
       </div>
     );
+  }
+  handleChange=value=>{
+    console.log('====================================');
+    console.log(value);
+    console.log('====================================');
+    this.setState({designerUid:value})
+    this.props.form.setFieldsValue({
+      designerUid: value,
+    });
   }
   handleHouseTypeSelect = (value, name) => {
     this.setState({ [name]: value });
