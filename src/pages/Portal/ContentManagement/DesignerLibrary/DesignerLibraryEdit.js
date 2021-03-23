@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-18 16:39:42 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-22 19:41:44
+ * @Last Modified time: 2021-03-23 09:53:41
  * 创建设计师
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -166,7 +166,8 @@ class DesignerLibraryEdit extends PureComponent {
                     },
                   ],
                 })(
-                  <Select mode="multiple" style={{ width: 400 }} placeholder="请选择擅长风格">
+                  <Select mode="multiple" 
+                  onChange={value=>this.handleChange(value)} style={{ width: 400 }} placeholder="请选择擅长风格">
                     {dicData &&
                       dicData['DM002'] &&
                       dicData['DM002'].map(item => {
@@ -306,6 +307,18 @@ class DesignerLibraryEdit extends PureComponent {
     );
   }
 
+  handleChange=value=>{
+    if(value.length<4){
+      this.props.form.setFieldsValue({
+        styleDicCodes:value,
+      });
+    }else{
+      message.info('最多支持选择3个')
+      this.props.form.setFieldsValue({
+        styleDicCodes:value,
+      });
+    }
+  }
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
@@ -314,6 +327,10 @@ class DesignerLibraryEdit extends PureComponent {
       const { headPicUrl } = this.state;
       const { dispatch } = this.props;
       // createDesignerModel
+      if(values.styleDicCodes.length>3){
+        message.error('擅长风格最多支持选择3个')
+        return false
+      }
       dispatch({
         type: 'DesignerLibrary/createDesignerModel',
         payload: {
@@ -323,13 +340,7 @@ class DesignerLibraryEdit extends PureComponent {
       }).then(res => {
         message.success('编辑成功');
         history.go(-1);
-        // this.setState({ submitLoading: false });
-        // if (res && res.code === 200) {
-        //   // 清空缓存内容
-        //   this.clearCache();
-        //   // 跳转到详情页
-        //   router.push(`/project/info/projectinformation?uid=${res.data.uid}`);
-        // }
+      
       });
     });
   };
