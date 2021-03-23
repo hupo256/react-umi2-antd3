@@ -78,6 +78,7 @@ export default {
       });
       return response;
     },
+
     // 配置表单
     *formCollocateModel({ payload }, { call, put }) {
       const response = yield call(formCollocate, {
@@ -85,14 +86,10 @@ export default {
       });
       return response;
     },
-    // 获取专题配置
+    // 获取表单配置
     *formgetCollocationModel({ payload }, { call, put }) {
       const response = yield call(formgetCollocation, {
         ...payload,
-      });
-      yield put({
-        type: 'upData',
-        payload: { collocationDetail: (response && response.data) || {} },
       });
       return response;
     },

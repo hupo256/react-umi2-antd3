@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-17 14:57:10
+ * @Last Modified time: 2021-03-23 15:24:18
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -32,6 +32,8 @@ class ProjectLibrary extends PureComponent {
       formUid: '',
       data: '',
       visibleForm: false,
+      searchWord: '',
+      ConfigurationData: '',
     };
   }
 
@@ -39,7 +41,7 @@ class ProjectLibrary extends PureComponent {
     this.getList();
   }
   render() {
-    const { visible, title, data, formUid, visibleForm } = this.state;
+    const { visible, title, data, formUid, visibleForm, ConfigurationData } = this.state;
     return (
       <div>
         <PageHeaderWrapper>
@@ -60,21 +62,24 @@ class ProjectLibrary extends PureComponent {
               创建表单
             </Button>
             {this.renderTable()}
-            <FormAdd
-              visible={visible}
-              title={title}
-              data={data}
-              formUid={formUid}
-              handleCancel={this.handleCancel}
-              handleList={() => {
-                this.handleList();
-              }}
-            />
+            {visible ? (
+              <FormAdd
+                visible={visible}
+                title={title}
+                data={data}
+                formUid={formUid}
+                handleCancel={this.handleCancel}
+                handleList={() => {
+                  this.handleList();
+                }}
+              />
+            ) : null}
           </Card>
         </PageHeaderWrapper>
         {visibleForm ? (
           <FormConfiguration
             formUid={formUid}
+            data={ConfigurationData}
             handleCancel={this.handleCancelForm}
             handleAdd={this.handleAddConfig}
           />
@@ -91,10 +96,18 @@ class ProjectLibrary extends PureComponent {
     return (
       <div className={styles.wrap}>
         <Search
-          onSearch={value => this.thSearch(value)}
+          onSearch={() => this.thSearch()}
           placeholder={'可通过表单标题进行搜索'}
           className={styles.ser}
           defaultValue={fromData.searchText}
+          onChange={e => this.setState({ searchWord: e.target.value })}
+          defaultValue={fromData.searchText}
+          onPressEnter={() => {
+            this.thSearch();
+          }}
+          onBlur={() => {
+            this.thSearch();
+          }}
         />
         <div className={styles.status}>
           <div className={styles.fl}>状态：</div>
@@ -206,26 +219,32 @@ class ProjectLibrary extends PureComponent {
               >
                 编辑
               </span>
-              {r.specialStatus !== 0 ? (
+              {r.formStatus !== 0 ? (
                 <span>
                   <span className="operateLine" />
                   <span className="operateBtn" onClick={() => this.handleToggleStatus(r)}>
-                    {r.specialStatus === 0 || r.specialStatus === 2 ? '启用' : '停用'}
+                    {r.formStatus === 0 || r.formStatus === 2 ? '启用' : '停用'}
                   </span>
                 </span>
               ) : null}
-              <span className="operateLine" />
-              <span className="operateBtn" onClick={() => this.handleDelete(r)}>
-                删除
-              </span>
-              <span className="operateLine" />
-              <span
-                className="operateBtn"
-                onClick={() => {
-                  this.addFormConfiguration(r);
-                }}
-              >
-                配置表单
+              {r.formStatus === 0 ? (
+                <span>
+                  <span className="operateLine" />
+                  <span className="operateBtn" onClick={() => this.handleDelete(r)}>
+                    删除
+                  </span>
+                </span>
+              ) : null}
+              <span>
+                <span className="operateLine" />
+                <span
+                  className="operateBtn"
+                  onClick={() => {
+                    this.addFormConfiguration(r);
+                  }}
+                >
+                  配置表单
+                </span>
               </span>
             </div>
           );
@@ -275,13 +294,13 @@ class ProjectLibrary extends PureComponent {
   };
   // 停用启用
   handleToggleStatus = r => {
-    const status = r.specialStatus;
+    const status = r.formStatus;
     const { dispatch } = this.props;
     const that = this;
     confirm({
-      title: status + '' === '0' ? '确认要停用当前表单吗？' : '确认要启用当前表单吗？',
+      title: status + '' === '1' ? '确认要停用当前表单吗？' : '确认要启用当前表单吗？',
       content:
-        status + '' === '0'
+        status + '' === '1'
           ? '停用后，将无法关联当前表单(已关联的不受影响)'
           : '启用后，将可以关联使用表单',
       icon: status === '1' ? successIcon : waringInfo,
@@ -324,21 +343,26 @@ class ProjectLibrary extends PureComponent {
       },
     });
   };
-  thSearch(value) {
+  thSearch() {
     const {
       dispatch,
-      ProjectLibrary: { fromData },
+      FormLibrary: { fromData },
     } = this.props;
-    fromData.searchText = value;
-    dispatch({
-      type: 'FormLibrary/saveDataModel',
-      payload: {
-        key: 'fromData',
-        value: fromData,
-      },
-    }).then(() => {
-      this.getList();
-    });
+    const { searchWord } = this.state;
+    if (searchWord.length > 15) {
+      message.error('请输入15字以下的搜索内容');
+    } else {
+      fromData.searchText = searchWord;
+      dispatch({
+        type: 'FormLibrary/saveDataModel',
+        payload: {
+          key: 'fromData',
+          value: fromData,
+        },
+      }).then(() => {
+        this.getList();
+      });
+    }
   }
   handleTableChange = pagination => {
     const {
@@ -394,10 +418,28 @@ class ProjectLibrary extends PureComponent {
     });
   }
   addFormConfiguration(t) {
-    this.setState({
-      formUid: t.formUid,
-      visibleForm: true,
-    });
+    console.log(t);
+    if (t.formStatus !== 0) {
+      const { dispatch } = this.props;
+      dispatch({
+        type: 'FormLibrary/formgetCollocationModel',
+        payload: { formUid: t.formUid },
+      }).then(res => {
+        if (res && res.code === 200) {
+          this.setState({
+            formUid: t.formUid,
+            visibleForm: true,
+            ConfigurationData: res.data,
+          });
+        }
+      });
+    } else {
+      this.setState({
+        formUid: t.formUid,
+        visibleForm: true,
+        ConfigurationData: '',
+      });
+    }
   }
   handleAddConfig = () => {
     this.setState(
