@@ -2,13 +2,13 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-23 15:24:18
+ * @Last Modified time: 2021-03-23 19:03:54
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
 import router from 'umi/router';
-import { Card, Button, Icon, Row, Col, Input, message, Tag, Table, Popconfirm, Modal } from 'antd';
+import { Card, Button, Input, message, Table, Modal } from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { paginations, successIcon, waringInfo, errorIcon } from '@/utils/utils';
 import FormAdd from './FormComponent/FormAdd';
@@ -272,6 +272,7 @@ class ProjectLibrary extends PureComponent {
       FormLibrary: { fromData },
     } = this.props;
     fromData.formStatus = value[0];
+    fromData.pageNum = 1;
     dispatch({
       type: 'FormLibrary/saveDataModel',
       payload: {
@@ -353,6 +354,7 @@ class ProjectLibrary extends PureComponent {
       message.error('请输入15字以下的搜索内容');
     } else {
       fromData.searchText = searchWord;
+      fromData.pageNum = 1;
       dispatch({
         type: 'FormLibrary/saveDataModel',
         payload: {

@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-23 17:36:04
+ * @Last Modified time: 2021-03-23 18:48:15
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -45,7 +45,7 @@ class FootComponent extends PureComponent {
   }
 
   render() {
-    const { data } = this.props;
+    const { data, companyPhone } = this.props;
     const { show, showFont, formList, visible, title, visibleForm, formUid } = this.state;
     let formCont = [];
 
@@ -73,7 +73,7 @@ class FootComponent extends PureComponent {
               <div>
                 <Icon type="phone" />
               </div>
-              <div>{data.paramList[0].defaultValue}</div>
+              <div>{companyPhone}</div>
             </div>
             <div className={styles.btnWrap}>
               <Button
