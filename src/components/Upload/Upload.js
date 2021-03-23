@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-23 18:59:56 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-22 19:34:28
+ * @Last Modified time: 2021-03-23 18:29:46
  * 图片上传
  */
 import React, { Component } from 'react';
@@ -27,7 +27,7 @@ class Upload extends Component {
     const num = rep ? 1 : (selectNum || 1) - (selected || 0);
     return (
       <Modal
-        title={`上传图片  ${checkedData.length}/${num || 1}`}
+        title={`上传图片  ${checkedData.length}/${num}`}
         visible={this.props.visible}
         onOk={this.handleOk}
         onCancel={this.props.handleCancel}
@@ -66,7 +66,7 @@ class Upload extends Component {
           </div>
           <div className={styles.uploadright}>
             {activeKey === 'key1' && (
-              <ImageUpload size={this.props.size} selectNum={num || 1} handleOk={data => this.handleConfirm(data)} />
+              <ImageUpload size={this.props.size} selectNum={num } handleOk={data => this.handleConfirm(data)} />
             )}
             {activeKey === 'key2' && (
               <AlreadyUpload selectNum={num || 1} handleOk={data => this.handleConfirm(data)} />
