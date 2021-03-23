@@ -139,7 +139,7 @@ export async function loginPassword(params) {
 
 export async function logout(params) {
   //退出登录
-  return request(baseurl + '/api/v1/saas/login/logout', {
+  return request(baseurl + '/api/v1/sso/login/logout', {
     method: 'POST',
     body: params,
   });

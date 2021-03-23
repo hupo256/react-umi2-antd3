@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-23 18:59:56 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-04 15:13:42
+ * @Last Modified time: 2021-03-22 19:34:28
  * 图片上传
  */
 import React, { Component } from 'react';
@@ -53,7 +53,7 @@ class Upload extends Component {
                 }
                 key="key1"
               />
-              <TabPane
+              {/*<TabPane
                 tab={
                   <p style={{ margin: 0 }}>
                     <Icon type="folder-open" />
@@ -61,12 +61,12 @@ class Upload extends Component {
                   </p>
                 }
                 key="key2"
-              />
-            </Tabs>
+              />*/}
+              </Tabs>
           </div>
           <div className={styles.uploadright}>
             {activeKey === 'key1' && (
-              <ImageUpload selectNum={num || 1} handleOk={data => this.handleConfirm(data)} />
+              <ImageUpload size={this.props.size} selectNum={num || 1} handleOk={data => this.handleConfirm(data)} />
             )}
             {activeKey === 'key2' && (
               <AlreadyUpload selectNum={num || 1} handleOk={data => this.handleConfirm(data)} />

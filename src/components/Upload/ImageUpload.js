@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-24 10:49:10 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-09 15:46:59
+ * @Last Modified time: 2021-03-22 19:32:51
  * 图片上传
  */
 import React, { Component } from 'react';
@@ -26,6 +26,7 @@ class ImageUpload extends Component {
           long={this.props.selectNum}
           accept=".png,.jpg,.jpeg"
           defauleUrl={[]}
+          size={this.props.size}
         />
       </div>
     );

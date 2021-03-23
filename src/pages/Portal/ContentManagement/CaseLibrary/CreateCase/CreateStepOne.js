@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-19 16:11:23
+ * @Last Modified time: 2021-03-23 09:33:55
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -147,11 +147,15 @@ class CreateStepOne extends PureComponent {
                 {DesignerList &&
                   DesignerList.list &&
                   DesignerList.list.map(item => {
-                    return (
-                      <Option value={item.uid} key={item.uid}>
-                        {item.name}
-                      </Option>
-                    );
+                    if (item.status === '1') {
+                      return (
+                        <Option value={item.code} key={item.uid}>
+                          {item.name}
+                        </Option>
+                      );
+                    } else {
+                      return null;
+                    }
                   })}
               </Select>
             )}

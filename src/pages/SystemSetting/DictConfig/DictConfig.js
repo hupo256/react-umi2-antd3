@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 10:30:18 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-19 17:18:10
+ * @Last Modified time: 2021-03-23 09:56:17
  * 字典配置
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -74,14 +74,14 @@ class DictConfig extends PureComponent {
         title: '扩充描述1',
         dataIndex: 'extDescOne',
         render: text => {
-          return <div style={{ width:'100%',maxWidth:width<1400?100: 300, overflow: 'hidden' }}>{text || '/'}</div>;
+          return <div style={{ width:'100%',maxWidth:width<1400?100: width<1650?200:300, overflow: 'hidden' }}>{text || '/'}</div>;
         },
       },
       {
         title: '扩充描述2',
         dataIndex: 'extDescTwo',
         render: text => {
-          return <div style={{ width:'100%',maxWidth: width<1400?100: 300, overflow: 'hidden' }}>{text || '/'}</div>;
+          return <div style={{ width:'100%',maxWidth: width<1400?100:  width<1650?200:300, overflow: 'hidden' }}>{text || '/'}</div>;
         },
       },
       {
