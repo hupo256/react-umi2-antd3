@@ -60,6 +60,11 @@ export default {
       });
       return response;
     },
+    
+    *resetSearchModel({ payload }, { call, put }) {
+      yield put({ type: 'upData',payload: {DesignerListQuery: { ...payload }}});
+    },
+    
   },
 
   reducers: {
