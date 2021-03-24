@@ -41,3 +41,21 @@
     }
   }
 }
+.remark{
+  width: 300px;
+  text-overflow: -o-ellipsis-lastline;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  .remarkspan{
+    overflow: hidden;
+    text-overflow: clip;
+    word-break: break-all;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+  }
+}
