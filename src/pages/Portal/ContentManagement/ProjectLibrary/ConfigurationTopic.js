@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-23 18:47:15
+ * @Last Modified time: 2021-03-24 15:26:17
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -10,7 +10,7 @@ import { connect } from 'dva';
 import router from 'umi/router';
 import Link from 'umi/link';
 import _ from 'lodash';
-import { Card, Button, Icon, Row, Col, Input, message, Menu } from 'antd';
+import { Button, Icon, message, Menu } from 'antd';
 import { DraggableArea } from 'react-draggable-tags';
 import { getQueryUrlVal } from '@/utils/utils';
 import ImgComponent from './TopicComponent/ImgComponent';
@@ -21,7 +21,7 @@ import logo from '../../../../assets/whiteLog.png';
 import logoImg from '../../../../assets/logoImg.png';
 const { SubMenu } = Menu;
 let pointX, pointY;
-@connect(({ ProjectLibrary, loading }) => ({
+@connect(({ ProjectLibrary }) => ({
   ProjectLibrary,
 }))
 class ProjectLibrary extends PureComponent {
@@ -270,7 +270,6 @@ class ProjectLibrary extends PureComponent {
     let ishow = 0;
     let left = 0;
     let top = 0;
-    console.log(ite);
     compentList &&
       compentList.map((item, index) => {
         if (item.elementType === 'MODAL' && ite.elementType === 'MODAL') {
