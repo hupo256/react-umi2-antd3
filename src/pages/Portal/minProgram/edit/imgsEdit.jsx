@@ -10,7 +10,7 @@ import { Table, Select, Input, message } from 'antd';
 import { dataSource } from '../tools/data';
 import { createUuid } from '../tools';
 import pholder from '../tools/tempbg.png';
-import styles from './imgsEdit.less';
+import styles from './edit.less';
 
 const { Option } = Select;
 const maxLen = 6;

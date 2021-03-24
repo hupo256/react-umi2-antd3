@@ -1,5 +1,5 @@
-import { routerRedux } from "dva/router";
-import { stringify } from "qs";
+import { routerRedux } from 'dva/router';
+import { stringify } from 'qs';
 import {
   fakeAccountLogin,
   getFakeCaptcha,
@@ -7,23 +7,23 @@ import {
   loginCheck,
   loginPassword,
   logout,
-} from "@/services/api";
-import { setAuthority, cleanAuthority, setauth } from "@/utils/authority";
-import { getPageQuery } from "@/utils/utils";
-import router from "umi/router";
-import { reloadAuthorized } from "@/utils/Authorized";
+} from '@/services/api';
+import { setAuthority, cleanAuthority, setauth } from '@/utils/authority';
+import { getPageQuery } from '@/utils/utils';
+import router from 'umi/router';
+import { reloadAuthorized } from '@/utils/Authorized';
 import {
   queryMenuBtnLogin,
   getStrCode,
   getVerificationCode,
   projectQueryNum,
-} from "../services/users";
+} from '../services/users';
 export default {
-  namespace: "login",
+  namespace: 'login',
   state: {
     status: undefined,
-    CodeFlag: "",
-    msg: "",
+    CodeFlag: '',
+    msg: '',
     dispatchLoading: false,
     pageStatus: 2,
     mobileData: {},
@@ -36,7 +36,7 @@ export default {
     *logoutModel({ payload }, { call }) {
       const response = yield call(logout, { source: 1 });
       if (response.code === 200) {
-        router.push("/User/Login");
+        router.push('/User/Login');
       }
       return response;
     },
@@ -54,7 +54,7 @@ export default {
         }
         return response;
       } catch (error) {
-        alert("error ==", error);
+        alert('error ==', error);
       }
     },
     *getCaptcha({ payload }, { call }) {
@@ -75,17 +75,17 @@ export default {
       //   },
       // });
       yield put({
-        type: "changeLoginStatus",
+        type: 'changeLoginStatus',
         payload: {
           // status: false,
-          status: "401",
-          data: "guest",
+          status: '401',
+          data: 'guest',
         },
       });
       reloadAuthorized();
       yield put(
         routerRedux.push({
-          pathname: "/user/login",
+          pathname: '/user/login',
           search: stringify({
             redirect: window.location.href,
           }),
@@ -97,14 +97,14 @@ export default {
       if (strCode.code == 200) {
         yield call(getVerificationCode, strCode.data);
         yield put({
-          type: "saveCodeFlag",
+          type: 'saveCodeFlag',
           payload: strCode.data,
         });
       }
     },
     *saveDataModel({ payload }, { call, put }) {
       yield put({
-        type: "saveDatax",
+        type: 'saveDatax',
         payload: payload,
       });
     },
@@ -122,17 +122,17 @@ export default {
     //密码登陆
     *loginPasswordModel({ payload }, { call, put, select }) {
       yield put({
-        type: "dispatchLoadingType",
+        type: 'dispatchLoadingType',
         payload: { dispatchLoading: true },
       });
-      payload.codeFlag = yield select((state) => state.login.CodeFlag);
+      payload.codeFlag = yield select(state => state.login.CodeFlag);
       const response = yield call(loginPassword, payload);
       yield put({
-        type: "changeLoginStatus",
+        type: 'changeLoginStatus',
         payload: response,
       });
       yield put({
-        type: "dispatchLoadingType",
+        type: 'dispatchLoadingType',
         payload: { dispatchLoading: false },
       });
       return response;
@@ -140,7 +140,7 @@ export default {
   },
   reducers: {
     changeLoginStatus(state, { payload }) {
-      if (payload && payload.code == "200") {
+      if (payload && payload.code == '200') {
         setAuthority(payload.data.token);
       } else {
         cleanAuthority();
@@ -150,7 +150,7 @@ export default {
         ...state,
         status: payload && payload.code,
         msg: payload && payload.message,
-        type: "account",
+        type: 'account',
       };
     },
     saveCodeFlag(state, { payload }) {
