@@ -1,5 +1,5 @@
 /*
- * @Author: zqm 
+ * @Author: tdd 
  * @Date: 2021-03-23 13:49:12 
  * @Last Modified by: tdd
  * @Last Modified time: 2021-03-23 13:49:12 
@@ -7,13 +7,10 @@
  */
 import React, { useState, useEffect } from 'react';
 import router from 'umi/router';
-// import router from 'umi/router';
-import {
-  getAuthInfo, //获取授权信息
-  getAuthUrl, //获取授权链接
-} from '@/services/miniProgram';
+import { getAuthInfo } from '@/services/miniProgram';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import NotBound from '../../../SystemSetting/MiniProgram/NotBound';
+import SwiperBar from '../common/swiperBar';
 import { Card, Button } from 'antd';
 import pholder from '../tools/bg.png';
 import styles from './home.less';
@@ -44,6 +41,10 @@ export default function Templates(props) {
         {isAuthed ? (
           <Card className={styles.currTepOut} bordered={false}>
             <h3>当前使用的模板名</h3>
+
+            <div className={styles.swiperOut}>
+              <SwiperBar />
+            </div>
 
             <div className={styles.currTepBox}>
               <img src={pholder} alt="" />
