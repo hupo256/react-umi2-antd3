@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:49:12 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-19 17:25:37
+ * @Last Modified time: 2021-03-24 17:09:42
  * 设计师库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -129,6 +129,7 @@ class DesignerLibrary extends PureComponent {
                 onClick={() =>
                   router.push(`/portal/contentmanagement/designerlibrary/edit?uid=${r.uid}`)
                 }
+                style={{padding:"6px 0 6px 10px"}}
               >
                 编辑
               </span>

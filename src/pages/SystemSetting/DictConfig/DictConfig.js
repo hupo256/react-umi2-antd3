@@ -2,13 +2,13 @@
  * @Author: zqm 
  * @Date: 2021-02-17 10:30:18 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-23 18:12:48
+ * @Last Modified time: 2021-03-24 17:14:39
  * 字典配置
  */
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
 import router from 'umi/router';
-import { Card, Button, Icon, Tabs, Table, Input, message, Modal } from 'antd';
+import { Card, Button, Icon, Tabs, Table, Input, message, Modal ,Tooltip} from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { DndProvider, DragSource, DropTarget } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -74,14 +74,34 @@ class DictConfig extends PureComponent {
         title: '扩充描述1',
         dataIndex: 'extDescOne',
         render: text => {
-          return <div style={{ width:'100%',maxWidth:width<1400?100: width<1650?200:300, overflow: 'hidden' }}>{text || '/'}</div>;
+          return <div style={{ width:'100%',maxWidth:width<1400?100: width<1650?200:300, overflow: 'hidden' }}>
+          <div className={styles.remark}>
+              <p style={{ width: 300, marginBottom: 0, maxHeight: 42, overflow: 'hidden' }}>
+                <Tooltip title={text}>
+                  <span className={styles.remarkspan} style={{ WebkitBoxOrient: 'vertical' }}>
+                    {text}
+                  </span>
+                </Tooltip>
+              </p>
+            </div>
+          </div>;
         },
       },
       {
         title: '扩充描述2',
         dataIndex: 'extDescTwo',
         render: text => {
-          return <div style={{ width:'100%',maxWidth: width<1400?100:  width<1650?200:300, overflow: 'hidden' }}>{text || '/'}</div>;
+          return <div style={{ width:'100%',maxWidth: width<1400?100:  width<1650?200:300, overflow: 'hidden' }}>
+          <div className={styles.remark}>
+              <p style={{ width: 300, marginBottom: 0, maxHeight: 42, overflow: 'hidden' }}>
+                <Tooltip title={text}>
+                  <span className={styles.remarkspan} style={{ WebkitBoxOrient: 'vertical' }}>
+                    {text}
+                  </span>
+                </Tooltip>
+              </p>
+            </div>
+            </div>;
         },
       },
       {
