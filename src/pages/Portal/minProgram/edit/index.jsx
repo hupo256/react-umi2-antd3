@@ -8,35 +8,43 @@
 import React, { useState, useEffect } from 'react';
 import router from 'umi/router';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
-import { Card, Button } from 'antd';
-import tempbg from '../tools/tempbg.png';
+import { Card, Button, Drawer } from 'antd';
+import pholder from '../tools/tempbg.png';
 import styles from './edit.less';
 
 export default function Templates(props) {
-  const [tepList, settepList] = useState([]);
-  const [isEdit, setisEdit] = useState(true);
-
-  useEffect(() => {
-    // settepList(touchList());
-  }, []);
-
-  function touchList() {
-    const temLen = isEdit ? 8 : 7;
-    const arr = [];
-    for (let i = 0; i < temLen; i++) {
-      arr.push({
-        img: tempbg,
-        tit: '经典黑白风',
-      });
-    }
-    return arr;
-  }
+  const [visible, setVisible] = useState(false);
+  const showDrawer = () => {
+    setVisible(true);
+  };
+  const onClose = () => {
+    setVisible(false);
+  };
 
   return (
     <div>
       <PageHeaderWrapper>
-        <Card bordered={false} style={{ marginTop: 20 }}>
-          <h3>编辑</h3>
+        <Card className={styles.currTepOut} bordered={false}>
+          <div className={styles.currTepBox}>
+            <img src={pholder} alt="" />
+
+            <div className={styles.btnbox}>
+              <Button onClick={() => gotoRoute('edit')} type="primary">
+                温馨提示
+              </Button>
+            </div>
+          </div>
+
+          <Drawer
+            title="Basic Drawer"
+            closable={false}
+            onClose={() => setVisible(false)}
+            visible={visible}
+          >
+            <p>Some contents...</p>
+            <p>Some contents...</p>
+            <p>Some contents...</p>
+          </Drawer>
         </Card>
       </PageHeaderWrapper>
     </div>

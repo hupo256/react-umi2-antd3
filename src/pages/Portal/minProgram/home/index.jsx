@@ -7,29 +7,58 @@
  */
 import React, { useState, useEffect } from 'react';
 import router from 'umi/router';
+// import router from 'umi/router';
+import {
+  getAuthInfo, //获取授权信息
+  getAuthUrl, //获取授权链接
+} from '@/services/miniProgram';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
+import NotBound from '../../../SystemSetting/MiniProgram/NotBound';
 import { Card, Button } from 'antd';
 import pholder from '../tools/bg.png';
 import styles from './home.less';
 
+const baseRrlKey = '/portal/minProgram/';
+
 export default function Templates(props) {
-  const [tepList, settepList] = useState([]);
-  const [isEdit, setisEdit] = useState(true);
+  const [isAuthed, setisAuthed] = useState(false);
 
   useEffect(() => {
-    // settepList(touchList());
+    const code = localStorage.getItem('auth');
+    const saasSellerCode = JSON.parse(code).companyCode;
+    getAuthInfo({ saasSellerCode: 'C201asdfas1002' }).then(res => {
+      // getAuthInfo({ saasSellerCode }).then(res => {
+      console.log(res);
+      const { data } = res;
+      data && setisAuthed(data.isAuthedWechatMini);
+    });
   }, []);
+
+  function gotoRoute(key) {
+    router.push(`${baseRrlKey}${key}`);
+  }
 
   return (
     <div>
       <PageHeaderWrapper>
-        <Card className={styles.currTepOut} bordered={false}>
-          <h3>当前使用的模板名</h3>
+        {isAuthed ? (
+          <Card className={styles.currTepOut} bordered={false}>
+            <h3>当前使用的模板名</h3>
 
-          <div className={styles.currTepBox}>
-            <img src={pholder} alt="" />
-          </div>
-        </Card>
+            <div className={styles.currTepBox}>
+              <img src={pholder} alt="" />
+
+              <div className={styles.btnbox}>
+                <Button onClick={() => gotoRoute('edit')} type="primary">
+                  继续编辑
+                </Button>
+                <Button onClick={() => gotoRoute('templates')}>更换模板</Button>
+              </div>
+            </div>
+          </Card>
+        ) : (
+          <NotBound jumpUrl={`${baseRrlKey}home`} />
+        )}
       </PageHeaderWrapper>
     </div>
   );
