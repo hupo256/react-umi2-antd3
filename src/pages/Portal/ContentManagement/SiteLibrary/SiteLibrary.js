@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:47:07 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-22 19:25:25
+ * @Last Modified time: 2021-03-24 19:58:49
  * 工地库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -199,13 +199,13 @@ class SiteLibrary extends PureComponent {
               </span>
               <span
                 onClick={() => this.handleSrarchStatus('0')}
-                className={`${styles.status} ${status == '0' && styles.statusCur}`}
+                className={`${styles.status} ${status+'' == '0' && styles.statusCur}`}
               >
                 正常
               </span>
               <span
                 onClick={() => this.handleSrarchStatus('1')}
-                className={`${styles.status} ${status == '1' && styles.statusCur}`}
+                className={`${styles.status} ${status+"" == '1' && styles.statusCur}`}
               >
                 停用
               </span>
