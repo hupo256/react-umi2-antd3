@@ -43,8 +43,8 @@ function formatter(data, parentPath = "", parentAuthority, parentName) {
       ...item,
       locale,
       authority: item.code
-        ? permissionsBtn.permission &&
-          permissionsBtn.permission.includes(item.code)
+        ? permissionsBtn.permissions &&
+          permissionsBtn.permissions.includes(item.code)
           ? "admin"
           : "gest"
         : item.authority || parentAuthority,
