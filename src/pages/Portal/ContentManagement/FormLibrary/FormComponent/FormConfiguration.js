@@ -2,63 +2,27 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-23 19:24:36
+ * @Last Modified time: 2021-03-24 16:13:10
  * 专题库
  */
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Modal, Form, Button, Input, message, Icon, Popconfirm, Radio } from 'antd';
+import { Modal, Form, Button, Input, message, Icon, Radio } from 'antd';
 import { errorIcon } from '@/utils/utils';
 import Upload from '@/components/Upload/Upload';
 import { SketchPicker } from 'react-color';
 import styles from './index.less';
 const { confirm } = Modal;
-@connect(({ FormLibrary }) => ({
+@connect(({ FormLibrary, ProjectLibrary }) => ({
   FormLibrary,
+  ProjectLibrary,
 }))
 @Form.create()
 class FormConfiguration extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      checkSelectData: [
-        {
-          defaultValue: null,
-          defaultValueUpdate: 1,
-          paramField: 'trackName',
-          paramName: '业主姓名',
-          paramExtName: '业主姓名',
-          paramRequired: 1,
-          paramType: 'String',
-          paramTips: '请输入业主姓名',
-          paramUid: 'c834a6d6735411eb999e00505694ddf5',
-          paramValid: null,
-        },
-        {
-          defaultValue: null,
-          defaultValueUpdate: 1,
-          paramField: 'trackAddress',
-          paramName: '楼盘/楼宇',
-          paramExtName: '楼盘/楼宇',
-          paramTips: '请输入楼盘/楼宇',
-          paramRequired: 1,
-          paramType: 'String',
-          paramUid: '00b53e1d735511eb999e00505694ddf5',
-          paramValid: null,
-        },
-        {
-          defaultValue: null,
-          defaultValueUpdate: 1,
-          paramField: 'trackArea',
-          paramName: '建筑面积',
-          paramExtName: '建筑面积',
-          paramTips: '请输入建筑面积',
-          paramRequired: 1,
-          paramType: 'String',
-          paramUid: '15949455735511eb999e00505694ddf5',
-          paramValid: null,
-        },
-      ],
+      checkSelectData: [],
       checkList: [],
       color: '#fe6a30',
       inputVal: '立即抢占',
@@ -71,65 +35,59 @@ class FormConfiguration extends PureComponent {
       show: false,
       showFont: false,
       showBg: false,
-      elementList: [
-        {
-          elementType: 'IMG',
-          elementName: '图片广告',
-          paramList: [
-            {
-              defaultValue:
-                'http://test.img.inbase.in-deco.com/crmx/filex/img/20210312/969c475af91c48c285dbbfb29e315426/969c475af91c48c285dbbfb29e315426.png',
-              defaultValueUpdate: 1,
-              paramField: 'picUrl',
-              paramName: '图片地址',
-              paramRequired: 1,
-              paramType: 'String',
-              paramUid: '67a5cd52735411eb999e00505694ddf5',
-              paramValid: null,
-            },
-          ],
-        },
-        {
-          elementType: 'FORM',
-          elementName: '视图表单',
-          elementColor: '#fff',
-          elementButtonColor: '#fe6a30',
-          elementButtonTextColor: '#fff',
-          elementButtonText: '立即抢占',
-          paramList: [
-            {
-              defaultValue: null,
-              defaultValueUpdate: 1,
-              paramField: 'trackPhone',
-              paramName: '联系电话',
-              paramExtName: '联系电话',
-              paramRequired: 1,
-              paramType: 'String',
-              paramTips: '请输入联系电话',
-              paramUid: '81611418735411eb999e00505694ddf5',
-              paramValid: null,
-            },
-          ],
-        },
-      ],
+      elementList: [],
     };
   }
 
   componentDidMount() {
-    const { data } = this.props;
+    const { data, dispatch } = this.props;
     const { checkSelectData } = this.state;
-    if (data) {
-      let arr3 = [];
-      if (data.elementList[1].paramList.length !== 4) {
-        arr3 = checkSelectData.filter(v => {
-          return data.elementList[1].paramList.every(e => e.paramField != v.paramField);
+    dispatch({
+      type: 'ProjectLibrary/elementTreeModel',
+      payload: {
+        businessType: 2,
+        terminalType: 1,
+      },
+    }).then(res => {
+      if (res && res.code === 200) {
+        let checkList = [];
+        let arr = [];
+        res.data[0].elementList[1].elementButtonColor = '#fe6a30';
+        res.data[0].elementList[1].elementButtonTextColor = '#fff';
+        res.data[0].elementList[1].elementButtonText = '立即抢占';
+        res.data[0].elementList[1].paramList.map((item, index) => {
+          if (item.paramExtName === undefined) {
+            item.paramExtName = item.paramName;
+          }
+          if (item.paramTips === undefined) {
+            item.paramTips = `请输入${item.paramExtName}`;
+          }
+          if (item.paramName === '联系电话') {
+            checkList.push(item);
+          } else {
+            arr.push(item);
+          }
         });
+        if (data) {
+          let arr3 = [];
+          if (data.elementList[1].paramList.length !== 4) {
+            arr3 = res.data[0].elementList[1].paramList.filter(v => {
+              return data.elementList[1].paramList.every(e => e.paramField != v.paramField);
+            });
+          }
+          this.setState({
+            elementList: data.elementList,
+            checkSelectData: arr3,
+          });
+        } else {
+          res.data[0].elementList[1].paramList = checkList;
+          this.setState({
+            elementList: res.data[0].elementList,
+            checkSelectData: arr,
+          });
+        }
       }
-      this.setState({
-        elementList: data.elementList,
-        checkSelectData: arr3,
-      });
-    }
+    });
   }
   render() {
     const {
@@ -145,7 +103,7 @@ class FormConfiguration extends PureComponent {
       showBg,
     } = this.state;
     let formDa =
-      elementList &&
+      elementList[1] &&
       elementList[1].paramList.map((item, index) => {
         return (
           <div style={{ marginBottom: 15 }} className={styles.formWrapT} key={index}>
@@ -230,7 +188,7 @@ class FormConfiguration extends PureComponent {
         );
       });
     let formShow =
-      elementList &&
+      elementList[1] &&
       elementList[1].paramList.map((item, index) => {
         return (
           <div className={styles.ViewDiv} key={index}>
@@ -257,7 +215,7 @@ class FormConfiguration extends PureComponent {
                 className={showPic ? styles.borderWrap : ''}
               >
                 <img
-                  src={elementList[0].paramList[0].defaultValue}
+                  src={elementList[0] && elementList[0].paramList[0].defaultValue}
                   alt="logo"
                   style={{ width: '100%' }}
                 />
@@ -278,7 +236,7 @@ class FormConfiguration extends PureComponent {
             <div
               className={showForm ? styles.ViewDivForms : styles.ViewDivForm}
               style={{
-                background: elementList[1].elementColor,
+                background: elementList && elementList[1] && elementList[1].elementColor,
               }}
               onClick={() => {
                 this.handleChangeFrom();
@@ -290,12 +248,12 @@ class FormConfiguration extends PureComponent {
                   type="primary"
                   style={{
                     width: 200,
-                    background: elementList[1].elementButtonColor,
-                    borderColor: elementList[1].elementButtonColor,
-                    color: elementList[1].elementButtonTextColor,
+                    background: elementList[1] && elementList[1].elementButtonColor,
+                    borderColor: elementList[1] && elementList[1].elementButtonColor,
+                    color: elementList[1] && elementList[1].elementButtonTextColor,
                   }}
                 >
-                  {elementList[1].elementButtonText}
+                  {elementList[1] && elementList[1].elementButtonText}
                 </Button>
               </div>
               <div className={showForm ? styles.roundLeftTop : ''} />
@@ -344,7 +302,7 @@ class FormConfiguration extends PureComponent {
                           placeholder="请输入按钮文字"
                           style={{ width: 144 }}
                           maxLength={8}
-                          value={elementList[1].elementButtonText}
+                          value={elementList[1] && elementList[1].elementButtonText}
                           onChange={this.handleInputChange}
                         />
                       </div>
@@ -356,7 +314,7 @@ class FormConfiguration extends PureComponent {
                           <div className={styles.btnColorWrap}>
                             <div
                               className={styles.btnColor}
-                              style={{ background: elementList[1].elementColor }}
+                              style={{ background: elementList[1] && elementList[1].elementColor }}
                               onClick={() => {
                                 this.showBgColor();
                               }}
@@ -366,7 +324,9 @@ class FormConfiguration extends PureComponent {
                           <div className={styles.btnColorWrap}>
                             <div
                               className={styles.btnColor}
-                              style={{ background: elementList[1].elementButtonColor }}
+                              style={{
+                                background: elementList[1] && elementList[1].elementButtonColor,
+                              }}
                               onClick={() => {
                                 this.showColor();
                               }}
@@ -376,7 +336,9 @@ class FormConfiguration extends PureComponent {
                           <div className={styles.btnColorWrap}>
                             <div
                               className={styles.btnColor}
-                              style={{ background: elementList[1].elementButtonTextColor }}
+                              style={{
+                                background: elementList && elementList[1].elementButtonTextColor,
+                              }}
                               onClick={() => {
                                 this.showFontColor();
                               }}
@@ -390,7 +352,7 @@ class FormConfiguration extends PureComponent {
                     {show ? (
                       <div className={styles.SketchWrap}>
                         <SketchPicker
-                          color={elementList[1].elementButtonColor}
+                          color={elementList[1] && elementList[1].elementButtonColor}
                           onChange={this.handleColorChange}
                         />
                         <span
@@ -408,7 +370,7 @@ class FormConfiguration extends PureComponent {
                     {showFont ? (
                       <div className={styles.SketchWrap}>
                         <SketchPicker
-                          color={elementList[1].elementButtonTextColor}
+                          color={elementList[1] && elementList[1].elementButtonTextColor}
                           onChange={this.handleFontColorChange}
                         />
                         <span
@@ -426,7 +388,7 @@ class FormConfiguration extends PureComponent {
                     {showBg ? (
                       <div className={styles.SketchWrap}>
                         <SketchPicker
-                          color={elementList[1].elementColor}
+                          color={elementList[1] && elementList[1].elementColor}
                           onChange={this.handleBgColorChange}
                         />
                         <span
@@ -454,7 +416,7 @@ class FormConfiguration extends PureComponent {
                     <Icon type="plus-circle" />
                     <span style={{ marginLeft: 10 }}>
                       添加表单字段（
-                      {elementList[1].paramList.length}
+                      {elementList[1] && elementList[1].paramList.length}
                       /4）
                     </span>
                   </div>

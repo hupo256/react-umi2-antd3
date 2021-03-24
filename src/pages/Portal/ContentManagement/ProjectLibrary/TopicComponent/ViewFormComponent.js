@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-23 19:21:08
+ * @Last Modified time: 2021-03-24 16:09:36
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -88,7 +88,6 @@ class ViewFormComponent extends PureComponent {
         return data.paramList.every(e => e.paramName != v.paramName);
       });
       checkSelectData.push(...arr3);
-      console.log(checkSelectData);
     } else {
       data.paramList &&
         data.paramList.map((item, index) => {
