@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-20 10:46:16 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-16 16:09:22
+ * @Last Modified time: 2021-03-24 17:22:05
  * 创建动态
  */
 import React, { Component } from 'react';
@@ -39,8 +39,12 @@ class DynamicAdd extends Component {
     dispatch({
       type: 'DictConfig/queryDicModel',
       payload: { dicModuleCodes: 'DM001' },
+    }).then(res=>{
+      if(res&&res.code===200){
+        const data =res.data['DM001'].filter(item=>item.status === '1').filter(item=>item.code ===status)
+        this.setState({ diaryDate: getDay() ,gongdiStage:data.length>0&&status||[]});
+      }
     });
-    this.setState({ diaryDate: getDay() ,gongdiStage:status});
   }
   render() {
     const dateFormat = 'YYYY-MM-DD';
@@ -141,7 +145,7 @@ class DynamicAdd extends Component {
                   );
                 })}
 
-              {diaryPics.length <= 9 && (
+              {diaryPics.length <9 && (
                 <div
                   className="previewimgs"
                   style={{ border: '1px dashed #d9d9d9' }}
@@ -159,6 +163,7 @@ class DynamicAdd extends Component {
             selectNum={9}
             selected={diaryPics.length}
             rep={rep}
+            size={10}
             handleOk={data => this.handleUploadOk(data)}
             handleCancel={() => this.handleUploadCancel()}
           />
@@ -196,8 +201,13 @@ class DynamicAdd extends Component {
     const { diaryContent, diaryDate, gongdiStage, diaryPics } = this.state;
     if (!gongdiStage) {
       message.error('请选择所属阶段');
+      return false
     } else if (!diaryDate) {
       message.error('请选择施工日期');
+      return false
+    } else if (!diaryContent&&diaryPics.length==0) {
+      message.error('请填写 工作内容 或上传 施工照片');
+      return false
     } else {
       // createDynamicModel
       const { dispatch, record } = this.props;

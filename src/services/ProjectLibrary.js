@@ -75,3 +75,10 @@ export async function formList(params) {
     body: params,
   });
 }
+// 绑定表单
+export async function formBind(params) {
+  return request(baseurl + '/api/v1/wechat/form/bind', {
+    method: 'POST',
+    body: params,
+  });
+}

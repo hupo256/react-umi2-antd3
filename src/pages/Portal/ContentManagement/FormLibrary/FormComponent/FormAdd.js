@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-17 11:33:56
+ * @Last Modified time: 2021-03-22 19:34:02
  * 专题库
  */
 import React, { PureComponent } from 'react';
@@ -85,7 +85,13 @@ class FormAdd extends PureComponent {
             <Form.Item label="专题说明">
               {getFieldDecorator('formDescription', {
                 initialValue: data && data.formDescription,
-                rules: [{ required: false, message: '请输入专题说明' }],
+                rules: [
+                  { required: false, message: '请输入专题说明' },
+                  {
+                    max: 200,
+                    message: '限制1-200字符长度',
+                  },
+                ],
               })(<TextArea rows={4} placeholder="请输入专题说明" />)}
             </Form.Item>
             <div style={{ textAlign: 'center' }}>
