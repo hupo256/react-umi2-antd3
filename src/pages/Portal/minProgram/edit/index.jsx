@@ -3,48 +3,46 @@
  * @Date: 2021-03-23 13:49:12 
  * @Last Modified by: tdd
  * @Last Modified time: 2021-03-23 13:49:12 
- * 小程序UI模板
+ * 编辑模板
  */
 import React, { useState, useEffect } from 'react';
-import router from 'umi/router';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { Card, Button, Drawer } from 'antd';
+import ImgsEdit from '../common/imgsEdit';
 import pholder from '../tools/tempbg.png';
 import styles from './edit.less';
 
 export default function Templates(props) {
-  const [visible, setVisible] = useState(false);
-  const showDrawer = () => {
-    setVisible(true);
-  };
-  const onClose = () => {
-    setVisible(false);
-  };
+  const [visible, setVisible] = useState(true);
+
+  function selectChange(e) {
+    console.log(e);
+  }
 
   return (
     <div>
       <PageHeaderWrapper>
         <Card className={styles.currTepOut} bordered={false}>
-          <div className={styles.currTepBox}>
-            <img src={pholder} alt="" />
-
-            <div className={styles.btnbox}>
-              <Button onClick={() => gotoRoute('edit')} type="primary">
-                温馨提示
-              </Button>
-            </div>
-          </div>
-
           <Drawer
-            title="Basic Drawer"
+            title="编辑轮播"
+            width={620}
+            // bodyStyle={{ paddingBottom: 80 }}
             closable={false}
             onClose={() => setVisible(false)}
             visible={visible}
           >
-            <p>Some contents...</p>
-            <p>Some contents...</p>
-            <p>Some contents...</p>
+            <ImgsEdit />
           </Drawer>
+
+          <div className={styles.currTepBox}>
+            <img src={pholder} alt="" />
+
+            <div className={styles.btnbox}>
+              <Button onClick={() => setVisible(true)} type="primary">
+                温馨提示
+              </Button>
+            </div>
+          </div>
         </Card>
       </PageHeaderWrapper>
     </div>
