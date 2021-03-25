@@ -53,7 +53,7 @@ export default [
           },
         ],
       },
-     
+
       // v2.0
       // 门户
       {
@@ -138,6 +138,7 @@ export default [
               {
                 path: '/portal/contentmanagement/projectlibrary',
                 name: 'projectlibrary',
+                code: 'MU900000010004',
                 component: './Portal/ContentManagement/ProjectLibrary/ProjectLibrary',
               },
               {
@@ -153,6 +154,7 @@ export default [
               {
                 path: '/portal/contentmanagement/FormLibrary',
                 name: 'formLibrary',
+                code: 'MU900000010005',
                 component: './Portal/ContentManagement/FormLibrary/FormLibrary',
               },
             ],
@@ -174,14 +176,14 @@ export default [
           // },
         ],
       },
-       // v1.1
+      // v1.1
       // 客户
       {
         path: '/customer',
         name: 'customer',
         icon: 'retweet',
         code: 'MU90000002',
-            component: './Customer/LeadManagement/LeadManagement',
+        component: './Customer/LeadManagement/LeadManagement',
         // routes: [
         //   {
         //     path: '/customer',
