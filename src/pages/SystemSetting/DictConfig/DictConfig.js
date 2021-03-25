@@ -2,13 +2,13 @@
  * @Author: zqm 
  * @Date: 2021-02-17 10:30:18 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-23 18:12:48
+ * @Last Modified time: 2021-03-25 10:48:26
  * 字典配置
  */
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
 import router from 'umi/router';
-import { Card, Button, Icon, Tabs, Table, Input, message, Modal } from 'antd';
+import { Card, Button, Icon, Tabs, Table, Input, message, Modal ,Tooltip} from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { DndProvider, DragSource, DropTarget } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -16,6 +16,7 @@ import { DragableBodyRow } from '../common/DragableBodyRow';
 import update from 'immutability-helper';
 import styles from './DictConfig.less';
 import CreateDict from './CreateDict';
+import { getauth } from "@/utils/authority";
 import { successIcon, waringInfo } from '@/utils/utils';
 const { confirm } = Modal;
 const { Search } = Input;
@@ -56,6 +57,7 @@ class DictConfig extends PureComponent {
     const {
       DictConfig: {DicQuery, DicModuleList, DicList },
     } = this.props;
+    const permissionsBtn = getauth().permissions||[];
     const columns = [
       {
         title: '',
@@ -74,14 +76,34 @@ class DictConfig extends PureComponent {
         title: '扩充描述1',
         dataIndex: 'extDescOne',
         render: text => {
-          return <div style={{ width:'100%',maxWidth:width<1400?100: width<1650?200:300, overflow: 'hidden' }}>{text || '/'}</div>;
+          return <div style={{ width:'100%',maxWidth:width<1400?100: width<1650?200:300, overflow: 'hidden' }}>
+          <div className={styles.remark}>
+              <p style={{width:'100%',maxWidth:width<1400?100: width<1650?200:300,marginBottom: 0, maxHeight: 42, overflow: 'hidden' }}>
+                <Tooltip title={text}>
+                  <span className={styles.remarkspan} style={{ WebkitBoxOrient: 'vertical' }}>
+                    {text}
+                  </span>
+                </Tooltip>
+              </p>
+            </div>
+          </div>;
         },
       },
       {
         title: '扩充描述2',
         dataIndex: 'extDescTwo',
         render: text => {
-          return <div style={{ width:'100%',maxWidth: width<1400?100:  width<1650?200:300, overflow: 'hidden' }}>{text || '/'}</div>;
+          return <div style={{ width:'100%',maxWidth: width<1400?100:  width<1650?200:300, overflow: 'hidden' }}>
+          <div className={styles.remark}>
+              <p style={{ width:'100%',maxWidth:width<1400?100: width<1650?200:300,marginBottom: 0, maxHeight: 42, overflow: 'hidden' }}>
+                <Tooltip title={text}>
+                  <span className={styles.remarkspan} style={{ WebkitBoxOrient: 'vertical' }}>
+                    {text}
+                  </span>
+                </Tooltip>
+              </p>
+            </div>
+            </div>;
         },
       },
       {
@@ -116,19 +138,18 @@ class DictConfig extends PureComponent {
         render: (t, r) => {
           return (
             <div className="operateWrap">
-              <span className="operateBtn" onClick={() => this.handleEdit(r)}>
+              {permissionsBtn.includes('BTN210324000008')&&<span className="operateBtn" onClick={() => this.handleEdit(r)}>
                 编辑
-              </span>
-              <span className="operateLine" />
-              <span className="operateBtn" onClick={() => this.handleChangeStatus(r)}>
+              </span>}
+              {permissionsBtn.includes('BTN210324000008')&&<span className="operateLine" />}
+             {permissionsBtn.includes('BTN210324000009')&& <span className="operateBtn" onClick={() => this.handleChangeStatus(r)}>
                 {r.status === '1' ? '停用' : '启用'}{' '}
-              </span>
+              </span>}
             </div>
           );
         },
       },
     ];
-
     return (
       <div className={styles.dict}>
         <PageHeaderWrapper>
@@ -148,10 +169,10 @@ class DictConfig extends PureComponent {
               </div>
               <div className={styles.dictRight}>
                 <div className={styles.dictHeader}>
-                  <Button type="primary" onClick={() => this.setState({ visible: true })}>
+                  {permissionsBtn.includes('BTN210324000007')&&<Button type="primary" onClick={() => this.setState({ visible: true })}>
                     <Icon type="plus" />
                     创建字段
-                  </Button>
+                  </Button>}
                   <Search
                     value={searchWord}
                     placeholder="可通过字段名称 / 扩充描述进行搜索"
@@ -177,6 +198,7 @@ class DictConfig extends PureComponent {
                 {!DicQuery.searchWord&&<DndProvider backend={HTML5Backend}>
                   <Table
                     columns={columns}
+                    rowKey={(r, i) => i}
                     dataSource={DicList.list}
                     components={this.components}
                     onRow={(record, index) => {

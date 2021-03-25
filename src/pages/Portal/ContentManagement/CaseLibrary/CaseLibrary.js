@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:47:49 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-19 11:42:49
+ * @Last Modified time: 2021-03-25 11:04:19
  * 案例库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -12,6 +12,7 @@ import { Card, Button, Icon, Divider, Table, Input, message, Modal } from 'antd'
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { paginations, getUrl, successIcon, waringInfo } from '@/utils/utils';
 import styles from './CaseLibrary.less';
+import { getauth } from "@/utils/authority";
 const { confirm } = Modal;
 const { Search } = Input;
 
@@ -37,6 +38,7 @@ class CaseLibrary extends PureComponent {
       Loading,
       CaseLibrary: { CaseList },
     } = this.props;
+    const permissionsBtn = getauth().permissions||[];
     const columns = [
       {
         title: '案例',
@@ -131,18 +133,18 @@ class CaseLibrary extends PureComponent {
         render: (t, r) => {
           return (
             <div className="operateWrap">
-              <span
+              {permissionsBtn.includes('BTN210324000012')&&<span
                 className="operateBtn"
                 onClick={() => {
                   router.push(`/portal/contentmanagement/caselibrary/edit?uid=${r.uid}`);
                 }}
               >
                 编辑
-              </span>
-              <span className="operateLine" />
-              <span className="operateBtn" onClick={() => this.handleChangeStatus(r)}>
+              </span>}
+              {permissionsBtn.includes('BTN210324000012')&&<span className="operateLine" />}
+              {permissionsBtn.includes('BTN210324000013')&&<span className="operateBtn" onClick={() => this.handleChangeStatus(r)}>
                 {r.status === '1' ? '停用' : '启用'}{' '}
-              </span>
+              </span>}
             </div>
           );
         },
@@ -186,7 +188,7 @@ class CaseLibrary extends PureComponent {
             </p>
           </Card>
           <Card bordered={false} style={{ marginTop: 20 }}>
-            <Button
+          {permissionsBtn.includes('BTN210324000011')&&<Button
               type="primary"
               onClick={() => {
                 this.props.dispatch({
@@ -198,7 +200,7 @@ class CaseLibrary extends PureComponent {
             >
               <Icon type="plus" />
               创建案例
-            </Button>
+            </Button>}
             <Table
               loading={Loading}
               style={{ marginTop: 20 }}

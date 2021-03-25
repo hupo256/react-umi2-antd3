@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-20 10:46:16 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-22 19:30:59
+ * @Last Modified time: 2021-03-24 17:22:05
  * 创建动态
  */
 import React, { Component } from 'react';
@@ -39,8 +39,12 @@ class DynamicAdd extends Component {
     dispatch({
       type: 'DictConfig/queryDicModel',
       payload: { dicModuleCodes: 'DM001' },
+    }).then(res=>{
+      if(res&&res.code===200){
+        const data =res.data['DM001'].filter(item=>item.status === '1').filter(item=>item.code ===status)
+        this.setState({ diaryDate: getDay() ,gongdiStage:data.length>0&&status||[]});
+      }
     });
-    this.setState({ diaryDate: getDay() ,gongdiStage:status});
   }
   render() {
     const dateFormat = 'YYYY-MM-DD';
