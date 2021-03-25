@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-24 16:13:10
+ * @Last Modified time: 2021-03-25 11:34:34
  * 专题库
  */
 import React, { PureComponent } from 'react';
@@ -217,7 +217,7 @@ class FormConfiguration extends PureComponent {
                 <img
                   src={elementList[0] && elementList[0].paramList[0].defaultValue}
                   alt="logo"
-                  style={{ width: '100%' }}
+                  style={{ width: '100%', height: 300, objectFit: 'cover' }}
                 />
               </div>
               {showPic ? (

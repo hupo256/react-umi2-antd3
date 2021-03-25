@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-23 19:03:54
+ * @Last Modified time: 2021-03-24 20:08:57
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -13,6 +13,7 @@ import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { paginations, successIcon, waringInfo, errorIcon } from '@/utils/utils';
 import FormAdd from './FormComponent/FormAdd';
 import FormConfiguration from './FormComponent/FormConfiguration';
+import { getauth } from '@/utils/authority';
 import styles from './index.less';
 const Search = Input.Search;
 const { confirm } = Modal;
@@ -42,25 +43,28 @@ class ProjectLibrary extends PureComponent {
   }
   render() {
     const { visible, title, data, formUid, visibleForm, ConfigurationData } = this.state;
+    const permissionsBtn = getauth();
     return (
       <div>
         <PageHeaderWrapper>
           <Card bordered={false}>{this.renderSearch()}</Card>
           <Card bordered={false} style={{ marginTop: 16 }}>
-            <Button
-              icon="plus"
-              type="primary"
-              onClick={() => {
-                this.setState({
-                  visible: true,
-                  title: '创建表单',
-                  formUid: '',
-                  data: '',
-                });
-              }}
-            >
-              创建表单
-            </Button>
+            {permissionsBtn.permissions.includes('BTN210324000027') ? (
+              <Button
+                icon="plus"
+                type="primary"
+                onClick={() => {
+                  this.setState({
+                    visible: true,
+                    title: '创建表单',
+                    formUid: '',
+                    data: '',
+                  });
+                }}
+              >
+                创建表单
+              </Button>
+            ) : null}
             {this.renderTable()}
             {visible ? (
               <FormAdd
@@ -209,17 +213,20 @@ class ProjectLibrary extends PureComponent {
         title: '操作',
         dataIndex: 'operate',
         render: (t, r) => {
+          const permissionsBtn = getauth();
           return (
             <div className="operateWrap">
-              <span
-                className="operateBtn"
-                onClick={() => {
-                  this.handleEdit(r);
-                }}
-              >
-                编辑
-              </span>
-              {r.formStatus !== 0 ? (
+              {permissionsBtn.permissions.includes('BTN210324000028') ? (
+                <span
+                  className="operateBtn"
+                  onClick={() => {
+                    this.handleEdit(r);
+                  }}
+                >
+                  编辑
+                </span>
+              ) : null}
+              {permissionsBtn.permissions.includes('BTN210324000029') && r.formStatus !== 0 ? (
                 <span>
                   <span className="operateLine" />
                   <span className="operateBtn" onClick={() => this.handleToggleStatus(r)}>
@@ -227,7 +234,7 @@ class ProjectLibrary extends PureComponent {
                   </span>
                 </span>
               ) : null}
-              {r.formStatus === 0 ? (
+              {permissionsBtn.permissions.includes('BTN210324000030') && r.formStatus === 0 ? (
                 <span>
                   <span className="operateLine" />
                   <span className="operateBtn" onClick={() => this.handleDelete(r)}>
@@ -235,17 +242,19 @@ class ProjectLibrary extends PureComponent {
                   </span>
                 </span>
               ) : null}
-              <span>
-                <span className="operateLine" />
-                <span
-                  className="operateBtn"
-                  onClick={() => {
-                    this.addFormConfiguration(r);
-                  }}
-                >
-                  配置表单
+              {permissionsBtn.permissions.includes('BTN210324000031') ? (
+                <span>
+                  <span className="operateLine" />
+                  <span
+                    className="operateBtn"
+                    onClick={() => {
+                      this.addFormConfiguration(r);
+                    }}
+                  >
+                    配置表单
+                  </span>
                 </span>
-              </span>
+              ) : null}
             </div>
           );
         },
