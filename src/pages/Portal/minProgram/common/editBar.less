@@ -8,9 +8,14 @@
 }
 
 .tbOpration {
-  span {
+  a {
     padding-right: 5px;
     color: #16a;
     cursor: pointer;
+
+    &[disabled] {
+      color: #ccc;
+      cursor: not-allowed;
+    }
   }
 }

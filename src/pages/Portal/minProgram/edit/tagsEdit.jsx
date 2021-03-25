@@ -5,7 +5,8 @@
  * @Last Modified time: 2021-03-23 13:49:12 
  * 编辑亮点
  */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { ctx } from '../common/context';
 import { Select, Input } from 'antd';
 import { dataSource } from '../tools/data';
 import EditBar from '../common/editBar';
@@ -14,6 +15,12 @@ import styles from './edit.less';
 const { Option } = Select;
 
 export default function Templates(props) {
+  const { tagsData, settagsData } = useContext(ctx);
+
+  useEffect(() => {
+    settagsData(dataSource);
+  }, []);
+
   function selectChange(e) {
     console.log(e);
   }
@@ -23,7 +30,9 @@ export default function Templates(props) {
       title: '主标题',
       key: 'name',
       width: 100,
-      render: (text, record, index) => <Input placeholder="请输入主标题" />,
+      render: (text, record, index) => (
+        <Input placeholder="请输入主标题" defaultValue={record.key} />
+      ),
     },
     {
       title: '副文本',

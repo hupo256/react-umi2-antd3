@@ -10,13 +10,18 @@ import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { Provider, ctx } from '../common/context';
 import { Card, Button, Drawer } from 'antd';
 import ImgsEdit from './imgsEdit';
-import TagEdit from './tagsEdit';
+import TagsEdit from './tagsEdit';
 import pholder from '../tools/tempbg.png';
 import styles from './edit.less';
 
 function TempEdit(props) {
-  const { tagsData, settagsData, imgsData, setimgsData } = useContext(ctx);
+  const { fromTag, setfromTag } = useContext(ctx);
   const [visible, setVisible] = useState(true);
+
+  function toEditer(key) {
+    setfromTag(key);
+    setVisible(true);
+  }
 
   return (
     <div>
@@ -29,15 +34,14 @@ function TempEdit(props) {
             onClose={() => setVisible(false)}
             visible={visible}
           >
-            {/* <ImgsEdit /> */}
-            <TagEdit />
+            {fromTag === 'tags' ? <TagsEdit /> : <ImgsEdit />}
           </Drawer>
 
           <div className={styles.currTepBox}>
             <img src={pholder} alt="" />
 
             <div className={styles.btnbox}>
-              <Button onClick={() => setVisible(true)} type="primary">
+              <Button onClick={() => toEditer('tags')} type="primary">
                 温馨提示
               </Button>
             </div>

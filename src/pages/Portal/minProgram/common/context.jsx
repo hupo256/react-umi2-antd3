@@ -6,18 +6,20 @@
  * mini program 里的store
  */
 import React, { useState, createContext } from 'react';
-import { dataSource } from '../tools/data';
 
 export const ctx = createContext();
 export function Provider({ children }) {
-  const [tagsData, settagsData] = useState(dataSource); // 亮点数据
-  const [imgsData, setimgsData] = useState(dataSource); // 轮播图数据
+  const [tagsData, settagsData] = useState([]); // 亮点数据
+  const [imgsData, setimgsData] = useState([]); // 轮播图数据
+  const [fromTag, setfromTag] = useState(''); // 轮播图数据
 
   const value = {
     tagsData,
     settagsData,
     imgsData,
     setimgsData,
+    fromTag,
+    setfromTag,
   };
 
   return <ctx.Provider value={value}>{children}</ctx.Provider>;
