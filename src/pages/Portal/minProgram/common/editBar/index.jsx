@@ -6,9 +6,9 @@
  * 抽屉中的编辑组件
  */
 import React, { useState, useEffect, useContext } from 'react';
-import { ctx } from '../common/context';
+import { ctx } from '../context';
 import { Table, message, Button } from 'antd';
-import { createUuid } from '../tools';
+import { createUuid } from '../../tools';
 import styles from './editBar.less';
 
 const maxLen = 6;

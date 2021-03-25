@@ -16,7 +16,7 @@ import styles from './edit.less';
 
 function TempEdit(props) {
   const { fromTag, setfromTag } = useContext(ctx);
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
 
   function toEditer(key) {
     setfromTag(key);
@@ -26,7 +26,7 @@ function TempEdit(props) {
   return (
     <div>
       <PageHeaderWrapper>
-        <Card className={styles.currTepOut} bordered={false}>
+        <Card bordered={false}>
           <Drawer
             title="编辑轮播"
             width={620}

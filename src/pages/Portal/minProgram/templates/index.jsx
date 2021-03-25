@@ -9,8 +9,10 @@ import React, { useState, useEffect } from 'react';
 import router from 'umi/router';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { Card, Button } from 'antd';
-import tempbg from '../tools/tempbg.png';
+import TitleGuid from '../common/titleGuid';
 import styles from './templates.less';
+
+const imgBaseUrl = 'https://img.inbase.in-deco.com/crm-saas/img/dflfwc/';
 
 export default function Templates(props) {
   const [tepList, settepList] = useState([]);
@@ -25,7 +27,7 @@ export default function Templates(props) {
     const arr = [];
     for (let i = 0; i < temLen; i++) {
       arr.push({
-        img: tempbg,
+        img: imgBaseUrl + 'img_LakeBlue.png',
         tit: '经典黑白风',
       });
     }
@@ -33,29 +35,33 @@ export default function Templates(props) {
   }
 
   return (
-    <div>
-      <PageHeaderWrapper>
-        <Card bordered={false} style={{ marginTop: 20 }}>
-          <h3>请选择模板</h3>
-          <ul className={styles.tembox}>
-            {tepList.length > 0 &&
-              tepList.map((tem, ind) => {
-                const { img, tit } = tem;
-                return (
-                  <li key={ind}>
+    <PageHeaderWrapper>
+      <TitleGuid />
+      <Card bordered={false} style={{ marginTop: 20 }}>
+        <ul className={styles.tembox}>
+          {tepList.length > 0 &&
+            tepList.map((tem, ind) => {
+              const { img, tit } = tem;
+              return (
+                <li key={ind}>
+                  <div className={styles.itemBox}>
+                    {ind === 0 && (
+                      <img className={styles.defaultTag} src={`${imgBaseUrl}img_tag.png`} alt="" />
+                    )}
                     <div className={styles.imgbox}>
                       <img src={img} alt="" />
                       <span>
                         <button>{isEdit ? '开始编辑' : '换成它'}</button>
                       </span>
                     </div>
-                    <p>{tit}</p>
-                  </li>
-                );
-              })}
-          </ul>
-        </Card>
-      </PageHeaderWrapper>
-    </div>
+                  </div>
+
+                  <p>{tit}</p>
+                </li>
+              );
+            })}
+        </ul>
+      </Card>
+    </PageHeaderWrapper>
   );
 }

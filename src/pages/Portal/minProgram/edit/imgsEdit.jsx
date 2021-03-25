@@ -9,7 +9,7 @@ import React, { useContext, useEffect } from 'react';
 import { ctx } from '../common/context';
 import { Select, Input } from 'antd';
 import { dataSource } from '../tools/data';
-import EditBar from '../common/editBar';
+import EditBar from '../common/editBar/index';
 import pholder from '../tools/tempbg.png';
 import styles from './edit.less';
 
