@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:47:07 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-24 19:58:49
+ * @Last Modified time: 2021-03-25 11:04:02
  * 工地库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -13,6 +13,7 @@ import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { paginations, getUrl, successIcon, waringInfo } from '@/utils/utils';
 import styles from './SiteLibrary.less';
 import DynamicAdd from './DynamicAdd';
+import { getauth } from "@/utils/authority";
 import FromProjectModel from './FromProjectModel';
 const { confirm } = Modal;
 const { Search } = Input;
@@ -49,6 +50,7 @@ class SiteLibrary extends PureComponent {
     const {
       SiteLibrary: { siteList,siteListQuery },
     } = this.props;
+    const permissionsBtn = getauth().permissions||[];
 
     const columns = [
       {
@@ -113,7 +115,7 @@ class SiteLibrary extends PureComponent {
         render: (t, r) => {
           return (
             <div className="operateWrap">
-              <span
+            {permissionsBtn.includes('BTN210324000015')&&<span
                 className="operateBtn"
                 onClick={() =>
                   this.setState({ record: r }, () => {
@@ -122,29 +124,29 @@ class SiteLibrary extends PureComponent {
                 }
               >
                 创建动态
-              </span>
-              <span className="operateLine" />
-              <span
+              </span>}
+              {permissionsBtn.includes('BTN210324000015')&&<span className="operateLine" />}
+              {permissionsBtn.includes('BTN210324000016')&&<span
                 className="operateBtn"
                 onClick={() => {
                   router.push(`/portal/contentmanagement/sitelibrary/edit?uid=${r.gongdiUid}`);
                 }}
               >
                 编辑{' '}
-              </span>
-              <span className="operateLine" />
-              <span className="operateBtn" onClick={() => this.handleToggleStatus(r)}>
+              </span>}
+              {permissionsBtn.includes('BTN210324000016')&&<span className="operateLine" />}
+              {permissionsBtn.includes('BTN210324000017')&&<span className="operateBtn" onClick={() => this.handleToggleStatus(r)}>
                 {r.gongdiStatus === 1 ? '启用' : '停用'}{' '}
-              </span>
-              <span className="operateLine" />
-              <span
+              </span>}
+              {permissionsBtn.includes('BTN210324000017')&&<span className="operateLine" />}
+              {permissionsBtn.includes('BTN210324000018')&&<span
                 className="operateBtn"
                 onClick={() => {
                   router.push(`/portal/contentmanagement/sitelibrary/dynamic?uid=${r.gongdiUid}&status=${r.gongdiStage}`);
                 }}
               >
                 工地动态
-              </span>
+              </span>}
             </div>
           );
         },
@@ -213,13 +215,13 @@ class SiteLibrary extends PureComponent {
           </Card>
 
           <Card bordered={false} style={{ marginTop: 20 }}>
-          {!isCompany?<Button type="primary" onClick={() => {
+          {permissionsBtn.includes('BTN210324000014')&&!isCompany&&<Button type="primary" onClick={() => {
             router.push(`/portal/contentmanagement/sitelibrary/add`);
           }}>
                 <Icon type="plus" />
                 创建工地
-              </Button>:
-            <Dropdown trigger={['click']} overlay={menu}>
+              </Button>}
+            {isCompany&&<Dropdown trigger={['click']} overlay={menu}>
               <Button type="primary">
                 <Icon type="plus" />
                 创建工地
