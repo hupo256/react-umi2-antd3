@@ -65,18 +65,22 @@ export default [
           {
             path: '/portal',
             redirect: '/portal/contentmanagement',
+            code: 'MU9000',
           },
           {
             path: '/portal/contentmanagement',
             name: 'contentmanagement',
+            code: 'MU90000001',
             routes: [
               {
                 path: '/portal/contentmanagement',
                 redirect: '/portal/contentmanagement/caselibrary',
+                code: 'MU900000010001',
               },
               {
                 path: '/portal/contentmanagement/caselibrary',
                 name: 'caselibrary',
+                code: 'MU900000010001',
                 component: './Portal/ContentManagement/CaseLibrary/CaseLibrary',
               },
               {
@@ -93,6 +97,7 @@ export default [
                 path: '/portal/contentmanagement/sitelibrary',
                 name: 'sitelibrary',
                 component: './Portal/ContentManagement/SiteLibrary/SiteLibrary',
+                code: 'MU900000010002',
               },
               {
                 path: '/portal/contentmanagement/sitelibrary/add',
@@ -112,6 +117,7 @@ export default [
               {
                 path: '/portal/contentmanagement/designerlibrary',
                 name: 'designerlibrary',
+                code: 'MU900000010003',
                 component: './Portal/ContentManagement/DesignerLibrary/DesignerLibrary',
               },
               {
@@ -132,6 +138,7 @@ export default [
               {
                 path: '/portal/contentmanagement/projectlibrary',
                 name: 'projectlibrary',
+                code: 'MU900000010004',
                 component: './Portal/ContentManagement/ProjectLibrary/ProjectLibrary',
               },
               {
@@ -147,6 +154,7 @@ export default [
               {
                 path: '/portal/contentmanagement/FormLibrary',
                 name: 'formLibrary',
+                code: 'MU900000010005',
                 component: './Portal/ContentManagement/FormLibrary/FormLibrary',
               },
             ],
@@ -200,7 +208,11 @@ export default [
         path: '/customer',
         name: 'customer',
         icon: 'retweet',
+<<<<<<< HEAD
         // code: 'P2020010110014',
+=======
+        code: 'MU90000002',
+>>>>>>> 811ff3f70db02765f9a72a8e7cb992ec028452ee
         component: './Customer/LeadManagement/LeadManagement',
         // routes: [
         //   {
@@ -222,22 +234,25 @@ export default [
         path: '/setting',
         name: 'setting',
         icon: 'setting',
-        // code: 'P2020010110010',
+        code: 'MU90000003',
         routes: [
           {
             path: '/setting',
             redirect: '/setting/dictconfig',
+            code: 'MU900000030001',
           },
           // 字典配置
           {
             path: '/setting/dictconfig',
             name: 'dictconfig',
+            code: 'MU900000030001',
             component: './SystemSetting/DictConfig/DictConfig',
           },
           // 小程序授权
           {
             path: '/setting/miniprogram',
             name: 'miniprogram',
+            code: 'MU900000030002',
             component: './SystemSetting/MiniProgram/MiniProgram',
           },
         ],

@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-01-22 13:30:02 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-03 16:49:25
+ * @Last Modified time: 2021-03-25 11:06:58
  * 线索搜索 
  */
 import React, { Component } from 'react';
@@ -147,10 +147,6 @@ class LeadManageSearch extends Component {
   }
   // 来源
   handleCascaderchange = (codes, arr) => {
-    console.log('====================================');
-    console.log(codes);
-    console.log(arr);
-    console.log('====================================');
     this.setState({
       // sourcetag: arr,
       codes,
