@@ -65,22 +65,22 @@ export default [
           {
             path: '/portal',
             redirect: '/portal/contentmanagement',
-            code: 'MU9000',
+            code: 'MU90000001',
           },
           {
             path: '/portal/contentmanagement',
             name: 'contentmanagement',
-            code: 'MU90000001',
+            code: 'MU900000010001',
             routes: [
               {
                 path: '/portal/contentmanagement',
                 redirect: '/portal/contentmanagement/caselibrary',
-                code: 'MU900000010001',
+                code: 'MU9000000100010001',
               },
               {
                 path: '/portal/contentmanagement/caselibrary',
                 name: 'caselibrary',
-                code: 'MU900000010001',
+                code: 'MU9000000100010001',
                 component: './Portal/ContentManagement/CaseLibrary/CaseLibrary',
               },
               {
@@ -97,7 +97,7 @@ export default [
                 path: '/portal/contentmanagement/sitelibrary',
                 name: 'sitelibrary',
                 component: './Portal/ContentManagement/SiteLibrary/SiteLibrary',
-                code: 'MU900000010002',
+                code: 'MU9000000100010002',
               },
               {
                 path: '/portal/contentmanagement/sitelibrary/add',
@@ -117,7 +117,7 @@ export default [
               {
                 path: '/portal/contentmanagement/designerlibrary',
                 name: 'designerlibrary',
-                code: 'MU900000010003',
+                code: 'MU9000000100010003',
                 component: './Portal/ContentManagement/DesignerLibrary/DesignerLibrary',
               },
               {

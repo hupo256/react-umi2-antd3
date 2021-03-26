@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:49:12 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-26 17:12:19
+ * @Last Modified time: 2021-03-26 18:04:31
  * 设计师库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -126,7 +126,7 @@ class DesignerLibrary extends PureComponent {
         render: (t, r) => {
           return (
             <div className="operateWrap">
-            {permissionsBtn.includes('BTN210324000020')&&<span
+            {permissionsBtn.includes('BTN210326000042')&&<span
                 className="operateBtn"
                 onClick={() =>
                   router.push(`/portal/contentmanagement/designerlibrary/edit?uid=${r.uid}`)
@@ -135,8 +135,8 @@ class DesignerLibrary extends PureComponent {
               >
                 编辑
               </span>}
-              {permissionsBtn.includes('BTN210324000020')&&permissionsBtn.includes('BTN210324000021')&&<span className="operateLine" />}
-              {permissionsBtn.includes('BTN210324000021')&&<span className="operateBtn" onClick={() => this.handleChangeStatus(r)}>
+              {permissionsBtn.includes('BTN210326000042')&&permissionsBtn.includes('BTN210326000043')&&<span className="operateLine" />}
+              {permissionsBtn.includes('BTN210326000043')&&<span className="operateBtn" onClick={() => this.handleChangeStatus(r)}>
                 {r.status === '1' ? '停用' : '启用'}{' '}
               </span>}
             </div>
@@ -182,7 +182,7 @@ class DesignerLibrary extends PureComponent {
             </p>
           </Card>
           <Card bordered={false} style={{ marginTop: 20 }}>
-          {permissionsBtn.includes('BTN210324000019')&&<Button
+          {permissionsBtn.includes('BTN210326000041')&&<Button
               type="primary"
               onClick={() => {
                 router.push(`/portal/contentmanagement/designerlibrary/add`);

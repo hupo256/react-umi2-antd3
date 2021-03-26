@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-03-02 14:35:24 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-26 16:56:44
+ * @Last Modified time: 2021-03-26 18:22:08
  * 表单绑定
  */
 import React, { Component } from 'react';
@@ -45,7 +45,7 @@ class FormBinding extends Component {
           <div className={styles.formBindingItemRight}>
             <p>
               {!show1 && (
-                permissionsBtn.includes('BTN210324000010')&&<p onClick={() => this.setState({ show1: !this.state.show1 })}>
+                permissionsBtn.includes('BTN210326000028')&&<p onClick={() => this.setState({ show1: !this.state.show1 })}>
                   {FormDetail && FormDetail['1'] ? '更换绑定' : '去绑定'}
                   <Icon type="right" />
                 </p>
@@ -89,7 +89,7 @@ class FormBinding extends Component {
           <div className={styles.formBindingItemRight}>
             <p>
               {!show2 && (
-                permissionsBtn.includes('BTN210324000010')&&<p onClick={() => this.setState({ show2: !this.state.show2 })}>
+                permissionsBtn.includes('BTN210326000028')&&<p onClick={() => this.setState({ show2: !this.state.show2 })}>
                   {FormDetail && FormDetail['2'] ? '更换绑定' : '去绑定'}
                   <Icon type="right" />
                 </p>
@@ -133,7 +133,7 @@ class FormBinding extends Component {
           <div className={styles.formBindingItemRight}>
             <p>
               {!show3 && (
-                permissionsBtn.includes('BTN210324000010')&&<p onClick={() => this.setState({ show3: !this.state.show3 })}>
+                permissionsBtn.includes('BTN210326000028')&&<p onClick={() => this.setState({ show3: !this.state.show3 })}>
                   {FormDetail && FormDetail['3'] ? '更换绑定' : '去绑定'}
                   <Icon type="right" />
                 </p>
