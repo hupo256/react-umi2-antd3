@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-19 09:59:02
+ * @Last Modified time: 2021-03-26 17:02:27
  * 创建工地
  */
 import React, { PureComponent, Fragment, Component } from 'react';
@@ -352,7 +352,13 @@ class CreateStepTwo extends Component {
         <p>
           <Button
             type="primary"
-            onClick={() => this.setState({ visible: true })}
+            onClick={() => {
+              if(DicList.length==20){
+                message.error('无法上传，最多支持上传20张图片')
+              }else{
+                
+              this.setState({ visible: true })
+              }}}
             style={{ marginRight: 16 }}
           >
             <Icon type="plus" />
