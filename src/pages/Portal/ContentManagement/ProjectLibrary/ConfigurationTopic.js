@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-24 15:26:17
+ * @Last Modified time: 2021-03-26 17:44:41
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -13,6 +13,7 @@ import _ from 'lodash';
 import { Button, Icon, message, Menu } from 'antd';
 import { DraggableArea } from 'react-draggable-tags';
 import { getQueryUrlVal } from '@/utils/utils';
+import { getauth } from '@/utils/authority';
 import ImgComponent from './TopicComponent/ImgComponent';
 import FootComponent from './TopicComponent/FootComponent';
 import ViewFormComponent from './TopicComponent/ViewFormComponent';
@@ -190,6 +191,7 @@ class ProjectLibrary extends PureComponent {
         />
       );
     });
+    const permissionsBtn = getauth();
     return (
       <div className={styles.topicWrap}>
         <div style={{ width: 256 }} className={styles.logoWrap}>
@@ -214,15 +216,17 @@ class ProjectLibrary extends PureComponent {
             )}
           </div>
           <div className={styles.fixedWrap}>
-            <Button
-              type="primary"
-              style={{ width: '100%', height: 38 }}
-              onClick={() => {
-                this.addConfiguration();
-              }}
-            >
-              发布
-            </Button>
+            {permissionsBtn.permissions.includes('MU90000001000400010001') ? (
+              <Button
+                type="primary"
+                style={{ width: '100%', height: 38 }}
+                onClick={() => {
+                  this.addConfiguration();
+                }}
+              >
+                发布
+              </Button>
+            ) : null}
             <div className="clearfix">
               <span
                 className={styles.logout}
