@@ -10,7 +10,7 @@ import { ctx } from '../common/context';
 import { Select, Input } from 'antd';
 import { dataSource } from '../tools/data';
 import EditBar from '../common/editBar/index';
-import pholder from '../tools/tempbg.png';
+import { imgBaseUrl } from '../tools';
 import styles from './edit.less';
 
 const { Option } = Select;
@@ -34,7 +34,7 @@ export default function Templates(props) {
       width: 100,
       render: (text, record, index) => (
         <div className={styles.minImgBox}>
-          <img src={pholder} alt="" />
+          <img src={`${imgBaseUrl}img_LakeBlue.png`} alt="" />
         </div>
       ),
     },

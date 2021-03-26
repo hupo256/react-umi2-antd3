@@ -12,11 +12,11 @@ import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import NotBound from '../../../SystemSetting/MiniProgram/NotBound';
 import SwiperBar from '../common/swiperBar';
 import TitleGuid from '../common/titleGuid';
+import { imgBaseUrl } from '../tools';
 import { Card, Button } from 'antd';
-import pholder from '../tools/bg.png';
 import styles from './home.less';
 
-const baseRrlKey = '/portal/minProgram/';
+const baseUrlKey = '/portal/minProgram/';
 
 export default function Templates(props) {
   const [authorInf, setauthorInf] = useState(null);
@@ -33,7 +33,7 @@ export default function Templates(props) {
   }, []);
 
   function gotoRoute(key) {
-    router.push(`${baseRrlKey}${key}`);
+    router.push(`${baseUrlKey}${key}`);
   }
 
   return (
@@ -44,7 +44,7 @@ export default function Templates(props) {
           {authorInf.isAuthedWechatMini ? (
             <Card bordered={false}>
               <div className={styles.currTepBox}>
-                <img src={pholder} alt="" />
+                <img src={`${imgBaseUrl}img_LakeBlue.png`} alt="" />
 
                 <div className={styles.btnbox}>
                   <Button onClick={() => gotoRoute('edit')} type="primary">
@@ -55,7 +55,7 @@ export default function Templates(props) {
               </div>
             </Card>
           ) : (
-            <NotBound jumpUrl={`${baseRrlKey}home`} />
+            <NotBound jumpUrl={`${baseUrlKey}home`} />
           )}
         </>
       )}

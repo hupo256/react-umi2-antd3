@@ -10,9 +10,8 @@ import router from 'umi/router';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { Card, Button } from 'antd';
 import TitleGuid from '../common/titleGuid';
+import { imgBaseUrl } from '../tools';
 import styles from './templates.less';
-
-const imgBaseUrl = 'https://img.inbase.in-deco.com/crm-saas/img/dflfwc/';
 
 export default function Templates(props) {
   const [tepList, settepList] = useState([]);
@@ -27,7 +26,7 @@ export default function Templates(props) {
     const arr = [];
     for (let i = 0; i < temLen; i++) {
       arr.push({
-        img: imgBaseUrl + 'img_LakeBlue.png',
+        img: `${imgBaseUrl}img_LakeBlue.png`,
         tit: '经典黑白风',
       });
     }

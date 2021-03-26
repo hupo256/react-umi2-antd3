@@ -5,13 +5,13 @@
  * @Last Modified time: 2021-03-23 13:49:12 
  * 编辑模板
  */
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { Provider, ctx } from '../common/context';
 import { Card, Button, Drawer } from 'antd';
 import ImgsEdit from './imgsEdit';
 import TagsEdit from './tagsEdit';
-import pholder from '../tools/tempbg.png';
+import { imgBaseUrl } from '../tools';
 import styles from './edit.less';
 
 function TempEdit(props) {
@@ -38,7 +38,7 @@ function TempEdit(props) {
           </Drawer>
 
           <div className={styles.currTepBox}>
-            <img src={pholder} alt="" />
+            <img src={`${imgBaseUrl}img_LakeBlue.png`} alt="" />
 
             <div className={styles.btnbox}>
               <Button onClick={() => toEditer('tags')} type="primary">

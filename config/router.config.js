@@ -185,6 +185,27 @@ export default [
               },
             ],
           },
+
+          {
+            path: '/portal/mktManagement',
+            name: 'mktManagement',
+            routes: [
+              {
+                path: '/portal/mktManagement',
+                redirect: '/portal/mktManagement/activity',
+              },
+              {
+                path: '/portal/mktManagement/activity',
+                name: 'activity',
+                component: './Portal/mktManagement/activity',
+              },
+              {
+                path: '/portal/mktManagement/goods',
+                name: 'goods',
+                component: './Portal/mktManagement/goods',
+              },
+            ],
+          },
           // {
           //   path: '/portal/mysite',
           //   name: 'mysite',
@@ -208,11 +229,7 @@ export default [
         path: '/customer',
         name: 'customer',
         icon: 'retweet',
-<<<<<<< HEAD
-        // code: 'P2020010110014',
-=======
         code: 'MU90000002',
->>>>>>> 811ff3f70db02765f9a72a8e7cb992ec028452ee
         component: './Customer/LeadManagement/LeadManagement',
         // routes: [
         //   {
