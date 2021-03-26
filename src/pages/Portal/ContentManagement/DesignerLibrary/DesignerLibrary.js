@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:49:12 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-25 11:05:43
+ * @Last Modified time: 2021-03-26 17:12:19
  * 设计师库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -135,7 +135,7 @@ class DesignerLibrary extends PureComponent {
               >
                 编辑
               </span>}
-              {permissionsBtn.includes('BTN210324000020')&&<span className="operateLine" />}
+              {permissionsBtn.includes('BTN210324000020')&&permissionsBtn.includes('BTN210324000021')&&<span className="operateLine" />}
               {permissionsBtn.includes('BTN210324000021')&&<span className="operateBtn" onClick={() => this.handleChangeStatus(r)}>
                 {r.status === '1' ? '停用' : '启用'}{' '}
               </span>}

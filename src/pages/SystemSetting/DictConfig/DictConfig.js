@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 10:30:18 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-25 10:48:26
+ * @Last Modified time: 2021-03-26 17:14:22
  * 字典配置
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -141,7 +141,7 @@ class DictConfig extends PureComponent {
               {permissionsBtn.includes('BTN210324000008')&&<span className="operateBtn" onClick={() => this.handleEdit(r)}>
                 编辑
               </span>}
-              {permissionsBtn.includes('BTN210324000008')&&<span className="operateLine" />}
+              {permissionsBtn.includes('BTN210324000008')&&permissionsBtn.includes('BTN210324000009')&&<span className="operateLine" />}
              {permissionsBtn.includes('BTN210324000009')&& <span className="operateBtn" onClick={() => this.handleChangeStatus(r)}>
                 {r.status === '1' ? '停用' : '启用'}{' '}
               </span>}
