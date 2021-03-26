@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-24 20:08:57
+ * @Last Modified time: 2021-03-26 18:16:35
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -49,7 +49,7 @@ class ProjectLibrary extends PureComponent {
         <PageHeaderWrapper>
           <Card bordered={false}>{this.renderSearch()}</Card>
           <Card bordered={false} style={{ marginTop: 16 }}>
-            {permissionsBtn.permissions.includes('BTN210324000027') ? (
+            {permissionsBtn.permissions.includes('BTN210326000050') ? (
               <Button
                 icon="plus"
                 type="primary"
@@ -216,7 +216,7 @@ class ProjectLibrary extends PureComponent {
           const permissionsBtn = getauth();
           return (
             <div className="operateWrap">
-              {permissionsBtn.permissions.includes('BTN210324000028') ? (
+              {permissionsBtn.permissions.includes('BTN210326000051') ? (
                 <span
                   className="operateBtn"
                   onClick={() => {
@@ -226,7 +226,7 @@ class ProjectLibrary extends PureComponent {
                   编辑
                 </span>
               ) : null}
-              {permissionsBtn.permissions.includes('BTN210324000029') && r.formStatus !== 0 ? (
+              {permissionsBtn.permissions.includes('BTN210326000053') && r.formStatus !== 0 ? (
                 <span>
                   <span className="operateLine" />
                   <span className="operateBtn" onClick={() => this.handleToggleStatus(r)}>
@@ -234,7 +234,7 @@ class ProjectLibrary extends PureComponent {
                   </span>
                 </span>
               ) : null}
-              {permissionsBtn.permissions.includes('BTN210324000030') && r.formStatus === 0 ? (
+              {permissionsBtn.permissions.includes('BTN210326000052') && r.formStatus === 0 ? (
                 <span>
                   <span className="operateLine" />
                   <span className="operateBtn" onClick={() => this.handleDelete(r)}>
@@ -242,7 +242,7 @@ class ProjectLibrary extends PureComponent {
                   </span>
                 </span>
               ) : null}
-              {permissionsBtn.permissions.includes('BTN210324000031') ? (
+              {permissionsBtn.permissions.includes('MU90000001000100050001') ? (
                 <span>
                   <span className="operateLine" />
                   <span

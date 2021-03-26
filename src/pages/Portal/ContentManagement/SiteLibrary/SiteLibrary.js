@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:47:07 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-25 11:04:02
+ * @Last Modified time: 2021-03-26 17:13:08
  * 工地库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -125,7 +125,7 @@ class SiteLibrary extends PureComponent {
               >
                 创建动态
               </span>}
-              {permissionsBtn.includes('BTN210324000015')&&<span className="operateLine" />}
+              {permissionsBtn.includes('BTN210324000015')&&permissionsBtn.includes('BTN210324000016')&&<span className="operateLine" />}
               {permissionsBtn.includes('BTN210324000016')&&<span
                 className="operateBtn"
                 onClick={() => {
@@ -134,11 +134,11 @@ class SiteLibrary extends PureComponent {
               >
                 编辑{' '}
               </span>}
-              {permissionsBtn.includes('BTN210324000016')&&<span className="operateLine" />}
+              {permissionsBtn.includes('BTN210324000016')&&permissionsBtn.includes('BTN210324000017')&&<span className="operateLine" />}
               {permissionsBtn.includes('BTN210324000017')&&<span className="operateBtn" onClick={() => this.handleToggleStatus(r)}>
                 {r.gongdiStatus === 1 ? '启用' : '停用'}{' '}
               </span>}
-              {permissionsBtn.includes('BTN210324000017')&&<span className="operateLine" />}
+              {permissionsBtn.includes('BTN210324000017')&&permissionsBtn.includes('BTN210324000018')&&<span className="operateLine" />}
               {permissionsBtn.includes('BTN210324000018')&&<span
                 className="operateBtn"
                 onClick={() => {

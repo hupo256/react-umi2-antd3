@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-01-22 13:30:46 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-25 11:09:04
+ * @Last Modified time: 2021-03-26 17:13:49
  * 线索列表
  */
 import React, { Component } from 'react';
@@ -110,9 +110,9 @@ class LeadManageTable extends Component {
             {permissionsBtn.includes('BTN210324000004')&&<span onClick={() => this.setState({ changeVisible: true, record: r })}>
                 变更状态
               </span>}
-              {permissionsBtn.includes('BTN210324000004')&&<span> | </span>}
+              {permissionsBtn.includes('BTN210324000004')&&permissionsBtn.includes('BTN210324000005')&&<span> | </span>}
               {permissionsBtn.includes('BTN210324000005')&&<span onClick={() => this.setState({ clueVisible: true, record: r })}>编辑</span>}
-              {permissionsBtn.includes('BTN210324000005')&&<span> | </span>}
+              {permissionsBtn.includes('BTN210324000005')&&permissionsBtn.includes('BTN210324000006')&&<span> | </span>}
               {permissionsBtn.includes('BTN210324000006')&&<span onClick={() => this.setState({ recordVisible: true, record: r })}>
                 变更记录
               </span>}

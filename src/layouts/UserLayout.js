@@ -59,13 +59,13 @@ class UserLayout extends React.PureComponent {
     let title = '';
     switch (pageStatus) {
       case 1:
-        title = '欢迎注册 我的工地 · inSite';
+        title = '营销站';
         break;
       case 2:
-        title = '欢迎登录 我的工地 · inSite';
+        title = '营销站';
         break;
       case 3:
-        title = '欢迎登录 我的工地 · inSite';
+        title = '营销站';
         break;
       case 4:
         title = '重置密码';
