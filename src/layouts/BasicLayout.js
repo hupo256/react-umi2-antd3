@@ -1,36 +1,36 @@
-import React from "react";
-import { Layout, BackTop, Icon } from "antd";
-import DocumentTitle from "react-document-title";
-import isEqual from "lodash/isEqual";
-import memoizeOne from "memoize-one";
-import { connect } from "dva";
-import { ContainerQuery } from "react-container-query";
-import classNames from "classnames";
-import pathToRegexp from "path-to-regexp";
-import { enquireScreen, unenquireScreen } from "enquire-js";
-import { formatMessage } from "umi/locale";
-import SiderMenu from "@/components/SiderMenu";
-import Authorized from "@/utils/Authorized";
-import SettingDrawer from "@/components/SettingDrawer";
-import logo from "../assets/whiteLog.png";
-import logoImg from "../assets/logoImg.png";
-import Footer from "./Footer";
-import Header from "./Header";
-import Context from "./MenuContext";
-import { ConfigProvider } from "antd";
-import zh_CN from "antd/lib/locale-provider/zh_CN";
-import zhCN from "antd/es/locale/zh_CN";
-import "moment/locale/zh-cn";
-import { getauth } from "../utils/authority";
-import moment from "moment";
-import { handleRouterFun } from "@/utils/globalUtils";
+import React from 'react';
+import { Layout, BackTop, Icon } from 'antd';
+import DocumentTitle from 'react-document-title';
+import isEqual from 'lodash/isEqual';
+import memoizeOne from 'memoize-one';
+import { connect } from 'dva';
+import { ContainerQuery } from 'react-container-query';
+import classNames from 'classnames';
+import pathToRegexp from 'path-to-regexp';
+import { enquireScreen, unenquireScreen } from 'enquire-js';
+import { formatMessage } from 'umi/locale';
+import SiderMenu from '@/components/SiderMenu';
+import Authorized from '@/utils/Authorized';
+import SettingDrawer from '@/components/SettingDrawer';
+import logo from '../assets/whiteLog.png';
+import logoImg from '../assets/logoImg.png';
+import Footer from './Footer';
+import Header from './Header';
+import Context from './MenuContext';
+import { ConfigProvider } from 'antd';
+import zh_CN from 'antd/lib/locale-provider/zh_CN';
+import zhCN from 'antd/es/locale/zh_CN';
+import 'moment/locale/zh-cn';
+import { getauth } from '../utils/authority';
+import moment from 'moment';
+import { handleRouterFun } from '@/utils/globalUtils';
 const { Content } = Layout;
-moment.locale("zh-cn");
+moment.locale('zh-cn');
 // Conversion router to menu.
-function formatter(data, parentPath = "", parentAuthority, parentName) {
+function formatter(data, parentPath = '', parentAuthority, parentName) {
   const permissionsBtn = getauth();
-  return data.map((item) => {
-    let locale = "menu";
+  return data.map(item => {
+    let locale = 'menu';
     if (parentName && item.name) {
       locale = `${parentName}.${item.name}`;
     } else if (item.name) {
@@ -43,20 +43,14 @@ function formatter(data, parentPath = "", parentAuthority, parentName) {
       ...item,
       locale,
       authority: item.code
-        ? permissionsBtn.permissions &&
-          permissionsBtn.permissions.includes(item.code)
-          ? "admin"
-          : "gest"
+        ? permissionsBtn.permissions && permissionsBtn.permissions.includes(item.code)
+          ? 'admin'
+          : 'gest'
         : item.authority || parentAuthority,
     };
 
     if (item.routes) {
-      const children = formatter(
-        item.routes,
-        `${parentPath}${item.path}/`,
-        item.authority,
-        locale
-      );
+      const children = formatter(item.routes, `${parentPath}${item.path}/`, item.authority, locale);
       // Reduce memory usage
       result.children = children;
     }
@@ -66,26 +60,26 @@ function formatter(data, parentPath = "", parentAuthority, parentName) {
 }
 
 const query = {
-  "screen-xs": {
+  'screen-xs': {
     maxWidth: 575,
   },
-  "screen-sm": {
+  'screen-sm': {
     minWidth: 576,
     maxWidth: 767,
   },
-  "screen-md": {
+  'screen-md': {
     minWidth: 768,
     maxWidth: 991,
   },
-  "screen-lg": {
+  'screen-lg': {
     minWidth: 992,
     maxWidth: 1199,
   },
-  "screen-xl": {
+  'screen-xl': {
     minWidth: 1200,
     maxWidth: 1599,
   },
-  "screen-xxl": {
+  'screen-xxl': {
     minWidth: 1600,
   },
 };
@@ -109,7 +103,7 @@ class BasicLayout extends React.PureComponent {
         rendering: false,
       });
     });
-    this.enquireHandler = enquireScreen((mobile) => {
+    this.enquireHandler = enquireScreen(mobile => {
       const { isMobile } = this.state;
       if (isMobile !== mobile) {
         this.setState({
@@ -155,8 +149,8 @@ class BasicLayout extends React.PureComponent {
    */
   getBreadcrumbNameMap() {
     const routerMap = {};
-    const mergeMenuAndRouter = (data) => {
-      data.forEach((menuItem) => {
+    const mergeMenuAndRouter = data => {
+      data.forEach(menuItem => {
         if (menuItem.children) {
           mergeMenuAndRouter(menuItem.children);
         }
@@ -168,34 +162,34 @@ class BasicLayout extends React.PureComponent {
     return routerMap;
   }
 
-  getPageTitle = (pathname) => {
+  getPageTitle = pathname => {
     let currRouterData = null;
     // match params path
-    Object.keys(this.breadcrumbNameMap).forEach((key) => {
+    Object.keys(this.breadcrumbNameMap).forEach(key => {
       if (pathToRegexp(key).test(pathname)) {
         currRouterData = this.breadcrumbNameMap[key];
       }
     });
     if (!currRouterData) {
-      return "我的工地inSite";
+      return '营销站';
     }
     const message = formatMessage({
       id: currRouterData.locale || currRouterData.name,
       defaultMessage: currRouterData.name,
     });
-    return `${message} - 我的工地inSite`;
+    return `${message} - 营销站`;
   };
 
   getLayoutStyle = () => {
     const { isMobile } = this.state;
     const { fixSiderbar, collapsed, layout } = this.props;
-    const isScm = _.includes(location.href, "wholePage");
-    if (fixSiderbar && layout !== "topmenu" && !isMobile) {
+    const isScm = _.includes(location.href, 'wholePage');
+    if (fixSiderbar && layout !== 'topmenu' && !isMobile) {
       if (isScm) {
         return null;
       } else {
         return {
-          paddingLeft: collapsed ? "80px" : "220px",
+          paddingLeft: collapsed ? '80px' : '220px',
         };
       }
     }
@@ -204,27 +198,24 @@ class BasicLayout extends React.PureComponent {
 
   getContentStyle = () => {
     const { fixedHeader } = this.props;
-    const isScm = _.includes(location.href, "wholePage");
+    const isScm = _.includes(location.href, 'wholePage');
     return {
-      margin: "12px",
+      margin: '12px',
       paddingTop: fixedHeader && !isScm ? 64 : 0,
     };
   };
 
-  handleMenuCollapse = (collapsed) => {
+  handleMenuCollapse = collapsed => {
     const { dispatch } = this.props;
     dispatch({
-      type: "global/changeLayoutCollapsed",
+      type: 'global/changeLayoutCollapsed',
       payload: collapsed,
     });
   };
 
   renderSettingDrawer() {
     const { rendering } = this.state;
-    if (
-      (rendering || process.env.NODE_ENV === "production") &&
-      APP_TYPE !== "site"
-    ) {
+    if ((rendering || process.env.NODE_ENV === 'production') && APP_TYPE !== 'site') {
       return null;
     }
     return <SettingDrawer />;
@@ -245,14 +236,14 @@ class BasicLayout extends React.PureComponent {
       collapsed,
     } = this.props;
     const { isMobile } = this.state;
-    const isTop = PropsLayout === "topmenu";
+    const isTop = PropsLayout === 'topmenu';
     const menuData = this.getMenuData();
-    const auth = JSON.parse(localStorage.getItem("auth"));
+    const auth = JSON.parse(localStorage.getItem('auth'));
     const bigLogo = (auth && auth.logoBig) || logo;
     const smallLogo = (auth && auth.logoSmall) || logoImg;
     let newLog = !collapsed ? bigLogo : smallLogo;
     // 是否是报价
-    const isScm = _.includes(location.href, "wholePage");
+    const isScm = _.includes(location.href, 'wholePage');
     const isSider = isTop && !isMobile ? true : false;
     const layout = (
       <Layout>
@@ -271,7 +262,7 @@ class BasicLayout extends React.PureComponent {
         <Layout
           style={{
             ...this.getLayoutStyle(),
-            minHeight: "100vh",
+            minHeight: '100vh',
           }}
         >
           {!isScm && (
@@ -290,17 +281,17 @@ class BasicLayout extends React.PureComponent {
                 style={{
                   width: 42,
                   height: 42,
-                  borderRadius: "50%",
-                  textAlign: "center",
-                  background: "#fe6a30",
-                  opacity: "0.8",
-                  lineHeight: "100%",
+                  borderRadius: '50%',
+                  textAlign: 'center',
+                  background: '#fe6a30',
+                  opacity: '0.8',
+                  lineHeight: '100%',
                 }}
               >
                 <Icon
                   type="arrow-up"
                   style={{
-                    color: "#fff",
+                    color: '#fff',
                     fontSize: 24,
                     marginTop: 9,
                   }}
@@ -317,7 +308,7 @@ class BasicLayout extends React.PureComponent {
       <ConfigProvider locale={zhCN}>
         <DocumentTitle title={this.getPageTitle(pathname)}>
           <ContainerQuery query={query}>
-            {(params) => (
+            {params => (
               <Context.Provider value={this.getContext()}>
                 <div className={classNames(params)}>{layout}</div>
               </Context.Provider>

@@ -138,7 +138,7 @@ export default [
               {
                 path: '/portal/contentmanagement/projectlibrary',
                 name: 'projectlibrary',
-                code: 'MU900000010004',
+                code: 'MU9000000100010004',
                 component: './Portal/ContentManagement/ProjectLibrary/ProjectLibrary',
               },
               {
@@ -148,13 +148,13 @@ export default [
               },
               {
                 path: '/portal/contentmanagement/ProjectLibrary/edit',
-                PageHeaderName: '创建专题',
+                PageHeaderName: '编辑专题',
                 component: './Portal/ContentManagement/ProjectLibrary/ProjectLibraryEdit',
               },
               {
                 path: '/portal/contentmanagement/FormLibrary',
                 name: 'formLibrary',
-                code: 'MU900000010005',
+                code: 'MU9000000100010005',
                 component: './Portal/ContentManagement/FormLibrary/FormLibrary',
               },
             ],
