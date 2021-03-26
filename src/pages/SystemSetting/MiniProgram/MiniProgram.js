@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 10:32:27 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-12 17:10:16
+ * @Last Modified time: 2021-03-26 16:56:46
  * 小程序授权
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -14,6 +14,7 @@ import img from '../../../assets/v2_q1insu.png';
 import styles from './MiniProgram.less';
 import NotBound from './NotBound';
 import FormBinding from './FormBinding';
+import { getauth } from "@/utils/authority";
 const { TabPane } = Tabs;
 
 @connect(({ MiniProgram, loading }) => ({
@@ -38,6 +39,7 @@ class MiniProgram extends PureComponent {
 
   render() {
     const { activeKey, leftactiveKey } = this.state;
+    const permissionsBtn = getauth().permissions||[];
     const {
       Loading,
       MiniProgram: { AuthInfo },
@@ -59,8 +61,8 @@ class MiniProgram extends PureComponent {
                     activeKey={leftactiveKey}
                     onChange={activeKey => this.handleChangeTab(activeKey)}
                   >
-                    <TabPane tab="基本信息" key="baseinfo" />
-                    <TabPane tab="表单绑定" key="form" />
+                  {permissionsBtn.includes('MU9000000300020001')&&<TabPane tab="基本信息" key="baseinfo" />}
+                  {permissionsBtn.includes('MU9000000300020002')&& <TabPane tab="表单绑定" key="form" />}
                   </Tabs>
                 </div>
                 <div className={styles.dictRight}>
