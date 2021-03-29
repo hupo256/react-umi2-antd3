@@ -239,8 +239,8 @@ class BasicLayout extends React.PureComponent {
     const isTop = PropsLayout === 'topmenu';
     const menuData = this.getMenuData();
     const auth = JSON.parse(localStorage.getItem('auth'));
-    const bigLogo = (auth && auth.logoBig) || logo;
-    const smallLogo = (auth && auth.logoSmall) || logoImg;
+    const bigLogo = (auth && auth.companyLogoBig) || logo;
+    const smallLogo = (auth && auth.companyLogoSmall) || logoImg;
     let newLog = !collapsed ? bigLogo : smallLogo;
     // 是否是报价
     const isScm = _.includes(location.href, 'wholePage');

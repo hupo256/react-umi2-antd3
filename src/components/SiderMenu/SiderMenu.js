@@ -119,7 +119,7 @@ export default class SiderMenu extends PureComponent {
               alt="logo"
               style={!collapsed ? { width: 171, height: 38 } : { width: 38, height: 38 }}
             />
-            <h1 style={{ display: 'none' }}>业务后台</h1>
+            <h1 style={{ display: 'none' }}>营销站</h1>
           </Link>
         </div>
         <BaseMenu

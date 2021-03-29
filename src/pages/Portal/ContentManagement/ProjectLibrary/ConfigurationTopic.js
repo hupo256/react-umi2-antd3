@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-26 17:44:41
+ * @Last Modified time: 2021-03-29 19:01:02
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -96,8 +96,8 @@ class ProjectLibrary extends PureComponent {
     } = this.props;
     const { collapsed, istrue, title } = this.state;
     const auth = JSON.parse(localStorage.getItem('auth'));
-    const bigLogo = (auth && auth.logoBig) || logo;
-    const smallLogo = (auth && auth.logoSmall) || logoImg;
+    const bigLogo = (auth && auth.companyLogoBig) || logo;
+    const smallLogo = (auth && auth.companyLogoSmall) || logoImg;
     let newLog = !collapsed ? bigLogo : smallLogo;
     let open = [];
     let companyPhone = '';
@@ -198,7 +198,7 @@ class ProjectLibrary extends PureComponent {
           <div className={styles.logo}>
             <Link to="/">
               <img src={newLog} alt="logo" style={{ width: 171, height: 38 }} />
-              <h1 style={{ display: 'none' }}>业务后台</h1>
+              <h1 style={{ display: 'none' }}>营销站</h1>
             </Link>
           </div>
           <div className={styles.meg}>
