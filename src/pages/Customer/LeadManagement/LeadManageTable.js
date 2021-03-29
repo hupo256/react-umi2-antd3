@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-01-22 13:30:46 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-26 17:13:49
+ * @Last Modified time: 2021-03-29 14:31:42
  * 线索列表
  */
 import React, { Component } from 'react';
@@ -67,6 +67,17 @@ class LeadManageTable extends Component {
             </div>
           );
         },
+      },
+      {
+        title: '楼盘/楼宇',
+        dataIndex: 'address',
+      },
+      {
+        title: '建筑面积',
+        dataIndex: 'area',
+        render:text=>{
+          return text?<span>{text}m²</span>:''
+        }
       },
       {
         title: '状态',
