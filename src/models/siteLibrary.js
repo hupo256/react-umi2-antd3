@@ -9,6 +9,7 @@ import {
   pageDynamic, //动态列表
   createDynamic, //创建动态
   dynamicShow, //显示/隐藏
+  dynamicStatus,//查询动态状态
 } from '@/services/siteLibrary';
 
 export default {
@@ -24,6 +25,16 @@ export default {
   },
 
   effects: {
+    *resetSearchModel({ payload }, { call, put }) {
+      yield put({
+        type: 'upData',payload: {siteListQuery: { ...payload }},
+      });
+    },
+    // 上条记录的阶段
+    *dynamicStatusModel({ payload }, { call, put }) {
+      const response = yield call(dynamicStatus, { ...payload });
+      return response;
+    },
     // 从已有工地选择
     *queryFromProjectModel({ payload }, { call, put }) {
       const response = yield call(queryFromProject, {

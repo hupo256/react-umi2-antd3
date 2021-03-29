@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:47:07 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-26 17:13:08
+ * @Last Modified time: 2021-03-29 17:16:20
  * 工地库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -115,18 +115,26 @@ class SiteLibrary extends PureComponent {
         render: (t, r) => {
           return (
             <div className="operateWrap">
-            {permissionsBtn.includes('BTN210324000015')&&<span
+            {permissionsBtn.includes('BTN210326000036')&&<span
                 className="operateBtn"
                 onClick={() =>
-                  this.setState({ record: r }, () => {
-                    this.setState({ visible: true });
+                  this.props.dispatch({
+                    type: 'SiteLibrary/dynamicStatusModel',
+                    payload: { gongdiUid: r.gongdiUid },
+                  }).then(res=>{
+                    if(res&&res.code===200){
+                      // this.setState({status:res.data.value,visible: true})
+                      this.setState({ record:{...r,gongdiStage:res.data.value }}, () => {
+                        this.setState({ visible: true });
+                      })
+                    }
                   })
                 }
               >
                 创建动态
               </span>}
-              {permissionsBtn.includes('BTN210324000015')&&permissionsBtn.includes('BTN210324000016')&&<span className="operateLine" />}
-              {permissionsBtn.includes('BTN210324000016')&&<span
+              {permissionsBtn.includes('BTN210326000036')&&permissionsBtn.includes('BTN210326000037')&&<span className="operateLine" />}
+              {permissionsBtn.includes('BTN210326000037')&&<span
                 className="operateBtn"
                 onClick={() => {
                   router.push(`/portal/contentmanagement/sitelibrary/edit?uid=${r.gongdiUid}`);
@@ -134,12 +142,12 @@ class SiteLibrary extends PureComponent {
               >
                 编辑{' '}
               </span>}
-              {permissionsBtn.includes('BTN210324000016')&&permissionsBtn.includes('BTN210324000017')&&<span className="operateLine" />}
-              {permissionsBtn.includes('BTN210324000017')&&<span className="operateBtn" onClick={() => this.handleToggleStatus(r)}>
+              {(permissionsBtn.includes('BTN210326000036')||permissionsBtn.includes('BTN210326000037'))&&permissionsBtn.includes('BTN210326000038')&&<span className="operateLine" />}
+              {permissionsBtn.includes('BTN210326000038')&&<span className="operateBtn" onClick={() => this.handleToggleStatus(r)}>
                 {r.gongdiStatus === 1 ? '启用' : '停用'}{' '}
               </span>}
-              {permissionsBtn.includes('BTN210324000017')&&permissionsBtn.includes('BTN210324000018')&&<span className="operateLine" />}
-              {permissionsBtn.includes('BTN210324000018')&&<span
+              {(permissionsBtn.includes('BTN210326000037')||permissionsBtn.includes('BTN210326000038'))&&permissionsBtn.includes('MU90000001000100020001')&&<span className="operateLine" />}
+              {permissionsBtn.includes('MU90000001000100020001')&&<span
                 className="operateBtn"
                 onClick={() => {
                   router.push(`/portal/contentmanagement/sitelibrary/dynamic?uid=${r.gongdiUid}&status=${r.gongdiStage}`);
@@ -187,7 +195,7 @@ class SiteLibrary extends PureComponent {
               onChange={e => this.setState({ searchWord: e.target.value })}
               onSearch={value => this.handleSrarch()}
               onPressEnter={() => this.handleSrarch()}
-              onBlur={() => this.handleSrarch()}
+              // onBlur={() => this.handleSrarch()}
               style={{ width: 600 }}
             />
             <Divider dashed />
@@ -215,7 +223,7 @@ class SiteLibrary extends PureComponent {
           </Card>
 
           <Card bordered={false} style={{ marginTop: 20 }}>
-          {permissionsBtn.includes('BTN210324000014')&&!isCompany&&<Button type="primary" onClick={() => {
+          {permissionsBtn.includes('BTN210326000035')&&!isCompany&&<Button type="primary" onClick={() => {
             router.push(`/portal/contentmanagement/sitelibrary/add`);
           }}>
                 <Icon type="plus" />
@@ -255,12 +263,12 @@ class SiteLibrary extends PureComponent {
   }
   handleSrarchStatus = status => {
     this.setState({ status }, () => {
-      this.getList({ gongdiStatus: status === '0' ? 0 : status === '1' ? 1 : null,pageNum:1 });
+      this.getList({ gongdiStatus: status === '0' ? '0' : status === '1' ? '1' : null,pageNum:1 });
     });
   };
   handleSrarch = () => {
     const { searchWord } = this.state;
-    this.getList({ searchText: searchWord ,pageNum:1});
+    this.getList({ searchText: searchWord.substring(0,30) ,pageNum:1});
   };
   // 分页
   handleTableChange = pagination => {

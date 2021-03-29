@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 10:32:27 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-26 16:56:46
+ * @Last Modified time: 2021-03-29 11:27:06
  * 小程序授权
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -66,7 +66,7 @@ class MiniProgram extends PureComponent {
                   </Tabs>
                 </div>
                 <div className={styles.dictRight}>
-                  {leftactiveKey === 'baseinfo' && (
+                  {permissionsBtn.includes('MU9000000300020001')&&leftactiveKey === 'baseinfo' && (
                     <div>
                       <p className={styles.dictRightTitle}>基本信息</p>
                       <p className={styles.dictRightName}>{AuthInfo.wechatNickName}</p>
@@ -84,7 +84,7 @@ class MiniProgram extends PureComponent {
                       <p className={styles.dictCompanyname}>{AuthInfo.wechatPrincipalName}</p>
                     </div>
                   )}
-                  {leftactiveKey === 'form' && <FormBinding />}
+                  {permissionsBtn.includes('MU9000000300020002')&&leftactiveKey === 'form' && <FormBinding />}
                 </div>
               </div>
             )}
