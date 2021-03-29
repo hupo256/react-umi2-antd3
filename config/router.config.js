@@ -66,7 +66,7 @@ export default [
         path: '/portal',
         name: 'portal',
         icon: 'dashboard',
-        // code: 'P2020010110010',
+        code: 'MU90000001',
         routes: [
           {
             path: '/portal',
