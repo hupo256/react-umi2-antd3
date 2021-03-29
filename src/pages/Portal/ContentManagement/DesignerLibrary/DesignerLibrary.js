@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:49:12 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-26 18:04:31
+ * @Last Modified time: 2021-03-29 11:27:54
  * 设计师库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -155,7 +155,7 @@ class DesignerLibrary extends PureComponent {
               onChange={e => this.setState({ searchWord: e.target.value })}
               onSearch={value => this.handleSrarch()}
               onPressEnter={() => this.handleSrarch()}
-              onBlur={() => this.handleSrarch()}
+              // onBlur={() => this.handleSrarch()}
               style={{ width: 600 }}
             />
             <Divider dashed />
