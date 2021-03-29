@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:47:49 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-26 18:04:04
+ * @Last Modified time: 2021-03-29 12:21:02
  * 案例库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -161,7 +161,7 @@ class CaseLibrary extends PureComponent {
               onChange={e => this.setState({ searchWord: e.target.value })}
               onSearch={value => this.handleSrarch()}
               onPressEnter={() => this.handleSrarch()}
-              onBlur={() => this.handleSrarch()}
+              // onBlur={() => this.handleSrarch()}
               style={{ width: 600 }}
             />
             <Divider dashed />
@@ -222,7 +222,7 @@ class CaseLibrary extends PureComponent {
   };
   handleSrarch = () => {
     const { searchWord } = this.state;
-    this.getList({ searchWord ,pageNum:1});
+    this.getList({ searchWord:searchWord.substring(0,30) ,pageNum:1});
   };
 
   // 分页

@@ -30,9 +30,15 @@ export default [
     routes: [
       {
         path: '/',
-        name: 'index',
-        redirect: '/portal/contentmanagement/caselibrary',
+        name: 'home',
+        redirect: '/home',
       },
+      {
+       path: '/home',
+       name: 'home',
+       icon: 'home',
+       component: './Welcome',
+     },
       {
         icon: 'user',
         path: '/account',
