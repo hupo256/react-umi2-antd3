@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-20 10:22:25 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-16 16:26:12
+ * @Last Modified time: 2021-03-29 15:58:38
  * 动态列表
  */
 import React, { Component } from 'react';
@@ -13,6 +13,7 @@ import { paginations, getQueryUrlVal , successIcon, waringInfo} from '@/utils/ut
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import DynamicAdd from './DynamicAdd';
 import RcViewer from 'rc-viewer';
+import { getauth } from "@/utils/authority";
 import emptyImage from '../../../../assets/emptyImage.png';
 
 const { confirm } = Modal;
@@ -40,15 +41,16 @@ class DynamicList extends Component {
     const {
       SiteLibrary: { dynamicList },
     } = this.props;
+    const permissionsBtn = getauth().permissions||[];
     return (
       <div>
         <PageHeaderWrapper>
-          <Card bordered={false}>
-            <Button type="primary" onClick={() => this.setState({ visible: true })}>
+          {permissionsBtn.includes('BTN210326000039')&&<Card bordered={false}>
+          <Button type="primary" onClick={() => this.setState({ visible: true })}>
               <Icon type="plus" />
               创建动态
             </Button>
-          </Card>
+          </Card>}
           {dynamicList &&
             Array.isArray(dynamicList) &&
             dynamicList.length > 0 && (
@@ -77,8 +79,7 @@ class DynamicList extends Component {
                             <p>
                               <Radio checked={true} />
                               {items.diaryDate}
-
-                              <span
+                              {permissionsBtn.includes('BTN210326000040')&&<span
                                 style={{ float: 'right', cursor: 'pointer' }}
                                 onClick={() => {
                                   this.handleChangeStatus(items,item)
@@ -87,7 +88,7 @@ class DynamicList extends Component {
                               >
                                 <Icon type={items.appletsShow ? 'eye-invisible' : 'eye'} />
                                 {items.appletsShow ? '隐藏' : '显示'}
-                              </span>
+                              </span>}
                             </p>
                             <p>{items.diaryContent}</p>
                             {items.fileList &&
