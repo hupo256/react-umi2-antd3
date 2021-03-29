@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:47:07 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-29 14:35:47
+ * @Last Modified time: 2021-03-29 17:01:21
  * 工地库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -118,9 +118,18 @@ class SiteLibrary extends PureComponent {
             {permissionsBtn.includes('BTN210326000036')&&<span
                 className="operateBtn"
                 onClick={() =>
-                  this.setState({ record: r }, () => {
-                    this.setState({ visible: true });
+                  this.props.dispatch({
+                    type: 'SiteLibrary/dynamicStatusModel',
+                    payload: { gongdiUid: r.gongdiUid },
+                  }).then(res=>{
+                    if(res&&res.code===200){
+                      // this.setState({status:res.data.value,visible: true})
+                      this.setState({ record:{...r,gongdiStage:res.data.value }}, () => {
+                        this.setState({ visible: true });
+                      })
+                    }
                   })
+                  
                 }
               >
                 创建动态

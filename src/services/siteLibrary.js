@@ -80,3 +80,12 @@ export async function pageDynamic(params) {
     body: params,
   });
 }
+
+
+// 上条记录的阶段
+export async function dynamicStatus(params) {
+  return request(baseurl + '/api/v1/wechat/site/diary/getLastStatus', {
+    method: 'POST',
+    body: params,
+  });
+}

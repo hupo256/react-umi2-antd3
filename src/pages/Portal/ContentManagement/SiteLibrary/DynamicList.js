@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-20 10:22:25 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-29 15:58:38
+ * @Last Modified time: 2021-03-29 16:52:26
  * 动态列表
  */
 import React, { Component } from 'react';
@@ -29,7 +29,14 @@ class DynamicList extends Component {
 
   componentDidMount() {
     const { dispatch } = this.props;
-    this.setState({status:getQueryUrlVal('status')})
+    dispatch({
+      type: 'SiteLibrary/dynamicStatusModel',
+      payload: { gongdiUid: getQueryUrlVal('uid') },
+    }).then(res=>{
+      if(res&&res.code===200){
+        this.setState({status:res.data.value})
+      }
+    });
     dispatch({
       type: 'SiteLibrary/dynamicListModel',
       payload: { gongdiUid: getQueryUrlVal('uid') },
@@ -39,6 +46,7 @@ class DynamicList extends Component {
   render() {
     const { visible } = this.state;
     const {
+      dispatch,
       SiteLibrary: { dynamicList },
     } = this.props;
     const permissionsBtn = getauth().permissions||[];
@@ -46,7 +54,15 @@ class DynamicList extends Component {
       <div>
         <PageHeaderWrapper>
           {permissionsBtn.includes('BTN210326000039')&&<Card bordered={false}>
-          <Button type="primary" onClick={() => this.setState({ visible: true })}>
+          <Button type="primary" onClick={() => {
+            dispatch({
+              type: 'SiteLibrary/dynamicStatusModel',
+              payload: { gongdiUid: getQueryUrlVal('uid') },
+            }).then(res=>{
+              if(res&&res.code===200){
+                this.setState({status:res.data.value,visible: true})
+              }
+            });}}>
               <Icon type="plus" />
               创建动态
             </Button>
