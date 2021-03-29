@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:47:07 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-29 17:01:21
+ * @Last Modified time: 2021-03-29 17:16:20
  * 工地库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -129,7 +129,6 @@ class SiteLibrary extends PureComponent {
                       })
                     }
                   })
-                  
                 }
               >
                 创建动态
@@ -143,11 +142,11 @@ class SiteLibrary extends PureComponent {
               >
                 编辑{' '}
               </span>}
-              {permissionsBtn.includes('BTN210326000037')&&permissionsBtn.includes('BTN210326000038')&&<span className="operateLine" />}
+              {(permissionsBtn.includes('BTN210326000036')||permissionsBtn.includes('BTN210326000037'))&&permissionsBtn.includes('BTN210326000038')&&<span className="operateLine" />}
               {permissionsBtn.includes('BTN210326000038')&&<span className="operateBtn" onClick={() => this.handleToggleStatus(r)}>
                 {r.gongdiStatus === 1 ? '启用' : '停用'}{' '}
               </span>}
-              {permissionsBtn.includes('BTN210326000038')&&permissionsBtn.includes('MU90000001000100020001')&&<span className="operateLine" />}
+              {(permissionsBtn.includes('BTN210326000037')||permissionsBtn.includes('BTN210326000038'))&&permissionsBtn.includes('MU90000001000100020001')&&<span className="operateLine" />}
               {permissionsBtn.includes('MU90000001000100020001')&&<span
                 className="operateBtn"
                 onClick={() => {
