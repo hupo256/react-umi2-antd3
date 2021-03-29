@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:47:07 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-29 12:20:46
+ * @Last Modified time: 2021-03-29 14:35:47
  * 工地库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -255,7 +255,7 @@ class SiteLibrary extends PureComponent {
   }
   handleSrarchStatus = status => {
     this.setState({ status }, () => {
-      this.getList({ gongdiStatus: status === '0' ? 0 : status === '1' ? 1 : null,pageNum:1 });
+      this.getList({ gongdiStatus: status === '0' ? '0' : status === '1' ? '1' : null,pageNum:1 });
     });
   };
   handleSrarch = () => {
