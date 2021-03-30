@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-29 19:28:41
+ * @Last Modified time: 2021-03-30 14:48:56
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -17,6 +17,7 @@ import { getauth } from '@/utils/authority';
 import ImgComponent from './TopicComponent/ImgComponent';
 import FootComponent from './TopicComponent/FootComponent';
 import ViewFormComponent from './TopicComponent/ViewFormComponent';
+import TextComponent from './TopicComponent/TextComponent';
 import styles from './index.less';
 import logo from '../../../../assets/whiteLog.png';
 import logoImg from '../../../../assets/logoImg.png';
@@ -159,6 +160,19 @@ class ProjectLibrary extends PureComponent {
               ),
             });
             break;
+          case 'TEXT':
+            tags.push({
+              id: index,
+              content: (
+                <TextComponent
+                  data={item}
+                  index={index}
+                  handleCheck={data => this.handleCheck(data)}
+                  handleDeletePic={data => this.handleDeletePic(data)}
+                />
+              ),
+            });
+            break;
           case 'FORM':
             ViewForm.push({ data: item, idx: index });
             break;
@@ -255,7 +269,7 @@ class ProjectLibrary extends PureComponent {
                   isList
                   tags={tags}
                   render={({ tag, index }) => <div className={styles.tag}>{tag.content}</div>}
-                  onChange={index => console.log(index)}
+                  onChange={index => this.handleDragg(index)}
                 />
                 <div className={styles.vieT}>{vie}</div>
                 {foot}
@@ -274,6 +288,7 @@ class ProjectLibrary extends PureComponent {
     let ishow = 0;
     let left = 0;
     let top = 0;
+    const { tags } = this.state;
     compentList &&
       compentList.map((item, index) => {
         if (item.elementType === 'MODAL' && ite.elementType === 'MODAL') {
@@ -299,6 +314,9 @@ class ProjectLibrary extends PureComponent {
         ite.elementButtonTextColor = '#fff';
         ite.elementButtonText = '立即预约';
       }
+      // if (ite.elementType === 'IMG' || ite.elementType === 'TEXT') {
+      //   tags.push(_.cloneDeep(ite));
+      // }
       compentList.push(_.cloneDeep(ite));
     }
     dispatch({
@@ -307,6 +325,9 @@ class ProjectLibrary extends PureComponent {
         key: 'compentList',
         value: [...compentList],
       },
+    });
+    this.setState({
+      tags,
     });
   }
   handleImg(data, index) {
@@ -545,6 +566,32 @@ class ProjectLibrary extends PureComponent {
         message.success('保存成功');
         router.push('/portal/contentmanagement/ProjectLibrary');
       }
+    });
+  }
+  handleDragg(index) {
+    console.log(index);
+    const {
+      dispatch,
+      ProjectLibrary: { compentList },
+    } = this.props;
+    let arr = [];
+    let other = [];
+    index &&
+      index.map((item, index) => {
+        arr.push(item.content.props.data);
+      });
+    compentList &&
+      compentList.map((item, index) => {
+        if (item.elementType !== 'IMG' && item.elementType !== 'TEXT') {
+          other.push(item);
+        }
+      });
+    dispatch({
+      type: 'ProjectLibrary/saveDataModel',
+      payload: {
+        key: 'compentList',
+        value: [...arr, ...other],
+      },
     });
   }
 }

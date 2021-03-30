@@ -22,10 +22,6 @@ switch (APP_ENVIRONMENT) {
     url = 'http://dev.gateway.ingongdi.com';
     //url = 'http://pre.gateway.ingongdi.com';
     break;
-  case 'auto': // 自动化
-    console.warn = function() {};
-    url = 'http://auto.api.platform.in-deco.com:1980';
-    break;
   case 'rc': // fix
     console.warn = function() {};
     url = 'http://rc.api.platform.in-deco.com:1980';

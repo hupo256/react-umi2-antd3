@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-30 11:12:00
+ * @Last Modified time: 2021-03-30 15:00:00
  * 创建工地
  */
 import React, { PureComponent } from 'react';
@@ -13,14 +13,13 @@ import styles from './index.less';
 @connect(({ ProjectLibrary }) => ({
   ProjectLibrary,
 }))
-class ImgComponent extends PureComponent {
+class TextComponent extends PureComponent {
   state = { uploadVisible: false };
 
   componentDidMount() {}
 
   render() {
     const { data, index } = this.props;
-    const { uploadVisible } = this.state;
     return (
       <div className={styles.changePicWrap}>
         <div
@@ -29,30 +28,19 @@ class ImgComponent extends PureComponent {
           }}
           className={data.checked === 1 ? styles.imgWrap : ''}
         >
-          <img
-            src={data.paramList[0].defaultValue}
-            draggable="false"
-            alt="logo"
-            style={{ width: '100%' }}
-          />
+          <div
+            suppressContentEditableWarning="true"
+            contentEditable="true"
+            className={styles.element}
+          >
+            {data.paramList[0].defaultValue}
+          </div>
           <div className={data.checked === 1 ? styles.roundLeftTop : ''} />
           <div className={data.checked === 1 ? styles.roundRightTop : ''} />
           <div className={data.checked === 1 ? styles.roundLeftBottom : ''} />
           <div className={data.checked === 1 ? styles.roundRightBottom : ''} />
         </div>
-        {data.checked === 1 ? (
-          <span
-            className={styles.changePic}
-            onClick={() => {
-              this.changePicStaus();
-            }}
-          >
-            <Icon type="sync" />
-            更换图片
-          </span>
-        ) : (
-          ''
-        )}
+
         {data.checked === 1 ? (
           <span
             className={styles.closePic}
@@ -65,28 +53,10 @@ class ImgComponent extends PureComponent {
         ) : (
           ''
         )}
-        {uploadVisible && (
-          <Upload
-            visible={uploadVisible}
-            selectNum={1}
-            handleOk={data => this.handleUploadOk(data)}
-            handleCancel={() => this.handleUploadCancel()}
-          />
-        )}
       </div>
     );
   }
-  // 图片选择cancel
-  handleUploadCancel = () => {
-    this.setState({ uploadVisible: false, record: null });
-  };
-  // 图片选择
-  handleUploadOk = data => {
-    const { index } = this.props;
-    console.log(data);
-    this.props.handleImg(data, index);
-    this.handleUploadCancel();
-  };
+
   changePic() {
     const { index } = this.props;
     this.props.handleCheck(index);
@@ -102,4 +72,4 @@ class ImgComponent extends PureComponent {
   }
 }
 
-export default ImgComponent;
+export default TextComponent;
