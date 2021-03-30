@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-29 19:01:02
+ * @Last Modified time: 2021-03-30 18:55:00
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -216,7 +216,7 @@ class ProjectLibrary extends PureComponent {
             )}
           </div>
           <div className={styles.fixedWrap}>
-            {permissionsBtn.permissions.includes('MU90000001000400010001') ? (
+            {permissionsBtn.permissions.includes('BTN210326000048') ? (
               <Button
                 type="primary"
                 style={{ width: '100%', height: 38 }}
@@ -227,17 +227,19 @@ class ProjectLibrary extends PureComponent {
                 发布
               </Button>
             ) : null}
-            <div className="clearfix">
-              <span
-                className={styles.logout}
-                onClick={() => {
-                  this.logoutSave();
-                }}
-              >
-                <Icon type="logout" />
-                退出
-              </span>
-            </div>
+            {permissionsBtn.permissions.includes('BTN210326000049') ? (
+              <div className="clearfix">
+                <span
+                  className={styles.logout}
+                  onClick={() => {
+                    this.logoutSave();
+                  }}
+                >
+                  <Icon type="logout" />
+                  退出
+                </span>
+              </div>
+            ) : null}
           </div>
         </div>
         <div className={styles.confcont}>
