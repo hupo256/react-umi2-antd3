@@ -2,13 +2,13 @@
  * @Author: zqm 
  * @Date: 2021-02-17 10:30:18 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-29 11:49:59
+ * @Last Modified time: 2021-03-29 12:26:38
  * 字典配置
  */
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
 import router from 'umi/router';
-import { Card, Button, Icon, Tabs, Table, Input, message, Modal ,Tooltip} from 'antd';
+import { Card, Button, Icon, Tabs, Table, Input, message, Modal, Tooltip } from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { DndProvider, DragSource, DropTarget } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -16,7 +16,7 @@ import { DragableBodyRow } from '../common/DragableBodyRow';
 import update from 'immutability-helper';
 import styles from './DictConfig.less';
 import CreateDict from './CreateDict';
-import { getauth } from "@/utils/authority";
+import { getauth } from '@/utils/authority';
 import { successIcon, waringInfo } from '@/utils/utils';
 const { confirm } = Modal;
 const { Search } = Input;
@@ -34,7 +34,7 @@ class DictConfig extends PureComponent {
       searchWord: null,
       record: null,
       visible: false,
-      width:1980
+      width: 1980,
     };
   }
 
@@ -45,7 +45,7 @@ class DictConfig extends PureComponent {
         this.queryList({ dicModuleCode: res.data[0].dicModuleCode, pageNum: 1, pageSize: 100 });
       }
     });
-    this.setState({width:document.body.clientWidth})
+    this.setState({ width: document.body.clientWidth });
   }
   components = {
     body: {
@@ -53,75 +53,131 @@ class DictConfig extends PureComponent {
     },
   };
   render() {
-    const { activeKey, visible, searchWord,width} = this.state;
+    const { activeKey, visible, searchWord, width } = this.state;
     const {
-      DictConfig: {DicQuery, DicModuleList, DicList },
+      DictConfig: { DicQuery, DicModuleList, DicList },
     } = this.props;
-    const permissionsBtn = getauth().permissions||[];
+    const permissionsBtn = getauth().permissions || [];
     const columns = [
       {
         title: '',
         dataIndex: 'drag',
-        width:60,
-        render:(t,r)=>{
-          return <Icon type="drag" style={{fontSize:18}} />
-        }
+        width: 60,
+        render: (t, r) => {
+          return <Icon type="drag" style={{ fontSize: 18 }} />;
+        },
       },
       {
         title: '字段名称',
         dataIndex: 'name',
-        width:200,
+        width: 200,
       },
       {
         title: '扩充描述1',
         dataIndex: 'extDescOne',
         render: text => {
-          return <div style={{ width:'100%',maxWidth:width<1400?100: width<1650?200:300, overflow: 'hidden' }}>
-          <div className={styles.remark}>
-              <p style={{width:'100%',maxWidth:width<1400?100: width<1650?200:300,marginBottom: 0, maxHeight: 42, overflow: 'hidden' }}>
-                <Tooltip title={text}>
-                  <span className={styles.remarkspan} style={{ WebkitBoxOrient: 'vertical' }}>
-                    {text}
-                  </span>
-                </Tooltip>
-              </p>
+          return (
+            <div
+              style={{
+                width: '100%',
+                maxWidth: width < 1400 ? 100 : width < 1650 ? 200 : 300,
+                overflow: 'hidden',
+              }}
+            >
+              <div className={styles.remark}>
+                <p
+                  style={{
+                    width: '100%',
+                    maxWidth: width < 1400 ? 100 : width < 1650 ? 200 : 300,
+                    marginBottom: 0,
+                    maxHeight: 42,
+                    overflow: 'hidden',
+                  }}
+                >
+                  <Tooltip title={text}>
+                    <span className={styles.remarkspan} style={{ WebkitBoxOrient: 'vertical' }}>
+                      {text}
+                    </span>
+                  </Tooltip>
+                </p>
+              </div>
             </div>
-          </div>;
+          );
         },
       },
       {
         title: '扩充描述2',
         dataIndex: 'extDescTwo',
         render: text => {
-          return <div style={{ width:'100%',maxWidth: width<1400?100:  width<1650?200:300, overflow: 'hidden' }}>
-          <div className={styles.remark}>
-              <p style={{ width:'100%',maxWidth:width<1400?100: width<1650?200:300,marginBottom: 0, maxHeight: 42, overflow: 'hidden' }}>
-                <Tooltip title={text}>
-                  <span className={styles.remarkspan} style={{ WebkitBoxOrient: 'vertical' }}>
-                    {text}
-                  </span>
-                </Tooltip>
-              </p>
+          return (
+            <div
+              style={{
+                width: '100%',
+                maxWidth: width < 1400 ? 100 : width < 1650 ? 200 : 300,
+                overflow: 'hidden',
+              }}
+            >
+              <div className={styles.remark}>
+                <p
+                  style={{
+                    width: '100%',
+                    maxWidth: width < 1400 ? 100 : width < 1650 ? 200 : 300,
+                    marginBottom: 0,
+                    maxHeight: 42,
+                    overflow: 'hidden',
+                  }}
+                >
+                  <Tooltip title={text}>
+                    <span className={styles.remarkspan} style={{ WebkitBoxOrient: 'vertical' }}>
+                      {text}
+                    </span>
+                  </Tooltip>
+                </p>
+              </div>
             </div>
-            </div>;
+          );
         },
       },
       {
         title: '状态',
         dataIndex: 'status',
-        width:100,
+        width: 100,
         render: t => {
-          return t === '1' ?<span>
-          <span style={{border:'3px solid #5dc829',display:'inline-block',marginRight:5,borderRadius:3,width:0,height:0}}></span>
-          正常</span> :<span>
-          <span style={{border:'3px solid #cccccc',display:'inline-block',marginRight:5,borderRadius:3,width:0,height:0}}></span>
-          停用</span>;
+          return t === '1' ? (
+            <span>
+              <span
+                style={{
+                  border: '3px solid #5dc829',
+                  display: 'inline-block',
+                  marginRight: 5,
+                  borderRadius: 3,
+                  width: 0,
+                  height: 0,
+                }}
+              />
+              正常
+            </span>
+          ) : (
+            <span>
+              <span
+                style={{
+                  border: '3px solid #cccccc',
+                  display: 'inline-block',
+                  marginRight: 5,
+                  borderRadius: 3,
+                  width: 0,
+                  height: 0,
+                }}
+              />
+              停用
+            </span>
+          );
         },
       },
       {
         title: '更新时间',
         dataIndex: 'operateTime',
-        width:200,
+        width: 200,
         render: (t, r) => {
           return (
             <div>
@@ -134,7 +190,7 @@ class DictConfig extends PureComponent {
       {
         title: '操作',
         dataIndex: 'operate',
-        width:140,
+        width: 140,
         render: (t, r) => {
           return (
             <div className="operateWrap">
@@ -183,40 +239,45 @@ class DictConfig extends PureComponent {
                     style={{ width: 500 }}
                   />
                 </div>
-                {DicQuery.searchWord&&DicQuery.searchWord.length>0&&<Table
-                  columns={columns}
-                  dataSource={DicList.list}
-                  onChange={this.handleTableChange}
-                  pagination={{
-                    pageSize: 100,
-                    hideOnSinglePage: true,
-                    current: DicList && DicList.curPage,
-                    total: DicList && DicList.recordTotal,
-                    showTotal: () => `共${DicList && DicList.recordTotal}条`,
-                  }}
-                />}
-                {!DicQuery.searchWord&&<DndProvider backend={HTML5Backend}>
-                  <Table
-                    columns={columns}
-                    rowKey={(r, i) => i}
-                    dataSource={DicList.list}
-                    components={this.components}
-                    onRow={(record, index) => {
-                      return {
-                        index,
-                        moveRow: this.moveRow,
-                      };
-                    }}
-                    onChange={this.handleTableChange}
-                    pagination={{
-                      pageSize: 100,
-                      hideOnSinglePage: true,
-                      current: DicList && DicList.curPage,
-                      total: DicList && DicList.recordTotal,
-                      showTotal: () => `共${DicList && DicList.recordTotal}条`,
-                    }}
-                  />
-                </DndProvider>}
+                {DicQuery.searchWord &&
+                  DicQuery.searchWord.length > 0 && (
+                    <Table
+                      columns={columns}
+                      dataSource={DicList.list}
+                      onChange={this.handleTableChange}
+                      pagination={{
+                        pageSize: 100,
+                        hideOnSinglePage: true,
+                        current: DicList && DicList.curPage,
+                        total: DicList && DicList.recordTotal,
+                        showTotal: () => `共${DicList && DicList.recordTotal}条`,
+                      }}
+                    />
+                  )}
+                {!DicQuery.searchWord && (
+                  <DndProvider backend={HTML5Backend}>
+                    <Table
+                      columns={columns}
+                      rowKey={(r, i) => i}
+                      dataSource={DicList.list}
+                      components={this.components}
+                      onRow={(record, index) => {
+                        return {
+                          index,
+                          moveRow: this.moveRow,
+                        };
+                      }}
+                      onChange={this.handleTableChange}
+                      pagination={{
+                        pageSize: 100,
+                        hideOnSinglePage: true,
+                        current: DicList && DicList.curPage,
+                        total: DicList && DicList.recordTotal,
+                        showTotal: () => `共${DicList && DicList.recordTotal}条`,
+                      }}
+                    />
+                  </DndProvider>
+                )}
               </div>
             </div>
           </Card>
@@ -235,7 +296,7 @@ class DictConfig extends PureComponent {
   }
   // 分页
   handleTableChange = pagination => {
-    this.queryList({ pageNum: pagination.current,  });
+    this.queryList({ pageNum: pagination.current });
   };
   // 搜索
   handleSrarch = () => {
@@ -244,10 +305,9 @@ class DictConfig extends PureComponent {
   };
   // 字段模块切换
   handleChangeTab = activeKey => {
-    this.setState({ activeKey,searchWord:null });
+    this.setState({ activeKey, searchWord: null });
     // 重置搜索数据
     const { dispatch } = this.props;
-    // resetModel
     dispatch({
       type: 'DictConfig/resetModel',
       payload: {
@@ -312,10 +372,13 @@ class DictConfig extends PureComponent {
   // 修改字典状态
   handleChangeStatus = r => {
     const status = r.status;
-    const {  DictConfig: { DicModuleList }, dispatch } = this.props;
-    const {activeKey}=this.state
+    const {
+      DictConfig: { DicModuleList },
+      dispatch,
+    } = this.props;
+    const { activeKey } = this.state;
     const that = this;
-    const name = DicModuleList.filter(item=>item.dicModuleCode ===activeKey )[0].name
+    const name = DicModuleList.filter(item => item.dicModuleCode === activeKey)[0].name;
     confirm({
       title: status === '1' ? '确认要停用当前字段吗？' : '确认要启用当前字段吗？',
       content:
@@ -334,9 +397,7 @@ class DictConfig extends PureComponent {
           }
         });
       },
-      onCancel() {
-        console.log('Cancel');
-      },
+      onCancel() {},
     });
   };
 }
