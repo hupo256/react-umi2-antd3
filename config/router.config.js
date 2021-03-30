@@ -30,13 +30,13 @@ export default [
     routes: [
       {
         path: '/',
-        name: 'home',
+        // name: 'home',
         redirect: '/home',
       },
       {
        path: '/home',
-       name: 'home',
-       icon: 'home',
+      //  name: 'home',
+      //  icon: 'home',
        component: './Welcome',
      },
       {
