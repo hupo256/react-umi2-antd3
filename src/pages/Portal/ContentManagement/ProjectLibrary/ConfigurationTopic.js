@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-30 14:48:56
+ * @Last Modified time: 2021-03-30 18:50:54
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -143,6 +143,7 @@ class ProjectLibrary extends PureComponent {
     let tags = [];
     let foot = '';
     let ViewForm = [];
+    let text = [];
     compentList &&
       compentList.map((item, index) => {
         switch (item.elementType) {
@@ -160,21 +161,24 @@ class ProjectLibrary extends PureComponent {
               ),
             });
             break;
-          case 'TEXT':
-            tags.push({
-              id: index,
-              content: (
-                <TextComponent
-                  data={item}
-                  index={index}
-                  handleCheck={data => this.handleCheck(data)}
-                  handleDeletePic={data => this.handleDeletePic(data)}
-                />
-              ),
-            });
-            break;
+          // case 'TEXT':
+          //   tags.push({
+          //     id: index,
+          //     content: (
+          //       <TextComponent
+          //         data={item}
+          //         index={index}
+          //         handleCheck={data => this.handleCheck(data)}
+          //         handleDeletePic={data => this.handleDeletePic(data)}
+          //       />
+          //     ),
+          //   });
+          //   break;
           case 'FORM':
             ViewForm.push({ data: item, idx: index });
+            break;
+          case 'MODAL_TEXT':
+            text.push({ data: item, idx: index });
             break;
           case 'MODAL':
             foot = (
@@ -193,6 +197,21 @@ class ProjectLibrary extends PureComponent {
     let vie = ViewForm.map((item, index) => {
       return (
         <ViewFormComponent
+          key={index}
+          data={item.data}
+          index={item.idx}
+          handleCheck={data => this.handleCheck(data)}
+          handleColor={(data, index, code) => this.handleColor(data, index, code)}
+          fnDown={(e, indx) => {
+            this.fnDown(e, indx);
+          }}
+          handleDeletePic={data => this.handleDeletePic(data)}
+        />
+      );
+    });
+    let textCont = text.map((item, index) => {
+      return (
+        <TextComponent
           key={index}
           data={item.data}
           index={item.idx}
@@ -272,6 +291,7 @@ class ProjectLibrary extends PureComponent {
                   onChange={index => this.handleDragg(index)}
                 />
                 <div className={styles.vieT}>{vie}</div>
+                <div className={styles.txCont}>{textCont}</div>
                 {foot}
               </div>
             </div>
@@ -569,7 +589,6 @@ class ProjectLibrary extends PureComponent {
     });
   }
   handleDragg(index) {
-    console.log(index);
     const {
       dispatch,
       ProjectLibrary: { compentList },

@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-30 16:33:56
+ * @Last Modified time: 2021-03-30 18:43:47
  * 创建工地
  */
 import React, { PureComponent } from 'react';
@@ -18,30 +18,35 @@ class TextComponent extends PureComponent {
   constructor() {
     super();
     this.contentEditable = React.createRef();
-    this.state = { html: '<b>Hello <i>World</i></b>' };
+    this.state = { html: '' };
   }
   componentDidMount() {}
 
   render() {
     const { data, index } = this.props;
     return (
-      <div className={styles.changePicWrap}>
+      <div
+        className={data.checked === 1 ? styles.ViewFormsg : styles.ViewFormborders}
+        style={data.elementStyle ? JSON.parse(data.elementStyle) : {}}
+      >
         <div
           onClick={() => {
             this.changePic();
           }}
-          className={data.checked === 1 ? styles.imgWrap : ''}
+          onMouseDown={e => {
+            this.props.fnDown(e, index);
+          }}
         >
-          <div
+          {/*<div
             suppressContentEditableWarning="true"
             contentEditable="true"
             className={styles.element}
           >
             {data.paramList[0].defaultValue}
-          </div>
+          </div>*/}
           <ContentEditable
             innerRef={this.contentEditable}
-            html={this.state.html} // innerHTML of the editable div
+            html={data.paramList[0].defaultValue} // innerHTML of the editable div
             disabled={false} // use true to disable editing
             onChange={this.handleChange} // handle innerHTML change
             tagName="article" // Use a custom HTML tag (uses a div by default)
@@ -81,6 +86,22 @@ class TextComponent extends PureComponent {
       uploadVisible: true,
     });
   }
+  handleChange = evt => {
+    const {
+      dispatch,
+      ProjectLibrary: { compentList },
+      index,
+    } = this.props;
+    const inputVal = evt.target.value;
+    compentList[index].paramList[0].defaultValue = inputVal;
+    dispatch({
+      type: 'ProjectLibrary/saveDataModel',
+      payload: {
+        key: 'compentList',
+        value: [...compentList],
+      },
+    });
+  };
 }
 
 export default TextComponent;

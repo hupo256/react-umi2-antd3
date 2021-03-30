@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-30 11:12:00
+ * @Last Modified time: 2021-03-30 17:55:10
  * 创建工地
  */
 import React, { PureComponent } from 'react';
@@ -83,7 +83,6 @@ class ImgComponent extends PureComponent {
   // 图片选择
   handleUploadOk = data => {
     const { index } = this.props;
-    console.log(data);
     this.props.handleImg(data, index);
     this.handleUploadCancel();
   };
