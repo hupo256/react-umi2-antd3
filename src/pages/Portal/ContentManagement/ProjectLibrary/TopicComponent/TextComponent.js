@@ -2,10 +2,11 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-30 15:00:00
+ * @Last Modified time: 2021-03-30 16:33:56
  * 创建工地
  */
 import React, { PureComponent } from 'react';
+import ContentEditable from 'react-contenteditable';
 import { connect } from 'dva';
 import Upload from '@/components/Upload/Upload';
 import { Icon } from 'antd';
@@ -14,8 +15,11 @@ import styles from './index.less';
   ProjectLibrary,
 }))
 class TextComponent extends PureComponent {
-  state = { uploadVisible: false };
-
+  constructor() {
+    super();
+    this.contentEditable = React.createRef();
+    this.state = { html: '<b>Hello <i>World</i></b>' };
+  }
   componentDidMount() {}
 
   render() {
@@ -35,6 +39,13 @@ class TextComponent extends PureComponent {
           >
             {data.paramList[0].defaultValue}
           </div>
+          <ContentEditable
+            innerRef={this.contentEditable}
+            html={this.state.html} // innerHTML of the editable div
+            disabled={false} // use true to disable editing
+            onChange={this.handleChange} // handle innerHTML change
+            tagName="article" // Use a custom HTML tag (uses a div by default)
+          />
           <div className={data.checked === 1 ? styles.roundLeftTop : ''} />
           <div className={data.checked === 1 ? styles.roundRightTop : ''} />
           <div className={data.checked === 1 ? styles.roundLeftBottom : ''} />
