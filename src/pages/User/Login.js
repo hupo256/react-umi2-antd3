@@ -37,7 +37,6 @@ class LoginPage extends Component {
         },
       }).then(res => {
         if (res && res.code === 200) {
-          console.log(res.data);
           if (res.data && res.data.length == 1) {
             let code = res.data[0].companyCode;
             dispatch({
@@ -70,15 +69,19 @@ class LoginPage extends Component {
               }
             });
           } else {
-            dispatch({
-              type: 'login/saveDataModel',
-              payload: {
-                key: 'companyList',
-                value: res.data,
-              },
-            });
-            sessionStorage.setItem('companyList', JSON.stringify(res.data));
-            router.push('/choiceCompany');
+            if (res.data && res.data.length > 0) {
+              dispatch({
+                type: 'login/saveDataModel',
+                payload: {
+                  key: 'companyList',
+                  value: res.data,
+                },
+              });
+              sessionStorage.setItem('companyList', JSON.stringify(res.data));
+              router.push('/choiceCompany');
+            } else {
+              message.warning('抱歉，您当前未开通营销站权限，请联系公司管理员开通。');
+            }
           }
           dispatch({
             type: 'login/saveDataModel',
