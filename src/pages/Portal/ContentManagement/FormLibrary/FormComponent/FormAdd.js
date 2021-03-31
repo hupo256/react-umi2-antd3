@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-22 19:34:02
+ * @Last Modified time: 2021-03-31 15:30:54
  * 专题库
  */
 import React, { PureComponent } from 'react';
@@ -37,20 +37,20 @@ class FormAdd extends PureComponent {
       <div>
         <Modal title={'创建表单'} visible={visible} footer={null} width={600} closable={false}>
           <Form {...formItemLayout} onSubmit={this.handleSubmit}>
-            <Form.Item label="专题标题">
+            <Form.Item label="表单标题">
               {getFieldDecorator('formTitle', {
                 initialValue: data && data.formTitle,
                 rules: [
                   {
                     required: true,
-                    message: '请输入专题标题',
+                    message: '请输入表单标题',
                   },
                   {
-                    max: 30,
-                    message: '限制1-30字符长度',
+                    max: 6,
+                    message: '限制1-6字符长度',
                   },
                 ],
-              })(<Input placeholder="请输入案例标题" />)}
+              })(<Input placeholder="请输入表单标题" />)}
             </Form.Item>
             <Form.Item label="适用终端">
               {getFieldDecorator('terminalType', {
@@ -82,17 +82,17 @@ class FormAdd extends PureComponent {
                 </Radio.Group>
               )}
             </Form.Item>
-            <Form.Item label="专题说明">
+            <Form.Item label="表单说明">
               {getFieldDecorator('formDescription', {
                 initialValue: data && data.formDescription,
                 rules: [
-                  { required: false, message: '请输入专题说明' },
+                  { required: false, message: '请输入表单说明' },
                   {
                     max: 200,
                     message: '限制1-200字符长度',
                   },
                 ],
-              })(<TextArea rows={4} placeholder="请输入专题说明" />)}
+              })(<TextArea rows={4} placeholder="请输入表单说明" />)}
             </Form.Item>
             <div style={{ textAlign: 'center' }}>
               <Button type="primary" htmlType="submit">
