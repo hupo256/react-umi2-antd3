@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-30 18:43:47
+ * @Last Modified time: 2021-03-31 10:18:34
  * 创建工地
  */
 import React, { PureComponent } from 'react';
@@ -18,45 +18,44 @@ class TextComponent extends PureComponent {
   constructor() {
     super();
     this.contentEditable = React.createRef();
-    this.state = { html: '' };
+    this.state = { isTrue: 1 };
   }
   componentDidMount() {}
 
   render() {
     const { data, index } = this.props;
+    const { isTrue } = this.state;
     return (
       <div
         className={data.checked === 1 ? styles.ViewFormsg : styles.ViewFormborders}
         style={data.elementStyle ? JSON.parse(data.elementStyle) : {}}
       >
-        <div
-          onClick={() => {
-            this.changePic();
-          }}
-          onMouseDown={e => {
-            this.props.fnDown(e, index);
-          }}
-        >
-          {/*<div
-            suppressContentEditableWarning="true"
-            contentEditable="true"
-            className={styles.element}
-          >
-            {data.paramList[0].defaultValue}
-          </div>*/}
-          <ContentEditable
-            innerRef={this.contentEditable}
-            html={data.paramList[0].defaultValue} // innerHTML of the editable div
-            disabled={false} // use true to disable editing
-            onChange={this.handleChange} // handle innerHTML change
-            tagName="article" // Use a custom HTML tag (uses a div by default)
+        {isTrue === 1 ? (
+          <div
+            onDoubleClick={() => {
+              this.onDb();
+            }}
+            onClick={() => {
+              this.changePic();
+            }}
+            onMouseDown={e => {
+              this.props.fnDown(e, index);
+            }}
+            className={styles.vif}
           />
-          <div className={data.checked === 1 ? styles.roundLeftTop : ''} />
-          <div className={data.checked === 1 ? styles.roundRightTop : ''} />
-          <div className={data.checked === 1 ? styles.roundLeftBottom : ''} />
-          <div className={data.checked === 1 ? styles.roundRightBottom : ''} />
-        </div>
-
+        ) : null}
+        <div className={data.checked === 1 ? styles.roundLeftTop : ''} />
+        <div className={data.checked === 1 ? styles.roundRightTop : ''} />
+        <div className={data.checked === 1 ? styles.roundLeftBottom : ''} />
+        <div className={data.checked === 1 ? styles.roundRightBottom : ''} />
+        <ContentEditable
+          innerRef={this.contentEditable}
+          html={data.paramList[0].defaultValue} // innerHTML of the editable div
+          disabled={false} // use true to disable editing
+          onChange={this.handleChange} // handle innerHTML change
+          onBlur={this.handleonBlur}
+          tagName="article" // Use a custom HTML tag (uses a div by default)
+        />
         {data.checked === 1 ? (
           <span
             className={styles.closePic}
@@ -100,6 +99,16 @@ class TextComponent extends PureComponent {
         key: 'compentList',
         value: [...compentList],
       },
+    });
+  };
+  onDb() {
+    this.setState({
+      isTrue: 0,
+    });
+  }
+  handleonBlur = e => {
+    this.setState({
+      isTrue: 1,
     });
   };
 }
