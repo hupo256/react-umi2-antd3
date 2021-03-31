@@ -27,7 +27,7 @@ export async function formcollocate(params) {
 
 // Saas 获取授权信息
 export async function getAuthInfo(params) {
-  return request(baseurl + '/api/v1/sso/wechat-mini/getAuthInfoBySaasSellCode', {
+  return request(baseurl + '/api/v1/wechat/wechat-mini/getAuthInfoBySaasSellCode', {
     method: 'POST',
     body: params,
   });
@@ -35,7 +35,7 @@ export async function getAuthInfo(params) {
 
 // Saas 获取授权链接
 export async function getAuthUrl(params) {
-  return request(baseurl + '/api/v1/sso/wechat-mini/getAuthUrlBySaasSellCode', {
+  return request(baseurl + '/api/v1/wechat/wechat-mini/getAuthUrlBySaasSellCode', {
     method: 'POST',
     body: params,
   });

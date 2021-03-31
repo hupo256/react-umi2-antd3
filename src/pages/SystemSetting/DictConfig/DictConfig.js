@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 10:30:18 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-29 12:26:38
+ * @Last Modified time: 2021-03-31 14:11:37
  * 字典配置
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -301,7 +301,7 @@ class DictConfig extends PureComponent {
   // 搜索
   handleSrarch = () => {
     const { searchWord } = this.state;
-    this.queryList({ searchWord:searchWord.substring(0,30),pageNum:1 });
+    this.queryList({ searchWord:searchWord&&searchWord.substring(0,30),pageNum:1 });
   };
   // 字段模块切换
   handleChangeTab = activeKey => {
