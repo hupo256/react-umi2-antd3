@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-31 16:42:19
+ * @Last Modified time: 2021-03-31 17:15:38
  * 创建工地
  */
 import React, { PureComponent } from 'react';
@@ -98,7 +98,20 @@ class TextComponent extends PureComponent {
             </div>
           </div>
           <div>文本设置</div>
-          <div />
+          <div>
+            <Icon type="bold" />
+            <Icon type="italic" />
+            <Icon type="underline" />
+            <Icon type="strikethrough" />
+          </div>
+          <div>排版</div>
+          <div className={styles.btnColorWrap}>
+            <Icon type="align-left" />
+            <Icon type="align-center" />
+            <Icon type="align-right" />
+            <Icon type="column-width" />
+            <Icon type="column-height" />
+          </div>
           {show ? (
             <div className={styles.SketchWrap}>
               <SketchPicker color={data.elementButtonColor} onChange={this.handleColorChange} />
