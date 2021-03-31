@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:49:12 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-29 11:27:54
+ * @Last Modified time: 2021-03-31 14:13:26
  * 设计师库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -212,7 +212,7 @@ class DesignerLibrary extends PureComponent {
   };
   handleSrarch = () => {
     const { searchWord } = this.state;
-    this.getList({ searchWord,pageNum:1 });
+    this.getList({ searchWord:searchWord&&searchWord.substring(0,30),pageNum:1 });
   };
   // 修改设计师状态
   handleChangeStatus = r => {
