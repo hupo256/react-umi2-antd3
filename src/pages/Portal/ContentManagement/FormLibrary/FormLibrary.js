@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-31 15:46:12
+ * @Last Modified time: 2021-03-31 16:08:53
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -226,8 +226,9 @@ class ProjectLibrary extends PureComponent {
                   编辑
                 </span>
               ) : null}
-              {permissionsBtn.includes('BTN210326000051') &&
-                permissionsBtn.includes('BTN210326000053') && <span className="operateLine" />}
+              {permissionsBtn.permissions.includes('BTN210326000051') &&
+                permissionsBtn.permissions.includes('BTN210326000053') &&
+                r.formStatus !== 0 && <span className="operateLine" />}
               {permissionsBtn.permissions.includes('BTN210326000053') && r.formStatus !== 0 ? (
                 <span>
                   <span className="operateBtn" onClick={() => this.handleToggleStatus(r)}>
@@ -235,8 +236,9 @@ class ProjectLibrary extends PureComponent {
                   </span>
                 </span>
               ) : null}
-              {permissionsBtn.includes('BTN210326000053') &&
-                permissionsBtn.includes('BTN210326000052') && <span className="operateLine" />}
+              {permissionsBtn.permissions.includes('BTN210326000053') &&
+                permissionsBtn.permissions.includes('BTN210326000052') &&
+                r.formStatus === 0 && <span className="operateLine" />}
               {permissionsBtn.permissions.includes('BTN210326000052') && r.formStatus === 0 ? (
                 <span>
                   <span className="operateBtn" onClick={() => this.handleDelete(r)}>
@@ -244,8 +246,8 @@ class ProjectLibrary extends PureComponent {
                   </span>
                 </span>
               ) : null}
-              {permissionsBtn.includes('BTN210326000052') &&
-                permissionsBtn.includes('MU90000001000100050001') && (
+              {permissionsBtn.permissions.includes('BTN210326000052') &&
+                permissionsBtn.permissions.includes('MU90000001000100050001') && (
                   <span className="operateLine" />
                 )}
               {permissionsBtn.permissions.includes('MU90000001000100050001') ? (
