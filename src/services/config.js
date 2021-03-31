@@ -19,8 +19,7 @@ switch (APP_ENVIRONMENT) {
     break;
   case 'local': // 本地开发
     console.warn = function() {};
-    //url = 'http://dev.gateway.ingongdi.com';
-    url = 'https://gateway.ingongdi.com';
+    url = 'http://dev.gateway.ingongdi.com';
     //url = 'http://pre.gateway.ingongdi.com';
     break;
   case 'auto': // 自动化
