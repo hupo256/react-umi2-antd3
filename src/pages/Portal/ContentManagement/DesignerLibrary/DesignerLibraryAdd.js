@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-18 16:39:42 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-23 09:50:51
+ * @Last Modified time: 2021-03-31 10:06:05
  * 创建设计师
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -150,6 +150,10 @@ class DesignerLibraryAdd extends PureComponent {
                   <Select mode="multiple" 
                   style={{ width: 400 }} 
                   placeholder="请选择擅长风格"
+                  showSearch 
+                  filterOption={(input, option) =>{
+                    return option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                   }
                   onChange={value=>this.handleChange(value)}
                   >
                     {dicData &&

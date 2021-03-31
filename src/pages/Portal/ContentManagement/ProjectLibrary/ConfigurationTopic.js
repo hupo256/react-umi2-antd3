@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-30 18:58:00
+ * @Last Modified time: 2021-03-31 14:17:46
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -43,6 +43,10 @@ class ProjectLibrary extends PureComponent {
   componentDidMount() {
     const activeKey = getQueryUrlVal('uid');
     const { dispatch } = this.props;
+    dispatch({
+      type: 'login/setAuthModel',
+      payload: {},
+    });
     dispatch({
       type: 'ProjectLibrary/getCollocationModel',
       payload: {

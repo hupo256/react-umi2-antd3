@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-23 18:23:20
+ * @Last Modified time: 2021-03-31 10:08:09
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -64,9 +64,6 @@ class CreateStepOne extends PureComponent {
 
     const { stepOne } = this.props.CaseLibrary;
 
-    console.log('=stepOne===================================');
-    console.log(stepOne);
-    console.log('====================================');
     ['bedroom', 'liveroom', 'kitchen', 'bathroom'].forEach(item => {
       this.setState({ [item]: (stepOne && stepOne[item]) || 0 });
     });
@@ -139,9 +136,15 @@ class CreateStepOne extends PureComponent {
               initialValue:designerUid||[],
               rules: [{ required: true, message: '请选择设计师' }],
             })(
-              <Select style={{ width: 400 }} placeholder="请选择设计师"  showSearch onChange={this.handleChange} filterOption={(input, option) =>{
+              <Select 
+              style={{ width: 400 }} 
+              placeholder="请选择设计师"  
+              showSearch 
+              onChange={this.handleChange} 
+              filterOption={(input, option) =>{
                  return option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                }>
+                }
+                >
                 {
                       DesignerList &&
                       DesignerList.list &&
@@ -325,9 +328,6 @@ class CreateStepOne extends PureComponent {
     );
   }
   handleChange=value=>{
-    console.log('====================================');
-    console.log(value);
-    console.log('====================================');
     this.setState({designerUid:value})
     this.props.form.setFieldsValue({
       designerUid: value,
