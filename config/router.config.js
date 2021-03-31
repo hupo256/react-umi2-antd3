@@ -62,20 +62,22 @@ export default [
 
       // v2.0
       // 门户
-      {
-        path: '/portal',
-        name: 'portal',
-        icon: 'dashboard',
-        code: 'MU90000001',
-        routes: [
+      // {
+      //   path: '/portal',
+      //   name: 'portal',
+      //   icon: 'dashboard',
+      //   code: 'MU90000001',
+      //   routes: [
           {
             path: '/portal',
             redirect: '/portal/contentmanagement',
+            icon: 'dashboard',
             code: 'MU90000001',
           },
           {
             path: '/portal/contentmanagement',
             name: 'contentmanagement',
+            icon: 'home',
             code: 'MU900000010001',
             routes: [
               {
@@ -180,8 +182,8 @@ export default [
           //     },
           //   ],
           // },
-        ],
-      },
+      //   ],
+      // },
       // v1.1
       // 客户
       {
