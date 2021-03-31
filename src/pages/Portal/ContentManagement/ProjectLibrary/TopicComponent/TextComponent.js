@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-31 15:20:51
+ * @Last Modified time: 2021-03-31 16:42:19
  * 创建工地
  */
 import React, { PureComponent } from 'react';
@@ -79,10 +79,13 @@ class TextComponent extends PureComponent {
           mask={false}
         >
           <div>文本</div>
-          <div className="clearfix">
+          <div className="clearfix" style={{ marginTop: 20, marginBottom: 20 }}>
             <div className={styles.fontC}>
               <Icon type="font-size" />
-              <Input style={{ width: 80 }} onChange={e => this.handleListChange(e, 'fontSize')} />
+              <Input
+                style={{ width: 80, marginLeft: 10 }}
+                onChange={e => this.handleListChange(e, 'fontSize')}
+              />
             </div>
             <div className={styles.btnColorWrap}>
               <div
@@ -94,6 +97,8 @@ class TextComponent extends PureComponent {
               />
             </div>
           </div>
+          <div>文本设置</div>
+          <div />
           {show ? (
             <div className={styles.SketchWrap}>
               <SketchPicker color={data.elementButtonColor} onChange={this.handleColorChange} />
