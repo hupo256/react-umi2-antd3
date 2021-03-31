@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-31 16:49:14
+ * @Last Modified time: 2021-03-31 19:20:11
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -237,10 +237,8 @@ class ProjectLibrary extends PureComponent {
                 </span>
               ) : null}
               {permissionsBtn.permissions.includes('BTN210326000053') &&
-                r.formStatus !== 0 &&
-                permissionsBtn.permissions.includes('BTN210326000052') && (
-                  <span className="operateLine" />
-                )}
+                permissionsBtn.permissions.includes('BTN210326000052') &&
+                r.formStatus === 0 && <span className="operateLine" />}
               {permissionsBtn.permissions.includes('BTN210326000052') && r.formStatus === 0 ? (
                 <span>
                   <span className="operateBtn" onClick={() => this.handleDelete(r)}>
