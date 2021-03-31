@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-31 14:17:46
+ * @Last Modified time: 2021-03-31 19:08:15
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -339,6 +339,8 @@ class ProjectLibrary extends PureComponent {
         ite.elementButtonColor = '#fe6a30';
         ite.elementButtonTextColor = '#fff';
         ite.elementButtonText = '立即预约';
+      } else if (ite.elementType === 'MODAL_TEXT') {
+        ite.elementStyle = JSON.stringify({ top: top, left: left, fontSize: 14, color: '#000' });
       }
       // if (ite.elementType === 'IMG' || ite.elementType === 'TEXT') {
       //   tags.push(_.cloneDeep(ite));
@@ -447,7 +449,7 @@ class ProjectLibrary extends PureComponent {
     } else {
       aStyle.top = event.clientY - this.disY;
     }
-    compentList[indx].elementStyle = JSON.stringify({ top: aStyle.top, left: aStyle.left });
+    compentList[indx].elementStyle = JSON.stringify(aStyle);
     dispatch({
       type: 'ProjectLibrary/saveDataModel',
       payload: {

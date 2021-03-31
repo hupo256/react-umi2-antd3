@@ -2,13 +2,13 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-31 17:15:38
+ * @Last Modified time: 2021-03-31 19:02:46
  * 创建工地
  */
 import React, { PureComponent } from 'react';
 import ContentEditable from 'react-contenteditable';
 import { connect } from 'dva';
-import { Icon, Drawer, Input } from 'antd';
+import { Icon, Drawer, Input, Tooltip } from 'antd';
 import { SketchPicker } from 'react-color';
 import styles from './index.less';
 @connect(({ ProjectLibrary }) => ({
@@ -25,6 +25,8 @@ class TextComponent extends PureComponent {
   render() {
     const { data, index } = this.props;
     const { isTrue, visible, show } = this.state;
+    let isStyle = JSON.parse(data.elementStyle);
+    console.log(isStyle.fontSize);
     return (
       <div
         className={data.checked === 1 ? styles.ViewFormsg : styles.ViewFormborders}
@@ -78,12 +80,15 @@ class TextComponent extends PureComponent {
           visible={visible}
           mask={false}
         >
-          <div>文本</div>
+          <div className={styles.fontw}>文本</div>
           <div className="clearfix" style={{ marginTop: 20, marginBottom: 20 }}>
             <div className={styles.fontC}>
-              <Icon type="font-size" />
+              <Tooltip placement="bottom" title={'文字大小'}>
+                <Icon type="font-size" />
+              </Tooltip>
               <Input
-                style={{ width: 80, marginLeft: 10 }}
+                style={{ width: 50, marginLeft: 10 }}
+                value={isStyle.fontSize}
                 onChange={e => this.handleListChange(e, 'fontSize')}
               />
             </div>
@@ -97,20 +102,64 @@ class TextComponent extends PureComponent {
               />
             </div>
           </div>
-          <div>文本设置</div>
-          <div>
-            <Icon type="bold" />
-            <Icon type="italic" />
-            <Icon type="underline" />
-            <Icon type="strikethrough" />
+          <div className={styles.fontw}>文本设置</div>
+          <div className={styles.textSet}>
+            <span>
+              <Tooltip placement="bottom" title={'加粗'}>
+                <Icon type="bold" />
+              </Tooltip>
+            </span>
+            <span>
+              <Tooltip placement="bottom" title={'斜体'}>
+                <Icon type="italic" />
+              </Tooltip>
+            </span>
+            <span>
+              <Tooltip placement="bottom" title={'下划线'}>
+                <Icon type="underline" />
+              </Tooltip>
+            </span>
+            <span>
+              <Tooltip placement="bottom" title={'删除线'}>
+                <Icon type="strikethrough" />
+              </Tooltip>
+            </span>
           </div>
-          <div>排版</div>
-          <div className={styles.btnColorWrap}>
-            <Icon type="align-left" />
-            <Icon type="align-center" />
-            <Icon type="align-right" />
-            <Icon type="column-width" />
-            <Icon type="column-height" />
+          <div className={styles.fontw}>排版</div>
+          <div className={styles.textSet}>
+            <span>
+              <Tooltip placement="bottom" title={'左对齐'}>
+                <Icon type="align-left" />
+              </Tooltip>
+            </span>
+            <span>
+              <Tooltip placement="bottom" title={'居中'}>
+                <Icon type="align-center" />
+              </Tooltip>
+            </span>
+            <span>
+              <Tooltip placement="bottom" title={'右对齐'}>
+                <Icon type="align-right" />
+              </Tooltip>
+            </span>
+            <span>
+              <Tooltip placement="bottom" title={'字间距'}>
+                <Icon type="column-width" />
+              </Tooltip>
+              <Input
+                style={{ width: 50, marginLeft: 10 }}
+                onChange={e => this.handleListChange(e, 'fontSize')}
+              />
+            </span>
+            <span>
+              <Tooltip placement="bottom" title={'行间距'}>
+                <Icon type="column-height" />
+              </Tooltip>
+              <Input
+                style={{ width: 50, marginLeft: 10 }}
+                onChange={e => this.handleListChange(e, 'fontSize')}
+              />
+            </span>
           </div>
           {show ? (
             <div className={styles.SketchWrap}>
