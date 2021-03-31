@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-31 16:06:52
+ * @Last Modified time: 2021-03-31 17:29:23
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -123,7 +123,10 @@ class ProjectLibrary extends PureComponent {
           return (
             <div style={{ display: 'flex' }}>
               <img
-                src={r.specialCoverImg}
+                src={
+                  r.specialCoverImg ||
+                  'https://img.inbase.in-deco.com/crm_saas/release/20210331/1a5c9889e7c64437b9a53a3f7c07916a/mr.png'
+                }
                 style={{
                   width: 100,
                   height: 70,
