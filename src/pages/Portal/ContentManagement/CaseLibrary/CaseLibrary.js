@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:47:49 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-29 12:21:02
+ * @Last Modified time: 2021-03-31 14:11:47
  * 案例库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -222,7 +222,7 @@ class CaseLibrary extends PureComponent {
   };
   handleSrarch = () => {
     const { searchWord } = this.state;
-    this.getList({ searchWord:searchWord.substring(0,30) ,pageNum:1});
+    this.getList({ searchWord:searchWord&&searchWord.substring(0,30) ,pageNum:1});
   };
 
   // 分页

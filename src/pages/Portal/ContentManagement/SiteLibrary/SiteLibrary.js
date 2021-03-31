@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:47:07 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-29 17:16:20
+ * @Last Modified time: 2021-03-31 14:11:42
  * 工地库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -268,7 +268,7 @@ class SiteLibrary extends PureComponent {
   };
   handleSrarch = () => {
     const { searchWord } = this.state;
-    this.getList({ searchText: searchWord.substring(0,30) ,pageNum:1});
+    this.getList({ searchText: searchWord&&searchWord.substring(0,30) ,pageNum:1});
   };
   // 分页
   handleTableChange = pagination => {
