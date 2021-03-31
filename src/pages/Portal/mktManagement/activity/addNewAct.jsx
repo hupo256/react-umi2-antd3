@@ -5,12 +5,16 @@
  * @Last Modified time: 2021-03-25 17:49:12 
  * 添加、修改活动
  */
-import React, { useState, useEffect } from 'react';
-import { Form, Input, DatePicker, Select, InputNumber } from 'antd';
+import React, { useState, useContext } from 'react';
+import moment from 'moment';
+import mktApi from '@/services/mktActivity';
+import { ctx } from '../common/context';
+import { Form, Input, DatePicker, Select, InputNumber, Button, Radio } from 'antd';
 
 const { Item } = Form;
 const { TextArea } = Input;
 const { Option } = Select;
+const { Group } = Radio;
 
 const formItemLayout = {
   labelCol: { span: 4 },
@@ -25,23 +29,33 @@ function AddNewAct(props) {
   const {
     form: { validateFields, getFieldDecorator },
   } = props;
-  const [checkNick, setcheckNick] = useState(false);
+  const { settbData, setactModal } = useContext(ctx);
 
-  function check() {
-    validateFields(err => {
-      !err && console.info('success');
+  function submitForm() {
+    validateFields((err, values) => {
+      if (err) return;
+      console.log(values);
+      const { startTime, endTime } = values;
+      const newRec = {
+        ...values,
+        startTime: moment(startTime).format('YYYY-MM-DD hh:mm:ss'),
+        endTime: moment(endTime).format('YYYY-MM-DD hh:mm:ss'),
+        // activeId: ''
+      };
+      console.log(newRec);
+      mktApi.newActivity(newRec).then(res => {
+        console.log(res);
+        const { data } = res;
+        if (!data) return;
+        settbData(data.list);
+        setactModal(false);
+      });
     });
   }
-
-  function handleChange(e) {
-    setcheckNick(e.target.checked);
-    validateFields(['nickname'], { force: true });
-  }
-
   return (
     <Form {...formItemLayout}>
       <Item label="活动名称">
-        {getFieldDecorator('username', {
+        {getFieldDecorator('activeName', {
           rules: [
             {
               required: true,
@@ -51,7 +65,7 @@ function AddNewAct(props) {
         })(<Input placeholder="" />)}
       </Item>
       <Item label="活动类型">
-        {getFieldDecorator('actType', {
+        {getFieldDecorator('activeType', {
           rules: [
             {
               required: true,
@@ -59,10 +73,10 @@ function AddNewAct(props) {
             },
           ],
         })(
-          <Select defaultValue="lucy" style={{ width: 120 }} placeholder="请选择类型">
-            <Option value="jack">Jack</Option>
-            <Option value="lucy">Lucy</Option>
-            <Option value="disabled">Disabled</Option>
+          <Select style={{ width: 120 }} placeholder="请选择类型">
+            <Option value={1}>Jack</Option>
+            <Option value={2}>Lucy</Option>
+            <Option value={3}>Disabled</Option>
           </Select>
         )}
       </Item>
@@ -106,7 +120,7 @@ function AddNewAct(props) {
         )}
       </Item>
       <Item label="参与次数">
-        {getFieldDecorator('actCount', {
+        {getFieldDecorator('activeNum', {
           rules: [
             {
               required: true,
@@ -116,17 +130,29 @@ function AddNewAct(props) {
         })(<InputNumber min={1} step={1} />)}
       </Item>
       <Item label="是否开启">
-        {getFieldDecorator('isOpen', {
+        {getFieldDecorator('state', {
           rules: [
             {
               required: true,
               message: 'Please input your nickname',
             },
           ],
-        })(<Input placeholder="" />)}
+        })(
+          <Group>
+            <Radio value={1}>开启</Radio>
+            <Radio value={0}>未开启</Radio>
+          </Group>
+        )}
       </Item>
       <Item label="活动规则">
-        {getFieldDecorator('actCount', {})(<TextArea autoSize={{ minRows: 3 }} />)}
+        {getFieldDecorator('activeRule', {})(<TextArea autoSize={{ minRows: 3 }} />)}
+      </Item>
+
+      <Item {...formTailLayout}>
+        <Button onClick={() => setactModal(false)}>取消</Button>
+        <Button type="primary" onClick={submitForm}>
+          确定
+        </Button>
       </Item>
     </Form>
   );

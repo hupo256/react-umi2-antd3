@@ -5,28 +5,41 @@
  * @Last Modified time: 2021-03-23 13:49:12 
  * 商品管理
  */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
+import mktApi from '@/services/mktActivity';
+import { Provider, ctx } from '../common/context';
 import { Card, Button, Modal, Table } from 'antd';
-import { goodsColumns, dataSource } from '../tools/data';
+import { goodsColumns } from '../tools/data';
 import GoodsSearch from './goodsSearch';
 import AddNewGoods from './addNewGoods';
 import styles from './goods.less';
 
-export default function Templates(props) {
-  const [showModal, setshowModal] = useState(false);
+function GoodsList(props) {
+  const { goodsList, setgoodsList, goodsModal, setgoodsModal } = useContext(ctx);
 
   useEffect(() => {
-    // settepList(touchList());
+    const params = {
+      // activityId: 0,
+      pageNum: 1,
+      pageSize: 10,
+      // prizeName: '',
+    };
+    mktApi.queryActivityPrizeList(params).then(res => {
+      console.log(res);
+      const { data } = res;
+      if (!data) return;
+      setgoodsList(data.list);
+    });
   }, []);
 
   function addNew() {
     console.log(22);
-    setshowModal(true);
+    setgoodsModal(true);
   }
 
   function modalOk() {
-    setshowModal(false);
+    setgoodsModal(false);
   }
 
   return (
@@ -34,16 +47,17 @@ export default function Templates(props) {
       <Card bordered={false} style={{ marginTop: 20 }}>
         <GoodsSearch />
 
-        <Button onClick={addNew} type="primary">
+        <Button onClick={addNew} className={styles.addBtn} type="primary">
           添加
         </Button>
-        <Table size="middle" dataSource={dataSource} columns={goodsColumns} />
+        <Table size="middle" dataSource={goodsList} columns={goodsColumns} />
 
         <Modal
           title="添加/编辑商品"
-          visible={showModal}
+          visible={goodsModal}
           onOk={modalOk}
-          onCancel={() => setshowModal(false)}
+          onCancel={() => setgoodsModal(false)}
+          footer={null}
         >
           <AddNewGoods />
         </Modal>
@@ -51,3 +65,9 @@ export default function Templates(props) {
     </PageHeaderWrapper>
   );
 }
+
+export default props => (
+  <Provider>
+    <GoodsList {...props} />
+  </Provider>
+);

@@ -5,11 +5,11 @@
  * @Last Modified time: 2021-03-26 14:49:12 
  * 添加、修改商品
  */
-import React, { useState, useEffect } from 'react';
-import { Form, Input, Select, InputNumber, Upload, Icon } from 'antd';
+import React, { useState, useEffect, useContext } from 'react';
+import { ctx } from '../common/context';
+import { Form, Input, Select, InputNumber, Upload, Icon, Button } from 'antd';
 
 const { Item } = Form;
-const { TextArea } = Input;
 const { Option } = Select;
 
 const formItemLayout = {
@@ -25,18 +25,25 @@ function AddNewGoods(props) {
   const {
     form: { validateFields, getFieldDecorator },
   } = props;
+  const { goodsList, setgoodsList, goodsModal, setgoodsModal } = useContext(ctx);
   const [imageUrl, setimageUrl] = useState('');
   const [loading, setloading] = useState(false);
 
-  function check() {
-    validateFields(err => {
-      !err && console.info('success');
+  function submitForm() {
+    validateFields((err, values) => {
+      if (err) return;
+      console.log(values);
+      const { startTime, endTime } = values;
+      const newRec = {
+        ...values,
+        startTime: moment(startTime).format('YYYY-MM-DD hh:mm:ss'),
+        endTime: moment(endTime).format('YYYY-MM-DD hh:mm:ss'),
+      };
+      console.log(newRec);
+      goodsList.push(newRec);
+      setgoodsList(goodsList.slice());
+      setgoodsModal(false);
     });
-  }
-
-  function handleChange(e) {
-    setcheckNick(e.target.checked);
-    validateFields(['nickname'], { force: true });
   }
 
   function getBase64(img, callback) {
@@ -57,7 +64,7 @@ function AddNewGoods(props) {
     return isJpgOrPng && isLt2M;
   }
 
-  handleChange = info => {
+  function handleChange(info) {
     if (info.file.status === 'uploading') {
       setloading(true);
       return;
@@ -69,7 +76,7 @@ function AddNewGoods(props) {
         setimageUrl(imageUrl);
       });
     }
-  };
+  }
 
   const uploadButton = (
     <div>
@@ -89,7 +96,7 @@ function AddNewGoods(props) {
             },
           ],
         })(
-          <Select defaultValue="大红包" style={{ width: 120 }} placeholder="请选择类型">
+          <Select style={{ width: 120 }} placeholder="请选择类型">
             <Option value="大红包">大红包</Option>
             <Option value="lucy">Lucy</Option>
             <Option value="disabled">Disabled</Option>
@@ -97,7 +104,7 @@ function AddNewGoods(props) {
         )}
       </Item>
       <Item label="奖品名称">
-        {getFieldDecorator('username', {
+        {getFieldDecorator('prizeName', {
           rules: [
             {
               required: true,
@@ -158,6 +165,12 @@ function AddNewGoods(props) {
         >
           {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
         </Upload>
+      </Item>
+      <Item {...formTailLayout}>
+        <Button onClick={() => setgoodsModal(false)}>取消</Button>
+        <Button type="primary" onClick={submitForm}>
+          确定
+        </Button>
       </Item>
     </Form>
   );

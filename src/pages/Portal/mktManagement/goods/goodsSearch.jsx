@@ -5,7 +5,7 @@
  * @Last Modified time: 2021-03-26 13:49:12 
  * 商品搜索
  */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Form, Input, Button, Select } from 'antd';
 
 const { Item } = Form;
@@ -48,7 +48,7 @@ function GoodsSearch(props) {
             },
           ],
         })(
-          <Select defaultValue="lucy" style={{ width: 120 }} placeholder="请选择类型">
+          <Select style={{ width: 120 }} placeholder="请选择类型">
             <Option value="jack">Jack</Option>
             <Option value="lucy">Lucy</Option>
             <Option value="disabled">Disabled</Option>

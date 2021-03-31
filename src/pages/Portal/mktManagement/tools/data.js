@@ -16,89 +16,67 @@ export const dataSource = [
 export const actColumns = [
   {
     title: '编号',
-    dataIndex: 'name',
-    key: 'name',
+    dataIndex: 'order',
+    render: (text, record, index) => index + 1,
   },
   {
     title: '活动名称',
-    dataIndex: 'age',
-    key: 'age',
+    dataIndex: 'activeName',
   },
   {
     title: '开始时间',
     dataIndex: 'startTime',
-    key: 'startTime',
   },
   {
     title: '结束时间',
     dataIndex: 'endTime',
-    key: 'endTime',
   },
   {
     title: '参与次数',
-    dataIndex: 'count',
-    key: 'count',
+    dataIndex: 'activeNum',
   },
   {
     title: '状态',
     dataIndex: 'state',
-    key: 'state',
   },
   {
     title: '创建日期',
-    dataIndex: 'foundTime',
-    key: 'foundTime',
-  },
-  {
-    title: '操作',
-    key: 'action',
-    render: (text, record) => (
-      <span>
-        <a>edit {record.name}</a> | <a>Delete</a>
-      </span>
-    ),
+    dataIndex: 'createTime',
   },
 ];
 
 export const goodsColumns = [
   {
     title: 'ID',
-    dataIndex: 'ID',
-    key: 'id',
+    dataIndex: 'activityId',
   },
   {
     title: '活动名称',
-    dataIndex: 'actName',
-    key: 'actName',
+    dataIndex: 'activityName',
   },
   {
     title: '商品ID',
-    dataIndex: 'goodsId',
-    key: 'goodsId',
+    dataIndex: 'prizeId',
   },
   {
     title: '商品名称',
-    dataIndex: 'goodsName',
-    key: 'goodsName',
+    dataIndex: 'prizeName',
   },
   {
     title: '中奖概率',
-    dataIndex: 'odds',
-    key: 'odds',
+    dataIndex: 'winRate',
   },
   {
     title: '状态',
     dataIndex: 'state',
-    key: 'state',
   },
   {
     title: '创建日期',
-    dataIndex: 'found',
-    key: 'found',
+    dataIndex: 'createTime',
   },
   {
     title: '操作',
-    key: 'action',
+    dataIndex: 'action',
     render: (text, record) => (
       <span>
         <a>edit {record.name}</a> | <a>Delete</a>
