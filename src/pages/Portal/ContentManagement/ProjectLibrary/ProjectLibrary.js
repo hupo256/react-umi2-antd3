@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-26 18:15:26
+ * @Last Modified time: 2021-03-31 17:29:23
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -123,7 +123,10 @@ class ProjectLibrary extends PureComponent {
           return (
             <div style={{ display: 'flex' }}>
               <img
-                src={r.specialCoverImg}
+                src={
+                  r.specialCoverImg ||
+                  'https://img.inbase.in-deco.com/crm_saas/release/20210331/1a5c9889e7c64437b9a53a3f7c07916a/mr.png'
+                }
                 style={{
                   width: 100,
                   height: 70,
@@ -241,26 +244,34 @@ class ProjectLibrary extends PureComponent {
                   编辑
                 </span>
               ) : null}
+              {permissionsBtn.permissions.includes('BTN210326000045') &&
+                permissionsBtn.permissions.includes('BTN210326000046') &&
+                r.specialStatus !== 0 && <span className="operateLine" />}
               {permissionsBtn.permissions.includes('BTN210326000046') && r.specialStatus !== 0 ? (
                 <span>
-                  <span className="operateLine" />
                   <span className="operateBtn" onClick={() => this.handleToggleStatus(r)}>
                     {r.specialStatus === 0 || r.specialStatus === 2 ? '启用' : '停用'}
                   </span>
                 </span>
               ) : null}
+              {permissionsBtn.permissions.includes('BTN210326000046') &&
+                permissionsBtn.permissions.includes('BTN210326000047') &&
+                r.specialStatus === 0 && <span className="operateLine" />}
               {permissionsBtn.permissions.includes('BTN210326000047') && r.specialStatus === 0 ? (
                 <span>
-                  <span className="operateLine" />
                   <span className="operateBtn" onClick={() => this.handleDelete(r)}>
                     删除
                   </span>
                 </span>
               ) : null}
+              {permissionsBtn.permissions.includes('BTN210326000047') &&
+                r.specialStatus === 0 &&
+                permissionsBtn.permissions.includes('MU90000001000100040001') && (
+                  <span className="operateLine" />
+                )}
               {permissionsBtn.permissions.includes('MU90000001000100040001') &&
               r.specialStatus === 0 ? (
                 <span>
-                  <span className="operateLine" />
                   <span
                     className="operateBtn"
                     onClick={() => {

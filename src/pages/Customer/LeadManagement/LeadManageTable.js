@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-01-22 13:30:46 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-29 15:33:12
+ * @Last Modified time: 2021-04-01 18:41:53
  * 线索列表
  */
 import React, { Component } from 'react';
@@ -41,6 +41,7 @@ class LeadManageTable extends Component {
       {
         title: '线索',
         dataIndex: 'name',
+        width: 200,
         render: (t, r) => {
           return (
             <div className={styles.tableName}>
@@ -71,10 +72,12 @@ class LeadManageTable extends Component {
       {
         title: '楼盘/楼宇',
         dataIndex: 'address',
+        width: 200,
       },
       {
         title: '建筑面积',
         dataIndex: 'area',
+        width:150,
         render:text=>{
           return text?<span>{text}m²</span>:''
         }
@@ -82,6 +85,7 @@ class LeadManageTable extends Component {
       {
         title: '状态',
         dataIndex: 'statusName',
+        width: 150,
         render: (t, r) => {
           const map = {
             TS001: '#bfbfbf',
@@ -101,14 +105,17 @@ class LeadManageTable extends Component {
       {
         title: '来源渠道',
         dataIndex: 'sourceChannelName',
+        width: 120,
       },
       {
         title: '推荐人',
         dataIndex: 'referrerName',
+        width: 120,
       },
       {
         title: '更新时间',
         dataIndex: 'updateTime',
+        width: 180,
         // sorter: true,
       },
       {
@@ -149,6 +156,7 @@ class LeadManageTable extends Component {
             dataSource={trackData.list}
             columns={columns}
             onChange={this.handleTableChange}
+            scroll={{ x: 1600 }}
             pagination={trackData && paginations(trackData)}
           />
         </Card>
