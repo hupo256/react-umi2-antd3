@@ -21,9 +21,7 @@ export async function touchActivity() {
 
 // 中奖记录
 export async function touchReward(params) {
-  // return request(baseurl + '/api/v1/sso/activity/reward');
   return request(baseurl + '/api/v1/sso/activity/reward', {
-    // method: 'POST',
     query: params,
   });
 }

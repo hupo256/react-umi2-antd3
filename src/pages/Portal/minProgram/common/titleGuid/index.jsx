@@ -8,11 +8,12 @@
 import React from 'react';
 import styles from './titleGuid.less';
 
-export default function TitleGuid() {
+export default function TitleGuid(props) {
+  const { title = '标题', disc } = props;
   return (
     <div className={styles.guidBox}>
-      <h3>选择一个模板开始</h3>
-      <p>模板可以帮您一键生成案例、工地和设计师模块，并有多种布局和风格供您选择。</p>
+      <h3>{title}</h3>
+      {disc && <p>模板可以帮您一键生成案例、工地和设计师模块，并有多种布局和风格供您选择。</p>}
     </div>
   );
 }

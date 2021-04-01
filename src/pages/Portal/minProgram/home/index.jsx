@@ -7,58 +7,53 @@
  */
 import React, { useState, useEffect } from 'react';
 import router from 'umi/router';
-import { getAuthInfo } from '@/services/miniProgram';
+import { getAuthInfo, getHomePagePublishState } from '@/services/miniProgram';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import NotBound from '../../../SystemSetting/MiniProgram/NotBound';
-import SwiperBar from '../common/swiperBar';
 import TitleGuid from '../common/titleGuid';
-import { imgBaseUrl } from '../tools';
-import { Card, Button } from 'antd';
+import Preview from '../preview';
+import Templates from '../templates';
+import { Card } from 'antd';
 import styles from './home.less';
 
 const baseUrlKey = '/portal/minProgram/';
 
-export default function Templates(props) {
+export default function Home(props) {
   const [authorInf, setauthorInf] = useState(null);
+  const [isPublished, setisPublished] = useState(false);
 
   useEffect(() => {
     const code = localStorage.getItem('auth');
     const saasSellerCode = JSON.parse(code).companyCode;
     // getAuthInfo({ saasSellerCode: 'C201asdfas1002' }).then(res => {
     getAuthInfo({ saasSellerCode }).then(res => {
-      console.log(res);
       const { data } = res;
-      data && setauthorInf(data);
+      if (!data) return;
+      setauthorInf(data);
+
+      // 之前有发布过吗
+      getHomePagePublishState().then(res => {
+        const { data } = res;
+        if (!data) return;
+        setisPublished(data.isPublished);
+      });
     });
   }, []);
 
-  function gotoRoute(key) {
-    router.push(`${baseUrlKey}${key}`);
-  }
-
   return (
     <PageHeaderWrapper>
-      <TitleGuid />
-      {authorInf && (
-        <>
-          {authorInf.isAuthedWechatMini ? (
-            <Card bordered={false}>
-              <div className={styles.currTepBox}>
-                <img src={`${imgBaseUrl}img_LakeBlue.png`} alt="" />
-
-                <div className={styles.btnbox}>
-                  <Button onClick={() => gotoRoute('edit')} type="primary">
-                    继续编辑
-                  </Button>
-                  <Button onClick={() => gotoRoute('templates')}>更换模板</Button>
-                </div>
-              </div>
-            </Card>
-          ) : (
-            <NotBound jumpUrl={`${baseUrlKey}home`} />
-          )}
-        </>
-      )}
+      <div className={styles.homeBox}>
+        <TitleGuid />
+        {authorInf && (
+          <>
+            {authorInf.isAuthedWechatMini ? (
+              <Card bordered={false}>{!isPublished ? <Preview /> : <Templates />}</Card>
+            ) : (
+              <NotBound jumpUrl={`${baseUrlKey}home`} />
+            )}
+          </>
+        )}
+      </div>
     </PageHeaderWrapper>
   );
 }

@@ -46,6 +46,7 @@ class NotBound extends PureComponent {
     const saasSellerCode = JSON.parse(code).companyCode;
     dispatch({ type: 'MiniProgram/getAuthUrlModel', payload: { saasSellerCode, jumpUrl } }).then(
       res => {
+        console.log(res);
         if (res && res.code === 200) {
           window.location.href = res.data.url;
         }
