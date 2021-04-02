@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-31 19:20:11
+ * @Last Modified time: 2021-04-02 15:59:12
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -246,9 +246,9 @@ class ProjectLibrary extends PureComponent {
                   </span>
                 </span>
               ) : null}
-              {permissionsBtn.permissions.includes('MU90000001000100050001') && (
-                <span className="operateLine" />
-              )}
+              {permissionsBtn.permissions.includes('MU90000001000100050001') &&
+                permissionsBtn.permissions.includes('BTN210326000052') &&
+                r.formStatus === 0 && <span className="operateLine" />}
               {permissionsBtn.permissions.includes('MU90000001000100050001') ? (
                 <span>
                   <span
