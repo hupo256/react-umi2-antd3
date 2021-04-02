@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-01-22 13:30:46 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-04-01 18:41:53
+ * @Last Modified time: 2021-04-02 17:46:49
  * 线索列表
  */
 import React, { Component } from 'react';
@@ -125,13 +125,13 @@ class LeadManageTable extends Component {
         render: (t, r) => {
           return (
             <span className={styles.operate}>
-            {permissionsBtn.includes('BTN210326000024')&&<span onClick={() => this.setState({ changeVisible: true, record: r })}>
+            {permissionsBtn.includes('BTN210326000022')&&<span onClick={() => this.setState({ changeVisible: true, record: r })}>
                 变更状态
               </span>}
-              {permissionsBtn.includes('BTN210326000024')&&permissionsBtn.includes('BTN210326000023')&&<span> | </span>}
+              {permissionsBtn.includes('BTN210326000022')&&(permissionsBtn.includes('BTN210326000023')||permissionsBtn.includes('BTN210326000024'))&&<span> | </span>}
               {permissionsBtn.includes('BTN210326000023')&&<span onClick={() => this.setState({ clueVisible: true, record: r })}>编辑</span>}
-              {permissionsBtn.includes('BTN210326000023')&&permissionsBtn.includes('BTN210326000022')&&<span> | </span>}
-              {permissionsBtn.includes('BTN210326000022')&&<span onClick={() => this.setState({ recordVisible: true, record: r })}>
+              {(permissionsBtn.includes('BTN210326000023'))&&permissionsBtn.includes('BTN210326000024')&&<span> | </span>}
+              {permissionsBtn.includes('BTN210326000024')&&<span onClick={() => this.setState({ recordVisible: true, record: r })}>
                 变更记录
               </span>}
             </span>
