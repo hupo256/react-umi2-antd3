@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-31 19:08:15
+ * @Last Modified time: 2021-04-01 16:48:38
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -280,6 +280,32 @@ class ProjectLibrary extends PureComponent {
           </div>
         </div>
         <div className={styles.confcont}>
+          <div className={styles.thead}>
+            <span className={styles.fontHead}>编辑专题</span>
+            <div className={styles.bth}>
+              {permissionsBtn.permissions.includes('BTN210326000048') ? (
+                <Button
+                  style={{ height: 38, marginRight: 10 }}
+                  onClick={() => {
+                    this.logoutSave();
+                  }}
+                >
+                  退出
+                </Button>
+              ) : null}
+              {permissionsBtn.permissions.includes('BTN210326000048') ? (
+                <Button
+                  type="primary"
+                  style={{ height: 38 }}
+                  onClick={() => {
+                    this.addConfiguration();
+                  }}
+                >
+                  发布
+                </Button>
+              ) : null}
+            </div>
+          </div>
           <div className={styles.phone}>
             <div className={styles.phoneHead}>{title}</div>
             <div className={styles.phoneCont}>
@@ -340,7 +366,18 @@ class ProjectLibrary extends PureComponent {
         ite.elementButtonTextColor = '#fff';
         ite.elementButtonText = '立即预约';
       } else if (ite.elementType === 'MODAL_TEXT') {
-        ite.elementStyle = JSON.stringify({ top: top, left: left, fontSize: 14, color: '#000' });
+        ite.elementStyle = JSON.stringify({
+          top: top,
+          left: left,
+          fontSize: 14,
+          color: '#000',
+          lineHeight: 1.5,
+          letterSpacing: 1,
+          textAlign: 'center',
+          fontWeight: 'normal',
+          fontStyle: 'normal',
+          textDecorationLine: 'none',
+        });
       }
       // if (ite.elementType === 'IMG' || ite.elementType === 'TEXT') {
       //   tags.push(_.cloneDeep(ite));
@@ -441,7 +478,6 @@ class ProjectLibrary extends PureComponent {
     } = this.props;
     let height = this.refs.submitf.scrollHeight;
     let aStyle = JSON.parse(compentList[indx].elementStyle);
-
     if (event.clientY - this.disY < 0) {
       aStyle = 0;
     } else if (event.clientY - this.disY > height) {
@@ -449,7 +485,22 @@ class ProjectLibrary extends PureComponent {
     } else {
       aStyle.top = event.clientY - this.disY;
     }
-    compentList[indx].elementStyle = JSON.stringify(aStyle);
+    if (compentList[indx].elementType === 'MODAL_TEXT') {
+      compentList[indx].elementStyle = JSON.stringify({
+        top: aStyle.top,
+        left: aStyle.left,
+        fontSize: aStyle.fontSize,
+        color: aStyle.color,
+        lineHeight: aStyle.lineHeight,
+        letterSpacing: aStyle.letterSpacing,
+        textAlign: aStyle.textAlign,
+        fontStyle: aStyle.fontStyle,
+        textDecorationLine: aStyle.textDecorationLine,
+      });
+    } else {
+      compentList[indx].elementStyle = JSON.stringify({ top: aStyle.top, left: aStyle.left });
+    }
+
     dispatch({
       type: 'ProjectLibrary/saveDataModel',
       payload: {

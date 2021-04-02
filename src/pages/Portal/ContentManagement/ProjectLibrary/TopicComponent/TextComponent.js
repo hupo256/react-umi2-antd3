@@ -2,15 +2,16 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-31 19:02:46
+ * @Last Modified time: 2021-04-01 19:21:36
  * 创建工地
  */
 import React, { PureComponent } from 'react';
 import ContentEditable from 'react-contenteditable';
 import { connect } from 'dva';
-import { Icon, Drawer, Input, Tooltip } from 'antd';
+import { Icon, Drawer, Input, Tooltip, InputNumber } from 'antd';
 import { SketchPicker } from 'react-color';
 import styles from './index.less';
+import { concatSeries } from 'async';
 @connect(({ ProjectLibrary }) => ({
   ProjectLibrary,
 }))
@@ -26,7 +27,19 @@ class TextComponent extends PureComponent {
     const { data, index } = this.props;
     const { isTrue, visible, show } = this.state;
     let isStyle = JSON.parse(data.elementStyle);
-    console.log(isStyle.fontSize);
+    const limitDecimals = value => {
+      const reg = /^(\-)*(\d+)\.(\d\d).*$/;
+      if (value === '-') {
+        return '-';
+      } else if (typeof value === 'string') {
+        return !isNaN(Number(value)) ? value.replace(reg, '$1$2.$3') : '';
+      } else if (typeof value === 'number') {
+        return !isNaN(value) ? String(value).replace(reg, '$1$2.$3') : '';
+      } else {
+        return '';
+      }
+    };
+    console.log(data);
     return (
       <div
         className={data.checked === 1 ? styles.ViewFormsg : styles.ViewFormborders}
@@ -72,111 +85,178 @@ class TextComponent extends PureComponent {
         ) : (
           ''
         )}
-        <Drawer
-          width="550"
-          title="编辑文本"
-          placement="right"
-          onClose={this.onClose}
-          visible={visible}
-          mask={false}
-        >
-          <div className={styles.fontw}>文本</div>
-          <div className="clearfix" style={{ marginTop: 20, marginBottom: 20 }}>
-            <div className={styles.fontC}>
-              <Tooltip placement="bottom" title={'文字大小'}>
-                <Icon type="font-size" />
-              </Tooltip>
-              <Input
-                style={{ width: 50, marginLeft: 10 }}
-                value={isStyle.fontSize}
-                onChange={e => this.handleListChange(e, 'fontSize')}
-              />
+        {visible && data.checked === 1 ? (
+          <Drawer
+            width="550"
+            title="编辑文本"
+            placement="right"
+            onClose={this.onClose}
+            visible={visible}
+            mask={false}
+          >
+            <div className={styles.fontw}>文本</div>
+            <div className="clearfix" style={{ marginTop: 20, marginBottom: 20 }}>
+              <div className={styles.fontC}>
+                <Tooltip placement="bottom" title={'文字大小'}>
+                  <Icon type="font-size" />
+                </Tooltip>
+                <InputNumber
+                  style={{ width: 80, marginLeft: 10 }}
+                  value={isStyle.fontSize}
+                  formatter={limitDecimals}
+                  parser={limitDecimals}
+                  onChange={e => this.handleListChange(e, 'fontSize')}
+                />
+              </div>
+              <div className={styles.btnColorWrap}>
+                <div
+                  className={styles.btnColor}
+                  style={{ background: isStyle.color }}
+                  onClick={() => {
+                    this.showColor();
+                  }}
+                />
+              </div>
             </div>
-            <div className={styles.btnColorWrap}>
-              <div
-                className={styles.btnColor}
-                style={{ background: data.elementButtonColor }}
-                onClick={() => {
-                  this.showColor();
-                }}
-              />
-            </div>
-          </div>
-          <div className={styles.fontw}>文本设置</div>
-          <div className={styles.textSet}>
-            <span>
-              <Tooltip placement="bottom" title={'加粗'}>
-                <Icon type="bold" />
-              </Tooltip>
-            </span>
-            <span>
-              <Tooltip placement="bottom" title={'斜体'}>
-                <Icon type="italic" />
-              </Tooltip>
-            </span>
-            <span>
-              <Tooltip placement="bottom" title={'下划线'}>
-                <Icon type="underline" />
-              </Tooltip>
-            </span>
-            <span>
-              <Tooltip placement="bottom" title={'删除线'}>
-                <Icon type="strikethrough" />
-              </Tooltip>
-            </span>
-          </div>
-          <div className={styles.fontw}>排版</div>
-          <div className={styles.textSet}>
-            <span>
-              <Tooltip placement="bottom" title={'左对齐'}>
-                <Icon type="align-left" />
-              </Tooltip>
-            </span>
-            <span>
-              <Tooltip placement="bottom" title={'居中'}>
-                <Icon type="align-center" />
-              </Tooltip>
-            </span>
-            <span>
-              <Tooltip placement="bottom" title={'右对齐'}>
-                <Icon type="align-right" />
-              </Tooltip>
-            </span>
-            <span>
-              <Tooltip placement="bottom" title={'字间距'}>
-                <Icon type="column-width" />
-              </Tooltip>
-              <Input
-                style={{ width: 50, marginLeft: 10 }}
-                onChange={e => this.handleListChange(e, 'fontSize')}
-              />
-            </span>
-            <span>
-              <Tooltip placement="bottom" title={'行间距'}>
-                <Icon type="column-height" />
-              </Tooltip>
-              <Input
-                style={{ width: 50, marginLeft: 10 }}
-                onChange={e => this.handleListChange(e, 'fontSize')}
-              />
-            </span>
-          </div>
-          {show ? (
-            <div className={styles.SketchWrap}>
-              <SketchPicker color={data.elementButtonColor} onChange={this.handleColorChange} />
+            <div className={styles.fontw}>文本设置</div>
+            <div className={styles.textSet}>
               <span
-                className={styles.closeColor}
                 onClick={() => {
-                  this.closeColor();
+                  this.handleListChange(
+                    isStyle.fontWeight === 'normal' ? 'bold' : 'normal',
+                    'fontWeight'
+                  );
                 }}
               >
-                <Icon type="close-circle" />
+                <Tooltip placement="bottom" title={'加粗'}>
+                  <Icon type="bold" />
+                </Tooltip>
+              </span>
+              <span
+                onClick={() => {
+                  this.handleListChange(
+                    isStyle.fontStyle === 'normal' ? 'italic' : 'normal',
+                    'fontStyle'
+                  );
+                }}
+              >
+                <Tooltip placement="bottom" title={'斜体'}>
+                  <Icon type="italic" />
+                </Tooltip>
+              </span>
+              <span
+                onClick={() => {
+                  let arr = '';
+                  if (isStyle.textDecorationLine === 'none') {
+                    arr = 'underline';
+                  } else if (isStyle.textDecorationLine === 'underline') {
+                    arr = 'none';
+                  } else if (isStyle.textDecorationLine === 'line-through') {
+                    arr = 'underline line-through';
+                  } else if (isStyle.textDecorationLine === 'underline line-through') {
+                    arr = 'line-through';
+                  }
+                  this.handleListChange(arr, 'textDecorationLine');
+                }}
+              >
+                <Tooltip placement="bottom" title={'下划线'}>
+                  <Icon type="underline" />
+                </Tooltip>
+              </span>
+              <span
+                onClick={() => {
+                  let arr = '';
+                  if (isStyle.textDecorationLine === 'none') {
+                    arr = 'line-through';
+                  } else if (isStyle.textDecorationLine === 'line-through') {
+                    arr = 'none';
+                  } else if (isStyle.textDecorationLine === 'underline') {
+                    arr = 'underline line-through';
+                  } else if (isStyle.textDecorationLine === 'underline line-through') {
+                    arr = 'underline';
+                  }
+                  this.handleListChange(arr, 'textDecorationLine');
+                }}
+              >
+                <Tooltip placement="bottom" title={'删除线'}>
+                  <Icon type="strikethrough" />
+                </Tooltip>
               </span>
             </div>
-          ) : (
-            ''
-          )}
-        </Drawer>
+            <div className={styles.fontw}>排版</div>
+            <div className={styles.textSet}>
+              <span
+                className={isStyle.textAlign === 'left' ? styles.acticve : null}
+                onClick={() => {
+                  this.handleListChange('left', 'textAlign');
+                }}
+              >
+                <Tooltip placement="bottom" title={'左对齐'}>
+                  <Icon type="align-left" />
+                </Tooltip>
+              </span>
+              <span
+                className={isStyle.textAlign === 'center' ? styles.acticve : null}
+                onClick={() => {
+                  this.handleListChange('center', 'textAlign');
+                }}
+              >
+                <Tooltip placement="bottom" title={'居中'}>
+                  <Icon type="align-center" />
+                </Tooltip>
+              </span>
+              <span
+                className={isStyle.textAlign === 'right' ? styles.acticve : null}
+                onClick={() => {
+                  this.handleListChange('right', 'textAlign');
+                }}
+              >
+                <Tooltip placement="bottom" title={'右对齐'}>
+                  <Icon type="align-right" />
+                </Tooltip>
+              </span>
+              <span>
+                <Tooltip placement="bottom" title={'字间距'}>
+                  <Icon type="column-width" />
+                </Tooltip>
+                <InputNumber
+                  style={{ width: 80, marginLeft: 10 }}
+                  value={isStyle.letterSpacing}
+                  formatter={limitDecimals}
+                  parser={limitDecimals}
+                  onChange={e => this.handleListChange(e, 'letterSpacing')}
+                />
+              </span>
+              <span>
+                <Tooltip placement="bottom" title={'行间距'}>
+                  <Icon type="column-height" />
+                </Tooltip>
+                <InputNumber
+                  style={{ width: 80, marginLeft: 10 }}
+                  value={isStyle.lineHeight}
+                  formatter={limitDecimals}
+                  parser={limitDecimals}
+                  onChange={e => this.handleListChange(e, 'lineHeight')}
+                />
+              </span>
+            </div>
+            {show ? (
+              <div className={styles.SketchWrap}>
+                <SketchPicker color={isStyle.color} onChange={this.handleColorChange} />
+                <span
+                  className={styles.closeColor}
+                  onClick={() => {
+                    this.closeColor();
+                  }}
+                >
+                  <Icon type="close-circle" />
+                </span>
+              </div>
+            ) : (
+              ''
+            )}
+          </Drawer>
+        ) : null}
       </div>
     );
   }
@@ -234,15 +314,44 @@ class TextComponent extends PureComponent {
     });
   }
   handleColorChange = value => {
-    const { index } = this.props;
-    this.props.handleColor(value.hex, index, 1);
+    const {
+      dispatch,
+      index,
+      ProjectLibrary: { compentList },
+    } = this.props;
+    let aStyle = JSON.parse(compentList[index].elementStyle);
+    aStyle.color = value.hex;
+    compentList[index].elementStyle = JSON.stringify(aStyle);
+    dispatch({
+      type: 'ProjectLibrary/saveDataModel',
+      payload: {
+        key: 'compentList',
+        value: [...compentList],
+      },
+    });
   };
   closeColor() {
     this.setState({
       show: false,
     });
   }
-  handleListChange(name, index) {}
+  handleListChange(e, name) {
+    const {
+      dispatch,
+      index,
+      ProjectLibrary: { compentList },
+    } = this.props;
+    let aStyle = JSON.parse(compentList[index].elementStyle);
+    aStyle[name] = e;
+    compentList[index].elementStyle = JSON.stringify(aStyle);
+    dispatch({
+      type: 'ProjectLibrary/saveDataModel',
+      payload: {
+        key: 'compentList',
+        value: [...compentList],
+      },
+    });
+  }
 }
 
 export default TextComponent;
