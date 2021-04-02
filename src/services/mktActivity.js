@@ -93,6 +93,33 @@ export async function queryActivityPrizeList(params) {
   });
 }
 
+// 查询案例
+export async function queryCaseList(params) {
+  return request('http://dev.gateway.ingongdi.com/api/v1/wechat/case/queryCaseList', {
+    // return request(baseurl + '/api/v1/wechat/case/queryCaseList', {
+    method: 'POST',
+    body: params,
+  });
+}
+
+// 查询设计师
+export async function queryDesignerList(params) {
+  return request('http://dev.gateway.ingongdi.com/api/v1/wechat/designer/queryDesignerList', {
+    // return request(baseurl + '/api/v1/wechat/case/queryCaseList', {
+    method: 'POST',
+    body: params,
+  });
+}
+
+// 查询工地
+export async function sitePageList(params) {
+  return request('http://dev.gateway.ingongdi.com/api/v1/wechat/site/pageList', {
+    // return request(baseurl + '/api/v1/wechat/case/queryCaseList', {
+    method: 'POST',
+    body: params,
+  });
+}
+
 export default {
   touchLottery,
   touchActivity,
@@ -106,4 +133,7 @@ export default {
   newPrize,
   queryActivityList,
   queryActivityPrizeList,
+  queryCaseList,
+  queryDesignerList,
+  sitePageList,
 };

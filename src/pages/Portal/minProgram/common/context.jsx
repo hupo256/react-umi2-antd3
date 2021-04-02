@@ -12,6 +12,7 @@ export function Provider({ children }) {
   const [tagsData, settagsData] = useState([]); // 亮点数据
   const [imgsData, setimgsData] = useState([]); // 轮播图数据
   const [fromTag, setfromTag] = useState(''); // 轮播图数据
+  const [imgUrlModal, setimgUrlModal] = useState(true); //
 
   const value = {
     tagsData,
@@ -20,6 +21,8 @@ export function Provider({ children }) {
     setimgsData,
     fromTag,
     setfromTag,
+    imgUrlModal,
+    setimgUrlModal,
   };
 
   return <ctx.Provider value={value}>{children}</ctx.Provider>;

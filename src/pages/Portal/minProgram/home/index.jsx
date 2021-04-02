@@ -6,7 +6,6 @@
  * 小程序UI模板
  */
 import React, { useState, useEffect } from 'react';
-import router from 'umi/router';
 import { getAuthInfo, getHomePagePublishState } from '@/services/miniProgram';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import NotBound from '../../../SystemSetting/MiniProgram/NotBound';
@@ -47,7 +46,7 @@ export default function Home(props) {
         {authorInf && (
           <>
             {authorInf.isAuthedWechatMini ? (
-              <Card bordered={false}>{!isPublished ? <Preview /> : <Templates />}</Card>
+              <Card bordered={false}>{isPublished ? <Preview /> : <Templates />}</Card>
             ) : (
               <NotBound jumpUrl={`${baseUrlKey}home`} />
             )}

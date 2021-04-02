@@ -16,10 +16,11 @@ import styles from './edit.less';
 
 function TempEdit(props) {
   const { fromTag, setfromTag } = useContext(ctx);
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(true);
 
   function toEditer(key) {
-    setfromTag(key);
+    setfromTag();
+    // setfromTag(key);
     setVisible(true);
   }
 
@@ -29,7 +30,7 @@ function TempEdit(props) {
         <Card bordered={false}>
           <Drawer
             title="编辑轮播"
-            width={620}
+            width={376}
             closable={false}
             onClose={() => setVisible(false)}
             visible={visible}

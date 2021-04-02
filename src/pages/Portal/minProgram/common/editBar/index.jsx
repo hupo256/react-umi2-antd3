@@ -7,20 +7,33 @@
  */
 import React, { useState, useEffect, useContext } from 'react';
 import { ctx } from '../context';
-import { Table, message, Button } from 'antd';
+import { Table, message, Button, Radio, Input, Modal, Select } from 'antd';
 import { createUuid } from '../../tools';
+import ImgUrlEdit from './imgUrlEdit';
 import styles from './editBar.less';
 
 const maxLen = 6;
+const { Group } = Radio;
+const { Option } = Select;
 
 export default function EditBar(props) {
   const { comColumn } = props;
-  const { tagsData, settagsData, imgsData, setimgsData, fromTag } = useContext(ctx);
+  const {
+    tagsData,
+    settagsData,
+    imgsData,
+    setimgsData,
+    fromTag,
+    imgUrlModal,
+    setimgUrlModal,
+  } = useContext(ctx);
   const [columns, setcolumns] = useState([]);
+  const [imgWidthType, setimgWidthType] = useState(1);
+  const isTags = fromTag === 'tags';
 
   // 作个兼容
-  const tbData = fromTag === 'tags' ? tagsData : imgsData;
-  const settbData = fromTag === 'tags' ? settagsData : setimgsData;
+  const tbData = isTags ? tagsData : imgsData;
+  const settbData = isTags ? settagsData : setimgsData;
 
   useEffect(
     () => {
@@ -32,18 +45,13 @@ export default function EditBar(props) {
   function tuouchColumns() {
     const optCol = {
       title: '操作',
+      width: '140px',
       key: 'opration',
       render: (text, record, index) => (
         <div className={styles.tbOpration}>
-          <a disabled={index === 0} onClick={() => toMove(index, -1)}>
-            up
-          </a>
-          <a disabled={index === tbData.length - 1} onClick={() => toMove(index, 1)}>
-            down
-          </a>
-          <a disabled={tbData.length === 1} onClick={() => delImg(index)}>
-            del
-          </a>
+          {index !== 0 && <a onClick={() => toMove(index, -1)}>up</a>}
+          {index !== tbData.length - 1 && <a onClick={() => toMove(index, 1)}>down</a>}
+          {tbData.length !== 1 && <a onClick={() => delImg(index)}>del</a>}
         </div>
       ),
     };
@@ -68,21 +76,36 @@ export default function EditBar(props) {
     settbData([...tbData, rec].slice());
   }
 
-  function getChange(e) {
+  function radioChage(e) {
+    console.log(e);
+    setimgWidthType(e.target.value);
+  }
+
+  function widthChange(e) {
     console.log(e);
   }
 
   return (
     <>
+      {!isTags && (
+        <div className={styles.widthBox}>
+          图片高度：
+          <Group onChange={radioChage} value={imgWidthType}>
+            <Radio value={1}>默认</Radio>
+            <Radio value={2}>自定义</Radio>
+          </Group>
+          {imgWidthType === 2 && (
+            <Input size="small" style={{ width: 70, marginLeft: '-10px' }} onChange={widthChange} />
+          )}
+        </div>
+      )}
       <Table size="middle" dataSource={tbData} columns={columns} pagination={false} />
       <p className={styles.addImg} onClick={addNewImgs}>
         <span>+</span>
         <span>添加轮播图</span>
       </p>
 
-      <Button onClick={getChange} type="primary">
-        Submit
-      </Button>
+      <ImgUrlEdit />
     </>
   );
 }

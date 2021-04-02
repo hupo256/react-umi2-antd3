@@ -5,27 +5,20 @@
  * @Last Modified time: 2021-03-23 13:49:12 
  * 编辑轮播
  */
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ctx } from '../common/context';
-import { Select, Input } from 'antd';
+import { Input } from 'antd';
 import { dataSource } from '../tools/data';
 import EditBar from '../common/editBar/index';
 import { imgBaseUrl } from '../tools';
 import styles from './edit.less';
 
-const { Option } = Select;
-const maxLen = 6;
-
 export default function Templates(props) {
-  const { imgsData, setimgsData } = useContext(ctx);
+  const { setimgsData, setimgUrlModal } = useContext(ctx);
 
   useEffect(() => {
     setimgsData(dataSource);
   }, []);
-
-  function selectChange(e) {
-    console.log(e);
-  }
 
   const columns = [
     {
@@ -44,32 +37,15 @@ export default function Templates(props) {
       width: 270,
       render: (text, record, index) => (
         <div className={styles.inpBox}>
-          <Select
-            defaultValue="lucy"
-            style={{ width: 120 }}
-            onChange={selectChange}
-            placeholder="请选择类型"
-          >
-            <Option value="jack">Jack</Option>
-            <Option value="lucy">Lucy</Option>
-            <Option value="disabled">Disabled</Option>
-          </Select>
-          <Input placeholder="具体页面，输入文字搜索" />
-        </div>
-      ),
-    },
-    {
-      title: '尺寸(宽*高)',
-      key: 'address',
-      width: 150,
-      render: (text, record, index) => (
-        <div className={styles.inpBox}>
-          <Input defaultValue={record.key} />
-          <Input />
+          <Input placeholder="请设置跳转链接" onFocus={() => inpFocus(record)} />
         </div>
       ),
     },
   ];
+
+  function inpFocus(rec) {
+    setimgUrlModal(true);
+  }
 
   return <EditBar comColumn={columns} />;
 }
