@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-31 19:20:11
+ * @Last Modified time: 2021-04-02 18:57:00
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -236,9 +236,13 @@ class ProjectLibrary extends PureComponent {
                   </span>
                 </span>
               ) : null}
-              {permissionsBtn.permissions.includes('BTN210326000053') &&
-                permissionsBtn.permissions.includes('BTN210326000052') &&
+              {permissionsBtn.permissions.includes('BTN210326000052') &&
+                permissionsBtn.permissions.includes('BTN210326000051') &&
                 r.formStatus === 0 && <span className="operateLine" />}
+              {permissionsBtn.permissions.includes('BTN210326000053') &&
+                !permissionsBtn.permissions.includes('BTN210326000053') &&
+                permissionsBtn.permissions.includes('MU90000001000100050001') &&
+                r.formStatus !== 0 && <span className="operateLine" />}
               {permissionsBtn.permissions.includes('BTN210326000052') && r.formStatus === 0 ? (
                 <span>
                   <span className="operateBtn" onClick={() => this.handleDelete(r)}>
@@ -246,9 +250,11 @@ class ProjectLibrary extends PureComponent {
                   </span>
                 </span>
               ) : null}
-              {permissionsBtn.permissions.includes('MU90000001000100050001') && (
-                <span className="operateLine" />
-              )}
+              {permissionsBtn.permissions.includes('MU90000001000100050001') &&
+                ((permissionsBtn.permissions.includes('BTN210326000052') && r.formStatus === 0) ||
+                  permissionsBtn.permissions.includes('BTN210326000051') ||
+                  (permissionsBtn.permissions.includes('BTN210326000053') &&
+                    r.formStatus !== 0)) && <span className="operateLine" />}
               {permissionsBtn.permissions.includes('MU90000001000100050001') ? (
                 <span>
                   <span
