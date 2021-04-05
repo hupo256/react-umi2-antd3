@@ -7,6 +7,7 @@ import {
   loginCheck,
   loginPassword,
   logout,
+  switchSystem
 } from "@/services/api";
 import { setAuthority, cleanAuthority, setauth } from "@/utils/authority";
 import { getPageQuery } from "@/utils/utils";
@@ -30,6 +31,7 @@ export default {
     companyList: [],
     PasswordData: {},
     againSend: 0,
+    switchSystemList:[]
   },
   effects: {
     //退出登录
@@ -44,6 +46,38 @@ export default {
       const response = yield call(fakeAccountLogin, payload);
       return response;
     },
+    *loginTs({ payload }, { call, put, select }) {
+      const response = yield call(queryMenuBtnLogin, payload);
+      if (response && response.code === 200) {
+        setauth(response.data, payload);
+      }
+      reloadAuthorized();
+      const urlParams = new URL(window.location.href);
+      const params = getPageQuery();
+      let { redirect } = params;
+      if (redirect) {
+        const redirectUrlParams = new URL(redirect);
+        if (redirectUrlParams.origin === urlParams.origin) {
+          redirect = redirect.substr(urlParams.origin.length);
+          if (redirect.startsWith('/#')) {
+            redirect = redirect.substr(2);
+          }
+        } else {
+          window.location.href = redirect;
+          return;
+        }
+      }
+      yield put(routerRedux.replace(redirect || '/'));
+    },
+    //切换开通的系统
+*switchSystemModel({ payload }, { call, put }) {
+  const response = yield call(switchSystem, payload);
+  yield put({
+    type: 'dispatchLoadingType',
+    payload: { switchSystemList: (response && response.data) || [] },
+  });
+  return response;
+},
     // 存储权限
     *setAuthModel({ payload }, { call, put }) {
       try {
