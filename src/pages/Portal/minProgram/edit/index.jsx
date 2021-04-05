@@ -25,31 +25,29 @@ function TempEdit(props) {
   }
 
   return (
-    <div>
-      <PageHeaderWrapper>
-        <Card bordered={false}>
-          <Drawer
-            title="编辑轮播"
-            width={376}
-            closable={false}
-            onClose={() => setVisible(false)}
-            visible={visible}
-          >
-            {fromTag === 'tags' ? <TagsEdit /> : <ImgsEdit />}
-          </Drawer>
+    <PageHeaderWrapper>
+      <Card bordered={false}>
+        <Drawer
+          title="编辑轮播"
+          width={376}
+          closable={false}
+          onClose={() => setVisible(false)}
+          visible={visible}
+        >
+          {fromTag === 'tags' ? <TagsEdit /> : <ImgsEdit />}
+        </Drawer>
 
-          <div className={styles.currTepBox}>
-            <img src={`${imgBaseUrl}img_LakeBlue.png`} alt="" />
+        <div className={`${styles.currTepBox} ${visible ? styles.placeHolder : ''}`}>
+          <img src={`${imgBaseUrl}img_LakeBlue.png`} alt="" />
 
-            <div className={styles.btnbox}>
-              <Button onClick={() => toEditer('tags')} type="primary">
-                温馨提示
-              </Button>
-            </div>
+          <div className={styles.btnbox}>
+            <Button onClick={() => toEditer('tags')} type="primary">
+              温馨提示
+            </Button>
           </div>
-        </Card>
-      </PageHeaderWrapper>
-    </div>
+        </div>
+      </Card>
+    </PageHeaderWrapper>
   );
 }
 
