@@ -2,17 +2,16 @@
 @fontColor: #222;
 @fontGray: #a1a1a1;
 @borderRadius: 6px;
+@picturePath: 'https://img.inbase.in-deco.com/crm-saas/img/highlights/';
 
-.currTepBox {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
+.viewBox {
   p {
     margin: 0;
   }
-
+  ul {
+    padding-left: 0;
+    margin-bottom: 0;
+  }
   .flex {
     display: flex;
     justify-content: space-between;
@@ -23,7 +22,7 @@
     width: 68px;
     height: 30px;
     background: @hightColor;
-    box-shadow: 0px 4px 12px 0px rgba(255, 89, 0, 0.2);
+    box-shadow: 0px 2px 6px 0px rgba(255, 89, 0, 0.2);
     border-radius: 15px;
     line-height: 30px;
     color: #fff;
@@ -32,9 +31,36 @@
   }
 
   .btnbox {
+    margin: 0 auto;
     padding: 2em 0;
+    text-align: center;
     button {
       margin: 0 5px;
+    }
+  }
+
+  .footerBox {
+    margin: -191px auto 0;
+    width: 375px;
+    height: 60px;
+    background: #fff;
+
+    transform-origin: 50% 0;
+    transform: scale3d(0.8, 0.8, 1);
+
+    > div {
+      justify-content: space-around;
+      height: 50px;
+      font-size: 12px;
+      color: @fontGray;
+      text-align: center;
+
+      span {
+        margin-top: 30px;
+        &.on {
+          color: @hightColor;
+        }
+      }
     }
   }
 }
@@ -42,43 +68,64 @@
 .phoneBox {
   width: 375px;
   height: 718px;
-  border: 1px solid #f8f8f8;
-  box-sizing: content-box;
+  margin: 0 auto;
+  overflow: hidden;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 0 8px #ccc;
 
   transform-origin: 50% 0;
-  // transform: scale3d(0.8, 0.8, 1);
+  transform: scale3d(0.8, 0.8, 1);
+
+  &::-webkit-scrollbar {
+    width: 0 !important;
+  }
 
   .headerBox {
     height: 88px;
-    text-align: center;
     background: linear-gradient(180deg, #fed2bf 0%, #fef1eb 100%);
+
+    .ptit {
+      height: 100%;
+      background: url('@{picturePath}img_status@2x.png') no-repeat 50% 60%;
+      background-size: 348px 68px;
+      text-align: center;
+      padding-top: 55px;
+
+      span {
+        font-size: 17px;
+        color: #402416;
+      }
+    }
   }
 
   .conBox {
-    padding: 16px 16px 4em;
+    padding: 8px 16px 5em;
+    background: linear-gradient(180deg, #fef1eb 0, #fff 110px);
 
     .hasbg {
-      background: url(../tools/img_bg.png);
+      background: url('@{picturePath}img_bg.png');
       background-size: 18px 18px;
       width: 110%;
-      // padding-left: 16px;
-      // padding-right: 16px;
       margin-left: -16px;
+      padding-left: 16px;
     }
 
     .tagBox {
       display: flex;
       justify-content: space-between;
       flex-wrap: wrap;
-      padding: 16px 0;
+      padding: 16px 0 0;
+      margin-bottom: -16px;
 
       li {
         width: 48%;
         height: 56px;
-        box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.08);
+        box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.08);
         border-radius: @borderRadius;
         padding: 10px;
         margin-bottom: 10px;
+        position: relative;
 
         h3 {
           font-size: 14px;
@@ -89,7 +136,14 @@
           font-size: 20px;
           transform-origin: 0 0;
           transform: scale3d(0.5, 0.5, 1);
-          width: 150%;
+          width: 190%;
+        }
+        img {
+          width: 44px;
+          height: 44px;
+          position: absolute;
+          right: 0;
+          bottom: 0;
         }
       }
     }
@@ -183,6 +237,7 @@
           line-height: 50px;
           color: #fff;
           font-size: 14px;
+          box-shadow: 0px 2px 6px 0px rgba(255, 89, 0, 0.2);
         }
       }
     }
@@ -236,9 +291,8 @@
         height: 0 !important;
       }
       > ul {
-        // display: inline-block;
         white-space: nowrap;
-        padding: 40px 10px 10px;
+        padding: 35px 10px 6px;
 
         li {
           display: inline-block;
@@ -250,6 +304,7 @@
           box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.08);
 
           > p {
+            padding-bottom: 7px;
             > span:nth-child(1) {
               width: 80px;
               height: 26px;
@@ -291,9 +346,6 @@
               }
             }
           }
-
-          > a {
-          }
         }
 
         .desCase {
@@ -304,13 +356,5 @@
         }
       }
     }
-  }
-}
-
-:global {
-  .swiper-container {
-    height: 170px;
-    border-radius: @borderRadius;
-    background: linear-gradient(180deg, #f0845e 0%, #e46036 100%);
   }
 }

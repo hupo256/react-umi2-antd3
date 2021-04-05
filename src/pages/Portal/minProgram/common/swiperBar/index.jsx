@@ -13,6 +13,13 @@ import 'swiper/swiper.less';
 import 'swiper/components/navigation/navigation.less';
 import 'swiper/components/pagination/pagination.less';
 import 'swiper/components/scrollbar/scrollbar.less';
+import './swiperBar.less';
+
+import ban1 from '../../tools/img_banner_green@2x.png';
+import ban2 from '../../tools/img_banner_orange@2x.png';
+import ban3 from '../../tools/img_banner_red@2x.png';
+import ban4 from '../../tools/img_banner_lake@2x.png';
+const imgs = [ban1, ban2, ban3, ban4];
 
 // install Swiper modules
 SwiperCore.use([Navigation, Pagination, Scrollbar, Virtual, Autoplay]);
@@ -41,12 +48,12 @@ export default function Templates(props) {
       onSlideChange={() => console.log('slide change')}
       onSwiper={swiper => console.log(swiper)}
     >
-      <SwiperSlide>Slide 1</SwiperSlide>
-      <SwiperSlide>Slide 2</SwiperSlide>
-      <SwiperSlide>
-        <a href="https://www.baidu.com/">Slide 3</a>
-      </SwiperSlide>
-      <SwiperSlide>Slide 4</SwiperSlide>
+      {imgs.length > 0 &&
+        imgs.map((img, ind) => (
+          <SwiperSlide key={ind}>
+            <img src={img} alt="ban" />
+          </SwiperSlide>
+        ))}
     </Swiper>
   );
 }

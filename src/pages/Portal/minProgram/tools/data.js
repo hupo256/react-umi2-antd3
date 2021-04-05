@@ -1,14 +1,32 @@
-export const dataSource = [
+const imgBaseUrl = 'https://img.inbase.in-deco.com/crm-saas/img/highlights/';
+
+export const highlights = [
   {
-    key: '1',
-    name: '胡彦斌',
-    age: 32,
-    address: '西湖区湖底公园1号',
+    title: '专属服务',
+    desc: '1v1服务对接 方便省心',
+    type: 'case',
+    bgImg: `${imgBaseUrl}img_ 1@2x.png`,
+    uid: 'a5539d14b1df443ba574a4c2b1b7c491',
   },
   {
-    key: '2',
-    name: '胡彦祖',
-    age: 42,
-    address: '西湖区湖底公园2号',
+    title: '资深设计',
+    desc: '100+设计师提供专业服务',
+    type: 'design',
+    bgImg: `${imgBaseUrl}img_2@2x.png`,
+    uid: 'a5539d14b1df443ba574a4c2b1b7c491',
+  },
+  {
+    title: '优质选材',
+    desc: '品牌材料直供',
+    type: 'site',
+    bgImg: `${imgBaseUrl}img_3@2x.png`,
+    uid: 'a5539d14b1df443ba574a4c2b1b7c491',
+  },
+  {
+    title: '无忧服务',
+    desc: '全流程负责到底',
+    type: 'case',
+    bgImg: `${imgBaseUrl}img_3@2x(1).png`,
+    uid: 'a5539d14b1df443ba574a4c2b1b7c491',
   },
 ];

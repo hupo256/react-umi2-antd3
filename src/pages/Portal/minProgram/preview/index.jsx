@@ -9,6 +9,7 @@ import React, { useState, useEffect } from 'react';
 import router from 'umi/router';
 import { updateHomePageEditData, getHomePageEditData } from '@/services/miniProgram';
 import mktApi from '@/services/mktActivity';
+import { highlights } from '../tools/data';
 import SwiperBar from '../common/swiperBar';
 import MdTitle from './mdTitle';
 import { Button, Icon } from 'antd';
@@ -17,39 +18,40 @@ import styles from './preview.less';
 const baseUrlKey = '/portal/minProgram/';
 
 export default function Preview(props) {
+  const [tagList, settagList] = useState(highlights);
   const [designList, setdesignList] = useState([]);
   const [caseList, setcaseList] = useState([]);
   const [siteList, setsiteList] = useState([]);
 
   useEffect(() => {
-    const param = {
-      pageNum: 1,
-      pageSize: 10,
-      status: 1,
-    };
-    mktApi.queryCaseList(param).then(res => {
-      console.log(res);
-      const { data } = res;
-      if (!data) return;
-      setcaseList(data.list);
-    });
-    mktApi.queryDesignerList(param).then(res => {
-      console.log(res);
-      const { data } = res;
-      if (!data) return;
-      setdesignList(data.list);
-    });
-    const param1 = {
-      pageNum: 1,
-      pageSize: 10,
-      gongdiStatus: 1,
-    };
-    mktApi.sitePageList(param1).then(res => {
-      console.log(res);
-      const { data } = res;
-      if (!data) return;
-      setsiteList(data.list);
-    });
+    // const param = {
+    //   pageNum: 1,
+    //   pageSize: 10,
+    //   status: 1,
+    // };
+    // mktApi.queryCaseList(param).then(res => {
+    //   console.log(res);
+    //   const { data } = res;
+    //   if (!data) return;
+    //   setcaseList(data.list);
+    // });
+    // mktApi.queryDesignerList(param).then(res => {
+    //   console.log(res);
+    //   const { data } = res;
+    //   if (!data) return;
+    //   setdesignList(data.list);
+    // });
+    // const param1 = {
+    //   pageNum: 1,
+    //   pageSize: 10,
+    //   gongdiStatus: 1,
+    // };
+    // mktApi.sitePageList(param1).then(res => {
+    //   console.log(res);
+    //   const { data } = res;
+    //   if (!data) return;
+    //   setsiteList(data.list);
+    // });
   }, []);
 
   function gotoRoute(key) {
@@ -179,30 +181,29 @@ export default function Preview(props) {
   }
 
   return (
-    <div className={styles.currTepBox}>
+    <div className={styles.viewBox}>
       <div className={styles.phoneBox}>
-        <div onClick={submitJsonData} className={styles.headerBox} />
+        <div className={styles.headerBox}>
+          <div className={styles.ptit}>
+            <span>首页</span>
+          </div>
+        </div>
 
         <div className={styles.conBox}>
           <SwiperBar />
 
-          <ul onClick={getJsonData} className={styles.tagBox}>
-            <li>
-              <h3>专属服务</h3>
-              <p>1v1服务对接 方便省心</p>
-            </li>
-            <li>
-              <h3>资深设计</h3>
-              <p>1v1服务对接 方便省心</p>
-            </li>
-            <li>
-              <h3>优质选材</h3>
-              <p>1v1服务对接 方便省心</p>
-            </li>
-            <li>
-              <h3>无忧服务</h3>
-              <p>1v1服务对接 方便省心</p>
-            </li>
+          <ul className={styles.tagBox}>
+            {tagList.length > 0 &&
+              tagList.map((tag, ind) => {
+                const { title, desc, bgImg } = tag;
+                return (
+                  <li key={ind}>
+                    <h3>{title}</h3>
+                    <p>{desc}</p>
+                    <img src={bgImg} alt="" />
+                  </li>
+                );
+              })}
           </ul>
 
           <div className={styles.mdBlock}>
@@ -326,9 +327,20 @@ export default function Preview(props) {
               </ul>
             </div>
           </div>
-        </div>
 
-        <div className={styles.footerBox}>footer</div>
+          <div className="adbox">
+            <SwiperBar />
+          </div>
+        </div>
+      </div>
+
+      <div className={styles.footerBox}>
+        <div className={styles.flex}>
+          <span className={styles.on}>首页</span>
+          <span>案例</span>
+          <span>工地</span>
+          <span>设计师</span>
+        </div>
       </div>
 
       <div className={styles.btnbox}>
