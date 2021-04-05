@@ -202,10 +202,10 @@ export const getMenuMatchKeys = (flatMenuKeys, paths) =>
       case 'S005':
         targetUrl =
           APP_ENVIRONMENT === 'prod'
-            ? `http://wechat.ingongdi.com/user/login?token=${token}`
+            ? `http://wechat.ingongdi.com/#/user/login?token=${token}`
             : APP_ENVIRONMENT === 'test'
-            ? `http://test_wechat.ingongdi.com/user/login?token=${token}`
-            : `http://dev_wechat.ingongdi.com/user/login?token=${token}`;
+            ? `http://test_wechat.ingongdi.com/#/user/login?token=${token}`
+            : `http://dev_wechat.ingongdi.com/#/user/login?token=${token}`;
         break;
       case 'S001':
         targetUrl =
