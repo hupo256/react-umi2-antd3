@@ -45,8 +45,8 @@ export default function Templates(props) {
       slidesPerView={1} // 每次滚动几格
       initialSlide={1} // 初始化显示哪一个
       loop={true} // 是否循环
-      onSlideChange={() => console.log('slide change')}
-      onSwiper={swiper => console.log(swiper)}
+      // onSlideChange={() => console.log('slide change')}
+      // onSwiper={swiper => console.log(swiper)}
     >
       {imgs.length > 0 &&
         imgs.map((img, ind) => (

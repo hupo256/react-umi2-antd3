@@ -5,24 +5,22 @@
  * @Last Modified time: 2021-03-23 13:49:12 
  * 小程序UI模板
  */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { queryTemplate } from '@/services/miniProgram';
-import PageHeaderWrapper from '@/components/PageHeaderWrapper';
-import { Card } from 'antd';
-import TitleGuid from '../common/titleGuid';
+import { ctx } from '../common/context';
 import { imgBaseUrl } from '../tools';
 import styles from './templates.less';
 
 export default function Templates(props) {
+  const { isChange, setisChange } = useContext(ctx);
   const [tepList, settepList] = useState([]);
-  const [isEdit, setisEdit] = useState(true);
 
   useEffect(() => {
     queryTemplate().then(res => {
       const { data } = res;
       if (!data) return;
 
-      if (isEdit) {
+      if (!isChange) {
         const moreObj = {
           code: '',
           isDefault: false,
@@ -51,7 +49,7 @@ export default function Templates(props) {
                   <img src={showPicUrl} alt="" />
                   {!moreTag && (
                     <span>
-                      <button>{isEdit ? '开始编辑' : '换成它'}</button>
+                      <button>{isChange ? '换成它' : '开始编辑'}</button>
                     </span>
                   )}
                 </div>

@@ -12,7 +12,10 @@ export function Provider({ children }) {
   const [tagsData, settagsData] = useState([]); // 亮点数据
   const [imgsData, setimgsData] = useState([]); // 轮播图数据
   const [fromTag, setfromTag] = useState(''); // 轮播图数据
-  const [imgUrlModal, setimgUrlModal] = useState(false); //
+  const [imgUrlModal, setimgUrlModal] = useState(false); //抽屉状态
+
+  const [homeEdit, sethomeEdit] = useState(false); // 编辑状态
+  const [isChange, setisChange] = useState(false); // 模板改变状态
 
   const value = {
     tagsData,
@@ -23,6 +26,10 @@ export function Provider({ children }) {
     setfromTag,
     imgUrlModal,
     setimgUrlModal,
+    homeEdit,
+    sethomeEdit,
+    isChange,
+    setisChange,
   };
 
   return <ctx.Provider value={value}>{children}</ctx.Provider>;

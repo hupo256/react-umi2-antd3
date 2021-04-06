@@ -5,19 +5,20 @@
  * @Last Modified time: 2021-03-23 13:49:12 
  * 小程序UI模板
  */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { getAuthInfo, getHomePagePublishState } from '@/services/miniProgram';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
+import { Provider, ctx } from '../common/context';
 import NotBound from '../../../SystemSetting/MiniProgram/NotBound';
 import TitleGuid from '../common/titleGuid';
 import Preview from '../preview';
 import Templates from '../templates';
-import { Card } from 'antd';
 import styles from './home.less';
 
 const baseUrlKey = '/portal/minProgram/';
 
-export default function Home(props) {
+function Home(props) {
+  const { isChange } = useContext(ctx);
   const [authorInf, setauthorInf] = useState(null);
   const [isPublished, setisPublished] = useState(false);
 
@@ -42,11 +43,14 @@ export default function Home(props) {
   return (
     <PageHeaderWrapper>
       <div className={styles.homeBox}>
-        <TitleGuid />
+        <TitleGuid title="模板名称" disc={!isPublished || isChange} />
         {authorInf && (
           <>
             {authorInf.isAuthedWechatMini ? (
-              <Card bordered={false}>{isPublished ? <Preview /> : <Templates />}</Card>
+              <>
+                {isPublished && !isChange && <Preview />}
+                {(!isPublished || isChange) && <Templates />}
+              </>
             ) : (
               <NotBound jumpUrl={`${baseUrlKey}home`} />
             )}
@@ -56,3 +60,9 @@ export default function Home(props) {
     </PageHeaderWrapper>
   );
 }
+
+export default props => (
+  <Provider>
+    <Home {...props} />
+  </Provider>
+);

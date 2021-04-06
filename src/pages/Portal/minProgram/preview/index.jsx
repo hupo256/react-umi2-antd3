@@ -5,8 +5,9 @@
  * @Last Modified time: 2021-03-23 13:49:12 
  * 小程序UI模板
  */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import router from 'umi/router';
+import { ctx } from '../common/context';
 import { updateHomePageEditData, getHomePageEditData } from '@/services/miniProgram';
 import mktApi from '@/services/mktActivity';
 import { highlights } from '../tools/data';
@@ -18,6 +19,9 @@ import styles from './preview.less';
 const baseUrlKey = '/portal/minProgram/';
 
 export default function Preview(props) {
+  const { preview } = props;
+  const { isChange, setisChange } = useContext(ctx);
+  const [homeEdit, sethomeEdit] = useState(false);
   const [tagList, settagList] = useState(highlights);
   const [designList, setdesignList] = useState([]);
   const [caseList, setcaseList] = useState([]);
@@ -54,6 +58,11 @@ export default function Preview(props) {
     // });
   }, []);
 
+  useEffect(() => {
+    const { hash } = location;
+    hash.includes('/minProgram/edit') && sethomeEdit(true);
+  }, []);
+
   function gotoRoute(key) {
     router.push(`${baseUrlKey}${key}`);
   }
@@ -63,21 +72,25 @@ export default function Preview(props) {
       {
         title: 'banner',
         flag: 'banner',
+        height: 176,
         list: [
           {
             imgUrl:
               'https://test.img.inbase.in-deco.com/crm_saas/dev/20210224/110115b6fd56492e816ccf9609f3f363/2.png',
             uid: '8d5e7025d86f4038ab24e22cc608c321',
+            type: 'case',
           },
           {
             imgUrl:
               'https://test.img.inbase.in-deco.com/crm_saas/dev/20210224/a2e690cb46e84a0d8d527b658d221560/v2-7df0e47eee1d0f1c7b5a6932fba58edb_720w.jpg',
             uid: '8d5e7025d86f4038ab24e22cc608c321',
+            type: 'design',
           },
           {
             imgUrl:
               'https://test.img.inbase.in-deco.com/crm_saas/dev/20210224/b9131878ceff4b20932e79164cc3fc59/12.png',
             uid: '8d5e7025d86f4038ab24e22cc608c321',
+            type: 'site',
           },
         ],
       },
@@ -133,21 +146,25 @@ export default function Preview(props) {
       {
         title: '轮播广告',
         flag: 'advertising',
+        height: 85,
         list: [
           {
             imgUrl:
               'https://test.img.inbase.in-deco.com/crm_saas/dev/20210224/110115b6fd56492e816ccf9609f3f363/2.png',
             uid: '8d5e7025d86f4038ab24e22cc608c321',
+            type: 'site',
           },
           {
             imgUrl:
               'https://test.img.inbase.in-deco.com/crm_saas/dev/20210224/2d8ab80db5074970aec0888dbcbb56a7/7.png',
             uid: '8d5e7025d86f4038ab24e22cc608c321',
+            type: 'design',
           },
           {
             imgUrl:
               'https://test.img.inbase.in-deco.com/crm_saas/dev/20210224/b9131878ceff4b20932e79164cc3fc59/12.png',
             uid: '8d5e7025d86f4038ab24e22cc608c321',
+            type: 'case',
           },
         ],
       },
@@ -180,6 +197,10 @@ export default function Preview(props) {
     });
   }
 
+  function mouseEnter(e) {
+    console.log(e);
+  }
+
   return (
     <div className={styles.viewBox}>
       <div className={styles.phoneBox}>
@@ -190,9 +211,9 @@ export default function Preview(props) {
         </div>
 
         <div className={styles.conBox}>
-          <SwiperBar />
+          <SwiperBar onMouseEnter={mouseEnter} />
 
-          <ul className={styles.tagBox}>
+          <ul className={styles.tagBox} onClick={getJsonData}>
             {tagList.length > 0 &&
               tagList.map((tag, ind) => {
                 const { title, desc, bgImg } = tag;
@@ -343,12 +364,14 @@ export default function Preview(props) {
         </div>
       </div>
 
-      <div className={styles.btnbox}>
-        <Button onClick={() => gotoRoute('edit')} type="primary">
-          继续编辑
-        </Button>
-        <Button onClick={() => gotoRoute('templates')}>更换模板</Button>
-      </div>
+      {!homeEdit && (
+        <div className={styles.btnbox}>
+          <Button onClick={() => gotoRoute('edit')} type="primary">
+            继续编辑
+          </Button>
+          <Button onClick={() => setisChange(true)}>更换模板</Button>
+        </div>
+      )}
     </div>
   );
 }
