@@ -136,7 +136,7 @@ export const getMenuMatchKeys = (flatMenuKeys, paths) =>
           mode="inline"
           handleOpenChange={this.handleOpenChange}
           onOpenChange={this.handleOpenChange}
-          style={{ padding: '16px 0', width: '100%' }}
+          style={{ padding: 0, width: '100%' }}
           {...defaultProps}
         />
         {!collapsed && (

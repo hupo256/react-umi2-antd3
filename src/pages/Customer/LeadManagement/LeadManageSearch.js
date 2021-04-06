@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-01-22 13:30:02 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-25 11:06:58
+ * @Last Modified time: 2021-04-06 17:23:16
  * 线索搜索 
  */
 import React, { Component } from 'react';
@@ -51,6 +51,7 @@ class LeadManageSearch extends Component {
           <Search
             placeholder="可通过姓名 / 电话 / 描述进行搜索"
             onSearch={value => this.handleSearch(value)}
+            onPressEnter={(e) => this.handleSearch(e.target.value)}
             style={{ width: 400 }}
           />
           <Divider dashed={true} />
@@ -156,7 +157,10 @@ class LeadManageSearch extends Component {
   };
   //
   handleSearch = searchKeys => {
-    this.queryTrackData({ searchKeys });
+    console.log('====================================');
+    console.log(searchKeys);
+    console.log('====================================');
+    this.queryTrackData({ searchKeys:searchKeys&&searchKeys.substring(0,30)||'' });
   };
   handleClickStatus = checked => {
     this.setState({ checked });
@@ -171,7 +175,7 @@ class LeadManageSearch extends Component {
     this.setState({ referrerName: value });
   };
   handleBlur = () => {
-    this.queryTrackData({ referrerName: this.state.referrerName });
+    this.queryTrackData({ referrerName:this.state.referrerName &&this.state.referrerName.substring(0,30)||'' });
     // const { dispatch } = this.props;
     // setTimeout(() => {
     //   dispatch({
