@@ -173,7 +173,7 @@ export const getMenuMatchKeys = (flatMenuKeys, paths) =>
             >
               <span className={styles.btn}>切换系统</span>
             </Popover>
-            <span>控制台</span>
+            <span>营销站</span>
           </div>
         )}
       </Sider>
