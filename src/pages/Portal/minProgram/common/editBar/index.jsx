@@ -7,33 +7,22 @@
  */
 import React, { useState, useEffect, useContext } from 'react';
 import { ctx } from '../context';
-import { Table, message, Button, Radio, Input, Modal, Select } from 'antd';
+import { Table, message, Radio, Input } from 'antd';
 import { createUuid } from '../../tools';
-import ImgUrlEdit from './imgUrlEdit';
+import LinkChoose from './linkChoose';
+import Upload from '@/components/Upload/Upload';
 import styles from './editBar.less';
 
 const maxLen = 6;
 const { Group } = Radio;
-const { Option } = Select;
 
 export default function EditBar(props) {
-  const { comColumn } = props;
-  const {
-    tagsData,
-    settagsData,
-    imgsData,
-    setimgsData,
-    fromTag,
-    imgUrlModal,
-    setimgUrlModal,
-  } = useContext(ctx);
-  const [columns, setcolumns] = useState([]);
-  const [imgWidthType, setimgWidthType] = useState(1);
-  const isTags = fromTag === 'tags';
+  const { comColumn, dList, isTags } = props;
+  const { imgEdtor, setimgEdtor, curInd, pageData, setpageData } = useContext(ctx);
 
-  // 作个兼容
-  const tbData = isTags ? tagsData : imgsData;
-  const settbData = isTags ? settagsData : setimgsData;
+  const [tbData, settbData] = useState(dList);
+  const [columns, setcolumns] = useState([]);
+  const [imgHeightType, setimgHeightType] = useState(1);
 
   useEffect(
     () => {
@@ -78,11 +67,20 @@ export default function EditBar(props) {
 
   function radioChage(e) {
     console.log(e);
-    setimgWidthType(e.target.value);
+    setimgHeightType(e.target.value);
   }
 
   function widthChange(e) {
     console.log(e);
+    pageData.jsonData[0].height = +e;
+  }
+
+  // 图片选择
+  function handleUploadOk(data) {
+    console.log(data);
+    dList[curInd].imgUrl = data[0].path;
+    setpageData(pageData);
+    setimgEdtor(false);
   }
 
   return (
@@ -90,22 +88,36 @@ export default function EditBar(props) {
       {!isTags && (
         <div className={styles.widthBox}>
           图片高度：
-          <Group onChange={radioChage} value={imgWidthType}>
+          <Group onChange={radioChage} value={imgHeightType}>
             <Radio value={1}>默认</Radio>
             <Radio value={2}>自定义</Radio>
           </Group>
-          {imgWidthType === 2 && (
+          {imgHeightType === 2 && (
             <Input size="small" style={{ width: 70, marginLeft: '-10px' }} onChange={widthChange} />
           )}
         </div>
       )}
-      <Table size="middle" dataSource={tbData} columns={columns} pagination={false} />
+      <Table
+        size="middle"
+        dataSource={tbData}
+        columns={columns}
+        pagination={false}
+        showHeader={false}
+        rowKey={(r, i) => i}
+      />
       <p className={styles.addImg} onClick={addNewImgs}>
         <span>+</span>
         <span>添加轮播图</span>
       </p>
 
-      <ImgUrlEdit />
+      <Upload
+        visible={imgEdtor}
+        selectNum={1}
+        handleOk={data => handleUploadOk(data)}
+        handleCancel={() => setimgEdtor(false)}
+      />
+
+      <LinkChoose dList={tbData} />
     </>
   );
 }

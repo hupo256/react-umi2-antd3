@@ -9,27 +9,30 @@ import React, { useState, createContext } from 'react';
 
 export const ctx = createContext();
 export function Provider({ children }) {
-  const [tagsData, settagsData] = useState([]); // 亮点数据
-  const [imgsData, setimgsData] = useState([]); // 轮播图数据
-  const [fromTag, setfromTag] = useState(''); // 轮播图数据
-  const [imgUrlModal, setimgUrlModal] = useState(false); //抽屉状态
+  const [pageData, setpageData] = useState({}); // 页面渲染数据
+  const [curFlag, setcurFlag] = useState(''); // 当前编辑数据的标签
+  const [curInd, setcurInd] = useState(-1); // 当前修改的数据索引值
+  const [linkEdtor, setlinkEdtor] = useState(false); //抽屉状态
+  const [imgEdtor, setimgEdtor] = useState(false); //抽屉状态
 
   const [homeEdit, sethomeEdit] = useState(false); // 编辑状态
   const [isChange, setisChange] = useState(false); // 模板改变状态
 
   const value = {
-    tagsData,
-    settagsData,
-    imgsData,
-    setimgsData,
-    fromTag,
-    setfromTag,
-    imgUrlModal,
-    setimgUrlModal,
+    curFlag,
+    setcurFlag,
+    linkEdtor,
+    setlinkEdtor,
+    imgEdtor,
+    setimgEdtor,
+    curInd,
+    setcurInd,
     homeEdit,
     sethomeEdit,
     isChange,
     setisChange,
+    pageData,
+    setpageData,
   };
 
   return <ctx.Provider value={value}>{children}</ctx.Provider>;

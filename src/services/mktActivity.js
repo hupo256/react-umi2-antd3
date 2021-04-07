@@ -78,13 +78,7 @@ export async function newPrize(params) {
     body: params,
   });
 }
-// 活动列表分页查询
-export async function queryActivityList(params) {
-  return request(baseurl + '/api/v1/wechat/activity/queryActivityList', {
-    method: 'POST',
-    body: params,
-  });
-}
+
 // 活动奖品分页查询
 export async function queryActivityPrizeList(params) {
   return request(baseurl + '/api/v1/wechat/activity/queryActivityPrizeList', {
@@ -93,10 +87,17 @@ export async function queryActivityPrizeList(params) {
   });
 }
 
+// 活动列表分页查询
+export async function queryActivityList(params) {
+  return request(baseurl + '/api/v1/wechat/activity/queryActivityList', {
+    method: 'POST',
+    body: params,
+  });
+}
+
 // 查询案例
 export async function queryCaseList(params) {
   return request('http://dev.gateway.ingongdi.com/api/v1/wechat/case/queryCaseList', {
-    // return request(baseurl + '/api/v1/wechat/case/queryCaseList', {
     method: 'POST',
     body: params,
   });
@@ -105,7 +106,6 @@ export async function queryCaseList(params) {
 // 查询设计师
 export async function queryDesignerList(params) {
   return request('http://dev.gateway.ingongdi.com/api/v1/wechat/designer/queryDesignerList', {
-    // return request(baseurl + '/api/v1/wechat/case/queryCaseList', {
     method: 'POST',
     body: params,
   });
@@ -114,7 +114,14 @@ export async function queryDesignerList(params) {
 // 查询工地
 export async function sitePageList(params) {
   return request('http://dev.gateway.ingongdi.com/api/v1/wechat/site/pageList', {
-    // return request(baseurl + '/api/v1/wechat/case/queryCaseList', {
+    method: 'POST',
+    body: params,
+  });
+}
+
+// 查询专题
+export async function specialPageList(params) {
+  return request('http://dev.gateway.ingongdi.com/api/v1/wechat/special/pageList', {
     method: 'POST',
     body: params,
   });
@@ -136,4 +143,5 @@ export default {
   queryCaseList,
   queryDesignerList,
   sitePageList,
+  specialPageList,
 };

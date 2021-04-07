@@ -8,7 +8,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import router from 'umi/router';
 import { ctx } from '../common/context';
-import { updateHomePageEditData, getHomePageEditData } from '@/services/miniProgram';
+import { updateHomePageEditData, getHomePagePublishedData } from '@/services/miniProgram';
 import mktApi from '@/services/mktActivity';
 import { highlights } from '../tools/data';
 import SwiperBar from '../common/swiperBar';
@@ -34,13 +34,11 @@ export default function Preview(props) {
     //   status: 1,
     // };
     // mktApi.queryCaseList(param).then(res => {
-    //   console.log(res);
     //   const { data } = res;
     //   if (!data) return;
     //   setcaseList(data.list);
     // });
     // mktApi.queryDesignerList(param).then(res => {
-    //   console.log(res);
     //   const { data } = res;
     //   if (!data) return;
     //   setdesignList(data.list);
@@ -51,7 +49,6 @@ export default function Preview(props) {
     //   gongdiStatus: 1,
     // };
     // mktApi.sitePageList(param1).then(res => {
-    //   console.log(res);
     //   const { data } = res;
     //   if (!data) return;
     //   setsiteList(data.list);
@@ -73,23 +70,27 @@ export default function Preview(props) {
         title: 'banner',
         flag: 'banner',
         height: 176,
+        styleType: '',
         list: [
           {
             imgUrl:
               'https://test.img.inbase.in-deco.com/crm_saas/dev/20210224/110115b6fd56492e816ccf9609f3f363/2.png',
             uid: '8d5e7025d86f4038ab24e22cc608c321',
+            title: 'banner one',
             type: 'case',
           },
           {
             imgUrl:
               'https://test.img.inbase.in-deco.com/crm_saas/dev/20210224/a2e690cb46e84a0d8d527b658d221560/v2-7df0e47eee1d0f1c7b5a6932fba58edb_720w.jpg',
             uid: '8d5e7025d86f4038ab24e22cc608c321',
+            title: 'banner two',
             type: 'design',
           },
           {
             imgUrl:
               'https://test.img.inbase.in-deco.com/crm_saas/dev/20210224/b9131878ceff4b20932e79164cc3fc59/12.png',
             uid: '8d5e7025d86f4038ab24e22cc608c321',
+            title: 'banner three',
             type: 'site',
           },
         ],
@@ -97,6 +98,7 @@ export default function Preview(props) {
       {
         title: '亮点',
         flag: 'highlights',
+        styleType: '',
         list: [
           {
             title: '专属服务',
@@ -131,22 +133,26 @@ export default function Preview(props) {
       {
         title: '精选案例',
         flag: 'case',
+        styleType: '',
         list: caseList,
       },
       {
         title: '工地直播',
         flag: 'site',
+        styleType: '',
         list: siteList,
       },
       {
         title: '设计师',
         flag: 'design',
+        styleType: '',
         list: designList,
       },
       {
         title: '轮播广告',
         flag: 'advertising',
         height: 85,
+        styleType: '',
         list: [
           {
             imgUrl:
@@ -192,7 +198,24 @@ export default function Preview(props) {
   }
 
   function getJsonData() {
-    getHomePageEditData().then(res => {
+    const param = [
+      {
+        key: 'case',
+        pageNum: '1',
+        pageSize: '4',
+      },
+      {
+        key: 'site',
+        pageNum: '1',
+        pageSize: '4',
+      },
+      {
+        key: 'design',
+        pageNum: '1',
+        pageSize: '4',
+      },
+    ];
+    getHomePagePublishedData(param).then(res => {
       console.log(res);
     });
   }
@@ -205,13 +228,13 @@ export default function Preview(props) {
     <div className={styles.viewBox}>
       <div className={styles.phoneBox}>
         <div className={styles.headerBox}>
-          <div className={styles.ptit}>
+          <div className={styles.ptit} onClick={submitJsonData}>
             <span>首页</span>
           </div>
         </div>
 
         <div className={styles.conBox}>
-          <SwiperBar onMouseEnter={mouseEnter} />
+          <SwiperBar />
 
           <ul className={styles.tagBox} onClick={getJsonData}>
             {tagList.length > 0 &&

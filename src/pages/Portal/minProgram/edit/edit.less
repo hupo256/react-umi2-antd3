@@ -1,9 +1,18 @@
 .currTepBox {
+  position: relative;
   text-align: center;
   transition: all 0.4s ease;
+  // padding-right: 376px;
 
-  &.placeHolder {
+  &.rightPlaceHolder {
     padding-right: 376px;
+  }
+
+  ul {
+    padding-left: 0;
+  }
+  p {
+    margin: 0;
   }
 
   .btnbox {
@@ -17,28 +26,5 @@
 
   .phoneBox {
     transform: scale3d(1, 1, 1);
-  }
-}
-
-.minImgBox {
-  width: 76px;
-  height: 51px;
-  border: 1px solid #ccc;
-  background: #16a;
-  overflow: hidden;
-
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: 50% 50%;
-  }
-}
-.inpBox {
-  display: flex;
-  justify-content: space-between;
-
-  input {
-    margin-left: 5px;
   }
 }
