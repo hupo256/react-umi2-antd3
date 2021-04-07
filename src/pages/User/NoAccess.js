@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-01-08 11:23:17 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-01-20 15:26:22
+ * @Last Modified time: 2021-04-06 18:58:29
  * 账号禁用 
  */
 import React, { Component } from 'react';
@@ -34,7 +34,7 @@ class NoAccess extends Component {
                 window.location.reload();
               }}
               type="primary"
-              style={{ minWidth: 100, marginTop: 30, marginRight: 20 }}
+              style={{ minWidth: 100, marginTop: 30, marginRight: 20, display: 'none' }}
             >
               刷新
             </Button>
