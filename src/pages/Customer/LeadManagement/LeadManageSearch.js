@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-01-22 13:30:02 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-04-06 17:23:16
+ * @Last Modified time: 2021-04-08 14:13:20
  * 线索搜索 
  */
 import React, { Component } from 'react';
@@ -51,7 +51,7 @@ class LeadManageSearch extends Component {
           <Search
             placeholder="可通过姓名 / 电话 / 描述进行搜索"
             onSearch={value => this.handleSearch(value)}
-            onPressEnter={(e) => this.handleSearch(e.target.value)}
+            onPressEnter={e => this.handleSearch(e.target.value)}
             style={{ width: 400 }}
           />
           <Divider dashed={true} />
@@ -153,14 +153,17 @@ class LeadManageSearch extends Component {
       codes,
     });
     const val = codes[codes.length - 1];
-    this.queryTrackData({ sourceChannel: codes.length > 0 ? (val === 'TSC000' ? '' : val) : '' });
+    this.queryTrackData({
+      pageNum: 1,
+      sourceChannel: codes.length > 0 ? (val === 'TSC000' ? '' : val) : '',
+    });
   };
   //
   handleSearch = searchKeys => {
-    console.log('====================================');
-    console.log(searchKeys);
-    console.log('====================================');
-    this.queryTrackData({ searchKeys:searchKeys&&searchKeys.substring(0,30)||'' });
+    this.queryTrackData({
+      pageNum: 1,
+      searchKeys: (searchKeys && searchKeys.substring(0, 30)) || '',
+    });
   };
   handleClickStatus = checked => {
     this.setState({ checked });
@@ -169,13 +172,20 @@ class LeadManageSearch extends Component {
   // 起始时间
   handleStartChange = (value, dateString, name) => {
     this.setState({ [`${name}Start`]: dateString[0], [`${name}End`]: dateString[1] });
-    this.queryTrackData({ createTimeStart: dateString[0], createTimeEnd: dateString[1] });
+    this.queryTrackData({
+      pageNum: 1,
+      createTimeStart: dateString[0],
+      createTimeEnd: dateString[1],
+    });
   };
   handleSelectSearch = value => {
     this.setState({ referrerName: value });
   };
   handleBlur = () => {
-    this.queryTrackData({ referrerName:this.state.referrerName &&this.state.referrerName.substring(0,30)||'' });
+    this.queryTrackData({
+      pageNum: 1,
+      referrerName: (this.state.referrerName && this.state.referrerName.substring(0, 30)) || '',
+    });
     // const { dispatch } = this.props;
     // setTimeout(() => {
     //   dispatch({
