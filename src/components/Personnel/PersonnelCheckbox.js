@@ -48,7 +48,7 @@ class PersonnelCheckbox extends Component {
     //   });
     // } else {
     dispatch({ type: 'Task/ueryDeptAndUser', payload: {} }).then(res => {
-      if (res.code === 200) {
+      if (res && res.code === 200) {
         let invalidData = [];
         const maps = data => {
           // 初始化数据

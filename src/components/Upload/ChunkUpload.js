@@ -145,7 +145,7 @@ class ChunkUpload extends Component {
         type: params.type,
         subType: params.subType,
       }).then(res => {
-        if (res.code == 200) {
+        if (res && res.code == 200) {
           message.success('文件上传成功', 5);
           this.setState({
             uploaded: true,
@@ -283,7 +283,7 @@ class ChunkUpload extends Component {
             type: params.type,
             subType: params.subType,
           }).then(res => {
-            if (res.code == 200) {
+            if (res && res.code == 200) {
               message.success('文件上传成功', 5);
               _this.setState({
                 uploaded: true,
