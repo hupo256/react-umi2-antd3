@@ -113,6 +113,13 @@ export default {
       });
       return response;
     },
+    // 组件
+    *elementTreeModels({ payload }, { call, put }) {
+      const response = yield call(elementTree, {
+        ...payload,
+      });
+      return response;
+    },
     // 表单列表
     *formListModel({ payload }, { call, put }) {
       const response = yield call(formList, {
