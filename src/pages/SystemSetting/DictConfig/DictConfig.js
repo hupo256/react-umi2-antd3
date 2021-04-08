@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 10:30:18 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-04-08 15:06:04
+ * @Last Modified time: 2021-04-08 19:57:17
  * 字典配置
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -46,6 +46,12 @@ class DictConfig extends PureComponent {
       }
     });
     this.setState({ width: document.body.clientWidth });
+  }
+  componentWillUnmount() {
+    this.props.dispatch({
+      type: 'DictConfig/resetModel',
+      payload: { DicQuery: { pageNum: 1 } },
+    });
   }
   components = {
     body: {
