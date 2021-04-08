@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-16 11:22:26
+ * @Last Modified time: 2021-04-08 15:54:00
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -33,9 +33,16 @@ class CreateStepThree extends PureComponent {
         <div>专题标题: {uspecialUrlData.specialTitle}</div>
         <div style={{ paddingTop: 20 }}>
           专题链接:
-          <a href={uspecialUrlData.specialUrl} target="_bank">
-            {uspecialUrlData.specialUrl}
-          </a>
+          <span>
+            {uspecialUrlData.specialUrl}{' '}
+            <Icon
+              type="copy"
+              onClick={() => {
+                this.handleCopy(uspecialUrlData.specialUrl);
+              }}
+            />
+          </span>
+          <textarea id="inputv" className={styles.ipt} />
         </div>
       </div>
     );
@@ -82,6 +89,13 @@ class CreateStepThree extends PureComponent {
     });
     router.push('/portal/contentmanagement/ProjectLibrary/add');
   };
+  handleCopy(t) {
+    let input = document.getElementById('inputv');
+    input.value = t; // 修改文本框的内容
+    input.select(); // 选中文本
+    document.execCommand('copy'); // 执行浏览器复制命令
+    message.success('复制成功');
+  }
 }
 
 export default CreateStepThree;

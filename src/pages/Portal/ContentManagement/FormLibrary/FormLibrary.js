@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-02 18:57:00
+ * @Last Modified time: 2021-04-08 15:05:51
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -109,9 +109,9 @@ class ProjectLibrary extends PureComponent {
           onPressEnter={() => {
             this.thSearch();
           }}
-          onBlur={() => {
-            this.thSearch();
-          }}
+          // onBlur={() => {
+          //   this.thSearch();
+          // }}
         />
         <div className={styles.status}>
           <div className={styles.fl}>状态：</div>
@@ -371,21 +371,17 @@ class ProjectLibrary extends PureComponent {
       FormLibrary: { fromData },
     } = this.props;
     const { searchWord } = this.state;
-    if (searchWord.length > 15) {
-      message.error('请输入15字以下的搜索内容');
-    } else {
-      fromData.searchText = searchWord;
-      fromData.pageNum = 1;
-      dispatch({
-        type: 'FormLibrary/saveDataModel',
-        payload: {
-          key: 'fromData',
-          value: fromData,
-        },
-      }).then(() => {
-        this.getList();
-      });
-    }
+    fromData.searchText = (searchWord && searchWord.substring(0, 30)) || '';
+    fromData.pageNum = 1;
+    dispatch({
+      type: 'FormLibrary/saveDataModel',
+      payload: {
+        key: 'fromData',
+        value: fromData,
+      },
+    }).then(() => {
+      this.getList();
+    });
   }
   handleTableChange = pagination => {
     const {

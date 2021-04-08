@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-31 15:26:11
+ * @Last Modified time: 2021-04-08 16:11:59
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -192,6 +192,7 @@ class CreateStepOne extends PureComponent {
         }).then(res => {
           if (res && res.code === 200) {
             router.push('/portal/contentmanagement/ProjectLibrary');
+            message.success('操作成功');
           }
         });
       } else {
