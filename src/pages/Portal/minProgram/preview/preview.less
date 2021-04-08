@@ -100,7 +100,7 @@
   }
 
   .conBox {
-    padding: 8px 16px 5em;
+    padding: 8px 0 5em;
     background: linear-gradient(180deg, #fef1eb 0, #fff 110px);
 
     .hasbg {
@@ -109,6 +109,31 @@
       width: 110%;
       margin-left: -16px;
       padding-left: 16px;
+    }
+
+    .hoverBox {
+      position: relative;
+      padding: 16px;
+
+      &.curMd {
+        border: 1px solid rgba(254, 106, 48, 1);
+      }
+
+      .hoverHandle {
+        position: absolute;
+        z-index: 3;
+        right: 0;
+        top: -8px;
+        font-size: 12px;
+        font-weight: 500;
+        color: #222;
+        background: #fff;
+        line-height: 1;
+        box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.28);
+        border-radius: 2px;
+        padding: 0.75em 1.2em;
+        cursor: pointer;
+      }
     }
 
     .tagBox {
@@ -126,6 +151,7 @@
         padding: 10px;
         margin-bottom: 10px;
         position: relative;
+        text-align: left;
 
         h3 {
           font-size: 14px;
@@ -149,7 +175,7 @@
     }
 
     .mdBlock {
-      padding-top: 3em;
+      padding-top: 2em;
       padding-bottom: 3em;
 
       > h3 {
@@ -191,9 +217,15 @@
         position: relative;
         overflow: hidden;
         margin-bottom: 10px;
+        height: 194px;
+        width: 100%;
 
         > img {
+          cursor: pointer;
           width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: 50% 50%;
         }
 
         > p {
@@ -219,24 +251,30 @@
           align-items: center;
           width: 67%;
 
-          span {
+          img {
             width: 50px;
             height: 50px;
-            border: 2px solid @hightColor;
+            border: 2px solid #fff;
             border-radius: @borderRadius;
+            cursor: pointer;
+
+            &.on {
+              border: 2px solid @hightColor;
+            }
           }
         }
 
         > u {
+          cursor: pointer;
           text-decoration: none;
           width: 100px;
-          height: 50px;
+          height: 46px;
           background: @hightColor;
           border-radius: @borderRadius;
           text-align: center;
-          line-height: 50px;
+          line-height: 46px;
           color: #fff;
-          font-size: 14px;
+          font-size: 16px;
           box-shadow: 0px 2px 6px 0px rgba(255, 89, 0, 0.2);
         }
       }
@@ -300,6 +338,7 @@
           margin-right: 3%;
           padding: 12px;
           font-size: 12px;
+          vertical-align: top;
           border-radius: @borderRadius;
           box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.08);
 
@@ -349,6 +388,8 @@
         }
 
         .desCase {
+          height: 74px;
+          overflow: hidden;
           > img {
             background: #ccc;
             width: 32%;

@@ -5,9 +5,10 @@
  * @Last Modified time: 2021-03-23 13:49:12 
  * 轮播图控件
  */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import SwiperCore, { Navigation, Pagination, Virtual, Scrollbar, Autoplay } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { ctx } from '../context';
 
 import 'swiper/swiper.less';
 import 'swiper/components/navigation/navigation.less';
@@ -15,23 +16,12 @@ import 'swiper/components/pagination/pagination.less';
 import 'swiper/components/scrollbar/scrollbar.less';
 import './swiperBar.less';
 
-import ban1 from '../../tools/img_banner_green@2x.png';
-import ban2 from '../../tools/img_banner_orange@2x.png';
-import ban3 from '../../tools/img_banner_red@2x.png';
-import ban4 from '../../tools/img_banner_lake@2x.png';
-const imgs = [ban1, ban2, ban3, ban4];
-
 // install Swiper modules
 SwiperCore.use([Navigation, Pagination, Scrollbar, Virtual, Autoplay]);
 
-export default function Templates(props) {
-  const [isAuthed, setisAuthed] = useState(false);
-
-  useEffect(() => {}, []);
-
-  function gotoRoute(key) {
-    router.push(`${baseRrlKey}${key}`);
-  }
+export default function SwiperBar(props) {
+  const { pageData } = useContext(ctx);
+  const tagList = pageData?.maps?.banner?.list || [];
 
   return (
     <Swiper
@@ -48,12 +38,14 @@ export default function Templates(props) {
       // onSlideChange={() => console.log('slide change')}
       // onSwiper={swiper => console.log(swiper)}
     >
-      {imgs.length > 0 &&
-        imgs.map((img, ind) => (
-          <SwiperSlide key={ind}>
-            <img src={img} alt="ban" />
-          </SwiperSlide>
-        ))}
+      {tagList.length > 0 &&
+        tagList.map((img, ind) => {
+          return (
+            <SwiperSlide key={ind}>
+              <img src={img.imgUrl} alt="ban" />
+            </SwiperSlide>
+          );
+        })}
     </Swiper>
   );
 }

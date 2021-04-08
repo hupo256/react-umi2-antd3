@@ -7,7 +7,6 @@
  */
 import React, { useState, useContext, useEffect } from 'react';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
-import { updateHomePageEditData, getHomePagePublishedData } from '@/services/miniProgram';
 import { Provider, ctx } from '../common/context';
 import { Button, Drawer } from 'antd';
 import Preview from '../preview';
@@ -16,49 +15,7 @@ import DrawerEditor from '../common/editBar/drawerEditor';
 import styles from './edit.less';
 
 function TempEdit(props) {
-  const { setpageData, setcurFlag, curFlag } = useContext(ctx);
-  const [visible, setvisible] = useState(false);
-
-  useEffect(() => {
-    getJsonData();
-  }, []);
-
-  function getJsonData() {
-    const param = [
-      {
-        key: 'case',
-        pageNum: '1',
-        pageSize: '4',
-      },
-      {
-        key: 'site',
-        pageNum: '1',
-        pageSize: '4',
-      },
-      {
-        key: 'design',
-        pageNum: '1',
-        pageSize: '4',
-      },
-    ];
-    getHomePagePublishedData(param).then(res => {
-      console.log(res);
-      const { data } = res;
-      if (!data) return;
-      setpageData(addMapToData(data.templateJson));
-    });
-  }
-
-  function addMapToData(pData) {
-    const arr = pData.jsonData;
-    const map = {};
-    arr.forEach(item => {
-      const pName = item.flag;
-      map[pName] = item;
-    });
-    pData.maps = map;
-    return pData;
-  }
+  const { setcurFlag, curFlag } = useContext(ctx);
 
   return (
     <PageHeaderWrapper>
@@ -75,19 +32,6 @@ function TempEdit(props) {
 
         <DrawerEditor />
       </div>
-
-      {/* <Button onClick={() => setvisible(true)}>click me</Button> */}
-      <Drawer
-        title="Basic Drawer"
-        placement="right"
-        closable={false}
-        onClose={() => setvisible(false)}
-        visible={visible}
-      >
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-      </Drawer>
     </PageHeaderWrapper>
   );
 }

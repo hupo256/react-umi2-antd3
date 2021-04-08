@@ -9,23 +9,22 @@ import React, { useState, useEffect, useContext } from 'react';
 import router from 'umi/router';
 import { ctx } from '../common/context';
 import { updateHomePageEditData, getHomePagePublishedData } from '@/services/miniProgram';
-import mktApi from '@/services/mktActivity';
-import { highlights } from '../tools/data';
 import SwiperBar from '../common/swiperBar';
+import HoverMd from './hoverMd';
 import MdTitle from './mdTitle';
-import { Button, Icon } from 'antd';
-import styles from './preview.less';
+import CaseMd from './caseMd';
+import { Button } from 'antd';
+import pageStyle from './preview.less';
 
 const baseUrlKey = '/portal/minProgram/';
 
 export default function Preview(props) {
-  const { preview } = props;
-  const { isChange, setisChange } = useContext(ctx);
+  const { isChange, setisChange, setpageData, pageData } = useContext(ctx);
   const [homeEdit, sethomeEdit] = useState(false);
-  const [tagList, settagList] = useState(highlights);
-  const [designList, setdesignList] = useState([]);
-  const [caseList, setcaseList] = useState([]);
-  const [siteList, setsiteList] = useState([]);
+  const tagList = pageData?.maps?.highlights?.list || [];
+  const caseList = pageData?.maps?.case?.list || [];
+  const siteList = pageData?.maps?.site?.list || [];
+  const designList = pageData?.maps?.design?.list || [];
 
   useEffect(() => {
     // const param = {
@@ -58,6 +57,8 @@ export default function Preview(props) {
   useEffect(() => {
     const { hash } = location;
     hash.includes('/minProgram/edit') && sethomeEdit(true);
+
+    getJsonData();
   }, []);
 
   function gotoRoute(key) {
@@ -217,170 +218,157 @@ export default function Preview(props) {
     ];
     getHomePagePublishedData(param).then(res => {
       console.log(res);
+      const { data } = res;
+      if (!data) return;
+      setpageData(addMapToData(data.templateJson));
     });
   }
 
-  function mouseEnter(e) {
-    console.log(e);
+  function addMapToData(pData) {
+    const arr = pData.jsonData;
+    const map = {};
+    arr.forEach(item => {
+      const pName = item.flag;
+      map[pName] = item;
+    });
+    pData.maps = map;
+    return pData;
   }
 
   return (
-    <div className={styles.viewBox}>
-      <div className={styles.phoneBox}>
-        <div className={styles.headerBox}>
-          <div className={styles.ptit} onClick={submitJsonData}>
+    <div className={pageStyle.viewBox}>
+      <div className={pageStyle.phoneBox}>
+        <div className={pageStyle.headerBox}>
+          <div className={pageStyle.ptit} onClick={submitJsonData}>
             <span>首页</span>
           </div>
         </div>
 
-        <div className={styles.conBox}>
-          <SwiperBar />
-
-          <ul className={styles.tagBox} onClick={getJsonData}>
-            {tagList.length > 0 &&
-              tagList.map((tag, ind) => {
-                const { title, desc, bgImg } = tag;
-                return (
-                  <li key={ind}>
-                    <h3>{title}</h3>
-                    <p>{desc}</p>
-                    <img src={bgImg} alt="" />
-                  </li>
-                );
-              })}
-          </ul>
-
-          <div className={styles.mdBlock}>
-            <MdTitle title="精选案例" />
-
-            <div className={styles.caseBox}>
-              <div className={styles.hightImg}>
-                <img
-                  src="https://test.img.inbase.in-deco.com/crm_saas/dev/20210224/2d8ab80db5074970aec0888dbcbb56a7/7.png"
-                  alt=""
-                />
-                <p>简约风 | 100m² | 三居室 | 25.6万</p>
-              </div>
-
-              <div className={`${styles.caseImgs} ${styles.flex}`}>
-                <div className={styles.caseList}>
-                  <span />
-                  <span />
-                  <span />
-                  <span />
-                </div>
-                <u>免费设计</u>
-              </div>
-            </div>
-          </div>
-
-          <div className={`${styles.mdBlock} ${styles.hasbg}`}>
-            <MdTitle title="工地直播" />
-
-            <div className={styles.siteBox}>
-              <ul>
-                <li>
-                  <img
-                    src="https://test.img.inbase.in-deco.com/crm_saas/dev/20210224/2d8ab80db5074970aec0888dbcbb56a7/7.png"
-                    alt=""
-                  />
-                  <b>蔚蓝世纪 张女士</b>
-                  <p>100m² | 二居室 | 20万</p>
-                  <p className={styles.flex}>
-                    <span>10人参观过</span>
-                    <a className={styles.btn} href="">
-                      预约参观
-                    </a>
-                  </p>
-                </li>
-                <li>
-                  <img
-                    src="https://test.img.inbase.in-deco.com/crm_saas/dev/20210224/2d8ab80db5074970aec0888dbcbb56a7/7.png"
-                    alt=""
-                  />
-                  <b>蔚蓝世纪 张女士</b>
-                  <p>100m² | 二居室 | 20万</p>
-                  <p className={styles.flex}>
-                    <span>10人参观过</span>
-                    <a className={styles.btn} href="">
-                      预约参观
-                    </a>
-                  </p>
-                </li>
-                <li>
-                  <img
-                    src="https://test.img.inbase.in-deco.com/crm_saas/dev/20210224/2d8ab80db5074970aec0888dbcbb56a7/7.png"
-                    alt=""
-                  />
-                  <b>蔚蓝世纪 张女士</b>
-                  <p>100m² | 二居室 | 20万</p>
-                  <p className={styles.flex}>
-                    <span>10人参观过</span>
-                    <a className={styles.btn} href="">
-                      预约参观
-                    </a>
-                  </p>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div className={styles.mdBlock}>
-            <MdTitle title="设计师" />
-
-            <div className={styles.designBox}>
-              <ul>
-                {/* {designList.length > 0 && designList.map((design, ind) => {
-                  const {headPicUrl, position,name,caseCoverUrlList, styles, workingTime} = design
-                })} */}
-                <li>
-                  <div className={`${styles.nameBox} ${styles.flex}`}>
-                    <div className={`${styles.names} ${styles.flex}`}>
-                      <img
-                        src="https://test.img.inbase.in-deco.com/crm_saas/dev/20210224/2d8ab80db5074970aec0888dbcbb56a7/7.png"
-                        alt=""
-                      />
-                      <span>
-                        <b>Hera YU</b>
-                        <s>10年设计经验</s>
-                      </span>
-                    </div>
-                    <a className={styles.btn} href="#">
-                      免费咨询
-                    </a>
-                  </div>
-                  <p>
-                    <span>首席设计师</span>
-                    <span>擅长: 现代风 | 简约</span>
-                  </p>
-                  <div className={`${styles.desCase} ${styles.flex}`}>
-                    <img
-                      src="https://test.img.inbase.in-deco.com/crm_saas/dev/20210312/3fe3679f524149f08f933c1f05c56eb0/QRCode.jpg"
-                      alt=""
-                    />
-                    <img
-                      src="https://test.img.inbase.in-deco.com/crm_saas/dev/20210312/3fe3679f524149f08f933c1f05c56eb0/QRCode.jpg"
-                      alt=""
-                    />
-                    <img
-                      src="https://test.img.inbase.in-deco.com/crm_saas/dev/20210312/3fe3679f524149f08f933c1f05c56eb0/QRCode.jpg"
-                      alt=""
-                    />
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="adbox">
+        <div className={pageStyle.conBox}>
+          {/* banner */}
+          <HoverMd tips="轮播">
             <SwiperBar />
-          </div>
+          </HoverMd>
+
+          {/* tags */}
+          <HoverMd tips="亮点">
+            <ul className={pageStyle.tagBox}>
+              {tagList.length > 0 &&
+                tagList.map((tag, ind) => {
+                  const { title, desc, bgImg } = tag;
+                  return (
+                    <li key={ind}>
+                      <h3>{title}</h3>
+                      <p>{desc}</p>
+                      <img src={bgImg} alt="" />
+                    </li>
+                  );
+                })}
+            </ul>
+          </HoverMd>
+
+          {/* 精选案例 */}
+          {caseList?.length > 0 && (
+            <HoverMd tips="案例">
+              <CaseMd list={caseList} />
+            </HoverMd>
+          )}
+
+          {/* 工地直播 */}
+          <HoverMd tips="工地">
+            <div className={`${pageStyle.mdBlock} ${pageStyle.hasbg}`}>
+              <MdTitle title="工地直播" />
+              <div className={pageStyle.siteBox}>
+                <ul>
+                  {siteList.length > 0 &&
+                    siteList.map((site, ind) => {
+                      const {
+                        coverImg,
+                        gongdiTitle,
+                        buildingArea,
+                        renovationCosts,
+                        houseType,
+                        visitNum,
+                      } = site;
+                      const { bedroom } = JSON.parse(houseType);
+                      return (
+                        <li key={ind}>
+                          <img src={coverImg} alt="" />
+                          <b>{gongdiTitle}</b>
+                          <p>{`${buildingArea}m² | ${bedroom}居室 | ${renovationCosts}万`}</p>
+                          <p className={pageStyle.flex}>
+                            <span>{`${visitNum}人参观过`}</span>
+                            <a className={pageStyle.btn}>预约参观</a>
+                          </p>
+                        </li>
+                      );
+                    })}
+                </ul>
+              </div>
+            </div>
+          </HoverMd>
+
+          {/* 设计师 */}
+          <HoverMd tips="设计师">
+            <div className={pageStyle.mdBlock}>
+              <MdTitle title="设计师" />
+
+              <div className={pageStyle.designBox}>
+                <ul>
+                  {designList.length > 0 &&
+                    designList.map((design, ind) => {
+                      const {
+                        headPicUrl,
+                        position,
+                        name,
+                        workingTime,
+                        styles,
+                        caseCoverUrlList,
+                      } = design;
+                      let arr = [];
+                      styles.forEach(st => {
+                        arr.push(st.name);
+                      });
+                      return (
+                        <li key={ind}>
+                          <div className={`${pageStyle.nameBox} ${pageStyle.flex}`}>
+                            <div className={`${pageStyle.names} ${pageStyle.flex}`}>
+                              <img src={headPicUrl} alt="" />
+                              <span>
+                                <b>{name}</b>
+                                <s>{`${workingTime}年设计经验`}</s>
+                              </span>
+                            </div>
+                            <a className={pageStyle.btn}>免费咨询</a>
+                          </div>
+                          <p>
+                            <span>{position}</span>
+                            <span>{`擅长: ${arr.join(' | ')}`}</span>
+                          </p>
+                          <div className={`${pageStyle.desCase} ${pageStyle.flex}`}>
+                            {caseCoverUrlList.length > 0 &&
+                              caseCoverUrlList.map((item, i) => <img key={i} src={item} />)}
+                          </div>
+                        </li>
+                      );
+                    })}
+                </ul>
+              </div>
+            </div>
+          </HoverMd>
+
+          {/* 广告 */}
+          <HoverMd tips="广告">
+            <div className="adbox">
+              <SwiperBar />
+            </div>
+          </HoverMd>
         </div>
       </div>
 
-      <div className={styles.footerBox}>
-        <div className={styles.flex}>
-          <span className={styles.on}>首页</span>
+      <div className={pageStyle.footerBox}>
+        <div className={pageStyle.flex}>
+          <span className={pageStyle.on}>首页</span>
           <span>案例</span>
           <span>工地</span>
           <span>设计师</span>
@@ -388,7 +376,7 @@ export default function Preview(props) {
       </div>
 
       {!homeEdit && (
-        <div className={styles.btnbox}>
+        <div className={pageStyle.btnbox}>
           <Button onClick={() => gotoRoute('edit')} type="primary">
             继续编辑
           </Button>
