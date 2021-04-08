@@ -10,13 +10,13 @@ import MdTitle from './mdTitle';
 import pageStyle from '../preview.less';
 
 export default function CaseMd(props) {
-  const { list } = props;
+  const { list, title } = props;
   const [curInd, setcurInd] = useState(0);
   const { coverPicUrl, styleDic, acreage, bedroom, decorationCost } = list[curInd] || {};
 
   return (
     <div className={pageStyle.mdBlock}>
-      <MdTitle title="精选案例" />
+      <MdTitle title={title} />
 
       <div className={pageStyle.caseBox}>
         <div className={pageStyle.hightImg}>

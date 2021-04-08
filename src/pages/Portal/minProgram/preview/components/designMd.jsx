@@ -10,11 +10,11 @@ import MdTitle from './mdTitle';
 import pageStyle from '../preview.less';
 
 export default function CaseMd(props) {
-  const { list } = props;
+  const { list, title } = props;
 
   return (
     <div className={pageStyle.mdBlock}>
-      <MdTitle title="设计师" />
+      <MdTitle title={title} />
 
       <div className={pageStyle.designBox}>
         <ul>

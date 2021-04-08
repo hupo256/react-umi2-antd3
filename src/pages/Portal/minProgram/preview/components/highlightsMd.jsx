@@ -3,7 +3,7 @@
  * @Date: 2021-04-01 09:53:12 
  * @Last Modified by: tdd
  * @Last Modified time: 2021-04-06 15:23:12 
- * 精选案例
+ * 亮点
  */
 import React, { useState, useEffect } from 'react';
 import pageStyle from '../preview.less';
