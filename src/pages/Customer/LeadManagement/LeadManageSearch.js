@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-01-22 13:30:02 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-04-08 14:13:20
+ * @Last Modified time: 2021-04-08 15:35:00
  * 线索搜索 
  */
 import React, { Component } from 'react';
@@ -45,6 +45,7 @@ class LeadManageSearch extends Component {
     ];
     const { treeData, ReferrerData } = this.props.LeadManage;
     const { referrerName, codes } = this.state;
+    const treedatas = (treeData.length > 0 && this.treeFilter(treeData)) || [];
     return (
       <div>
         <Card bordered={false}>
@@ -77,7 +78,7 @@ class LeadManageSearch extends Component {
               <div>
                 <span>来源：</span>
                 <Cascaderselect
-                  options={treeData}
+                  options={treedatas}
                   fieldNames={{
                     label: 'sourceChannelName',
                     value: 'sourceChannelType',
@@ -206,6 +207,18 @@ class LeadManageSearch extends Component {
       type: 'LeadManage/trackQueryModel',
       payload: { ...trackDataSearch, ...obj },
     });
+  };
+
+  treeFilter = datas => {
+    const data = datas.map(item => {
+      if (item.children && item.children.length == 0) {
+        item.children = null;
+      } else {
+        item.children && this.treeFilter(item.children);
+      }
+      return item;
+    });
+    return data;
   };
 }
 

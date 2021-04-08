@@ -86,7 +86,7 @@ class DraggerUpload extends Component {
     let isUpload = false;
     if (info.file.status === 'done') {
       let res = info.file.response;
-      if (res.code != 200) {
+      if (res && res.code != 200) {
         message.error('上传失败！');
       }
     } else if (info.file.status === 'error') {

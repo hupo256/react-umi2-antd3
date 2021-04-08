@@ -362,7 +362,7 @@ class NoSettlement extends Component {
         project_code,
       },
     }).then(res => {
-      if (res.code == 200) {
+      if (res && res.code == 200) {
         message.success('最终结算成功！');
         dispatch({
           type: 'settlement/loadQueryProjectSettlementDataModel',

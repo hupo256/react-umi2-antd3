@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 10:30:18 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-04-08 14:17:27
+ * @Last Modified time: 2021-04-08 15:06:04
  * 字典配置
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -337,7 +337,7 @@ class DictConfig extends PureComponent {
     const dicUiz = dragRow.uid;
     const targetSeq = hoverRow.seq;
     dispatch({ type: 'DictConfig/sortDicModel', payload: { dicUiz, targetSeq } }).then(res => {
-      if (res.code === 200) {
+      if (res && res.code === 200) {
         this.queryList({});
       }
     });
@@ -361,7 +361,7 @@ class DictConfig extends PureComponent {
         payload: { dicModuleCode, ...value, dicUid: (record && record.uid) || null },
       })
       .then(res => {
-        if (res.code === 200) {
+        if (res && res.code === 200) {
           message.success(`${record ? '编辑' : '创建'}成功`);
           this.handleCancel();
           this.queryList({});
@@ -398,7 +398,7 @@ class DictConfig extends PureComponent {
           type: 'DictConfig/updateDicStatusModel',
           payload: { dicUid: r.uid, status: status == '1' ? '2' : '1' },
         }).then(res => {
-          if (res.code === 200) {
+          if (res && res.code === 200) {
             message.success('状态更改成功');
             that.queryList({});
           }

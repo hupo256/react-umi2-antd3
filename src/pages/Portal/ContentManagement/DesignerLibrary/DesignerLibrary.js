@@ -240,7 +240,7 @@ class DesignerLibrary extends PureComponent {
           type: 'DesignerLibrary/updateStatusModel',
           payload: { uid: r.uid, status: r.status == '1' ? '2' : '1' },
         }).then(res => {
-          if (res.code === 200) {
+          if (res && res.code === 200) {
             message.success(`${r.status == '1' ? '停用' : '启用'}成功`);
             that.getList({});
           }
