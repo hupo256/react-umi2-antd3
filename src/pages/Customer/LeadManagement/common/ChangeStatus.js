@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-01-28 17:56:05 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-03 16:51:20
+ * @Last Modified time: 2021-04-08 14:59:43
  * 状态变更
  */
 import React, { Component } from 'react';
@@ -71,16 +71,21 @@ class ChangeStatus extends Component {
   handleOk = () => {
     const { record } = this.props;
     const { checked, changeReason } = this.state;
-
     if (!checked) {
+      message.error('当前状态未发生变化，无需变更');
+      return false;
+    } else if (checked && checked == record.status) {
       message.error('当前状态未发生变化，无需变更');
       return false;
     } else if (!changeReason) {
       message.error('请输入变更原因');
+      return false;
     } else if (changeReason && changeReason.trim().length == 0) {
       message.error('请输入变更原因');
+      return false;
     } else if (changeReason && changeReason.trim().length > 200) {
       message.error('变更原因限制0-200字符长度');
+      return false;
     } else {
       this.props.handleOk({ uid: record.uid, status: checked, changeReason });
     }
