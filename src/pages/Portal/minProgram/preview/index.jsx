@@ -10,49 +10,26 @@ import router from 'umi/router';
 import { ctx } from '../common/context';
 import { updateHomePageEditData, getHomePagePublishedData } from '@/services/miniProgram';
 import SwiperBar from '../common/swiperBar';
-import HoverMd from './hoverMd';
-import MdTitle from './mdTitle';
-import CaseMd from './caseMd';
+import HoverMd from './components/hoverMd';
+import CaseMd from './components/caseMd';
+import HighlightsMd from './components/highlightsMd';
+import SiteMd from './components/siteMd';
+import DesignMd from './components/designMd';
 import { Button } from 'antd';
 import pageStyle from './preview.less';
 
 const baseUrlKey = '/portal/minProgram/';
+const MdList = [{}];
 
 export default function Preview(props) {
   const { isChange, setisChange, setpageData, pageData } = useContext(ctx);
   const [homeEdit, sethomeEdit] = useState(false);
+  const banList = pageData?.maps?.banner?.list || [];
   const tagList = pageData?.maps?.highlights?.list || [];
   const caseList = pageData?.maps?.case?.list || [];
   const siteList = pageData?.maps?.site?.list || [];
   const designList = pageData?.maps?.design?.list || [];
-
-  useEffect(() => {
-    // const param = {
-    //   pageNum: 1,
-    //   pageSize: 10,
-    //   status: 1,
-    // };
-    // mktApi.queryCaseList(param).then(res => {
-    //   const { data } = res;
-    //   if (!data) return;
-    //   setcaseList(data.list);
-    // });
-    // mktApi.queryDesignerList(param).then(res => {
-    //   const { data } = res;
-    //   if (!data) return;
-    //   setdesignList(data.list);
-    // });
-    // const param1 = {
-    //   pageNum: 1,
-    //   pageSize: 10,
-    //   gongdiStatus: 1,
-    // };
-    // mktApi.sitePageList(param1).then(res => {
-    //   const { data } = res;
-    //   if (!data) return;
-    //   setsiteList(data.list);
-    // });
-  }, []);
+  const adList = pageData?.maps?.advertising?.list || [];
 
   useEffect(() => {
     const { hash } = location;
@@ -245,27 +222,19 @@ export default function Preview(props) {
         </div>
 
         <div className={pageStyle.conBox}>
-          {/* banner */}
-          <HoverMd tips="轮播">
-            <SwiperBar />
-          </HoverMd>
+          {/* 轮播 */}
+          {banList?.length > 0 && (
+            <HoverMd tips="轮播">
+              <SwiperBar />
+            </HoverMd>
+          )}
 
-          {/* tags */}
-          <HoverMd tips="亮点">
-            <ul className={pageStyle.tagBox}>
-              {tagList.length > 0 &&
-                tagList.map((tag, ind) => {
-                  const { title, desc, bgImg } = tag;
-                  return (
-                    <li key={ind}>
-                      <h3>{title}</h3>
-                      <p>{desc}</p>
-                      <img src={bgImg} alt="" />
-                    </li>
-                  );
-                })}
-            </ul>
-          </HoverMd>
+          {/* 精选案例 */}
+          {tagList?.length > 0 && (
+            <HoverMd tips="亮点">
+              <HighlightsMd list={tagList} />
+            </HoverMd>
+          )}
 
           {/* 精选案例 */}
           {caseList?.length > 0 && (
@@ -275,94 +244,25 @@ export default function Preview(props) {
           )}
 
           {/* 工地直播 */}
-          <HoverMd tips="工地">
-            <div className={`${pageStyle.mdBlock} ${pageStyle.hasbg}`}>
-              <MdTitle title="工地直播" />
-              <div className={pageStyle.siteBox}>
-                <ul>
-                  {siteList.length > 0 &&
-                    siteList.map((site, ind) => {
-                      const {
-                        coverImg,
-                        gongdiTitle,
-                        buildingArea,
-                        renovationCosts,
-                        houseType,
-                        visitNum,
-                      } = site;
-                      const { bedroom } = JSON.parse(houseType);
-                      return (
-                        <li key={ind}>
-                          <img src={coverImg} alt="" />
-                          <b>{gongdiTitle}</b>
-                          <p>{`${buildingArea}m² | ${bedroom}居室 | ${renovationCosts}万`}</p>
-                          <p className={pageStyle.flex}>
-                            <span>{`${visitNum}人参观过`}</span>
-                            <a className={pageStyle.btn}>预约参观</a>
-                          </p>
-                        </li>
-                      );
-                    })}
-                </ul>
-              </div>
-            </div>
-          </HoverMd>
+          {siteList?.length > 0 && (
+            <HoverMd tips="工地">
+              <SiteMd list={siteList} />
+            </HoverMd>
+          )}
 
           {/* 设计师 */}
-          <HoverMd tips="设计师">
-            <div className={pageStyle.mdBlock}>
-              <MdTitle title="设计师" />
-
-              <div className={pageStyle.designBox}>
-                <ul>
-                  {designList.length > 0 &&
-                    designList.map((design, ind) => {
-                      const {
-                        headPicUrl,
-                        position,
-                        name,
-                        workingTime,
-                        styles,
-                        caseCoverUrlList,
-                      } = design;
-                      let arr = [];
-                      styles.forEach(st => {
-                        arr.push(st.name);
-                      });
-                      return (
-                        <li key={ind}>
-                          <div className={`${pageStyle.nameBox} ${pageStyle.flex}`}>
-                            <div className={`${pageStyle.names} ${pageStyle.flex}`}>
-                              <img src={headPicUrl} alt="" />
-                              <span>
-                                <b>{name}</b>
-                                <s>{`${workingTime}年设计经验`}</s>
-                              </span>
-                            </div>
-                            <a className={pageStyle.btn}>免费咨询</a>
-                          </div>
-                          <p>
-                            <span>{position}</span>
-                            <span>{`擅长: ${arr.join(' | ')}`}</span>
-                          </p>
-                          <div className={`${pageStyle.desCase} ${pageStyle.flex}`}>
-                            {caseCoverUrlList.length > 0 &&
-                              caseCoverUrlList.map((item, i) => <img key={i} src={item} />)}
-                          </div>
-                        </li>
-                      );
-                    })}
-                </ul>
-              </div>
-            </div>
-          </HoverMd>
+          {designList?.length > 0 && (
+            <HoverMd tips="设计师">
+              <DesignMd list={designList} />
+            </HoverMd>
+          )}
 
           {/* 广告 */}
-          <HoverMd tips="广告">
-            <div className="adbox">
+          {adList?.length > 0 && (
+            <HoverMd tips="广告">
               <SwiperBar />
-            </div>
-          </HoverMd>
+            </HoverMd>
+          )}
         </div>
       </div>
 

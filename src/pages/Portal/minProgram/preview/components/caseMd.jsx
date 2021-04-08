@@ -7,7 +7,7 @@
  */
 import React, { useState, useEffect } from 'react';
 import MdTitle from './mdTitle';
-import pageStyle from './preview.less';
+import pageStyle from '../preview.less';
 
 export default function CaseMd(props) {
   const { list } = props;

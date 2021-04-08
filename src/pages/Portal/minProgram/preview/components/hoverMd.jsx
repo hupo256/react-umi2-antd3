@@ -6,9 +6,9 @@
  * 内容模块标题
  */
 import React, { useState, useEffect, useContext } from 'react';
-import { ctx } from '../common/context';
-import { tagsMap } from '../tools/data';
-import pageStyle from './preview.less';
+import { ctx } from '../../common/context';
+import { tagsMap } from '../../tools/data';
+import pageStyle from '../preview.less';
 
 export default function MdTitle(props) {
   const { tips = '', children } = props;
