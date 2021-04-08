@@ -2,15 +2,15 @@
  * @Author: pengyc 
  * @Date: 2020-08-19 13:42:59 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-29 16:31:11
+ * @Last Modified time: 2021-04-08 18:22:34
  * 新一个公有方法文件
  */
 // 离开当前模块 清空搜索数据
 export const handleRouterFun = props => {
   const hash = location.hash;
 
-  if (!hash.includes('project')) {
-    handleResetProject(props);
+  if (!hash.includes('customer')) {
+    handleResetcustomer(props);
   }
   if (!hash.includes('designerlibrary')) {
     handleResetDesigner(props);
@@ -22,9 +22,9 @@ export const handleRouterFun = props => {
     handleResetSite(props);
   }
 };
-const handleResetProject = props => {
+const handleResetcustomer = props => {
   props.dispatch({
-    type: 'ProjectManage/resetSearchModel',
+    type: 'LeadManage/resetSearchModel',
     payload: {
       pageNum: 1,
     },
