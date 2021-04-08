@@ -36,7 +36,7 @@ class Password extends Component {
             userinfo: valuex,
           },
         }).then(res => {
-          if (res.code === 200) {
+          if (res && res.code === 200) {
             message.success('密码修改成功', 1);
           } else {
             message.success(res.message, 1);
