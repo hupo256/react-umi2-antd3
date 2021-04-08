@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-25 11:34:34
+ * @Last Modified time: 2021-04-08 15:16:15
  * 专题库
  */
 import React, { PureComponent } from 'react';
@@ -41,9 +41,8 @@ class FormConfiguration extends PureComponent {
 
   componentDidMount() {
     const { data, dispatch } = this.props;
-    const { checkSelectData } = this.state;
     dispatch({
-      type: 'ProjectLibrary/elementTreeModel',
+      type: 'ProjectLibrary/elementTreeModels',
       payload: {
         businessType: 2,
         terminalType: 1,

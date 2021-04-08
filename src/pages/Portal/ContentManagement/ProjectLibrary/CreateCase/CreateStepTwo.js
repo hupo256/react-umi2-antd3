@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-18 15:07:04
+ * @Last Modified time: 2021-04-08 16:09:09
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -41,14 +41,17 @@ class CreateStepTwo extends PureComponent {
           >
             配置专题页面
           </Button>
-          <Button onClick={this.handleSubmit}>上一步</Button>
+          <Button
+            onClick={() => {
+              router.push(`/portal/contentmanagement/ProjectLibrary/edit?uid=${specialUid}`);
+            }}
+          >
+            上一步
+          </Button>
         </div>
       </div>
     );
   }
-  handleSubmit = e => {
-    this.props.handleOk();
-  };
 }
 
 export default CreateStepTwo;
