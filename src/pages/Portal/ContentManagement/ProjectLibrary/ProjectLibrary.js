@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-08 15:08:10
+ * @Last Modified time: 2021-04-09 18:23:51
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -125,7 +125,7 @@ class ProjectLibrary extends PureComponent {
               <img
                 src={
                   r.specialCoverImg ||
-                  'https://img.inbase.in-deco.com/crm_saas/release/20210331/1a5c9889e7c64437b9a53a3f7c07916a/mr.png'
+                  'https://test.img.inbase.in-deco.com/crm_saas/dev/20210409/7178b96d368c444a93c444a10e438a2a/imgAefault.png'
                 }
                 style={{
                   width: 100,

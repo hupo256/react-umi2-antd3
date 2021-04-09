@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-31 15:30:54
+ * @Last Modified time: 2021-04-09 18:39:46
  * 专题库
  */
 import React, { PureComponent } from 'react';
@@ -21,7 +21,7 @@ class FormAdd extends PureComponent {
 
   componentDidMount() {}
   render() {
-    const { visible, data } = this.props;
+    const { visible, data, formUid } = this.props;
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
@@ -33,6 +33,7 @@ class FormAdd extends PureComponent {
         sm: { span: 16 },
       },
     };
+    console.log('formUid', formUid);
     return (
       <div>
         <Modal title={'创建表单'} visible={visible} footer={null} width={600} closable={false}>
@@ -120,7 +121,7 @@ class FormAdd extends PureComponent {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (err) throw err;
       const { dispatch, formUid } = this.props;
-      if (formUid !== '') {
+      if (formUid && formUid !== '') {
         values.formUid = formUid;
         dispatch({
           type: 'FormLibrary/formModifyModel',
