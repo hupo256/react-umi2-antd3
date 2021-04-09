@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-08 15:54:00
+ * @Last Modified time: 2021-04-09 17:55:54
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -34,13 +34,14 @@ class CreateStepThree extends PureComponent {
         <div style={{ paddingTop: 20 }}>
           专题链接:
           <span>
-            {uspecialUrlData.specialUrl}{' '}
+            {uspecialUrlData.specialUrl}
             <Icon
               type="copy"
               onClick={() => {
                 this.handleCopy(uspecialUrlData.specialUrl);
               }}
             />
+            <span style={{ marginLeft: 5 }}>复制链接</span>
           </span>
           <textarea id="inputv" className={styles.ipt} />
         </div>

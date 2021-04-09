@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-24 16:09:36
+ * @Last Modified time: 2021-04-09 18:55:07
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -120,6 +120,7 @@ class ViewFormComponent extends PureComponent {
   render() {
     const { data, index } = this.props;
     const { showFont, show, checkList, checkSelectData, showSelect, checkTable } = this.state;
+    let topSize = JSON.parse(data.elementStyle);
     let formDa =
       checkList &&
       checkList.map((item, index) => {
@@ -263,7 +264,11 @@ class ViewFormComponent extends PureComponent {
                 this.deletePic();
               }}
             >
-              <Icon type="close-circle" />
+              <img
+                src="https://test.img.inbase.in-deco.com/crm_saas/dev/20210409/3b91901276824e0da6ff9fc49fe729fb/ic_delete.png"
+                width="20"
+                height="20"
+              />
             </span>
           ) : (
             ''
@@ -271,7 +276,7 @@ class ViewFormComponent extends PureComponent {
         </div>
 
         {data.checked === 1 ? (
-          <div className={styles.FormWrap}>
+          <div className={styles.FormWrap} style={{ top: topSize.top }}>
             <div className="clearfix">
               <div
                 className={checkTable === 1 ? styles.isList : styles.isLists}
@@ -347,7 +352,11 @@ class ViewFormComponent extends PureComponent {
                           this.closeColor();
                         }}
                       >
-                        <Icon type="close-circle" />
+                        <img
+                          src="https://test.img.inbase.in-deco.com/crm_saas/dev/20210409/3b91901276824e0da6ff9fc49fe729fb/ic_delete.png"
+                          width="20"
+                          height="20"
+                        />
                       </span>
                     </div>
                   ) : (
@@ -365,7 +374,11 @@ class ViewFormComponent extends PureComponent {
                           this.closeFontColor();
                         }}
                       >
-                        <Icon type="close-circle" />
+                        <img
+                          src="https://test.img.inbase.in-deco.com/crm_saas/dev/20210409/3b91901276824e0da6ff9fc49fe729fb/ic_delete.png"
+                          width="20"
+                          height="20"
+                        />
                       </span>
                     </div>
                   ) : (
