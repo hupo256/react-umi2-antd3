@@ -3,7 +3,7 @@
  * @Date: 2021-03-23 13:49:12 
  * @Last Modified by: tdd
  * @Last Modified time: 2021-03-23 13:49:12 
- * 编辑亮点
+ * 编辑轮播图
  */
 import React, { useState, useEffect, useContext } from 'react';
 import { ctx } from '../context';
@@ -23,6 +23,7 @@ export default function TagsEdit(props) {
     setcurInd,
     setimgEdtor,
     imgEdtor,
+    curInd,
   } = useContext(ctx);
   const [tagList = [], settagList] = useState(() => pageData?.maps?.[curFlag]?.list);
   const [imgHeightType, setimgHeightType] = useState(1);
@@ -77,7 +78,7 @@ export default function TagsEdit(props) {
 
   // 图片选择
   function handleUploadOk(data) {
-    console.log(data);
+    console.log(data[0].path);
     tagList[curInd].imgUrl = data[0].path;
     setpageData(pageData);
     setimgEdtor(false);
@@ -117,6 +118,7 @@ export default function TagsEdit(props) {
                     onClick={() => toChooseLink(ind)}
                   />
                 </div>
+
                 <div className={styles.tbOpration}>
                   <a disabled={ind === 0} onClick={() => toMove(ind, -1)}>
                     up
@@ -141,6 +143,7 @@ export default function TagsEdit(props) {
       <Upload
         visible={imgEdtor}
         selectNum={1}
+        destroy={true}
         handleOk={data => handleUploadOk(data)}
         handleCancel={() => setimgEdtor(false)}
       />

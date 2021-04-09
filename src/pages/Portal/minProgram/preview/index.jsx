@@ -5,10 +5,10 @@
  * @Last Modified time: 2021-03-23 13:49:12 
  * 小程序UI模板
  */
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import router from 'umi/router';
 import { ctx } from '../common/context';
-import { updateHomePageEditData, getHomePagePublishedData } from '@/services/miniProgram';
+import { getHomePagePublishedData } from '@/services/miniProgram';
 import { Button } from 'antd';
 import HoverMd from './components/hoverMd';
 import SwiperBar from '../common/swiperBar';
@@ -18,6 +18,7 @@ import SiteMd from './components/siteMd';
 import DesignMd from './components/designMd';
 import AdMd from './components/adMd';
 
+import './components/fontclass/iconfont.js';
 import pageStyle from './preview.less';
 
 const baseUrlKey = '/portal/minProgram/';
@@ -51,13 +52,29 @@ const componentMap = {
 export default function Preview(props) {
   const { isChange, curFlag, setisChange, setpageData, pageData } = useContext(ctx);
   const [homeEdit, sethomeEdit] = useState(false);
+  const [totopShow, settotopShow] = useState(false);
+  const contentBox = useRef();
 
   useEffect(() => {
     const { hash } = location;
     hash.includes('/minProgram/edit') && sethomeEdit(true);
-
     getJsonData();
   }, []);
+
+  useEffect(() => {
+    contentBox.current.addEventListener('scroll', conScroll);
+    return () => {
+      contentBox.current.removeEventListener('scroll', conScroll);
+    };
+  }, []);
+
+  function conScroll(e) {
+    const { target } = e;
+    const clientHeight = target.clientHeight; //可视区域高度
+    const scrollTop = target.scrollTop; //滚动条滚动高度
+    const scrollHeight = target.scrollHeight; //滚动内容高度
+    settotopShow(scrollTop > clientHeight / 2);
+  }
 
   function gotoRoute(key) {
     router.push(`${baseUrlKey}${key}`);
@@ -110,7 +127,7 @@ export default function Preview(props) {
         </div>
 
         {/* 循环出主体 */}
-        <div className={pageStyle.conBox}>
+        <div className={pageStyle.conBox} ref={contentBox}>
           {pageData?.jsonData?.length > 0 &&
             pageData.jsonData.map((item, ind) => {
               const { flag, list = [], title = '' } = item;
@@ -122,14 +139,48 @@ export default function Preview(props) {
               );
             })}
         </div>
-      </div>
 
-      <div className={pageStyle.footerBox}>
-        <div className={pageStyle.flex}>
-          <span className={pageStyle.on}>首页</span>
-          <span>案例</span>
-          <span>工地</span>
-          <span>设计师</span>
+        {/* footer */}
+        <div className={pageStyle.footerBox}>
+          <ul className={pageStyle.flex}>
+            <li className={pageStyle.on}>
+              <svg className="icon" aria-hidden="true">
+                <use href="#iconic_home_no" />
+              </svg>
+              <span>首页</span>
+            </li>
+            <li>
+              <svg className="icon" aria-hidden="true">
+                <use href="#iconic_case_no" />
+              </svg>
+              <span>案例</span>
+            </li>
+            <li>
+              <svg className="icon" aria-hidden="true">
+                <use href="#iconic_site_no" />
+              </svg>
+              <span>工地</span>
+            </li>
+            <li>
+              <svg className="icon" aria-hidden="true">
+                <use href="#iconic_designer_no" />
+              </svg>
+              <span>设计师</span>
+            </li>
+          </ul>
+        </div>
+
+        <div className={`${pageStyle.totopBox} ${totopShow ? pageStyle.show : ''}`}>
+          <span>
+            <svg className="icon" aria-hidden="true">
+              <use href="#iconic_call" />
+            </svg>
+          </span>
+          <span>
+            <svg className="icon" aria-hidden="true">
+              <use href="#iconic_top" />
+            </svg>
+          </span>
         </div>
       </div>
 
