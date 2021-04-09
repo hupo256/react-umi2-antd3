@@ -1,8 +1,8 @@
 /*
  * @Author: zqm 
  * @Date: 2021-02-17 10:32:27 
- * @Last Modified by: zqm
- * @Last Modified time: 2021-03-29 12:26:19
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2021-04-09 18:58:17
  * 小程序授权
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -14,7 +14,7 @@ import img from '../../../assets/v2_q1insu.png';
 import styles from './MiniProgram.less';
 import NotBound from './NotBound';
 import FormBinding from './FormBinding';
-import { getauth } from "@/utils/authority";
+import { getauth } from '@/utils/authority';
 const { TabPane } = Tabs;
 
 @connect(({ MiniProgram, loading }) => ({
@@ -39,7 +39,7 @@ class MiniProgram extends PureComponent {
 
   render() {
     const { activeKey, leftactiveKey } = this.state;
-    const permissionsBtn = getauth().permissions||[];
+    const permissionsBtn = getauth().permissions || [];
     const {
       Loading,
       MiniProgram: { AuthInfo },
@@ -49,7 +49,7 @@ class MiniProgram extends PureComponent {
         <PageHeaderWrapper>
           <Card bordered={false} loading={Loading}>
             <Tabs activeKey={activeKey} onChange={activeKey => this.setState({ activeKey })}>
-              <TabPane tab="营销门户" key="1" />
+              <TabPane tab="营销站" key="1" />
             </Tabs>
             {!AuthInfo.isAuthedWechatMini && <NotBound />}
             {AuthInfo.isAuthedWechatMini && (
@@ -61,30 +61,36 @@ class MiniProgram extends PureComponent {
                     activeKey={leftactiveKey}
                     onChange={activeKey => this.handleChangeTab(activeKey)}
                   >
-                  {permissionsBtn.includes('MU9000000300020001')&&<TabPane tab="基本信息" key="baseinfo" />}
-                  {permissionsBtn.includes('MU9000000300020002')&& <TabPane tab="表单绑定" key="form" />}
+                    {permissionsBtn.includes('MU9000000300020001') && (
+                      <TabPane tab="基本信息" key="baseinfo" />
+                    )}
+                    {permissionsBtn.includes('MU9000000300020002') && (
+                      <TabPane tab="表单绑定" key="form" />
+                    )}
                   </Tabs>
                 </div>
                 <div className={styles.dictRight}>
-                  {permissionsBtn.includes('MU9000000300020001')&&leftactiveKey === 'baseinfo' && (
-                    <div>
-                      <p className={styles.dictRightTitle}>基本信息</p>
-                      <p className={styles.dictRightName}>{AuthInfo.wechatNickName}</p>
-                      <p>小程序名称</p>
-                      <div className={styles.dictImg}>
-                        <div className={styles.dictImgLeft}>
-                          <img src={AuthInfo.wechatHeadImgUrl} style={{ width: 120 }} />
-                          <p>小程序图标</p>
+                  {permissionsBtn.includes('MU9000000300020001') &&
+                    leftactiveKey === 'baseinfo' && (
+                      <div>
+                        <p className={styles.dictRightTitle}>基本信息</p>
+                        <p className={styles.dictRightName}>{AuthInfo.wechatNickName}</p>
+                        <p>小程序名称</p>
+                        <div className={styles.dictImg}>
+                          <div className={styles.dictImgLeft}>
+                            <img src={AuthInfo.wechatHeadImgUrl} style={{ width: 120 }} />
+                            <p>小程序图标</p>
+                          </div>
+                          <div className={styles.dictImgRight}>
+                            <img src={AuthInfo.wechatQrcodeUrl} style={{ width: 120 }} />
+                            <p>小程序二维码</p>
+                          </div>
                         </div>
-                        <div className={styles.dictImgRight}>
-                          <img src={AuthInfo.wechatQrcodeUrl} style={{ width: 120 }} />
-                          <p>小程序二维码</p>
-                        </div>
+                        <p className={styles.dictCompanyname}>{AuthInfo.wechatPrincipalName}</p>
                       </div>
-                      <p className={styles.dictCompanyname}>{AuthInfo.wechatPrincipalName}</p>
-                    </div>
-                  )}
-                  {permissionsBtn.includes('MU9000000300020002')&&leftactiveKey === 'form' && <FormBinding />}
+                    )}
+                  {permissionsBtn.includes('MU9000000300020002') &&
+                    leftactiveKey === 'form' && <FormBinding />}
                 </div>
               </div>
             )}
