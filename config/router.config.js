@@ -165,7 +165,7 @@ export default [
             name: 'minProgram',
             routes: [
               {
-                path: '/portal/minProgram', // 入口文件，要用redirect作标记，这相路由刷新时才能正确匹配模块下的子路由们
+                path: '/portal/minProgram', // 入口文件，要用redirect作标记，这样路由刷新时才能正确匹配模块下的子路由们
                 redirect: '/portal/minProgram/home',
               },
               {
@@ -200,9 +200,19 @@ export default [
                 component: './Portal/mktManagement/activity',
               },
               {
-                path: '/portal/mktManagement/goods',
-                name: 'goods',
-                component: './Portal/mktManagement/goods',
+                path: '/portal/mktManagement/activityEdit',
+                PageHeaderName: '编辑游戏',
+                component: './Portal/mktManagement/activity/activityEdit',
+              },
+              {
+                path: '/portal/mktManagement/addGame',
+                name: 'addGame',
+                component: './Portal/mktManagement/addGame',
+              },
+              {
+                path: '/portal/mktManagement/drawRec',
+                name: 'drawRec',
+                component: './Portal/mktManagement/drawRec',
               },
             ],
           },

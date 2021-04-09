@@ -1,15 +1,49 @@
-.searchBox {
-  label {
-    padding-right: 10px;
+.searchTags {
+  border-top: 1px solid #eee;
+  margin-top: 1em;
+  padding-top: 1em;
+  display: flex;
+  align-items: center;
+
+  .tagbox {
+    padding-left: 2.5em;
+    display: flex;
+    align-items: center;
+
+    span {
+      padding: 0 1em;
+      margin: 0 0.5em;
+      cursor: pointer;
+
+      &.on {
+        background: #fe6a30;
+        color: #fff;
+        border-radius: 3px;
+      }
+    }
   }
 }
 .addBtn {
-  margin: 1em 0;
+  margin: 0 0 1em;
 }
 .actions {
   margin: 0;
   a {
     margin-right: 7px;
+  }
+}
+
+.stateBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  u {
+    background: #ccc;
+    width: 4px;
+    height: 4px;
+    border-radius: 2px;
+    margin-right: 10px;
   }
 }
 

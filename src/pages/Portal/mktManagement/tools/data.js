@@ -1,86 +1,82 @@
-export const dataSource = [
-  {
-    key: '1',
-    name: '胡彦斌',
-    age: 32,
-    address: '西湖区湖底公园1号',
-  },
-  {
-    key: '2',
-    name: '胡彦祖',
-    age: 42,
-    address: '西湖区湖底公园2号',
-  },
-];
-
+export const baseRouteKey = '/portal/mktManagement/';
 export const actColumns = [
   {
-    title: '编号',
-    dataIndex: 'order',
-    render: (text, record, index) => index + 1,
+    title: '游戏标题',
+    dataIndex: 'activityTitle',
   },
   {
-    title: '活动名称',
-    dataIndex: 'activeName',
+    title: '状态',
+    dataIndex: 'state',
   },
   {
-    title: '开始时间',
+    title: '起始时间',
     dataIndex: 'startTime',
   },
   {
-    title: '结束时间',
-    dataIndex: 'endTime',
+    title: '小游戏链接',
+    dataIndex: 'linkUrl',
   },
   {
-    title: '参与次数',
-    dataIndex: 'activeNum',
-  },
-  {
-    title: '状态',
-    dataIndex: 'state',
-  },
-  {
-    title: '创建日期',
+    title: '创建时间',
     dataIndex: 'createTime',
   },
 ];
 
-export const goodsColumns = [
+export const recColumns = [
   {
-    title: 'ID',
-    dataIndex: 'activityId',
+    title: '序号',
+    dataIndex: 'no',
+    render: (text, record, index) => index + 1,
   },
   {
-    title: '活动名称',
-    dataIndex: 'activityName',
-  },
-  {
-    title: '商品ID',
-    dataIndex: 'prizeId',
-  },
-  {
-    title: '商品名称',
-    dataIndex: 'prizeName',
-  },
-  {
-    title: '中奖概率',
-    dataIndex: 'winRate',
-  },
-  {
-    title: '状态',
-    dataIndex: 'state',
-  },
-  {
-    title: '创建日期',
+    title: '抽奖时间',
     dataIndex: 'createTime',
   },
   {
-    title: '操作',
-    dataIndex: 'action',
-    render: (text, record) => (
-      <span>
-        <a>edit {record.name}</a> | <a>Delete</a>
-      </span>
-    ),
+    title: '抽奖用户昵称',
+    dataIndex: 'userName',
+  },
+  {
+    title: '抽中奖项',
+    dataIndex: 'prizeName',
+  },
+  {
+    title: '领取手机号',
+    dataIndex: 'userPhone',
   },
 ];
+
+//
+export const goodsColumns = [
+  {
+    title: '奖项图片',
+    dataIndex: 'prizeImage',
+  },
+  {
+    title: '奖项名称',
+    dataIndex: 'prizeName',
+  },
+  {
+    title: '奖项数量',
+    dataIndex: 'prizeNum',
+  },
+  {
+    title: '抽中概率(%)',
+    dataIndex: 'qq',
+  },
+  {
+    title: '已抽数量',
+    dataIndex: 'ww',
+  },
+  {
+    title: '剩余数量',
+    dataIndex: 'ee',
+  },
+  {
+    title: '是否是奖品',
+    dataIndex: 'tt',
+  },
+];
+
+export const defaultGoods = ['一等奖', '二等奖', '三等奖', '四等奖', '五等奖', '谢谢参与'];
+export const searchTags = ['全部', '未开始', '进行中', '已结束'];

@@ -8,28 +8,19 @@
 import React, { useState, useContext, useEffect } from 'react';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { Provider, ctx } from '../common/context';
-import { Button, Drawer } from 'antd';
 import Preview from '../preview';
 import TitleGuid from '../common/titleGuid';
-import DrawerEditor from '../common/editBar/drawerEditor';
+import DrawerEditor from '../common/drawer';
 import styles from './edit.less';
 
 function TempEdit(props) {
-  const { setcurFlag, curFlag } = useContext(ctx);
+  const { curFlag } = useContext(ctx);
 
   return (
     <PageHeaderWrapper>
       <TitleGuid title="编辑小程序" isEdit={true} />
       <div className={`${styles.currTepBox} ${curFlag ? styles.rightPlaceHolder : ''}`}>
         <Preview />
-
-        <div className={styles.btnbox}>
-          {/* <Button onClick={() => setcurFlag('highlights')} type="primary"> */}
-          <Button onClick={() => setcurFlag('banner')} type="primary">
-            开始编辑
-          </Button>
-        </div>
-
         <DrawerEditor />
       </div>
     </PageHeaderWrapper>

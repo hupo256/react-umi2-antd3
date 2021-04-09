@@ -15,32 +15,41 @@ export default function CaseMd(props) {
   return (
     <div className={`${pageStyle.mdBlock} ${pageStyle.hasbg}`}>
       <MdTitle title={title} />
-      <div className={pageStyle.siteBox}>
-        <ul>
-          {list.map((site, ind) => {
-            const {
-              coverImg,
-              gongdiTitle,
-              buildingArea,
-              renovationCosts,
-              houseType,
-              visitNum,
-            } = site;
-            const { bedroom } = JSON.parse(houseType);
-            return (
-              <li key={ind}>
-                <img src={coverImg} alt="" />
-                <b>{gongdiTitle}</b>
-                <p>{`${buildingArea}m² | ${bedroom}居室 | ${renovationCosts}万`}</p>
-                <p className={pageStyle.flex}>
-                  <span>{`${visitNum}人参观过`}</span>
-                  <a className={pageStyle.btn}>预约参观</a>
-                </p>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
+      {list.length > 0 ? (
+        <div className={pageStyle.siteBox}>
+          <ul>
+            {list.map((site, ind) => {
+              const {
+                coverImg,
+                gongdiTitle,
+                buildingArea,
+                renovationCosts,
+                houseType,
+                visitNum,
+              } = site;
+              const { bedroom } = JSON.parse(houseType);
+              return (
+                <li key={ind}>
+                  <img src={coverImg} alt="" />
+                  <b>{gongdiTitle}</b>
+                  <p>{`${buildingArea}m² | ${bedroom}居室 | ${renovationCosts}万`}</p>
+                  <p className={pageStyle.flex}>
+                    <span>{`${visitNum}人参观过`}</span>
+                    <a className={pageStyle.btn}>预约参观</a>
+                  </p>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      ) : (
+        <div className={pageStyle.defaultImgBox}>
+          <svg className="icon" aria-hidden="true">
+            <use href="#iconic_case_no" />
+          </svg>
+          <span>请在工地库中添加工地</span>
+        </div>
+      )}
     </div>
   );
 }

@@ -28,9 +28,10 @@ export default {
 
   'menu.portal.minProgram': '装企小程序',
 
-  'menu.portal.mktManagement': '营销管理',
-  'menu.portal.mktManagement.activity': '活动管理',
-  'menu.portal.mktManagement.goods': '商品管理',
+  'menu.portal.mktManagement': '营销游戏',
+  'menu.portal.mktManagement.activity': '游戏列表',
+  'menu.portal.mktManagement.addGame': '创建游戏',
+  'menu.portal.mktManagement.drawRec': '抽奖记录',
 
   'menu.home': '首页',
   'menu.list': '列表页',

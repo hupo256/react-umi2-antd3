@@ -10,6 +10,7 @@ import router from 'umi/router';
 import { ctx } from '../common/context';
 import { getHomePagePublishedData } from '@/services/miniProgram';
 import { Button } from 'antd';
+import { baseRouteKey } from '../tools/data';
 import HoverMd from './components/hoverMd';
 import SwiperBar from '../common/swiperBar';
 import CaseMd from './components/caseMd';
@@ -21,7 +22,6 @@ import AdMd from './components/adMd';
 import './components/fontclass/iconfont.js';
 import pageStyle from './preview.less';
 
-const baseUrlKey = '/portal/minProgram/';
 const componentMap = {
   banner: {
     tips: '轮播',
@@ -50,14 +50,13 @@ const componentMap = {
 };
 
 export default function Preview(props) {
-  const { isChange, curFlag, setisChange, setpageData, pageData } = useContext(ctx);
-  const [homeEdit, sethomeEdit] = useState(false);
+  const { from } = props;
+  const { setpageData, pageData } = useContext(ctx);
+  const [templateCode, settemplateCode] = useState('');
   const [totopShow, settotopShow] = useState(false);
   const contentBox = useRef();
 
   useEffect(() => {
-    const { hash } = location;
-    hash.includes('/minProgram/edit') && sethomeEdit(true);
     getJsonData();
   }, []);
 
@@ -74,10 +73,6 @@ export default function Preview(props) {
     const scrollTop = target.scrollTop; //滚动条滚动高度
     const scrollHeight = target.scrollHeight; //滚动内容高度
     settotopShow(scrollTop > clientHeight / 2);
-  }
-
-  function gotoRoute(key) {
-    router.push(`${baseUrlKey}${key}`);
   }
 
   function getJsonData() {
@@ -102,7 +97,9 @@ export default function Preview(props) {
       console.log(res);
       const { data } = res;
       if (!data) return;
-      setpageData(addMapToData(data.templateJson));
+      const { templateCode, templateJson } = data;
+      setpageData(addMapToData(templateJson));
+      settemplateCode(templateCode);
     });
   }
 
@@ -117,9 +114,18 @@ export default function Preview(props) {
     return pData;
   }
 
+  function gotoRoute(key) {
+    router.push(`${baseRouteKey}${key}`);
+  }
+
+  function gotoTop() {
+    contentBox.current.scrollTop = 0;
+    contentBox.current.scrollTop = '0px';
+  }
+
   return (
-    <div className={pageStyle.viewBox}>
-      <div className={pageStyle.phoneBox}>
+    <>
+      <div className={`${pageStyle.phoneBox} ${from ? pageStyle.min : ''}`}>
         <div className={pageStyle.headerBox}>
           <div className={pageStyle.ptit}>
             <span>首页</span>
@@ -176,7 +182,7 @@ export default function Preview(props) {
               <use href="#iconic_call" />
             </svg>
           </span>
-          <span>
+          <span onClick={gotoTop}>
             <svg className="icon" aria-hidden="true">
               <use href="#iconic_top" />
             </svg>
@@ -184,14 +190,14 @@ export default function Preview(props) {
         </div>
       </div>
 
-      {!homeEdit && (
+      {from && (
         <div className={pageStyle.btnbox}>
           <Button onClick={() => gotoRoute('edit')} type="primary">
             继续编辑
           </Button>
-          <Button onClick={() => setisChange(true)}>更换模板</Button>
+          <Button onClick={() => gotoRoute(`templates?tochange=${templateCode}`)}>更换模板</Button>
         </div>
       )}
-    </div>
+    </>
   );
 }

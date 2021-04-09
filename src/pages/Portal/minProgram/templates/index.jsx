@@ -5,17 +5,31 @@
  * @Last Modified time: 2021-03-23 13:49:12 
  * 小程序UI模板
  */
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
+import PageHeaderWrapper from '@/components/PageHeaderWrapper';
+import { Provider, ctx } from '../common/context';
+import router from 'umi/router';
+import { baseRouteKey } from '../tools/data';
+import TitleGuid from '../common/titleGuid';
 import { queryTemplate } from '@/services/miniProgram';
-import { ctx } from '../common/context';
 import { imgBaseUrl } from '../tools';
 import styles from './templates.less';
 
-export default function Templates(props) {
-  const { isChange, setisChange } = useContext(ctx);
+function Templates(props) {
+  const [isChange, setisChange] = useState(false);
   const [tepList, settepList] = useState([]);
 
   useEffect(() => {
+    touchList();
+    isToChange();
+  }, []);
+
+  function isToChange() {
+    const { hash } = location;
+    setisChange(hash.includes('?tochange'));
+  }
+
+  function touchList() {
     queryTemplate().then(res => {
       const { data } = res;
       if (!data) return;
@@ -32,32 +46,47 @@ export default function Templates(props) {
       }
       settepList(data);
     });
-  }, []);
+  }
+
+  function routerOut() {
+    const key = isChange ? 'home' : 'edit';
+    router.push(`${baseRouteKey}${key}`);
+  }
 
   return (
-    <ul className={styles.tembox}>
-      {tepList.length > 0 &&
-        tepList.map((tem, ind) => {
-          const { isDefault, name, showPicUrl, moreTag } = tem;
-          return (
-            <li key={ind}>
-              <div className={styles.itemBox}>
-                {isDefault && (
-                  <img className={styles.defaultTag} src={`${imgBaseUrl}img_tag.png`} alt="" />
-                )}
-                <div className={styles.imgbox}>
-                  <img src={showPicUrl} alt="" />
-                  {!moreTag && (
-                    <span>
-                      <button>{isChange ? '换成它' : '开始编辑'}</button>
-                    </span>
-                  )}
+    <PageHeaderWrapper>
+      <TitleGuid title="选择一个模板开始" disc={true} />
+      <ul className={styles.tembox}>
+        {tepList.length > 0 &&
+          tepList.map((tem, ind) => {
+            const { isDefault, name, showPicUrl, moreTag } = tem;
+            return (
+              <li key={ind}>
+                <div className={styles.itemBox}>
+                  {isDefault &&
+                    !isChange && (
+                      <img className={styles.defaultTag} src={`${imgBaseUrl}img_tag.png`} alt="" />
+                    )}
+                  <div className={styles.imgbox}>
+                    <img src={showPicUrl} alt="" />
+                    {!moreTag && (
+                      <span>
+                        <button onClick={routerOut}>{isChange ? '换成它' : '开始编辑'}</button>
+                      </span>
+                    )}
+                  </div>
                 </div>
-              </div>
-              <p>{name}</p>
-            </li>
-          );
-        })}
-    </ul>
+                <p>{name}</p>
+              </li>
+            );
+          })}
+      </ul>
+    </PageHeaderWrapper>
   );
 }
+
+export default props => (
+  <Provider>
+    <Templates {...props} />
+  </Provider>
+);

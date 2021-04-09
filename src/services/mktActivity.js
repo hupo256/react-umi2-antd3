@@ -1,7 +1,7 @@
 import request from '../utils/request';
 // import { baseurl } from './config';
 
-const baseurl = 'http://10.1.4.181:8291';
+const baseurl = 'http://10.1.4.58:8291';
 
 /**
  * 小游戏
@@ -95,6 +95,17 @@ export async function queryActivityList(params) {
   });
 }
 
+// 活动中奖记录分页查询
+export async function queryActivityPrizeRewardList(params) {
+  return request(baseurl + '/api/v1/wechat/activity/queryActivityPrizeRewardList', {
+    method: 'POST',
+    body: params,
+  });
+}
+
+/**
+ * 小程序首页设置
+ */
 // 查询案例
 export async function queryCaseList(params) {
   return request('http://dev.gateway.ingongdi.com/api/v1/wechat/case/queryCaseList', {
@@ -139,6 +150,7 @@ export default {
   newActivity,
   newPrize,
   queryActivityList,
+  queryActivityPrizeRewardList,
   queryActivityPrizeList,
   queryCaseList,
   queryDesignerList,

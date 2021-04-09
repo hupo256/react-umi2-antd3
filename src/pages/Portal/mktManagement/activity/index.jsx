@@ -7,60 +7,41 @@
  */
 import React, { useState, useEffect, useContext } from 'react';
 import mktApi from '@/services/mktActivity';
+import router from 'umi/router';
+import { baseRouteKey } from '../tools/data';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
-import { Card, Button, Table, Modal, Select } from 'antd';
-import { actColumns } from '../tools/data';
-import { Provider, ctx } from '../common/context';
-import AddNewAct from './addNewAct';
+import { Card, Button, Table, Input } from 'antd';
+import { actColumns, searchTags } from '../tools/data';
 import styles from './activity.less';
 
-const { Option } = Select;
+const { Search } = Input;
 
-function Activityer(props) {
-  const { tbData, settbData, actModal, setactModal } = useContext(ctx);
+export default function Activityer(props) {
   const [actList, setactList] = useState([]);
   const [tbColumns, settbColumns] = useState([]);
-
-  useEffect(() => {
-    // const params1 = {
-    //   activityId: 1,
-    //   openId: '1',
-    // };
-    // mktApi.touchLottery(params1).then(res => {
-    //   console.log(res);
-    // });
-    // mktApi.touchActivity().then(res => {
-    //   console.log(res);
-    // });
-    // const param2 = { activityId: '', openId: '' };
-    // mktApi.touchReward(param2).then(res => {
-    //   console.log(res);
-    // });
-  }, []);
+  const [searchInd, setsearchInd] = useState(0);
 
   useEffect(() => {
     // 获取第一页的活动列表
     touchActList();
-
-    // 获取下拉选项
-    mktApi.activityList().then(res => {
-      const { data } = res;
-      data && setactList(data);
-    });
-    // mktApi.getActivity({ activityId: 0 }).then(res => {
-    //   console.log(res);
-    // });
-    // mktApi.getActivityPrize().then(res => {
-    //   console.log(res);
-    // });
   }, []);
 
   useEffect(
     () => {
       creatColumn();
     },
-    [tbData]
+    [actList]
   );
+
+  function toEdit(uid) {
+    router.push(`${baseRouteKey}activityEdit?uid=${uid}`);
+  }
+
+  function toDelete(uid) {
+    mktApi.delActivity({ uid }).then(res => {
+      console.log(res);
+    });
+  }
 
   function creatColumn() {
     const col = {
@@ -68,29 +49,28 @@ function Activityer(props) {
       dataIndex: 'action',
       render: (text, record, index) => (
         <p className={styles.actions}>
-          <a onClick={() => toEdit(record)}>编辑</a>
-          <a onClick={() => toDelete(index)}>删除</a>
+          <a onClick={() => toEdit(record.uid)}>编辑</a>|{' '}
+          <a onClick={() => toDelete(record.uid)}>删除</a>
         </p>
       ),
     };
+    actColumns[1] = {
+      title: '状态',
+      dataIndex: 'state',
+      render: (text, record, index) => {
+        let tex = '未开始';
+        const { state } = record;
+        state === 1 && (tex = '进行中');
+        state === 2 && (tex = '已结束');
+        return (
+          <div className={styles.stateBox}>
+            <u />
+            <span>{tex}</span>
+          </div>
+        );
+      },
+    };
     settbColumns([...actColumns, col]);
-  }
-
-  function toEdit(rec) {
-    setactModal(true);
-  }
-
-  function toDelete(ind) {
-    setactModal(true);
-  }
-
-  function addNew() {
-    setactModal(true);
-  }
-
-  function modalOk(e) {
-    console.log(e);
-    // setactModal(false);
   }
 
   // 获取活动们
@@ -107,60 +87,53 @@ function Activityer(props) {
       console.log(res);
       const { data } = res;
       if (!data) return;
-      settbData(data.list);
+      setactList(data.list);
     });
   }
 
-  function selectChange(e) {
-    const [, activeName] = e.split('_');
-    touchActList({ activeName });
+  function addNew() {
+    console.log();
   }
+
+  function searchWidhTag(ind) {
+    setsearchInd(ind);
+    console.log(ind);
+  }
+
+  function toSearch() {}
 
   return (
     <PageHeaderWrapper>
-      <Card bordered={false}>
-        <div className={styles.searchBox}>
-          <label htmlFor="">活动名称:</label>
-          <Select style={{ width: 150 }} placeholder="请选择活动" onSelect={selectChange}>
-            {actList.length > 0 &&
-              actList.map(act => {
-                const { activeId, activeName } = act;
-                return (
-                  <Option key={activeId} value={`${activeId}_${activeName}`}>
-                    {activeName}
-                  </Option>
-                );
-              })}
-          </Select>
-        </div>
-
-        <Button className={styles.addBtn} onClick={addNew} type="primary">
-          添加
-        </Button>
-
-        <Table
-          size="middle"
-          dataSource={tbData}
-          columns={tbColumns}
-          rowKey={rec => rec['activityName']}
+      <Card bordered={false} style={{ marginBottom: '1em' }}>
+        <Search
+          placeholder="可通过游戏标题进行搜索"
+          onSearch={val => toSearch(val)}
+          style={{ width: 400 }}
         />
 
-        <Modal
-          title="添加/编辑活动"
-          visible={actModal}
-          onOk={modalOk}
-          onCancel={() => setactModal(false)}
-          footer={null}
-        >
-          <AddNewAct />
-        </Modal>
+        <div className={styles.searchTags}>
+          <span>状态: </span>
+          <div className={styles.tagbox}>
+            {searchTags.map((tag, ind) => (
+              <span
+                key={ind}
+                className={`${searchInd === ind ? styles.on : ''}`}
+                onClick={() => searchWidhTag(ind)}
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        </div>
+      </Card>
+
+      <Card bordered={false}>
+        <Button className={styles.addBtn} onClick={addNew} type="primary">
+          建议小游戏
+        </Button>
+
+        <Table size="middle" dataSource={actList} columns={tbColumns} rowKey={(r, i) => i} />
       </Card>
     </PageHeaderWrapper>
   );
 }
-
-export default props => (
-  <Provider>
-    <Activityer {...props} />
-  </Provider>
-);

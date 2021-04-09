@@ -17,30 +17,39 @@ export default function CaseMd(props) {
   return (
     <div className={pageStyle.mdBlock}>
       <MdTitle title={title} />
-
-      <div className={pageStyle.caseBox}>
-        <div className={pageStyle.hightImg}>
-          <img src={coverPicUrl} alt="" />
-          <p>{`${styleDic.name || ''} | ${acreage}m² | ${
-            bedroom ? bedroom : 1
-          }居室 | ${decorationCost}万`}</p>
-        </div>
-
-        <div className={`${pageStyle.caseImgs} ${pageStyle.flex}`}>
-          <div className={pageStyle.caseList}>
-            {list.map((item, ind) => (
-              <img
-                key={ind}
-                onClick={() => setcurInd(ind)}
-                className={`${ind === curInd ? pageStyle.on : ''}`}
-                src={item.coverPicUrl}
-                alt=""
-              />
-            ))}
+      {list.length > 0 ? (
+        <div className={pageStyle.caseBox}>
+          <div className={pageStyle.hightImg}>
+            <img src={coverPicUrl} alt="" />
+            <p>{`${styleDic.name || ''} | ${acreage}m² | ${
+              bedroom ? bedroom : 1
+            }居室 | ${decorationCost}万`}</p>
           </div>
-          <u>免费设计</u>
+
+          <div className={`${pageStyle.caseImgs} ${pageStyle.flex}`}>
+            <ul className={pageStyle.caseList}>
+              {list.map((item, ind) => (
+                <li
+                  key={ind}
+                  onClick={() => setcurInd(ind)}
+                  className={`${ind === curInd ? pageStyle.on : ''}`}
+                >
+                  <img src={item.coverPicUrl} alt="" />
+                  <span />
+                </li>
+              ))}
+            </ul>
+            <u>免费设计</u>
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className={pageStyle.defaultImgBox}>
+          <svg className="icon" aria-hidden="true">
+            <use href="#iconic_case_no" />
+          </svg>
+          <span>请在案例库中添加案例</span>
+        </div>
+      )}
     </div>
   );
 }

@@ -16,7 +16,6 @@ export function Provider({ children }) {
   const [imgEdtor, setimgEdtor] = useState(false); //抽屉状态
 
   const [homeEdit, sethomeEdit] = useState(false); // 编辑状态
-  const [isChange, setisChange] = useState(false); // 模板改变状态
 
   const value = {
     curFlag,
@@ -29,8 +28,6 @@ export function Provider({ children }) {
     setcurInd,
     homeEdit,
     sethomeEdit,
-    isChange,
-    setisChange,
     pageData,
     setpageData,
   };

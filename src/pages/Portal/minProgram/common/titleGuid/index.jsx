@@ -77,10 +77,25 @@ export default function TitleGuid(props) {
 
   function toPublich() {
     console.log(pageData);
-    const { jsonData, themeData } = pageData;
+    let { jsonData, themeData } = pageData;
     const { customerService } = JSON.parse(localStorage.getItem('auth'));
+
+    themeData = {
+      baseColor: 'rgba(49, 181, 89, 1)',
+      gradientColor: {
+        header: {
+          dark: 'rgba(198, 234, 209, 1)',
+          light: 'rgba(236, 248, 240, 1)',
+        },
+        moduleTitle: {
+          dark: 'rgba(58, 184, 96, 1)',
+          light: 'rgba(231, 246, 236, 1)',
+        },
+      },
+    };
+
     const parmas = {
-      editTemplateCode: '',
+      editTemplateCode: 'WMHPT0001',
       editTemplateJson: { jsonData, themeData, globalInfor: { customerService } },
     };
     updateHomePageEditData(parmas).then(res => {
