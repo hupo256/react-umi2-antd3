@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-09 18:55:07
+ * @Last Modified time: 2021-04-09 23:56:00
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -212,7 +212,7 @@ class ViewFormComponent extends PureComponent {
         return (
           <div className={styles.ViewDiv} key={index}>
             <Input
-              style={{ width: 200, borderColor: data.elementButtonColor }}
+              style={{ width: 260, borderColor: data.elementButtonColor }}
               maxLength={16}
               disabled
               placeholder={item.paramTips}
@@ -244,7 +244,7 @@ class ViewFormComponent extends PureComponent {
             <Button
               type="primary"
               style={{
-                width: 200,
+                width: 260,
                 background: data.elementButtonColor,
                 borderColor: data.elementButtonColor,
                 color: data.elementButtonTextColor,
@@ -276,7 +276,7 @@ class ViewFormComponent extends PureComponent {
         </div>
 
         {data.checked === 1 ? (
-          <div className={styles.FormWrap} style={{ top: topSize.top }}>
+          <div className={styles.FormWrap} style={{ top: topSize.top > 426 ? 426 : topSize.top }}>
             <div className="clearfix">
               <div
                 className={checkTable === 1 ? styles.isList : styles.isLists}
