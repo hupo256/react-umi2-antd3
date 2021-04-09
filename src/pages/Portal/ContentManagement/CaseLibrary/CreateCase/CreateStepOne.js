@@ -77,7 +77,7 @@ class CreateStepOne extends PureComponent {
         const disabledDesigner = designerList.filter(item => item.uid === stepOne.designerUid);
         this.setState({
           designerList,
-          disabledDesigner: (disabledDesigner && disabledDesigner[0].uid) || '',
+          disabledDesigner: (disabledDesigner.length>0 && disabledDesigner[0].uid) || '',
         });
       }
     });
