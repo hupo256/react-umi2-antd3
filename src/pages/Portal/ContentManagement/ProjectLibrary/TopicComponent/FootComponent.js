@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-09 18:57:34
+ * @Last Modified time: 2021-04-12 20:09:33
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -294,9 +294,27 @@ class FootComponent extends PureComponent {
       index,
     } = this.props;
     if (e === '') {
-      this.setState({
-        visible: true,
-      });
+      this.setState(
+        {
+          visible: true,
+        },
+        () => {
+          const {
+            dispatch,
+            ProjectLibrary: { compentList },
+          } = this.props;
+          compentList.map((item, idx) => {
+            compentList[idx].checked = 0;
+          });
+          dispatch({
+            type: 'ProjectLibrary/saveDataModel',
+            payload: {
+              key: 'compentList',
+              value: [...compentList],
+            },
+          });
+        }
+      );
     } else {
       compentList[index].formUid = e;
       dispatch({
