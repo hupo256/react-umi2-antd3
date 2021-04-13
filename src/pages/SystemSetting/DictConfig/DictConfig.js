@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 10:30:18 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-31 14:11:37
+ * @Last Modified time: 2021-04-08 19:57:17
  * 字典配置
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -46,6 +46,12 @@ class DictConfig extends PureComponent {
       }
     });
     this.setState({ width: document.body.clientWidth });
+  }
+  componentWillUnmount() {
+    this.props.dispatch({
+      type: 'DictConfig/resetModel',
+      payload: { DicQuery: { pageNum: 1 } },
+    });
   }
   components = {
     body: {
@@ -194,13 +200,18 @@ class DictConfig extends PureComponent {
         render: (t, r) => {
           return (
             <div className="operateWrap">
-              {permissionsBtn.includes('BTN210326000026')&&<span className="operateBtn" onClick={() => this.handleEdit(r)}>
-                编辑
-              </span>}
-              {permissionsBtn.includes('BTN210326000026')&&permissionsBtn.includes('BTN210326000027')&&<span className="operateLine" />}
-             {permissionsBtn.includes('BTN210326000027')&& <span className="operateBtn" onClick={() => this.handleChangeStatus(r)}>
-                {r.status === '1' ? '停用' : '启用'}{' '}
-              </span>}
+              {permissionsBtn.includes('BTN210326000026') && (
+                <span className="operateBtn" onClick={() => this.handleEdit(r)}>
+                  编辑
+                </span>
+              )}
+              {permissionsBtn.includes('BTN210326000026') &&
+                permissionsBtn.includes('BTN210326000027') && <span className="operateLine" />}
+              {permissionsBtn.includes('BTN210326000027') && (
+                <span className="operateBtn" onClick={() => this.handleChangeStatus(r)}>
+                  {r.status === '1' ? '停用' : '启用'}{' '}
+                </span>
+              )}
             </div>
           );
         },
@@ -225,10 +236,12 @@ class DictConfig extends PureComponent {
               </div>
               <div className={styles.dictRight}>
                 <div className={styles.dictHeader}>
-                  {permissionsBtn.includes('BTN210326000025')&&<Button type="primary" onClick={() => this.setState({ visible: true })}>
-                    <Icon type="plus" />
-                    创建字段
-                  </Button>}
+                  {permissionsBtn.includes('BTN210326000025') && (
+                    <Button type="primary" onClick={() => this.setState({ visible: true })}>
+                      <Icon type="plus" />
+                      创建字段
+                    </Button>
+                  )}
                   <Search
                     value={searchWord}
                     placeholder="可通过字段名称 / 扩充描述进行搜索"
@@ -301,7 +314,7 @@ class DictConfig extends PureComponent {
   // 搜索
   handleSrarch = () => {
     const { searchWord } = this.state;
-    this.queryList({ searchWord:searchWord&&searchWord.substring(0,30),pageNum:1 });
+    this.queryList({ searchWord: searchWord && searchWord.substring(0, 30), pageNum: 1 });
   };
   // 字段模块切换
   handleChangeTab = activeKey => {
@@ -330,7 +343,7 @@ class DictConfig extends PureComponent {
     const dicUiz = dragRow.uid;
     const targetSeq = hoverRow.seq;
     dispatch({ type: 'DictConfig/sortDicModel', payload: { dicUiz, targetSeq } }).then(res => {
-      if (res.code === 200) {
+      if (res && res.code === 200) {
         this.queryList({});
       }
     });
@@ -354,7 +367,7 @@ class DictConfig extends PureComponent {
         payload: { dicModuleCode, ...value, dicUid: (record && record.uid) || null },
       })
       .then(res => {
-        if (res.code === 200) {
+        if (res && res.code === 200) {
           message.success(`${record ? '编辑' : '创建'}成功`);
           this.handleCancel();
           this.queryList({});
@@ -383,7 +396,7 @@ class DictConfig extends PureComponent {
       title: status === '1' ? '确认要停用当前字段吗？' : '确认要启用当前字段吗？',
       content:
         status === '1'
-          ? `无法在案例、工地等功能【${name}】中选择当前字段（已选择不受影响）`
+          ? `停用后，无法在案例、工地等功能【${name}】中选择当前字段（已选择不受影响）`
           : `启用后，将可以在案例、工地等功能【${name}】中选择当前字段`,
       icon: status === '2' ? successIcon : waringInfo,
       onOk() {
@@ -391,7 +404,7 @@ class DictConfig extends PureComponent {
           type: 'DictConfig/updateDicStatusModel',
           payload: { dicUid: r.uid, status: status == '1' ? '2' : '1' },
         }).then(res => {
-          if (res.code === 200) {
+          if (res && res.code === 200) {
             message.success('状态更改成功');
             that.queryList({});
           }

@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-24 16:09:36
+ * @Last Modified time: 2021-04-12 21:24:41
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -120,6 +120,7 @@ class ViewFormComponent extends PureComponent {
   render() {
     const { data, index } = this.props;
     const { showFont, show, checkList, checkSelectData, showSelect, checkTable } = this.state;
+    let topSize = JSON.parse(data.elementStyle);
     let formDa =
       checkList &&
       checkList.map((item, index) => {
@@ -134,16 +135,39 @@ class ViewFormComponent extends PureComponent {
                   <div className={styles.tit}>字段</div>
                   <div className="clearfix" style={{ width: 144, float: 'left' }}>
                     <div className={styles.FormCont}>{item.paramName}</div>
-                    {item.paramField !== 'trackPhone' ? (
-                      <div
-                        className={styles.dragWraps}
-                        onClick={() => {
-                          this.onDeleteFrom(item, index);
-                        }}
-                      >
-                        <Icon type="delete" />
-                      </div>
-                    ) : null}
+                    <div className={styles.dragWraps}>
+                      {index != 0 ? (
+                        <span
+                          className={styles.dSpan}
+                          onClick={() => {
+                            this.changeOrderUp(index);
+                          }}
+                        >
+                          <Icon type="arrow-up" />
+                        </span>
+                      ) : null}
+                      {index != checkList.length - 1 ? (
+                        <span
+                          className={styles.dSpan}
+                          onClick={() => {
+                            this.changeOrderDown(index);
+                          }}
+                        >
+                          <Icon type="arrow-down" />
+                        </span>
+                      ) : null}
+                      {item.paramField !== 'trackPhone' ? (
+                        <span
+                          className={styles.dSpan}
+                          onClick={() => {
+                            this.onDeleteFrom(item, index);
+                          }}
+                        >
+                          <Icon type="delete" />
+                        </span>
+                      ) : null}
+                    </div>
+                    <div />
                   </div>
                 </div>
                 <div className="clearfix" style={{ marginBottom: 15 }}>
@@ -211,7 +235,7 @@ class ViewFormComponent extends PureComponent {
         return (
           <div className={styles.ViewDiv} key={index}>
             <Input
-              style={{ width: 200, borderColor: data.elementButtonColor }}
+              style={{ width: 260, borderColor: data.elementButtonColor }}
               maxLength={16}
               disabled
               placeholder={item.paramTips}
@@ -243,7 +267,7 @@ class ViewFormComponent extends PureComponent {
             <Button
               type="primary"
               style={{
-                width: 200,
+                width: 260,
                 background: data.elementButtonColor,
                 borderColor: data.elementButtonColor,
                 color: data.elementButtonTextColor,
@@ -263,7 +287,11 @@ class ViewFormComponent extends PureComponent {
                 this.deletePic();
               }}
             >
-              <Icon type="close-circle" />
+              <img
+                src="https://test.img.inbase.in-deco.com/crm_saas/dev/20210409/3b91901276824e0da6ff9fc49fe729fb/ic_delete.png"
+                width="20"
+                height="20"
+              />
             </span>
           ) : (
             ''
@@ -271,7 +299,7 @@ class ViewFormComponent extends PureComponent {
         </div>
 
         {data.checked === 1 ? (
-          <div className={styles.FormWrap}>
+          <div className={styles.FormWrap} style={{ top: topSize.top > 426 ? 426 : topSize.top }}>
             <div className="clearfix">
               <div
                 className={checkTable === 1 ? styles.isList : styles.isLists}
@@ -347,7 +375,11 @@ class ViewFormComponent extends PureComponent {
                           this.closeColor();
                         }}
                       >
-                        <Icon type="close-circle" />
+                        <img
+                          src="https://test.img.inbase.in-deco.com/crm_saas/dev/20210409/3b91901276824e0da6ff9fc49fe729fb/ic_delete.png"
+                          width="20"
+                          height="20"
+                        />
                       </span>
                     </div>
                   ) : (
@@ -365,7 +397,11 @@ class ViewFormComponent extends PureComponent {
                           this.closeFontColor();
                         }}
                       >
-                        <Icon type="close-circle" />
+                        <img
+                          src="https://test.img.inbase.in-deco.com/crm_saas/dev/20210409/3b91901276824e0da6ff9fc49fe729fb/ic_delete.png"
+                          width="20"
+                          height="20"
+                        />
                       </span>
                     </div>
                   ) : (
@@ -581,6 +617,40 @@ class ViewFormComponent extends PureComponent {
   }
   cancel(e) {
     console.log(e);
+  }
+  //上移
+  changeOrderUp(index) {
+    const { checkList } = this.state;
+    if (index != 0) {
+      checkList[index] = checkList.splice(index - 1, 1, checkList[index])[0];
+    } else {
+      checkList.push(checkList.shift());
+    }
+    this.setState(
+      {
+        checkList: [...checkList],
+      },
+      () => {
+        this.saveCheckList();
+      }
+    );
+  }
+  //下移
+  changeOrderDown(index) {
+    const { checkList } = this.state;
+    if (index != checkList.length - 1) {
+      checkList[index] = checkList.splice(index + 1, 1, checkList[index])[0];
+    } else {
+      checkList.unshift(checkList.splice(index, 1)[0]);
+    }
+    this.setState(
+      {
+        checkList: [...checkList],
+      },
+      () => {
+        this.saveCheckList();
+      }
+    );
   }
 }
 

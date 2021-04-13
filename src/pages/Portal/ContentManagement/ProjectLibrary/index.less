@@ -17,6 +17,11 @@
 }
 .flr{
   float: left;
+  :global{
+    .ant-tag-checkable{
+      cursor: pointer;
+    }
+  }
 }
 .twrap{
   padding: 0px;
@@ -157,12 +162,12 @@ padding:10px;
 }
 .phoneHead{
   width: 375px;
-  height: 54px;
-  background: url(https://test.img.inbase.in-deco.com/crmx/filex/file/20210302/b6640ae69fc24cd881e8900dc33f2e70/Bitmap-7aabbb4a.svg) no-repeat;
-  position: relative;
-  padding-top: 25px;
-  box-sizing: border-box;
-  background-size: cover;
+    height: 54px;
+    background: url(https://test.img.inbase.in-deco.com/crmx/filex/file/20210302/b6640ae69fc24cd881e8900dc33f2e70/Bitmap-7aabbb4a.svg) no-repeat;
+    position: relative;
+    padding-top: 25px;
+    box-sizing: border-box;
+    background-size: cover;
 }
 .phoneCont{
   width: 100%;
@@ -179,7 +184,9 @@ padding:10px;
   overflow-y: auto;
   overflow-x: hidden;
   position: relative;
- 
+}
+.phoneBox::-webkit-scrollbar {
+  display: none; /* Chrome Safari */
 }
 .txCont{
   position: absolute;
@@ -239,4 +246,7 @@ padding:10px;
 }
 .bth{
   float: right;
+}
+.ipb{
+  cursor: pointer;
 }

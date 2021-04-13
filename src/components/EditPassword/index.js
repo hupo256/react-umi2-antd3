@@ -1,8 +1,8 @@
 /*
  * @Author: pengyc 
  * @Date: 2020-01-09 14:35:33 
- * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2020-12-10 18:21:27
+ * @Last Modified by: zqm
+ * @Last Modified time: 2021-04-08 15:09:47
  * 修改密码
  */
 import React, { PureComponent } from 'react';
@@ -104,7 +104,7 @@ class EditPassword extends PureComponent {
           //   type: 'users/checkUserPasswordModel',
           //   payload: {},
           // });
-          if (res.code === 200) {
+          if (res && res.code === 200) {
             message.success('密码修改成功');
           } else {
             message.error(res.message);

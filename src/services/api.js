@@ -144,3 +144,11 @@ export async function logout(params) {
     body: params,
   });
 }
+
+// 切换开通的系统
+export async function switchSystem(params) {
+  return request(baseurl + '/api/v1/sso/systemcompany/switchSystem', {
+    method: 'POST',
+    body: params,
+  });
+}
