@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-01 19:21:36
+ * @Last Modified time: 2021-04-13 11:12:39
  * 创建工地
  */
 import React, { PureComponent } from 'react';
@@ -80,7 +80,11 @@ class TextComponent extends PureComponent {
               this.deletePic();
             }}
           >
-            <Icon type="close-circle" />
+            <img
+              src="https://test.img.inbase.in-deco.com/crm_saas/dev/20210409/3b91901276824e0da6ff9fc49fe729fb/ic_delete.png"
+              width="20"
+              height="20"
+            />
           </span>
         ) : (
           ''
@@ -241,7 +245,7 @@ class TextComponent extends PureComponent {
               </span>
             </div>
             {show ? (
-              <div className={styles.SketchWrap}>
+              <div className={styles.SketchWraps}>
                 <SketchPicker color={isStyle.color} onChange={this.handleColorChange} />
                 <span
                   className={styles.closeColor}
@@ -249,7 +253,11 @@ class TextComponent extends PureComponent {
                     this.closeColor();
                   }}
                 >
-                  <Icon type="close-circle" />
+                  <img
+                    src="https://test.img.inbase.in-deco.com/crm_saas/dev/20210409/3b91901276824e0da6ff9fc49fe729fb/ic_delete.png"
+                    width="20"
+                    height="20"
+                  />
                 </span>
               </div>
             ) : (

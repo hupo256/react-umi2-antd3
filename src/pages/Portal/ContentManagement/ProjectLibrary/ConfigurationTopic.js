@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-01 16:48:38
+ * @Last Modified time: 2021-04-13 11:10:53
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -350,7 +350,7 @@ class ProjectLibrary extends PureComponent {
           if (item.elementStyle) {
             let aStyle = JSON.parse(item.elementStyle);
             left = aStyle.left;
-            top = aStyle.top + 220;
+            top = aStyle.top + 280;
           }
         }
       });
