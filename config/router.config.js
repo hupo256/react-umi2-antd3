@@ -53,7 +53,7 @@ export default [
           },
         ],
       },
-     
+
       // v2.0
       // 门户
       {
@@ -81,33 +81,7 @@ export default [
               },
             ],
           },
-          {
-            path: '/portal/miniprogram',
-            name: 'myminiprogram',
-            component: './Portal/MiniProgram/MiniProgram',
-            // routes: [
-            //   {
-            //     path: '/portal/miniprogram/tempselect',
-            //     PageHeaderName: '模板选择',
-            //     component: './Portal/MiniProgram/TempSelect',
-            //   },
-            //   {
-            //     path: '/portal/miniprogram/tempdetail',
-            //     PageHeaderName: '编辑模板',
-            //     component: './Portal/MiniProgram/TempDetail',
-            //   },
-            // ],
-          },
-          {
-            path: '/portal/miniprogram/tempselect',
-            PageHeaderName: '模板选择',
-            component: './Portal/MiniProgram/TempSelect',
-          },
-          {
-            path: '/portal/miniprogram/tempdetail',
-            PageHeaderName: '编辑模板',
-            component: './Portal/MiniProgram/TempDetail',
-          },
+
           {
             path: '/portal/contentmanagement',
             name: 'contentmanagement',
@@ -202,17 +176,17 @@ export default [
                 component: './Portal/ContentManagement/FormLibrary/FormLibrary',
               },
             ],
-          }
+          },
         ],
       },
-       // v1.1
+      // v1.1
       // 客户
       {
         path: '/customer',
         name: 'customer',
         icon: 'retweet',
         // code: 'P2020010110014',
-            component: './Customer/LeadManagement/LeadManagement',
+        component: './Customer/LeadManagement/LeadManagement',
         // routes: [
         //   {
         //     path: '/customer',
