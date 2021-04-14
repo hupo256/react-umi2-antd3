@@ -10,13 +10,12 @@ export default {
   namespace: 'ArticleLibrary',
 
   state: {
-    ArticleList:{},
-    ArticleListQuery:{},
-    ArticleDetail:{},
+    ArticleList: {},
+    ArticleListQuery: { pageNum: 1 },
+    ArticleDetail: {},
   },
 
   effects: {
-    
     // 查询文章列表
     *getArticleListModel({ payload }, { call, put }) {
       const response = yield call(getArticleList, {
@@ -31,8 +30,8 @@ export default {
       });
       return response;
     },
-     // 查询文章详情
-     *getArticleDetailModel({ payload }, { call, put }) {
+    // 查询文章详情
+    *getArticleDetailModel({ payload }, { call, put }) {
       const response = yield call(getArticleDetail, {
         ...payload,
       });
@@ -51,8 +50,8 @@ export default {
       });
       return response;
     },
-     // 编辑文章
-     *editArticleModel({ payload }, { call, put }) {
+    // 编辑文章
+    *editArticleModel({ payload }, { call, put }) {
       const response = yield call(editArticle, {
         ...payload,
       });
