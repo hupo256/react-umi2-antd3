@@ -2,7 +2,7 @@ let url = '';
 switch (APP_ENVIRONMENT) {
   case 'prod': // 正式
     console.log = function() {};
-    url = 'http://gateway.ingongdi.com';
+    url = 'https://gateway.ingongdi.com';
     break;
   case 'pre': // 灰度
     console.log = function() {};
@@ -20,7 +20,7 @@ switch (APP_ENVIRONMENT) {
   case 'local': // 本地开发
     console.warn = function() {};
     // url = 'http://devgw.ingongdi.com';
-    url = 'http://dev.gateway.ingongdi.com';
+    url = 'http://devgw.ingongdi.com';
     //url = 'http://pre.gateway.ingongdi.com';
     break;
   case 'auto': // 自动化

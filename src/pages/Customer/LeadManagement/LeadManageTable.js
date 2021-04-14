@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-01-22 13:30:46 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-25 11:09:04
+ * @Last Modified time: 2021-04-02 17:46:49
  * 线索列表
  */
 import React, { Component } from 'react';
@@ -41,6 +41,7 @@ class LeadManageTable extends Component {
       {
         title: '线索',
         dataIndex: 'name',
+        width: 200,
         render: (t, r) => {
           return (
             <div className={styles.tableName}>
@@ -69,8 +70,22 @@ class LeadManageTable extends Component {
         },
       },
       {
+        title: '楼盘/楼宇',
+        dataIndex: 'address',
+        width: 200,
+      },
+      {
+        title: '建筑面积',
+        dataIndex: 'area',
+        width:150,
+        render:text=>{
+          return text?<span>{text}m²</span>:''
+        }
+      },
+      {
         title: '状态',
         dataIndex: 'statusName',
+        width: 150,
         render: (t, r) => {
           const map = {
             TS001: '#bfbfbf',
@@ -90,14 +105,17 @@ class LeadManageTable extends Component {
       {
         title: '来源渠道',
         dataIndex: 'sourceChannelName',
+        width: 120,
       },
       {
         title: '推荐人',
         dataIndex: 'referrerName',
+        width: 120,
       },
       {
         title: '更新时间',
         dataIndex: 'updateTime',
+        width: 180,
         // sorter: true,
       },
       {
@@ -107,13 +125,13 @@ class LeadManageTable extends Component {
         render: (t, r) => {
           return (
             <span className={styles.operate}>
-            {permissionsBtn.includes('BTN210324000004')&&<span onClick={() => this.setState({ changeVisible: true, record: r })}>
+            {permissionsBtn.includes('BTN210326000022')&&<span onClick={() => this.setState({ changeVisible: true, record: r })}>
                 变更状态
               </span>}
-              {permissionsBtn.includes('BTN210324000004')&&<span> | </span>}
-              {permissionsBtn.includes('BTN210324000005')&&<span onClick={() => this.setState({ clueVisible: true, record: r })}>编辑</span>}
-              {permissionsBtn.includes('BTN210324000005')&&<span> | </span>}
-              {permissionsBtn.includes('BTN210324000006')&&<span onClick={() => this.setState({ recordVisible: true, record: r })}>
+              {permissionsBtn.includes('BTN210326000022')&&(permissionsBtn.includes('BTN210326000023')||permissionsBtn.includes('BTN210326000024'))&&<span> | </span>}
+              {permissionsBtn.includes('BTN210326000023')&&<span onClick={() => this.setState({ clueVisible: true, record: r })}>编辑</span>}
+              {(permissionsBtn.includes('BTN210326000023'))&&permissionsBtn.includes('BTN210326000024')&&<span> | </span>}
+              {permissionsBtn.includes('BTN210326000024')&&<span onClick={() => this.setState({ recordVisible: true, record: r })}>
                 变更记录
               </span>}
             </span>
@@ -128,7 +146,7 @@ class LeadManageTable extends Component {
     return (
       <div style={{ marginTop: 20 }}>
         <Card bordered={false}>
-        {permissionsBtn.includes('BTN210324000001')&&<Button style={{ marginBottom: 16 }} onClick={() => this.handleDownload()}>
+        {permissionsBtn.includes('BTN210326000021')&&<Button style={{ marginBottom: 16 }} onClick={() => this.handleDownload()}>
             导出Excel
             <Icon type="download" />
           </Button>}
@@ -138,6 +156,7 @@ class LeadManageTable extends Component {
             dataSource={trackData.list}
             columns={columns}
             onChange={this.handleTableChange}
+            scroll={{ x: 1600 }}
             pagination={trackData && paginations(trackData)}
           />
         </Card>

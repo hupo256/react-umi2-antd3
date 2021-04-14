@@ -1,4 +1,4 @@
-export const baseRouteKey = '/portal/minProgram/';
+export const baseRouteKey = '/portal/contentmanagement/minProgram/';
 export const canEditTags = ['banner', 'highlights', 'advertising'];
 export const LinkType = [
   {

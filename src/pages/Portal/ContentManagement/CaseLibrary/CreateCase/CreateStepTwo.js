@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-19 09:59:02
+ * @Last Modified time: 2021-04-10 13:35:08
  * 创建工地
  */
 import React, { PureComponent, Fragment, Component } from 'react';
@@ -11,7 +11,7 @@ import router from 'umi/router';
 import { Form, Button, Icon, Input, message, Steps, Table, Select, Divider, Modal } from 'antd';
 import Upload from '@/components/Upload/Upload';
 import { DragableBodyRow } from '@/components/DragableBodyRow/DragableBodyRow';
-import { getQueryUrlVal, guid, waringInfo,errorIcon } from '@/utils/utils';
+import { getQueryUrlVal, guid, waringInfo, errorIcon } from '@/utils/utils';
 import { DndProvider, DragSource, DropTarget } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import styles from '../CaseLibrary.less';
@@ -31,6 +31,7 @@ class CreateStepTwo extends Component {
   state = {
     visible: false,
     record: null,
+    records: null,
     rcviewer: null,
     DicList: [],
     disabled1: [],
@@ -81,6 +82,7 @@ class CreateStepTwo extends Component {
       disabled3,
       disabled4,
       rep,
+      records,
     } = this.state;
     const {
       DictConfig: { dicData },
@@ -89,10 +91,10 @@ class CreateStepTwo extends Component {
       {
         title: '',
         dataIndex: 'drag',
-        width:60,
-        render:(t,r)=>{
-          return <Icon type="drag" style={{fontSize:18}} />
-        }
+        width: 60,
+        render: (t, r) => {
+          return <Icon type="drag" style={{ fontSize: 18 }} />;
+        },
       },
       {
         title: '案例图片',
@@ -225,7 +227,7 @@ class CreateStepTwo extends Component {
               value={r.styleDicCode || []}
               onDropdownVisibleChange={open => this.onDropdownVisibleChange(open, r)}
               style={{ width: 220 }}
-              open={record && record.guid === r.guid && this.state.open}
+              open={records && records.guid === r.guid && this.state.open}
               placeholder="请选择风格"
               dropdownRender={menu => {
                 return (
@@ -352,7 +354,13 @@ class CreateStepTwo extends Component {
         <p>
           <Button
             type="primary"
-            onClick={() => this.setState({ visible: true })}
+            onClick={() => {
+              if (DicList.length == 20) {
+                message.error('无法上传，最多支持上传20张图片');
+              } else {
+                this.setState({ visible: true });
+              }
+            }}
             style={{ marginRight: 16 }}
           >
             <Icon type="plus" />
@@ -552,7 +560,7 @@ class CreateStepTwo extends Component {
   };
   // 字典下拉选择
   handleSelectChange = (val, r, name) => {
-    this.setState({ record: r });
+    // this.setState({ record: r });
     const { DicList } = this.state;
     let newDicList = DicList.map(item => {
       if (item.guid === r.guid) {
@@ -580,8 +588,8 @@ class CreateStepTwo extends Component {
     if (r.isCover) {
       message.error('当前案例图片为封面不能删除');
     } else {
-          let { DicList } = this.state;
-          const that = this
+      let { DicList } = this.state;
+      const that = this;
       confirm({
         title: '确认要删除当前案例图片吗？',
         content: '删除后，将无法在案例详情中看到当前案例图片，并有可能导致无法精准搜索出当前案例',
@@ -598,12 +606,11 @@ class CreateStepTwo extends Component {
           console.log('Cancel');
         },
       });
-     
     }
   };
 
-  onDropdownVisibleChange = (open, record) => {
-    this.setState({ record });
+  onDropdownVisibleChange = (open, records) => {
+    this.setState({ records });
     if (this.lock) return;
     this.setState({ open });
   };

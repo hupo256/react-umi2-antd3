@@ -2,7 +2,7 @@
  * @Author: pengyc 
  * @Date: 2020-02-28 14:28:21 
  * @Last Modified by: zqm
- * @Last Modified time: 2020-09-10 14:00:29
+ * @Last Modified time: 2021-04-08 15:09:28
  * 线索， 项目。 客户。 共用 添加/编辑日志
  * 公用组件，难公用，接口差异化
  */
@@ -411,7 +411,7 @@ class AddLog extends Component {
           type: uploadType.diapstchType,
           payload,
         }).then(res => {
-          if (res.code === 200) {
+          if (res && res.code === 200) {
             message.success('日志信息提交成功', 1, () => {
               history.back(-1);
             });
@@ -449,7 +449,7 @@ class AddLog extends Component {
           type: uploadType.diapstchType,
           payload,
         }).then(res => {
-          if (res.code === 200) {
+          if (res && res.code === 200) {
             message.success('日志信息修改成功', 1, () => {
               history.back(-1);
             });

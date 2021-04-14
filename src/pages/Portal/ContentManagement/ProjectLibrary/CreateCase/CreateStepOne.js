@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-22 19:18:12
+ * @Last Modified time: 2021-04-08 16:11:59
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -85,7 +85,7 @@ class CreateStepOne extends PureComponent {
                   message: '限制1-8字符长度',
                 },
               ],
-            })(<Input style={{ width: 400 }} placeholder="请输入案例标题" />)}
+            })(<Input style={{ width: 400 }} placeholder="请输入专题标题" />)}
           </Form.Item>
           <Form.Item label="适用终端">
             {getFieldDecorator('terminalType', {
@@ -192,6 +192,7 @@ class CreateStepOne extends PureComponent {
         }).then(res => {
           if (res && res.code === 200) {
             router.push('/portal/contentmanagement/ProjectLibrary');
+            message.success('操作成功');
           }
         });
       } else {

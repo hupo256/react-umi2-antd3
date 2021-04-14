@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-24 20:08:57
+ * @Last Modified time: 2021-04-08 15:05:51
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -49,7 +49,7 @@ class ProjectLibrary extends PureComponent {
         <PageHeaderWrapper>
           <Card bordered={false}>{this.renderSearch()}</Card>
           <Card bordered={false} style={{ marginTop: 16 }}>
-            {permissionsBtn.permissions.includes('BTN210324000027') ? (
+            {permissionsBtn.permissions.includes('BTN210326000050') ? (
               <Button
                 icon="plus"
                 type="primary"
@@ -109,9 +109,9 @@ class ProjectLibrary extends PureComponent {
           onPressEnter={() => {
             this.thSearch();
           }}
-          onBlur={() => {
-            this.thSearch();
-          }}
+          // onBlur={() => {
+          //   this.thSearch();
+          // }}
         />
         <div className={styles.status}>
           <div className={styles.fl}>状态：</div>
@@ -216,7 +216,7 @@ class ProjectLibrary extends PureComponent {
           const permissionsBtn = getauth();
           return (
             <div className="operateWrap">
-              {permissionsBtn.permissions.includes('BTN210324000028') ? (
+              {permissionsBtn.permissions.includes('BTN210326000051') ? (
                 <span
                   className="operateBtn"
                   onClick={() => {
@@ -226,25 +226,37 @@ class ProjectLibrary extends PureComponent {
                   编辑
                 </span>
               ) : null}
-              {permissionsBtn.permissions.includes('BTN210324000029') && r.formStatus !== 0 ? (
+              {permissionsBtn.permissions.includes('BTN210326000051') &&
+                permissionsBtn.permissions.includes('BTN210326000053') &&
+                r.formStatus !== 0 && <span className="operateLine" />}
+              {permissionsBtn.permissions.includes('BTN210326000053') && r.formStatus !== 0 ? (
                 <span>
-                  <span className="operateLine" />
                   <span className="operateBtn" onClick={() => this.handleToggleStatus(r)}>
                     {r.formStatus === 0 || r.formStatus === 2 ? '启用' : '停用'}
                   </span>
                 </span>
               ) : null}
-              {permissionsBtn.permissions.includes('BTN210324000030') && r.formStatus === 0 ? (
+              {permissionsBtn.permissions.includes('BTN210326000052') &&
+                permissionsBtn.permissions.includes('BTN210326000051') &&
+                r.formStatus === 0 && <span className="operateLine" />}
+              {permissionsBtn.permissions.includes('BTN210326000053') &&
+                !permissionsBtn.permissions.includes('BTN210326000053') &&
+                permissionsBtn.permissions.includes('MU90000001000100050001') &&
+                r.formStatus !== 0 && <span className="operateLine" />}
+              {permissionsBtn.permissions.includes('BTN210326000052') && r.formStatus === 0 ? (
                 <span>
-                  <span className="operateLine" />
                   <span className="operateBtn" onClick={() => this.handleDelete(r)}>
                     删除
                   </span>
                 </span>
               ) : null}
-              {permissionsBtn.permissions.includes('BTN210324000031') ? (
+              {permissionsBtn.permissions.includes('MU90000001000100050001') &&
+                ((permissionsBtn.permissions.includes('BTN210326000052') && r.formStatus === 0) ||
+                  permissionsBtn.permissions.includes('BTN210326000051') ||
+                  (permissionsBtn.permissions.includes('BTN210326000053') &&
+                    r.formStatus !== 0)) && <span className="operateLine" />}
+              {permissionsBtn.permissions.includes('MU90000001000100050001') ? (
                 <span>
-                  <span className="operateLine" />
                   <span
                     className="operateBtn"
                     onClick={() => {
@@ -359,21 +371,17 @@ class ProjectLibrary extends PureComponent {
       FormLibrary: { fromData },
     } = this.props;
     const { searchWord } = this.state;
-    if (searchWord.length > 15) {
-      message.error('请输入15字以下的搜索内容');
-    } else {
-      fromData.searchText = searchWord;
-      fromData.pageNum = 1;
-      dispatch({
-        type: 'FormLibrary/saveDataModel',
-        payload: {
-          key: 'fromData',
-          value: fromData,
-        },
-      }).then(() => {
-        this.getList();
-      });
-    }
+    fromData.searchText = (searchWord && searchWord.substring(0, 30)) || '';
+    fromData.pageNum = 1;
+    dispatch({
+      type: 'FormLibrary/saveDataModel',
+      payload: {
+        key: 'fromData',
+        value: fromData,
+      },
+    }).then(() => {
+      this.getList();
+    });
   }
   handleTableChange = pagination => {
     const {

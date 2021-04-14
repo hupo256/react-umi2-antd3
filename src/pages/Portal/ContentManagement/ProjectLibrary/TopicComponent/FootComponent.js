@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-23 18:48:15
+ * @Last Modified time: 2021-04-12 20:09:33
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -101,14 +101,18 @@ class FootComponent extends PureComponent {
                 this.deleteFoot();
               }}
             >
-              <Icon type="close-circle" />
+              <img
+                src="https://test.img.inbase.in-deco.com/crm_saas/dev/20210409/3b91901276824e0da6ff9fc49fe729fb/ic_delete.png"
+                width="20"
+                height="20"
+              />
             </span>
           ) : (
             ''
           )}
         </div>
         {data.checked === 1 ? (
-          <div className={styles.FormWrap}>
+          <div className={styles.FormWrap} style={{ top: 585 }}>
             <div className="clearfix">
               <div className={styles.isList} style={{ width: '100%' }}>
                 表单设置
@@ -183,7 +187,11 @@ class FootComponent extends PureComponent {
                         this.closeColor();
                       }}
                     >
-                      <Icon type="close-circle" />
+                      <img
+                        src="https://test.img.inbase.in-deco.com/crm_saas/dev/20210409/3b91901276824e0da6ff9fc49fe729fb/ic_delete.png"
+                        width="20"
+                        height="20"
+                      />
                     </span>
                   </div>
                 ) : (
@@ -201,7 +209,11 @@ class FootComponent extends PureComponent {
                         this.closeFontColor();
                       }}
                     >
-                      <Icon type="close-circle" />
+                      <img
+                        src="https://test.img.inbase.in-deco.com/crm_saas/dev/20210409/3b91901276824e0da6ff9fc49fe729fb/ic_delete.png"
+                        width="20"
+                        height="20"
+                      />
                     </span>
                   </div>
                 ) : (
@@ -217,7 +229,7 @@ class FootComponent extends PureComponent {
           <FormAdd
             visible={visible}
             title={title}
-            formUid={formUid}
+            //formUid={formUid}
             handleCancel={this.handleCancel}
             handleList={data => {
               this.handleList(data);
@@ -282,9 +294,27 @@ class FootComponent extends PureComponent {
       index,
     } = this.props;
     if (e === '') {
-      this.setState({
-        visible: true,
-      });
+      this.setState(
+        {
+          visible: true,
+        },
+        () => {
+          const {
+            dispatch,
+            ProjectLibrary: { compentList },
+          } = this.props;
+          compentList.map((item, idx) => {
+            compentList[idx].checked = 0;
+          });
+          dispatch({
+            type: 'ProjectLibrary/saveDataModel',
+            payload: {
+              key: 'compentList',
+              value: [...compentList],
+            },
+          });
+        }
+      );
     } else {
       compentList[index].formUid = e;
       dispatch({

@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-24 15:26:17
+ * @Last Modified time: 2021-03-31 14:15:17
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -13,6 +13,7 @@ import _ from 'lodash';
 import { Button, Icon, message, Menu } from 'antd';
 import { DraggableArea } from 'react-draggable-tags';
 import { getQueryUrlVal } from '@/utils/utils';
+import { getauth } from '@/utils/authority';
 import ImgComponent from './TopicComponent/ImgComponent';
 import FootComponent from './TopicComponent/FootComponent';
 import ViewFormComponent from './TopicComponent/ViewFormComponent';
@@ -41,6 +42,10 @@ class ProjectLibrary extends PureComponent {
   componentDidMount() {
     const activeKey = getQueryUrlVal('uid');
     const { dispatch } = this.props;
+    dispatch({
+      type: 'login/setAuthModel',
+      payload: {},
+    });
     dispatch({
       type: 'ProjectLibrary/getCollocationModel',
       payload: {
@@ -95,8 +100,8 @@ class ProjectLibrary extends PureComponent {
     } = this.props;
     const { collapsed, istrue, title } = this.state;
     const auth = JSON.parse(localStorage.getItem('auth'));
-    const bigLogo = (auth && auth.logoBig) || logo;
-    const smallLogo = (auth && auth.logoSmall) || logoImg;
+    const bigLogo = (auth && auth.companyLogoBig) || logo;
+    const smallLogo = (auth && auth.companyLogoSmall) || logoImg;
     let newLog = !collapsed ? bigLogo : smallLogo;
     let open = [];
     let companyPhone = '';
@@ -190,13 +195,14 @@ class ProjectLibrary extends PureComponent {
         />
       );
     });
+    const permissionsBtn = getauth();
     return (
       <div className={styles.topicWrap}>
         <div style={{ width: 256 }} className={styles.logoWrap}>
           <div className={styles.logo}>
             <Link to="/">
               <img src={newLog} alt="logo" style={{ width: 171, height: 38 }} />
-              <h1 style={{ display: 'none' }}>业务后台</h1>
+              <h1 style={{ display: 'none' }}>营销站</h1>
             </Link>
           </div>
           <div className={styles.meg}>
@@ -214,26 +220,30 @@ class ProjectLibrary extends PureComponent {
             )}
           </div>
           <div className={styles.fixedWrap}>
-            <Button
-              type="primary"
-              style={{ width: '100%', height: 38 }}
-              onClick={() => {
-                this.addConfiguration();
-              }}
-            >
-              发布
-            </Button>
-            <div className="clearfix">
-              <span
-                className={styles.logout}
+            {permissionsBtn.permissions.includes('BTN210326000048') ? (
+              <Button
+                type="primary"
+                style={{ width: '100%', height: 38 }}
                 onClick={() => {
-                  this.logoutSave();
+                  this.addConfiguration();
                 }}
               >
-                <Icon type="logout" />
-                退出
-              </span>
-            </div>
+                发布
+              </Button>
+            ) : null}
+            {permissionsBtn.permissions.includes('BTN210326000049') ? (
+              <div className="clearfix">
+                <span
+                  className={styles.logout}
+                  onClick={() => {
+                    this.logoutSave();
+                  }}
+                >
+                  <Icon type="logout" />
+                  退出
+                </span>
+              </div>
+            ) : null}
           </div>
         </div>
         <div className={styles.confcont}>
