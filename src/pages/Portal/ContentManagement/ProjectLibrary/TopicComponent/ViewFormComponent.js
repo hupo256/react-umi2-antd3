@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-09 23:56:00
+ * @Last Modified time: 2021-04-12 21:24:41
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -135,16 +135,39 @@ class ViewFormComponent extends PureComponent {
                   <div className={styles.tit}>字段</div>
                   <div className="clearfix" style={{ width: 144, float: 'left' }}>
                     <div className={styles.FormCont}>{item.paramName}</div>
-                    {item.paramField !== 'trackPhone' ? (
-                      <div
-                        className={styles.dragWraps}
-                        onClick={() => {
-                          this.onDeleteFrom(item, index);
-                        }}
-                      >
-                        <Icon type="delete" />
-                      </div>
-                    ) : null}
+                    <div className={styles.dragWraps}>
+                      {index != 0 ? (
+                        <span
+                          className={styles.dSpan}
+                          onClick={() => {
+                            this.changeOrderUp(index);
+                          }}
+                        >
+                          <Icon type="arrow-up" />
+                        </span>
+                      ) : null}
+                      {index != checkList.length - 1 ? (
+                        <span
+                          className={styles.dSpan}
+                          onClick={() => {
+                            this.changeOrderDown(index);
+                          }}
+                        >
+                          <Icon type="arrow-down" />
+                        </span>
+                      ) : null}
+                      {item.paramField !== 'trackPhone' ? (
+                        <span
+                          className={styles.dSpan}
+                          onClick={() => {
+                            this.onDeleteFrom(item, index);
+                          }}
+                        >
+                          <Icon type="delete" />
+                        </span>
+                      ) : null}
+                    </div>
+                    <div />
                   </div>
                 </div>
                 <div className="clearfix" style={{ marginBottom: 15 }}>
@@ -594,6 +617,40 @@ class ViewFormComponent extends PureComponent {
   }
   cancel(e) {
     console.log(e);
+  }
+  //上移
+  changeOrderUp(index) {
+    const { checkList } = this.state;
+    if (index != 0) {
+      checkList[index] = checkList.splice(index - 1, 1, checkList[index])[0];
+    } else {
+      checkList.push(checkList.shift());
+    }
+    this.setState(
+      {
+        checkList: [...checkList],
+      },
+      () => {
+        this.saveCheckList();
+      }
+    );
+  }
+  //下移
+  changeOrderDown(index) {
+    const { checkList } = this.state;
+    if (index != checkList.length - 1) {
+      checkList[index] = checkList.splice(index + 1, 1, checkList[index])[0];
+    } else {
+      checkList.unshift(checkList.splice(index, 1)[0]);
+    }
+    this.setState(
+      {
+        checkList: [...checkList],
+      },
+      () => {
+        this.saveCheckList();
+      }
+    );
   }
 }
 

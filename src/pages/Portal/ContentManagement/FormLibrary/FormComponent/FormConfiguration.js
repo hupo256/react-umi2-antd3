@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-08 15:16:15
+ * @Last Modified time: 2021-04-12 19:49:07
  * 专题库
  */
 import React, { PureComponent } from 'react';
@@ -115,16 +115,38 @@ class FormConfiguration extends PureComponent {
                   <div className={styles.tit}>字段</div>
                   <div className="clearfix" style={{ width: 144, float: 'left' }}>
                     <div className={styles.FormCont}>{item.paramName}</div>
-                    {item.paramField !== 'trackPhone' ? (
-                      <div
-                        className={styles.dragWraps}
-                        onClick={() => {
-                          this.onDeleteFrom(item, index);
-                        }}
-                      >
-                        <Icon type="delete" />
-                      </div>
-                    ) : null}
+                    <div className={styles.dragWraps}>
+                      {index != 0 ? (
+                        <span
+                          className={styles.dSpan}
+                          onClick={() => {
+                            this.changeOrderUp(index);
+                          }}
+                        >
+                          <Icon type="arrow-up" />
+                        </span>
+                      ) : null}
+                      {index != elementList[1].paramList.length - 1 ? (
+                        <span
+                          className={styles.dSpan}
+                          onClick={() => {
+                            this.changeOrderDown(index);
+                          }}
+                        >
+                          <Icon type="arrow-down" />
+                        </span>
+                      ) : null}
+                      {item.paramField !== 'trackPhone' ? (
+                        <span
+                          className={styles.dSpan}
+                          onClick={() => {
+                            this.onDeleteFrom(item, index);
+                          }}
+                        >
+                          <Icon type="delete" />
+                        </span>
+                      ) : null}
+                    </div>
                   </div>
                 </div>
                 <div className="clearfix" style={{ marginBottom: 15 }}>
@@ -216,7 +238,7 @@ class FormConfiguration extends PureComponent {
                 <img
                   src={elementList[0] && elementList[0].paramList[0].defaultValue}
                   alt="logo"
-                  style={{ width: '100%', height: 300, objectFit: 'cover' }}
+                  style={{ width: '100%', height: 200, objectFit: 'cover' }}
                 />
               </div>
               {showPic ? (
@@ -246,7 +268,7 @@ class FormConfiguration extends PureComponent {
                 <Button
                   type="primary"
                   style={{
-                    width: 200,
+                    width: 260,
                     background: elementList[1] && elementList[1].elementButtonColor,
                     borderColor: elementList[1] && elementList[1].elementButtonColor,
                     color: elementList[1] && elementList[1].elementButtonTextColor,
@@ -523,6 +545,36 @@ class FormConfiguration extends PureComponent {
       onCancel() {
         console.log('Cancel');
       },
+    });
+  }
+  //上移
+  changeOrderUp(index) {
+    const { elementList } = this.state;
+    if (index != 0) {
+      elementList[1].paramList[index] = elementList[1].paramList.splice(
+        index - 1,
+        1,
+        elementList[1].paramList[index]
+      )[0];
+    }
+    this.setState({
+      elementList: [...elementList],
+    });
+  }
+  //下移
+  changeOrderDown(index) {
+    const { elementList } = this.state;
+    if (index != elementList[1].paramList.length - 1) {
+      elementList[1].paramList[index] = elementList[1].paramList.splice(
+        index + 1,
+        1,
+        elementList[1].paramList[index]
+      )[0];
+    } else {
+      elementList[1].paramList.unshift(elementList[1].paramList.splice(index, 1)[0]);
+    }
+    this.setState({
+      elementList: [...elementList],
     });
   }
   handleListChange(e, name, index) {

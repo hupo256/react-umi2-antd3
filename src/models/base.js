@@ -8,6 +8,7 @@ import {
   queryAddr,
   photoImg,
   photoxImg,
+  photoxImage,
   queryUsersByPostFunctionCode,
   getDepartmentList, // 所属部门
   tableHeader, //自定义表头
@@ -302,7 +303,7 @@ export default {
     *photoImg({ payload }, { call }) {
       const response = yield call(photoImg, payload);
       return response;
-    },
+    }
   },
 
   reducers: {
