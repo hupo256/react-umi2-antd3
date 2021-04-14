@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Layout,Icon,Popover ,Button } from 'antd';
+import { Layout, Icon, Popover, Button } from 'antd';
 import pathToRegexp from 'path-to-regexp';
 import classNames from 'classnames';
 import Link from 'umi/link';
@@ -50,10 +50,10 @@ export const getMenuMatchKeys = (flatMenuKeys, paths) =>
     []
   );
 
-  @connect(({ login }) => ({
-    login,
-  }))
-   export default class SiderMenu extends PureComponent {
+@connect(({ login }) => ({
+  login,
+}))
+export default class SiderMenu extends PureComponent {
   constructor(props) {
     super(props);
     this.flatMenuKeys = getFlatMenuKeys(props.menuData);
@@ -96,7 +96,14 @@ export const getMenuMatchKeys = (flatMenuKeys, paths) =>
   };
 
   render() {
-    const { logo, collapsed, onCollapse, fixSiderbar, theme,login:{switchSystemList} } = this.props;
+    const {
+      logo,
+      collapsed,
+      onCollapse,
+      fixSiderbar,
+      theme,
+      login: { switchSystemList },
+    } = this.props;
     const { openKeys } = this.state;
     const defaultProps = collapsed ? {} : { openKeys };
 
@@ -149,7 +156,7 @@ export const getMenuMatchKeys = (flatMenuKeys, paths) =>
               title={null}
               content={
                 <div className={styles.popover}>
-                  {switchSystemList.map((e) => {
+                  {switchSystemList.map(e => {
                     return (
                       <Button
                         key={e.systemCode}
@@ -179,7 +186,7 @@ export const getMenuMatchKeys = (flatMenuKeys, paths) =>
       </Sider>
     );
   }
-  handleSystemRoute = (systemCode) => {
+  handleSystemRoute = systemCode => {
     let token = localStorage.getItem('crmtoken');
     let targetUrl = '';
     switch (systemCode) {
@@ -188,32 +195,32 @@ export const getMenuMatchKeys = (flatMenuKeys, paths) =>
           APP_ENVIRONMENT === 'prod'
             ? `http://control.ingongdi.com/#/user/login?token=${token}`
             : APP_ENVIRONMENT === 'test'
-            ? `http://test_control.ingongdi.com/#/user/login?token=${token}`
-            : `http://dev_control.ingongdi.com/#/user/login?token=${token}`;
+              ? `http://test-control.ingongdi.com/#/user/login?token=${token}`
+              : `http://dev-control.ingongdi.com/#/user/login?token=${token}`;
         break;
       case 'S004':
         targetUrl =
           APP_ENVIRONMENT === 'prod'
             ? `http://admin.ingongdi.com/#/user/login?token=${token}`
             : APP_ENVIRONMENT === 'test'
-            ? `http://test_admin.ingongdi.com/#/user/login?token=${token}`
-            : `http://dev_admin.ingongdi.com/#/user/login?token=${token}`;
+              ? `http://test-admin.ingongdi.com/#/user/login?token=${token}`
+              : `http://dev-admin.ingongdi.com/#/user/login?token=${token}`;
         break;
       case 'S005':
         targetUrl =
           APP_ENVIRONMENT === 'prod'
             ? `http://wechat.ingongdi.com/#/user/login?token=${token}`
             : APP_ENVIRONMENT === 'test'
-            ? `http://test_wechat.ingongdi.com/#/user/login?token=${token}`
-            : `http://dev_wechat.ingongdi.com/#/user/login?token=${token}`;
+              ? `http://test-wechat.ingongdi.com/#/user/login?token=${token}`
+              : `http://dev-wechat.ingongdi.com/#/user/login?token=${token}`;
         break;
       case 'S001':
         targetUrl =
           APP_ENVIRONMENT === 'prod'
             ? `http://sys.ingongdi.com/#/user/login?token=${token}`
             : APP_ENVIRONMENT === 'test'
-            ? `http://test.sys.ingongdi.com/#/user/login?token=${token}`
-            : `http://dev.sys.ingongdi.com/#/user/login?token=${token}`;
+              ? `http://test.sys.ingongdi.com/#/user/login?token=${token}`
+              : `http://dev.sys.ingongdi.com/#/user/login?token=${token}`;
         break;
       default:
         break;
