@@ -6,19 +6,19 @@
  * 轮播图控件
  */
 import React, { useState, useEffect, useContext } from 'react';
-import SwiperCore, { Navigation, Pagination, Virtual, Scrollbar, Autoplay } from 'swiper';
+import SwiperCore, { Pagination, Virtual, Scrollbar, Autoplay } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { ctx } from '../context';
 
 import 'swiper/swiper.less';
-import 'swiper/components/navigation/navigation.less';
+// import 'swiper/components/navigation/navigation.less';
 import 'swiper/components/pagination/pagination.less';
 import 'swiper/components/scrollbar/scrollbar.less';
 import './swiperBar.less';
 import pageStyle from '../../preview/preview.less';
 
 // install Swiper modules
-SwiperCore.use([Navigation, Pagination, Scrollbar, Virtual, Autoplay]);
+SwiperCore.use([Pagination, Scrollbar, Virtual, Autoplay]);
 
 export default function SwiperBar(props) {
   const { pageData } = useContext(ctx);
