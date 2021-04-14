@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:50:21 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-04-14 10:29:53
+ * @Last Modified time: 2021-04-14 15:12:00
  * 文章库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -170,8 +170,8 @@ class ArticleLibrary extends PureComponent {
                 正常
               </span>
               <span
-                onClick={() => this.handleSrarchStatus('2')}
-                className={`tagstatus ${status == '2' && 'tagstatusCur'}`}
+                onClick={() => this.handleSrarchStatus('0')}
+                className={`tagstatus ${status == '0' && 'tagstatusCur'}`}
               >
                 停用
               </span>
@@ -214,8 +214,8 @@ class ArticleLibrary extends PureComponent {
     // });
   };
   callback = step => {
-    this.setState({ step }, () => {
-      this.getList({ articleDicCode: step, pageNum: 1 });
+    this.setState({ step, status: null, searchWord: null }, () => {
+      this.getList({ articleDicCode: step, articleStatus: null, searchText: null, pageNum: 1 });
     });
   };
 
