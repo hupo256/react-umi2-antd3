@@ -7,6 +7,10 @@ import {
   loginCheck,
   loginPassword,
   logout,
+<<<<<<< HEAD
+=======
+  switchSystem,
+>>>>>>> home
 } from '@/services/api';
 import { setAuthority, cleanAuthority, setauth } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
