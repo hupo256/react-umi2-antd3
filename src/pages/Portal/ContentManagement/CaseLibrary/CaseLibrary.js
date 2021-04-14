@@ -229,11 +229,7 @@ class CaseLibrary extends PureComponent {
   };
   handleSrarch = () => {
     const { searchWord } = this.state;
-<<<<<<< HEAD
-    this.getList({ searchWord, pageNum: 1 });
-=======
     this.getList({ searchWord: searchWord && searchWord.substring(0, 30), pageNum: 1 });
->>>>>>> home
   };
 
   // 分页
