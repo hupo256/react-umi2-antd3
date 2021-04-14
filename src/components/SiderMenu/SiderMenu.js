@@ -1,11 +1,12 @@
 import React, { PureComponent } from 'react';
-import { Layout } from 'antd';
+import { Layout,Icon,Popover ,Button } from 'antd';
 import pathToRegexp from 'path-to-regexp';
 import classNames from 'classnames';
 import Link from 'umi/link';
 import styles from './index.less';
 import BaseMenu, { getMenuMatches } from './BaseMenu';
 import { urlToList } from '../_utils/pathTools';
+import { connect } from 'dva';
 
 const { Sider } = Layout;
 
@@ -49,7 +50,10 @@ export const getMenuMatchKeys = (flatMenuKeys, paths) =>
     []
   );
 
-export default class SiderMenu extends PureComponent {
+  @connect(({ login }) => ({
+    login,
+  }))
+   export default class SiderMenu extends PureComponent {
   constructor(props) {
     super(props);
     this.flatMenuKeys = getFlatMenuKeys(props.menuData);
@@ -57,7 +61,12 @@ export default class SiderMenu extends PureComponent {
       openKeys: getDefaultCollapsedSubMenus(props),
     };
   }
-
+  componentDidMount() {
+    this.props.dispatch({
+      type: 'login/switchSystemModel',
+      payload: {},
+    });
+  }
   static getDerivedStateFromProps(props, state) {
     const { pathname } = state;
     if (props.location.pathname !== pathname) {
@@ -87,7 +96,7 @@ export default class SiderMenu extends PureComponent {
   };
 
   render() {
-    const { logo, collapsed, onCollapse, fixSiderbar, theme } = this.props;
+    const { logo, collapsed, onCollapse, fixSiderbar, theme,login:{switchSystemList} } = this.props;
     const { openKeys } = this.state;
     const defaultProps = collapsed ? {} : { openKeys };
 
@@ -119,7 +128,7 @@ export default class SiderMenu extends PureComponent {
               alt="logo"
               style={!collapsed ? { width: 171, height: 38 } : { width: 38, height: 38 }}
             />
-            <h1 style={{ display: 'none' }}>业务后台</h1>
+            <h1 style={{ display: 'none' }}>营销站</h1>
           </Link>
         </div>
         <BaseMenu
@@ -127,10 +136,90 @@ export default class SiderMenu extends PureComponent {
           mode="inline"
           handleOpenChange={this.handleOpenChange}
           onOpenChange={this.handleOpenChange}
-          style={{ padding: '16px 0', width: '100%' }}
+          style={{ padding: 0, width: '100%' }}
           {...defaultProps}
         />
+        {!collapsed && (
+          <div className={styles.footerSwitcher}>
+            <span className={styles.iconWrapper}>
+              <Icon type="swap" theme="outlined" />
+            </span>
+            <Popover
+              placement="top"
+              title={null}
+              content={
+                <div className={styles.popover}>
+                  {switchSystemList.map((e) => {
+                    return (
+                      <Button
+                        key={e.systemCode}
+                        className={e.systemCode === 'S005' ? 'active' : ''}
+                        size={'small'}
+                        onClick={() => {
+                          if (e.systemCode === 'S005') {
+                            return;
+                          }
+                          this.handleSystemRoute(e.systemCode);
+                        }}
+                        type={'link'}
+                      >
+                        {e.systemName}
+                      </Button>
+                    );
+                  })}
+                </div>
+              }
+              trigger="click"
+            >
+              <span className={styles.btn}>切换系统</span>
+            </Popover>
+            <span>营销站</span>
+          </div>
+        )}
       </Sider>
     );
   }
+  handleSystemRoute = (systemCode) => {
+    let token = localStorage.getItem('crmtoken');
+    let targetUrl = '';
+    switch (systemCode) {
+      case 'S003':
+        targetUrl =
+          APP_ENVIRONMENT === 'prod'
+            ? `http://control.ingongdi.com/#/user/login?token=${token}`
+            : APP_ENVIRONMENT === 'test'
+            ? `http://test_control.ingongdi.com/#/user/login?token=${token}`
+            : `http://dev_control.ingongdi.com/#/user/login?token=${token}`;
+        break;
+      case 'S004':
+        targetUrl =
+          APP_ENVIRONMENT === 'prod'
+            ? `http://admin.ingongdi.com/#/user/login?token=${token}`
+            : APP_ENVIRONMENT === 'test'
+            ? `http://test_admin.ingongdi.com/#/user/login?token=${token}`
+            : `http://dev_admin.ingongdi.com/#/user/login?token=${token}`;
+        break;
+      case 'S005':
+        targetUrl =
+          APP_ENVIRONMENT === 'prod'
+            ? `http://wechat.ingongdi.com/#/user/login?token=${token}`
+            : APP_ENVIRONMENT === 'test'
+            ? `http://test_wechat.ingongdi.com/#/user/login?token=${token}`
+            : `http://dev_wechat.ingongdi.com/#/user/login?token=${token}`;
+        break;
+      case 'S001':
+        targetUrl =
+          APP_ENVIRONMENT === 'prod'
+            ? `http://sys.ingongdi.com/#/user/login?token=${token}`
+            : APP_ENVIRONMENT === 'test'
+            ? `http://test.sys.ingongdi.com/#/user/login?token=${token}`
+            : `http://dev.sys.ingongdi.com/#/user/login?token=${token}`;
+        break;
+      default:
+        break;
+    }
+    if (targetUrl) {
+      window.location.href = targetUrl;
+    }
+  };
 }

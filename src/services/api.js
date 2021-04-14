@@ -139,7 +139,15 @@ export async function loginPassword(params) {
 
 export async function logout(params) {
   //退出登录
-  return request(baseurl + '/api/v1/saas/login/logout', {
+  return request(baseurl + '/api/v1/sso/login/out', {
+    method: 'POST',
+    body: params,
+  });
+}
+
+// 切换开通的系统
+export async function switchSystem(params) {
+  return request(baseurl + '/api/v1/sso/systemcompany/switchSystem', {
     method: 'POST',
     body: params,
   });

@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-13 15:41:08
+ * @Last Modified time: 2021-04-09 18:03:16
  * 创建工地
  */
 import React, { PureComponent } from 'react';
@@ -60,7 +60,11 @@ class ImgComponent extends PureComponent {
               this.deletePic();
             }}
           >
-            <Icon type="close-circle" />
+            <img
+              src="https://test.img.inbase.in-deco.com/crm_saas/dev/20210409/3b91901276824e0da6ff9fc49fe729fb/ic_delete.png"
+              width="20"
+              height="20"
+            />
           </span>
         ) : (
           ''

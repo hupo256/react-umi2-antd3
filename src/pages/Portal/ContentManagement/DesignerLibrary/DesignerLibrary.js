@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:49:12 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-19 17:12:34
+ * @Last Modified time: 2021-04-08 11:17:23
  * 设计师库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -12,6 +12,7 @@ import { Card, Button, Icon, Divider, Table, Input, message, Modal } from 'antd'
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { paginations, getUrl, successIcon, waringInfo } from '@/utils/utils';
 import styles from './DesignerLibrary.less';
+import { getauth } from '@/utils/authority';
 const { confirm } = Modal;
 const { Search } = Input;
 
@@ -32,7 +33,11 @@ class DesignerLibrary extends PureComponent {
     const {
       DesignerLibrary: { DesignerListQuery },
     } = this.props;
-    this.getList({ pageNum: 1,...DesignerListQuery });
+    this.setState({
+      searchWord: DesignerListQuery.searchWord,
+      status: DesignerListQuery.status,
+    });
+    this.getList({ pageNum: 1, ...DesignerListQuery });
   }
 
   render() {
@@ -40,6 +45,7 @@ class DesignerLibrary extends PureComponent {
       Loading,
       DesignerLibrary: { DesignerList },
     } = this.props;
+    const permissionsBtn = getauth().permissions || [];
     const columns = [
       {
         title: '设计师',
@@ -60,6 +66,7 @@ class DesignerLibrary extends PureComponent {
       {
         title: '擅长风格',
         dataIndex: 'styles',
+        width: 125,
         render: (t, r) => {
           return t.map((item, i) => {
             return (
@@ -120,18 +127,24 @@ class DesignerLibrary extends PureComponent {
         render: (t, r) => {
           return (
             <div className="operateWrap">
-              <span
-                className="operateBtn"
-                onClick={() =>
-                  router.push(`/portal/contentmanagement/designerlibrary/edit?uid=${r.uid}`)
-                }
-              >
-                编辑
-              </span>
-              <span className="operateLine" />
-              <span className="operateBtn" onClick={() => this.handleChangeStatus(r)}>
-                {r.status === '1' ? '停用' : '启用'}{' '}
-              </span>
+              {permissionsBtn.includes('BTN210326000042') && (
+                <span
+                  className="operateBtn"
+                  onClick={() =>
+                    router.push(`/portal/contentmanagement/designerlibrary/edit?uid=${r.uid}`)
+                  }
+                  style={{ padding: '6px 0 6px 10px' }}
+                >
+                  编辑
+                </span>
+              )}
+              {permissionsBtn.includes('BTN210326000042') &&
+                permissionsBtn.includes('BTN210326000043') && <span className="operateLine" />}
+              {permissionsBtn.includes('BTN210326000043') && (
+                <span className="operateBtn" onClick={() => this.handleChangeStatus(r)}>
+                  {r.status === '1' ? '停用' : '启用'}{' '}
+                </span>
+              )}
             </div>
           );
         },
@@ -148,7 +161,7 @@ class DesignerLibrary extends PureComponent {
               onChange={e => this.setState({ searchWord: e.target.value })}
               onSearch={value => this.handleSrarch()}
               onPressEnter={() => this.handleSrarch()}
-              onBlur={() => this.handleSrarch()}
+              // onBlur={() => this.handleSrarch()}
               style={{ width: 600 }}
             />
             <Divider dashed />
@@ -175,15 +188,17 @@ class DesignerLibrary extends PureComponent {
             </p>
           </Card>
           <Card bordered={false} style={{ marginTop: 20 }}>
-            <Button
-              type="primary"
-              onClick={() => {
-                router.push(`/portal/contentmanagement/designerlibrary/add`);
-              }}
-            >
-              <Icon type="plus" />
-              创建设计师
-            </Button>
+            {permissionsBtn.includes('BTN210326000041') && (
+              <Button
+                type="primary"
+                onClick={() => {
+                  router.push(`/portal/contentmanagement/designerlibrary/add`);
+                }}
+              >
+                <Icon type="plus" />
+                创建设计师
+              </Button>
+            )}
             <Table
               loading={Loading}
               style={{ marginTop: 20 }}
@@ -200,12 +215,12 @@ class DesignerLibrary extends PureComponent {
   }
   handleSrarchStatus = status => {
     this.setState({ status }, () => {
-      this.getList({ status,pageNum:1 });
+      this.getList({ status, pageNum: 1 });
     });
   };
   handleSrarch = () => {
     const { searchWord } = this.state;
-    this.getList({ searchWord,pageNum:1 });
+    this.getList({ searchWord: (searchWord && searchWord.substring(0, 30)) || '', pageNum: 1 });
   };
   // 修改设计师状态
   handleChangeStatus = r => {
@@ -225,7 +240,7 @@ class DesignerLibrary extends PureComponent {
           type: 'DesignerLibrary/updateStatusModel',
           payload: { uid: r.uid, status: r.status == '1' ? '2' : '1' },
         }).then(res => {
-          if (res.code === 200) {
+          if (res && res.code === 200) {
             message.success(`${r.status == '1' ? '停用' : '启用'}成功`);
             that.getList({});
           }

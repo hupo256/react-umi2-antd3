@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-18 15:13:39
+ * @Last Modified time: 2021-03-31 14:15:17
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -10,9 +10,10 @@ import { connect } from 'dva';
 import router from 'umi/router';
 import Link from 'umi/link';
 import _ from 'lodash';
-import { Card, Button, Icon, Row, Col, Input, message, Menu } from 'antd';
+import { Button, Icon, message, Menu } from 'antd';
 import { DraggableArea } from 'react-draggable-tags';
 import { getQueryUrlVal } from '@/utils/utils';
+import { getauth } from '@/utils/authority';
 import ImgComponent from './TopicComponent/ImgComponent';
 import FootComponent from './TopicComponent/FootComponent';
 import ViewFormComponent from './TopicComponent/ViewFormComponent';
@@ -21,7 +22,7 @@ import logo from '../../../../assets/whiteLog.png';
 import logoImg from '../../../../assets/logoImg.png';
 const { SubMenu } = Menu;
 let pointX, pointY;
-@connect(({ ProjectLibrary, loading }) => ({
+@connect(({ ProjectLibrary }) => ({
   ProjectLibrary,
 }))
 class ProjectLibrary extends PureComponent {
@@ -41,6 +42,10 @@ class ProjectLibrary extends PureComponent {
   componentDidMount() {
     const activeKey = getQueryUrlVal('uid');
     const { dispatch } = this.props;
+    dispatch({
+      type: 'login/setAuthModel',
+      payload: {},
+    });
     dispatch({
       type: 'ProjectLibrary/getCollocationModel',
       payload: {
@@ -95,14 +100,16 @@ class ProjectLibrary extends PureComponent {
     } = this.props;
     const { collapsed, istrue, title } = this.state;
     const auth = JSON.parse(localStorage.getItem('auth'));
-    const bigLogo = (auth && auth.logoBig) || logo;
-    const smallLogo = (auth && auth.logoSmall) || logoImg;
+    const bigLogo = (auth && auth.companyLogoBig) || logo;
+    const smallLogo = (auth && auth.companyLogoSmall) || logoImg;
     let newLog = !collapsed ? bigLogo : smallLogo;
     let open = [];
+    let companyPhone = '';
     let arr =
       elementTree &&
       elementTree.map((item, index) => {
         open.push(`${index}`);
+        companyPhone = item.companyPhone;
         let childern =
           item.elementList &&
           item.elementList.map((ite, idx) => {
@@ -165,6 +172,7 @@ class ProjectLibrary extends PureComponent {
                 data={item}
                 index={index}
                 handleCheck={data => this.handleCheck(data)}
+                companyPhone={companyPhone}
                 handleColor={(data, index, code) => this.handleColor(data, index, code)}
                 handleDeleteFoot={data => this.handleDeletePic(data)}
               />
@@ -187,13 +195,14 @@ class ProjectLibrary extends PureComponent {
         />
       );
     });
+    const permissionsBtn = getauth();
     return (
       <div className={styles.topicWrap}>
         <div style={{ width: 256 }} className={styles.logoWrap}>
           <div className={styles.logo}>
             <Link to="/">
               <img src={newLog} alt="logo" style={{ width: 171, height: 38 }} />
-              <h1 style={{ display: 'none' }}>业务后台</h1>
+              <h1 style={{ display: 'none' }}>营销站</h1>
             </Link>
           </div>
           <div className={styles.meg}>
@@ -211,26 +220,30 @@ class ProjectLibrary extends PureComponent {
             )}
           </div>
           <div className={styles.fixedWrap}>
-            <Button
-              type="primary"
-              style={{ width: '100%', height: 38 }}
-              onClick={() => {
-                this.addConfiguration();
-              }}
-            >
-              发布
-            </Button>
-            <div className="clearfix">
-              <span
-                className={styles.logout}
+            {permissionsBtn.permissions.includes('BTN210326000048') ? (
+              <Button
+                type="primary"
+                style={{ width: '100%', height: 38 }}
                 onClick={() => {
-                  this.logoutSave();
+                  this.addConfiguration();
                 }}
               >
-                <Icon type="logout" />
-                退出
-              </span>
-            </div>
+                发布
+              </Button>
+            ) : null}
+            {permissionsBtn.permissions.includes('BTN210326000049') ? (
+              <div className="clearfix">
+                <span
+                  className={styles.logout}
+                  onClick={() => {
+                    this.logoutSave();
+                  }}
+                >
+                  <Icon type="logout" />
+                  退出
+                </span>
+              </div>
+            ) : null}
           </div>
         </div>
         <div className={styles.confcont}>
@@ -437,41 +450,70 @@ class ProjectLibrary extends PureComponent {
       ProjectLibrary: { compentList },
     } = this.props;
     if (compentList.length > 0) {
-      // let isTrue = 0;
-      // console.log(compentList);
-      // compentList.map((item, index) => {
-      //   if (item) {
+      let isTrue = 0;
+      let isTrueM = 0;
+      let isTrueF = 0;
+      let formUid = '';
+      compentList.map((item, index) => {
+        if (item.elementType === 'IMG') {
+          isTrue = 1;
+        }
 
-      //   }
-      // });
-      dispatch({
-        type: 'ProjectLibrary/specialCollocateModel',
-        payload: {
-          elementList: compentList,
-          specialUid: getQueryUrlVal('uid'),
-          saveType: 1,
-        },
-      }).then(res => {
-        if (res && res.code === 200) {
-          dispatch({
-            type: 'ProjectLibrary/saveDataModel',
-            payload: {
-              key: 'uspecialUrlData',
-              value: res.data,
-            },
-          });
-          dispatch({
-            type: 'ProjectLibrary/saveDataModel',
-            payload: {
-              key: 'status',
-              value: 2,
-            },
-          });
-          router.push('/portal/contentmanagement/ProjectLibrary/add');
+        if (item.elementType === 'MODAL') {
+          if (item.formUid) {
+            isTrueF = 1;
+            formUid = item.formUid;
+          }
+          isTrueM = 1;
         }
       });
+      if (isTrue === 0) {
+        return message.error('请添加图片广告组件');
+      }
+      if (isTrueM === 0) {
+        return message.error('请添加常驻底部组件');
+      }
+      if (isTrueF === 0) {
+        return message.error('请绑定浮窗表单');
+      }
+      if (isTrue === 1 && isTrueM === 1 && isTrueF === 1) {
+        dispatch({
+          type: 'ProjectLibrary/formBindModel',
+          payload: {
+            directType: 4,
+            directUid: getQueryUrlVal('uid'),
+            formUid: formUid,
+          },
+        });
+        dispatch({
+          type: 'ProjectLibrary/specialCollocateModel',
+          payload: {
+            elementList: compentList,
+            specialUid: getQueryUrlVal('uid'),
+            saveType: 1,
+          },
+        }).then(res => {
+          if (res && res.code === 200) {
+            dispatch({
+              type: 'ProjectLibrary/saveDataModel',
+              payload: {
+                key: 'uspecialUrlData',
+                value: res.data,
+              },
+            });
+            dispatch({
+              type: 'ProjectLibrary/saveDataModel',
+              payload: {
+                key: 'status',
+                value: 2,
+              },
+            });
+            router.push('/portal/contentmanagement/ProjectLibrary/add');
+          }
+        });
+      }
     } else {
-      message.error('请添加内容');
+      message.error('请添加组件');
     }
   }
   logoutSave() {
@@ -479,23 +521,37 @@ class ProjectLibrary extends PureComponent {
       dispatch,
       ProjectLibrary: { compentList },
     } = this.props;
-    if (compentList.length > 0) {
-      dispatch({
-        type: 'ProjectLibrary/specialCollocateModel',
-        payload: {
-          elementList: compentList,
-          specialUid: getQueryUrlVal('uid'),
-          saveType: 2,
-        },
-      }).then(res => {
-        if (res && res.code === 200) {
-          message.success('保存成功');
-          router.push('/portal/contentmanagement/ProjectLibrary');
+    let formUid = '';
+    compentList.map((item, index) => {
+      if (item.elementType === 'MODAL') {
+        if (item.formUid) {
+          formUid = item.formUid;
         }
+      }
+    });
+    if (formUid && formUid !== '') {
+      dispatch({
+        type: 'ProjectLibrary/formBindModel',
+        payload: {
+          directType: 4,
+          directUid: getQueryUrlVal('uid'),
+          formUid: formUid,
+        },
       });
-    } else {
-      message.error('请添加内容');
     }
+    dispatch({
+      type: 'ProjectLibrary/specialCollocateModel',
+      payload: {
+        elementList: compentList,
+        specialUid: getQueryUrlVal('uid'),
+        saveType: 2,
+      },
+    }).then(res => {
+      if (res && res.code === 200) {
+        message.success('保存成功');
+        router.push('/portal/contentmanagement/ProjectLibrary');
+      }
+    });
   }
 }
 

@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-18 16:39:42 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-09 15:44:39
+ * @Last Modified time: 2021-04-07 16:47:18
  * 创建设计师
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -110,20 +110,20 @@ class DesignerLibraryEdit extends PureComponent {
                   ],
                 })(<Input style={{ width: 400 }} placeholder="请输入设计师姓名" />)}
               </Form.Item>
-              <Form.Item label="联系方式">
+              <Form.Item label="联系电话">
                 {getFieldDecorator('mobile', {
                   initialValue: DesignerDetail.mobile,
                   rules: [
                     {
                       required: true,
-                      message: '请输入联系方式',
+                      message: '请输入联系电话',
                     },
                     {
                       pattern: regExpConfig.phone,
                       message: '手机号码格式不正确!',
                     },
                   ],
-                })(<Input style={{ width: 400 }} placeholder="请输入联系方式" />)}
+                })(<Input style={{ width: 400 }} placeholder="请输入联系电话" />)}
               </Form.Item>
               <Form.Item label="职级">
                 {getFieldDecorator('position', {
@@ -166,7 +166,16 @@ class DesignerLibraryEdit extends PureComponent {
                     },
                   ],
                 })(
-                  <Select mode="multiple" style={{ width: 400 }} placeholder="请选择擅长风格">
+                  <Select
+                    mode="multiple"
+                    showSearch
+                    filterOption={(input, option) => {
+                      return option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+                    }}
+                    onChange={value => this.handleChange(value)}
+                    style={{ width: 400 }}
+                    placeholder="请选择擅长风格"
+                  >
                     {dicData &&
                       dicData['DM002'] &&
                       dicData['DM002'].map(item => {
@@ -225,7 +234,14 @@ class DesignerLibraryEdit extends PureComponent {
                             >
                               <Icon type="eye" />
                             </span>
-                            <span onClick={() => this.setState({ coverImg: null })}>
+                            <span
+                              onClick={() => {
+                                this.props.form.setFieldsValue({
+                                  headPicUrl: '',
+                                });
+                                this.setState({ coverImg: null });
+                              }}
+                            >
                               <Icon type="delete" />
                             </span>
                           </div>
@@ -302,6 +318,18 @@ class DesignerLibraryEdit extends PureComponent {
     );
   }
 
+  handleChange = value => {
+    if (value.length < 4) {
+      this.props.form.setFieldsValue({
+        styleDicCodes: value,
+      });
+    } else {
+      message.info('最多支持选择3个');
+      this.props.form.setFieldsValue({
+        styleDicCodes: value,
+      });
+    }
+  };
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
@@ -310,6 +338,10 @@ class DesignerLibraryEdit extends PureComponent {
       const { headPicUrl } = this.state;
       const { dispatch } = this.props;
       // createDesignerModel
+      if (values.styleDicCodes.length > 3) {
+        message.error('擅长风格最多支持选择3个');
+        return false;
+      }
       dispatch({
         type: 'DesignerLibrary/createDesignerModel',
         payload: {
@@ -319,13 +351,6 @@ class DesignerLibraryEdit extends PureComponent {
       }).then(res => {
         message.success('编辑成功');
         history.go(-1);
-        // this.setState({ submitLoading: false });
-        // if (res && res.code === 200) {
-        //   // 清空缓存内容
-        //   this.clearCache();
-        //   // 跳转到详情页
-        //   router.push(`/project/info/projectinformation?uid=${res.data.uid}`);
-        // }
       });
     });
   };

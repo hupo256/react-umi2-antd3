@@ -9,6 +9,7 @@ import {
   specialRemove, //删除专题
   elementTree, //组件
   formList, //表单列表
+  formBind,
 } from '@/services/ProjectLibrary';
 
 export default {
@@ -21,7 +22,7 @@ export default {
     collocationDetail: {},
     elementTree: [],
     compentList: [],
-    status: 1,
+    status: 0,
     fromData: {
       pageNum: 1,
       pageSize: 10,
@@ -112,9 +113,23 @@ export default {
       });
       return response;
     },
+    // 组件
+    *elementTreeModels({ payload }, { call, put }) {
+      const response = yield call(elementTree, {
+        ...payload,
+      });
+      return response;
+    },
     // 表单列表
     *formListModel({ payload }, { call, put }) {
       const response = yield call(formList, {
+        ...payload,
+      });
+      return response;
+    },
+    // 绑定表单
+    *formBindModel({ payload }, { call, put }) {
+      const response = yield call(formBind, {
         ...payload,
       });
       return response;

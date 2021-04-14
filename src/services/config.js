@@ -2,7 +2,7 @@ let url = '';
 switch (APP_ENVIRONMENT) {
   case 'prod': // 正式
     console.log = function() {};
-    url = 'http://gateway.ingongdi.com';
+    url = 'https://gateway.ingongdi.com';
     break;
   case 'pre': // 灰度
     console.log = function() {};

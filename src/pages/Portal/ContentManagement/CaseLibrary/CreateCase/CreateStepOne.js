@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-19 16:11:23
+ * @Last Modified time: 2021-04-09 17:46:40
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -42,6 +42,9 @@ class CreateStepOne extends PureComponent {
     bathroom: 0,
     name: null,
     disabled: [],
+    designerUid: [],
+    designerList: [],
+    disabledDesigner: '',
   };
 
   componentDidMount() {
@@ -56,23 +59,32 @@ class CreateStepOne extends PureComponent {
         this.setState({ disabled });
       }
     });
-    dispatch({
-      type: 'DesignerLibrary/queryDesignerListModel',
-      payload: { pageNum: -1 },
-    });
 
     const { stepOne } = this.props.CaseLibrary;
 
-    console.log('=stepOne===================================');
-    console.log(stepOne);
-    console.log('====================================');
     ['bedroom', 'liveroom', 'kitchen', 'bathroom'].forEach(item => {
       this.setState({ [item]: (stepOne && stepOne[item]) || 0 });
+    });
+    this.setState({ designerUid: stepOne.designerUid });
+    dispatch({
+      type: 'DesignerLibrary/queryDesignerListModel',
+      payload: { pageNum: -1 },
+    }).then(res => {
+      if (res && res.code === 200) {
+        const designerList = res.data.list.filter(
+          items => items.uid === stepOne.designerUid || items.status === '1'
+        );
+        const disabledDesigner = designerList.filter(item => item.uid === stepOne.designerUid);
+        this.setState({
+          designerList,
+          disabledDesigner: (disabledDesigner.length>0 && disabledDesigner[0].uid) || '',
+        });
+      }
     });
   }
 
   render() {
-    const { status, name, disabled } = this.state;
+    const { status, name, disabled, designerUid, designerList, disabledDesigner } = this.state;
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
@@ -134,25 +146,29 @@ class CreateStepOne extends PureComponent {
           </Form.Item>
           <Form.Item label="设计师">
             {getFieldDecorator('designerUid', {
-              initialValue: stepOne.designerUid || [],
+              initialValue: designerUid || [],
               rules: [{ required: true, message: '请选择设计师' }],
             })(
-              <Select 
-              showSearch 
-              style={{ width: 400 }} 
-              placeholder="请输入设计师姓名进行检索" 
-              filterOption={(input, option) =>{
-               return option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-              }>
-                {DesignerList &&
-                  DesignerList.list &&
-                  DesignerList.list.map(item => {
-                    return (
-                      <Option value={item.uid} key={item.uid}>
-                        {item.name}
-                      </Option>
-                    );
-                  })}
+              <Select
+                style={{ width: 400 }}
+                placeholder="请选择设计师"
+                showSearch
+                onChange={this.handleChange}
+                filterOption={(input, option) => {
+                  return option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+                }}
+              >
+                {designerList.map(item => {
+                  return (
+                    <Option
+                      value={item.uid}
+                      key={item.uid}
+                      disabled={item.uid === disabledDesigner}
+                    >
+                      {item.name}
+                    </Option>
+                  );
+                })}
               </Select>
             )}
           </Form.Item>
@@ -229,6 +245,7 @@ class CreateStepOne extends PureComponent {
                         onMouseUp={this.lockClose}
                       >
                         <Input
+                          value={this.state.name}
                           onChange={e => {
                             this.setState({ name: e.target.value });
                           }}
@@ -284,12 +301,13 @@ class CreateStepOne extends PureComponent {
                 },
               ],
             })(
-                <InputNumber className="depFormInputAfter"
-                  formatter={limitDecimals}
-                  parser={limitDecimals}
-                  style={{ width: 400 }}
-                  placeholder="请输入装修造价（万元）"
-                />
+              <InputNumber
+                className="depFormInputAfter"
+                formatter={limitDecimals}
+                parser={limitDecimals}
+                style={{ width: 400 }}
+                placeholder="请输入装修造价（万元）"
+              />
             )}
           </Form.Item>
 
@@ -322,6 +340,12 @@ class CreateStepOne extends PureComponent {
       </div>
     );
   }
+  handleChange = value => {
+    this.setState({ designerUid: value });
+    this.props.form.setFieldsValue({
+      designerUid: value,
+    });
+  };
   handleHouseTypeSelect = (value, name) => {
     this.setState({ [name]: value });
   };
@@ -363,7 +387,7 @@ class CreateStepOne extends PureComponent {
           this.props.form.setFieldsValue({
             styleDicCode: res.data.code,
           });
-          this.setState({ open: false });
+          this.setState({ open: false, name: null });
         }
       });
     }

@@ -1,5 +1,7 @@
 import { queryNotices, feedbackAdd, isShow } from '@/services/api';
+import { getQueryUrlVal } from '@/utils/utils';
 
+import { setAuthority } from '@/utils/authority';
 export default {
   namespace: 'global',
 
@@ -63,13 +65,22 @@ export default {
   },
 
   subscriptions: {
-    setup({ history }) {
+    setup({ dispatch,history }) {
       // Subscribe history(url) change, trigger `load` action if pathname is `/`
       return history.listen(({ pathname, search }) => {
+        let tok = getQueryUrlVal('token');
+          if (tok) {
+            setAuthority(tok);
+            dispatch({
+              type: 'login/loginTs',
+              payload: {},
+            });
+          }
         if (typeof window.ga !== 'undefined') {
           window.ga('send', 'pageview', pathname + search);
         }
       });
     },
   },
+
 };

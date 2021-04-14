@@ -1,8 +1,8 @@
 /*
  * @Author: pengyc 
  * @Date: 2020-03-02 16:31:12 
- * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-02-23 18:07:43
+ * @Last Modified by: zqm
+ * @Last Modified time: 2021-04-08 15:09:47
  * 日志组件头部信息
  */
 import React, { Component } from 'react';
@@ -374,7 +374,7 @@ class CommentWrap extends Component {
         type: 'ProjectDaily/CommentPushModel',
         payload,
       }).then(res => {
-        if (res.code === 200) {
+        if (res && res.code === 200) {
           dispatch({
             type: dispatchData.queryList,
             payload: dispatchData.payload,

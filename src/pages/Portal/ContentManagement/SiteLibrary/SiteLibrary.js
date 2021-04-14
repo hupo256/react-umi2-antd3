@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:47:07 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-19 17:22:59
+ * @Last Modified time: 2021-04-13 18:45:39
  * 工地库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -13,6 +13,7 @@ import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { paginations, getUrl, successIcon, waringInfo } from '@/utils/utils';
 import styles from './SiteLibrary.less';
 import DynamicAdd from './DynamicAdd';
+import { getauth } from '@/utils/authority';
 import FromProjectModel from './FromProjectModel';
 const { confirm } = Modal;
 const { Search } = Input;
@@ -30,7 +31,7 @@ class SiteLibrary extends PureComponent {
       record: null,
       porjectVisible: false,
       searchWord: null,
-      pageNum:1
+      pageNum: 1,
     };
   }
 
@@ -38,17 +39,25 @@ class SiteLibrary extends PureComponent {
     const {
       SiteLibrary: { siteListQuery },
     } = this.props;
-    this.setState({status:siteListQuery.gongdiStatus||null,pageNum:siteListQuery.pageNum||1},()=>{
-      
-    this.getList({ pageNum: this.state.pageNum });
-    })
+
+    this.setState(
+      {
+        searchWord: siteListQuery.searchText,
+        status: siteListQuery.gongdiStatus || null,
+        pageNum: siteListQuery.pageNum || 1,
+      },
+      () => {
+        this.getList({ pageNum: this.state.pageNum });
+      }
+    );
   }
 
   render() {
     const { status, visible, record, porjectVisible } = this.state;
     const {
-      SiteLibrary: { siteList,siteListQuery },
+      SiteLibrary: { siteList, siteListQuery },
     } = this.props;
+    const permissionsBtn = getauth().permissions || [];
 
     const columns = [
       {
@@ -113,44 +122,73 @@ class SiteLibrary extends PureComponent {
         render: (t, r) => {
           return (
             <div className="operateWrap">
-              <span
-                className="operateBtn"
-                onClick={() =>
-                  this.setState({ record: r }, () => {
-                    this.setState({ visible: true });
-                  })
-                }
-              >
-                创建动态
-              </span>
-              <span className="operateLine" />
-              <span
-                className="operateBtn"
-                onClick={() => {
-                  router.push(`/portal/contentmanagement/sitelibrary/edit?uid=${r.gongdiUid}`);
-                }}
-              >
-                编辑{' '}
-              </span>
-              <span className="operateLine" />
-              <span className="operateBtn" onClick={() => this.handleToggleStatus(r)}>
-                {r.gongdiStatus === 1 ? '启用' : '停用'}{' '}
-              </span>
-              <span className="operateLine" />
-              <span
-                className="operateBtn"
-                onClick={() => {
-                  router.push(`/portal/contentmanagement/sitelibrary/dynamic?uid=${r.gongdiUid}&status=${r.gongdiStage}`);
-                }}
-              >
-                工地动态
-              </span>
+              {permissionsBtn.includes('BTN210326000036') && (
+                <span
+                  className="operateBtn"
+                  onClick={() =>
+                    this.props
+                      .dispatch({
+                        type: 'SiteLibrary/dynamicStatusModel',
+                        payload: { gongdiUid: r.gongdiUid },
+                      })
+                      .then(res => {
+                        if (res && res.code === 200) {
+                          // this.setState({status:res.data.value,visible: true})
+                          this.setState({ record: { ...r, gongdiStage: res.data.value } }, () => {
+                            this.setState({ visible: true });
+                          });
+                        }
+                      })
+                  }
+                >
+                  创建动态
+                </span>
+              )}
+              {permissionsBtn.includes('BTN210326000036') &&
+                permissionsBtn.includes('BTN210326000037') && <span className="operateLine" />}
+              {permissionsBtn.includes('BTN210326000037') && (
+                <span
+                  className="operateBtn"
+                  onClick={() => {
+                    router.push(`/portal/contentmanagement/sitelibrary/edit?uid=${r.gongdiUid}`);
+                  }}
+                >
+                  编辑{' '}
+                </span>
+              )}
+              {(permissionsBtn.includes('BTN210326000036') ||
+                permissionsBtn.includes('BTN210326000037')) &&
+                permissionsBtn.includes('BTN210326000038') && <span className="operateLine" />}
+              {permissionsBtn.includes('BTN210326000038') && (
+                <span className="operateBtn" onClick={() => this.handleToggleStatus(r)}>
+                  {r.gongdiStatus === 1 ? '启用' : '停用'}{' '}
+                </span>
+              )}
+              {(permissionsBtn.includes('BTN210326000037') ||
+                permissionsBtn.includes('BTN210326000038')) &&
+                permissionsBtn.includes('MU90000001000100020001') && (
+                  <span className="operateLine" />
+                )}
+              {permissionsBtn.includes('MU90000001000100020001') && (
+                <span
+                  className="operateBtn"
+                  onClick={() => {
+                    router.push(
+                      `/portal/contentmanagement/sitelibrary/dynamic?uid=${r.gongdiUid}&status=${
+                        r.gongdiStage
+                      }`
+                    );
+                  }}
+                >
+                  工地动态
+                </span>
+              )}
             </div>
           );
         },
       },
     ];
-    const isCompany = false
+    const isCompany = false;
     const menu = (
       <Menu>
         <Menu.Item>
@@ -165,7 +203,7 @@ class SiteLibrary extends PureComponent {
         </Menu.Item>
         <Menu.Item>
           <p
-            style={{ margin: 0,display:'none' }}
+            style={{ margin: 0, display: 'none' }}
             onClick={() => {
               this.setState({ porjectVisible: true });
             }}
@@ -181,11 +219,11 @@ class SiteLibrary extends PureComponent {
           <Card bordered={false}>
             <Search
               placeholder="可通过工地标题 / 楼盘进行集联搜索"
-              value={this.state.searchWord||siteListQuery.searchText}
+              value={this.state.searchWord}
               onChange={e => this.setState({ searchWord: e.target.value })}
               onSearch={value => this.handleSrarch()}
               onPressEnter={() => this.handleSrarch()}
-              onBlur={() => this.handleSrarch()}
+              // onBlur={() => this.handleSrarch()}
               style={{ width: 600 }}
             />
             <Divider dashed />
@@ -199,13 +237,13 @@ class SiteLibrary extends PureComponent {
               </span>
               <span
                 onClick={() => this.handleSrarchStatus('0')}
-                className={`${styles.status} ${status == '0' && styles.statusCur}`}
+                className={`${styles.status} ${status + '' == '0' && styles.statusCur}`}
               >
                 正常
               </span>
               <span
                 onClick={() => this.handleSrarchStatus('1')}
-                className={`${styles.status} ${status == '1' && styles.statusCur}`}
+                className={`${styles.status} ${status + '' == '1' && styles.statusCur}`}
               >
                 停用
               </span>
@@ -213,18 +251,26 @@ class SiteLibrary extends PureComponent {
           </Card>
 
           <Card bordered={false} style={{ marginTop: 20 }}>
-          {!isCompany?<Button type="primary" onClick={() => {
-            router.push(`/portal/contentmanagement/sitelibrary/add`);
-          }}>
-                <Icon type="plus" />
-                创建工地
-              </Button>:
-            <Dropdown trigger={['click']} overlay={menu}>
-              <Button type="primary">
-                <Icon type="plus" />
-                创建工地
-              </Button>
-            </Dropdown>}
+            {permissionsBtn.includes('BTN210326000035') &&
+              !isCompany && (
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    router.push(`/portal/contentmanagement/sitelibrary/add`);
+                  }}
+                >
+                  <Icon type="plus" />
+                  创建工地
+                </Button>
+              )}
+            {isCompany && (
+              <Dropdown trigger={['click']} overlay={menu}>
+                <Button type="primary">
+                  <Icon type="plus" />
+                  创建工地
+                </Button>
+              </Dropdown>
+            )}
             <Table
               loading={false}
               style={{ marginTop: 20 }}
@@ -253,12 +299,15 @@ class SiteLibrary extends PureComponent {
   }
   handleSrarchStatus = status => {
     this.setState({ status }, () => {
-      this.getList({ gongdiStatus: status === '0' ? 0 : status === '1' ? 1 : null,pageNum:1 });
+      this.getList({
+        gongdiStatus: status === '0' ? '0' : status === '1' ? '1' : null,
+        pageNum: 1,
+      });
     });
   };
   handleSrarch = () => {
     const { searchWord } = this.state;
-    this.getList({ searchText: searchWord ,pageNum:1})
+    this.getList({ searchText: searchWord && searchWord.substring(0, 30), pageNum: 1 });
   };
   // 分页
   handleTableChange = pagination => {
@@ -277,6 +326,7 @@ class SiteLibrary extends PureComponent {
 
   handleOk = () => {
     this.setState({ visible: false, record: null });
+    this.getList({});
   };
   handleCancel = () => {
     this.setState({ visible: false, record: null });

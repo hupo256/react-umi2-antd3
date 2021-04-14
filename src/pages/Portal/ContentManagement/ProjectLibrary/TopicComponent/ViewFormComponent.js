@@ -2,16 +2,17 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-18 15:21:16
+ * @Last Modified time: 2021-04-12 21:24:41
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
 import router from 'umi/router';
-import { Form, Input, Button, Icon, Radio } from 'antd';
+import { Form, Input, Button, Icon, Radio, Modal } from 'antd';
+import { errorIcon } from '@/utils/utils';
 import { SketchPicker } from 'react-color';
-import { getQueryUrlVal } from '@/utils/utils';
 import styles from './index.less';
+const { confirm } = Modal;
 @connect(({ ProjectLibrary }) => ({
   ProjectLibrary,
 }))
@@ -30,19 +31,49 @@ class ViewFormComponent extends PureComponent {
       showSelect: false,
       checkTable: false,
       checkTable: 1,
+      arr: [
+        {
+          defaultValue: null,
+          defaultValueUpdate: 1,
+          paramField: 'trackName',
+          paramName: '业主姓名',
+          paramExtName: '业主姓名',
+          paramRequired: 1,
+          paramType: 'String',
+          paramTips: '请输入业主姓名',
+          paramUid: 'c834a6d6735411eb999e00505694ddf5',
+          paramValid: null,
+        },
+        {
+          defaultValue: null,
+          defaultValueUpdate: 1,
+          paramField: 'trackAddress',
+          paramName: '楼盘/楼宇',
+          paramExtName: '楼盘/楼宇',
+          paramTips: '请输入楼盘/楼宇',
+          paramRequired: 1,
+          paramType: 'String',
+          paramUid: '00b53e1d735511eb999e00505694ddf5',
+          paramValid: null,
+        },
+        {
+          defaultValue: null,
+          defaultValueUpdate: 1,
+          paramField: 'trackArea',
+          paramName: '建筑面积',
+          paramExtName: '建筑面积',
+          paramTips: '请输入建筑面积',
+          paramRequired: 1,
+          paramType: 'String',
+          paramUid: '15949455735511eb999e00505694ddf5',
+          paramValid: null,
+        },
+      ],
     };
   }
   componentDidMount() {
-    const {
-      data,
-      ProjectLibrary: { elementTree },
-    } = this.props;
-    const edit = getQueryUrlVal('edit');
-    let { checkList, checkSelectData } = this.state;
-    let arr =
-      elementTree[0] && elementTree[0].elementList[0]
-        ? elementTree[0].elementList[0].paramList
-        : [];
+    const { data } = this.props;
+    let { checkList, checkSelectData, arr } = this.state;
     arr.map((item, index) => {
       if (item.paramExtName === undefined) {
         item.paramExtName = item.paramName;
@@ -89,6 +120,7 @@ class ViewFormComponent extends PureComponent {
   render() {
     const { data, index } = this.props;
     const { showFont, show, checkList, checkSelectData, showSelect, checkTable } = this.state;
+    let topSize = JSON.parse(data.elementStyle);
     let formDa =
       checkList &&
       checkList.map((item, index) => {
@@ -103,14 +135,39 @@ class ViewFormComponent extends PureComponent {
                   <div className={styles.tit}>字段</div>
                   <div className="clearfix" style={{ width: 144, float: 'left' }}>
                     <div className={styles.FormCont}>{item.paramName}</div>
-                    {item.paramField !== 'phoneNumber' ? (
-                      <div
-                        className={styles.dragWraps}
-                        onClick={() => this.onDeleteFrom(item, index)}
-                      >
-                        <Icon type="delete" />
-                      </div>
-                    ) : null}
+                    <div className={styles.dragWraps}>
+                      {index != 0 ? (
+                        <span
+                          className={styles.dSpan}
+                          onClick={() => {
+                            this.changeOrderUp(index);
+                          }}
+                        >
+                          <Icon type="arrow-up" />
+                        </span>
+                      ) : null}
+                      {index != checkList.length - 1 ? (
+                        <span
+                          className={styles.dSpan}
+                          onClick={() => {
+                            this.changeOrderDown(index);
+                          }}
+                        >
+                          <Icon type="arrow-down" />
+                        </span>
+                      ) : null}
+                      {item.paramField !== 'trackPhone' ? (
+                        <span
+                          className={styles.dSpan}
+                          onClick={() => {
+                            this.onDeleteFrom(item, index);
+                          }}
+                        >
+                          <Icon type="delete" />
+                        </span>
+                      ) : null}
+                    </div>
+                    <div />
                   </div>
                 </div>
                 <div className="clearfix" style={{ marginBottom: 15 }}>
@@ -137,7 +194,7 @@ class ViewFormComponent extends PureComponent {
                     />
                   </div>
                 </div>
-                {item.paramField !== 'phoneNumber' ? (
+                {item.paramField !== 'trackPhone' ? (
                   <div className="clearfix">
                     <div className={styles.tit}>是否必填</div>
                     <div className={styles.FormCont}>
@@ -178,7 +235,7 @@ class ViewFormComponent extends PureComponent {
         return (
           <div className={styles.ViewDiv} key={index}>
             <Input
-              style={{ width: 200, borderColor: data.elementButtonColor }}
+              style={{ width: 260, borderColor: data.elementButtonColor }}
               maxLength={16}
               disabled
               placeholder={item.paramTips}
@@ -210,7 +267,7 @@ class ViewFormComponent extends PureComponent {
             <Button
               type="primary"
               style={{
-                width: 200,
+                width: 260,
                 background: data.elementButtonColor,
                 borderColor: data.elementButtonColor,
                 color: data.elementButtonTextColor,
@@ -230,7 +287,11 @@ class ViewFormComponent extends PureComponent {
                 this.deletePic();
               }}
             >
-              <Icon type="close-circle" />
+              <img
+                src="https://test.img.inbase.in-deco.com/crm_saas/dev/20210409/3b91901276824e0da6ff9fc49fe729fb/ic_delete.png"
+                width="20"
+                height="20"
+              />
             </span>
           ) : (
             ''
@@ -238,7 +299,7 @@ class ViewFormComponent extends PureComponent {
         </div>
 
         {data.checked === 1 ? (
-          <div className={styles.FormWrap}>
+          <div className={styles.FormWrap} style={{ top: topSize.top > 426 ? 426 : topSize.top }}>
             <div className="clearfix">
               <div
                 className={checkTable === 1 ? styles.isList : styles.isLists}
@@ -314,7 +375,11 @@ class ViewFormComponent extends PureComponent {
                           this.closeColor();
                         }}
                       >
-                        <Icon type="close-circle" />
+                        <img
+                          src="https://test.img.inbase.in-deco.com/crm_saas/dev/20210409/3b91901276824e0da6ff9fc49fe729fb/ic_delete.png"
+                          width="20"
+                          height="20"
+                        />
                       </span>
                     </div>
                   ) : (
@@ -332,7 +397,11 @@ class ViewFormComponent extends PureComponent {
                           this.closeFontColor();
                         }}
                       >
-                        <Icon type="close-circle" />
+                        <img
+                          src="https://test.img.inbase.in-deco.com/crm_saas/dev/20210409/3b91901276824e0da6ff9fc49fe729fb/ic_delete.png"
+                          width="20"
+                          height="20"
+                        />
                       </span>
                     </div>
                   ) : (
@@ -351,7 +420,7 @@ class ViewFormComponent extends PureComponent {
                   <Icon type="plus-circle" />
                   <span style={{ marginLeft: 10 }}>
                     添加表单字段（
-                    {checkSelectData.length}
+                    {checkList.length}
                     /4）
                   </span>
                 </div>
@@ -484,21 +553,34 @@ class ViewFormComponent extends PureComponent {
     );
   }
   onDeleteFrom(item, index) {
-    const { checkList, checkSelectData } = this.state;
-    item.paramExtName = item.paramName;
-    item.paramTips = `请输入${item.paramExtName}`;
-    item.paramRequired = 0;
-    checkSelectData.push(item);
-    checkList.splice(index, 1);
-    this.setState(
-      {
-        checkList: [...checkList],
-        checkSelectData: [...checkSelectData],
+    const that = this;
+    confirm({
+      title: '确认要删除当前字段吗？',
+      content: '删除后，已填写的内容将无法恢复，请确认是否要删除',
+      icon: errorIcon,
+      cancelText: '取消',
+      okText: '确定',
+      onOk() {
+        const { checkList, checkSelectData } = that.state;
+        item.paramExtName = item.paramName;
+        item.paramTips = `请输入${item.paramExtName}`;
+        item.paramRequired = 0;
+        checkSelectData.push(item);
+        checkList.splice(index, 1);
+        that.setState(
+          {
+            checkList: [...checkList],
+            checkSelectData: [...checkSelectData],
+          },
+          () => {
+            that.saveCheckList();
+          }
+        );
       },
-      () => {
-        this.saveCheckList();
-      }
-    );
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
   }
   handleListChange(e, name, index) {
     const { checkList } = this.state;
@@ -532,6 +614,43 @@ class ViewFormComponent extends PureComponent {
         value: [...compentList],
       },
     });
+  }
+  cancel(e) {
+    console.log(e);
+  }
+  //上移
+  changeOrderUp(index) {
+    const { checkList } = this.state;
+    if (index != 0) {
+      checkList[index] = checkList.splice(index - 1, 1, checkList[index])[0];
+    } else {
+      checkList.push(checkList.shift());
+    }
+    this.setState(
+      {
+        checkList: [...checkList],
+      },
+      () => {
+        this.saveCheckList();
+      }
+    );
+  }
+  //下移
+  changeOrderDown(index) {
+    const { checkList } = this.state;
+    if (index != checkList.length - 1) {
+      checkList[index] = checkList.splice(index + 1, 1, checkList[index])[0];
+    } else {
+      checkList.unshift(checkList.splice(index, 1)[0]);
+    }
+    this.setState(
+      {
+        checkList: [...checkList],
+      },
+      () => {
+        this.saveCheckList();
+      }
+    );
   }
 }
 

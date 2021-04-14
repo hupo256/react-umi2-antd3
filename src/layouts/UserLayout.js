@@ -4,9 +4,8 @@ import { connect } from 'dva';
 import { Icon, Carousel } from 'antd';
 import GlobalFooter from '@/components/GlobalFooter';
 import styles from './UserLayout.less';
-import banner from '../assets/insite-banner-01-small.jpg';
-import banner2 from '../assets/insite-banner-02-small.jpg';
-// import logo from '../assets/logo.svg';
+import banner from '../assets/banner@2x.png';
+import logo from '../assets/logo@2x.png';
 const links = [
   // {
   //   key: 'help',
@@ -59,13 +58,13 @@ class UserLayout extends React.PureComponent {
     let title = '';
     switch (pageStatus) {
       case 1:
-        title = '欢迎注册 我的工地 · inSite';
+        title = '营销站';
         break;
       case 2:
-        title = '欢迎登录 我的工地 · inSite';
+        title = '营销站';
         break;
       case 3:
-        title = '欢迎登录 我的工地 · inSite';
+        title = '营销站';
         break;
       case 4:
         title = '重置密码';
@@ -75,23 +74,12 @@ class UserLayout extends React.PureComponent {
       // @TODO <DocumentTitle title={this.getPageTitle()}>
       <div className={styles.container}>
         <div className={styles.content}>
-          <div className="clearfix">
-            <div className={styles.clef}>
-              <Carousel autoplay>
-                <div style={contentStyle}>
-                  <img alt="logo" className={styles.banner} src={banner} />
-                </div>
-                <div style={contentStyle}>
-                  <img alt="logo" className={styles.banner} src={banner2} />
-                </div>
-              </Carousel>
+          <div className={styles.contentWrap}>
+            <div className={styles.contentLeft}>
+              <img src={banner} />
             </div>
-            <div className={styles.contentD}>
-              <div className={styles.top}>
-                <div className={styles.header}>
-                  <span className={styles.title}>{title}</span>
-                </div>
-              </div>
+            <div className={styles.contentRight}>
+              <img  src={logo} className={styles.logo}/>
               {children}
             </div>
           </div>

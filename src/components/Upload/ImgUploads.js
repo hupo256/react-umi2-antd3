@@ -1,8 +1,8 @@
 /*
  * @Author: zqm 
  * @Date: 2020-07-10 15:03:59 
- * @Last Modified by: zqm
- * @Last Modified time: 2021-03-18 18:38:00
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2021-03-23 16:40:26
  * 图片上传
  */
 import React, { Component } from 'react';
@@ -89,12 +89,11 @@ class Uploads extends Component {
     return picData;
   };
   uploadsucc(info, name) {
-    
     let imgList = [];
     let isUpload = false;
     if (info.file.status === 'done') {
       let res = info.file.response;
-      if (res.code != 200) {
+      if (res && res.code != 200) {
         message.error('上传失败！');
       }
     } else if (info.file.status === 'error') {

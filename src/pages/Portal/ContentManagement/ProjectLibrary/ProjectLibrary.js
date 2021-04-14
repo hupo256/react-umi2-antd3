@@ -2,16 +2,17 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-18 15:29:07
+ * @Last Modified time: 2021-04-09 18:23:51
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
 import router from 'umi/router';
-import { Card, Button, Icon, Row, Col, Input, message, Tag, Table, Popconfirm, Modal } from 'antd';
+import { Card, Button, Icon, Input, message, Table, Modal } from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { paginations, successIcon, waringInfo, errorIcon } from '@/utils/utils';
 import styles from './index.less';
+import { getauth } from '@/utils/authority';
 const Search = Input.Search;
 const { confirm } = Modal;
 import TagSelect from '@/components/TagSelect';
@@ -25,6 +26,7 @@ class ProjectLibrary extends PureComponent {
     super(props);
     this.state = {
       value: '',
+      searchWord: '',
     };
   }
 
@@ -32,28 +34,40 @@ class ProjectLibrary extends PureComponent {
     this.getList();
   }
   render() {
+    const permissionsBtn = getauth();
     return (
       <div>
         <PageHeaderWrapper>
           <Card bordered={false}>{this.renderSearch()}</Card>
           <Card bordered={false} style={{ marginTop: 16 }}>
-            <Button
-              icon="plus"
-              type="primary"
-              onClick={() => {
-                const { dispatch } = this.props;
-                dispatch({
-                  type: 'ProjectLibrary/saveDataModel',
-                  payload: {
-                    key: 'status',
-                    value: 0,
-                  },
-                });
-                router.push('/portal/contentmanagement/ProjectLibrary/add');
-              }}
-            >
-              创建专题
-            </Button>
+            {permissionsBtn.permissions.includes('BTN210326000044') ? (
+              <Button
+                icon="plus"
+                type="primary"
+                onClick={() => {
+                  const { dispatch } = this.props;
+                  dispatch({
+                    type: 'ProjectLibrary/saveDataModel',
+                    payload: {
+                      key: 'status',
+                      value: 0,
+                    },
+                  });
+                  dispatch({
+                    type: 'ProjectLibrary/saveDataModel',
+                    payload: {
+                      key: 'collocationDetail',
+                      value: {},
+                    },
+                  });
+                  router.push('/portal/contentmanagement/ProjectLibrary/add');
+                }}
+              >
+                创建专题
+              </Button>
+            ) : (
+              ''
+            )}
             {this.renderTable()}
           </Card>
         </PageHeaderWrapper>
@@ -69,10 +83,17 @@ class ProjectLibrary extends PureComponent {
     return (
       <div className={styles.wrap}>
         <Search
-          onSearch={value => this.thSearch(value)}
+          onSearch={() => this.thSearch()}
           placeholder={'可通过专题标题/专题链接进行搜索'}
           className={styles.ser}
+          onChange={e => this.setState({ searchWord: e.target.value })}
           defaultValue={fromData.searchText}
+          onPressEnter={() => {
+            this.thSearch();
+          }}
+          // onBlur={() => {
+          //   this.thSearch();
+          // }}
         />
         <div className={styles.status}>
           <div className={styles.fl}>状态：</div>
@@ -102,7 +123,10 @@ class ProjectLibrary extends PureComponent {
           return (
             <div style={{ display: 'flex' }}>
               <img
-                src={r.specialCoverImg}
+                src={
+                  r.specialCoverImg ||
+                  'https://test.img.inbase.in-deco.com/crm_saas/dev/20210409/7178b96d368c444a93c444a10e438a2a/imgAefault.png'
+                }
                 style={{
                   width: 100,
                   height: 70,
@@ -197,49 +221,71 @@ class ProjectLibrary extends PureComponent {
         dataIndex: 'operate',
         with: 200,
         render: (t, r) => {
+          const permissionsBtn = getauth();
           return (
             <div className="operateWrap">
-              <span
-                className="operateBtn"
-                onClick={() => {
-                  const { dispatch } = this.props;
-                  dispatch({
-                    type: 'ProjectLibrary/saveDataModel',
-                    payload: {
-                      key: 'status',
-                      value: 0,
-                    },
-                  });
-                  router.push(`/portal/contentmanagement/ProjectLibrary/edit?uid=${r.specialUid}`);
-                }}
-              >
-                编辑
-              </span>
-              {r.specialStatus !== 0 ? (
+              {permissionsBtn.permissions.includes('BTN210326000045') ? (
+                <span
+                  className="operateBtn"
+                  onClick={() => {
+                    const { dispatch } = this.props;
+                    dispatch({
+                      type: 'ProjectLibrary/saveDataModel',
+                      payload: {
+                        key: 'status',
+                        value: 0,
+                      },
+                    });
+                    router.push(
+                      `/portal/contentmanagement/ProjectLibrary/edit?uid=${r.specialUid}`
+                    );
+                  }}
+                >
+                  编辑
+                </span>
+              ) : null}
+              {permissionsBtn.permissions.includes('BTN210326000045') &&
+                permissionsBtn.permissions.includes('BTN210326000046') &&
+                r.specialStatus !== 0 && <span className="operateLine" />}
+              {permissionsBtn.permissions.includes('BTN210326000046') && r.specialStatus !== 0 ? (
                 <span>
-                  <span className="operateLine" />
                   <span className="operateBtn" onClick={() => this.handleToggleStatus(r)}>
                     {r.specialStatus === 0 || r.specialStatus === 2 ? '启用' : '停用'}
                   </span>
                 </span>
               ) : null}
-              <span className="operateLine" />
-              <span className="operateBtn" onClick={() => this.handleDelete(r)}>
-                删除
-              </span>
-              <span className="operateLine" />
-              <span
-                className="operateBtn"
-                onClick={() => {
-                  router.push(
-                    `/portal/contentmanagement/ProjectLibrary/ConfigurationTopic?&uid=${
-                      r.specialUid
-                    }`
-                  );
-                }}
-              >
-                配置专题
-              </span>
+              {permissionsBtn.permissions.includes('BTN210326000046') &&
+                permissionsBtn.permissions.includes('BTN210326000047') &&
+                r.specialStatus === 0 && <span className="operateLine" />}
+              {permissionsBtn.permissions.includes('BTN210326000047') && r.specialStatus === 0 ? (
+                <span>
+                  <span className="operateBtn" onClick={() => this.handleDelete(r)}>
+                    删除
+                  </span>
+                </span>
+              ) : null}
+              {permissionsBtn.permissions.includes('BTN210326000047') &&
+                r.specialStatus === 0 &&
+                permissionsBtn.permissions.includes('MU90000001000100040001') && (
+                  <span className="operateLine" />
+                )}
+              {permissionsBtn.permissions.includes('MU90000001000100040001') &&
+              r.specialStatus === 0 ? (
+                <span>
+                  <span
+                    className="operateBtn"
+                    onClick={() => {
+                      router.push(
+                        `/portal/contentmanagement/ProjectLibrary/ConfigurationTopic?&uid=${
+                          r.specialUid
+                        }`
+                      );
+                    }}
+                  >
+                    配置专题
+                  </span>
+                </span>
+              ) : null}
             </div>
           );
         },
@@ -266,6 +312,7 @@ class ProjectLibrary extends PureComponent {
       ProjectLibrary: { fromData },
     } = this.props;
     fromData.specialStatus = value[0];
+    fromData.pageNum = 1;
     dispatch({
       type: 'ProjectLibrary/saveDataModel',
       payload: {
@@ -292,9 +339,9 @@ class ProjectLibrary extends PureComponent {
     const { dispatch } = this.props;
     const that = this;
     confirm({
-      title: status + '' === '0' ? '确认要停用当前专题吗？' : '确认要启用当前专题吗？',
+      title: status + '' === '1' ? '确认要停用当前专题吗？' : '确认要启用当前专题吗？',
       content:
-        status + '' === '0' ? '停用后，将无法看到当前专题界面' : '启用后，将可以查看到当前专题界面',
+        status + '' === '1' ? '停用后，将无法看到当前专题界面' : '启用后，将可以查看到当前专题界面',
       icon: status === '1' ? successIcon : waringInfo,
       onOk() {
         dispatch({
@@ -335,12 +382,14 @@ class ProjectLibrary extends PureComponent {
       },
     });
   };
-  thSearch(value) {
+  thSearch() {
     const {
       dispatch,
       ProjectLibrary: { fromData },
     } = this.props;
-    fromData.searchText = value;
+    const { searchWord } = this.state;
+    fromData.searchText = (searchWord && searchWord.substring(0, 30)) || '';
+    fromData.pageNum = 1;
     dispatch({
       type: 'ProjectLibrary/saveDataModel',
       payload: {
@@ -369,9 +418,8 @@ class ProjectLibrary extends PureComponent {
     });
   };
   handleCopy(t) {
-    var text = document.getElementById('text').innerText;
-    var input = document.getElementById('input');
-    input.value = text; // 修改文本框的内容
+    let input = document.getElementById('input');
+    input.value = t; // 修改文本框的内容
     input.select(); // 选中文本
     document.execCommand('copy'); // 执行浏览器复制命令
     message.success('复制成功');

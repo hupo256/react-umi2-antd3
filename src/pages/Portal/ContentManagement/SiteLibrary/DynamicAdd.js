@@ -2,14 +2,14 @@
  * @Author: zqm 
  * @Date: 2021-02-20 10:46:16 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-16 16:09:22
+ * @Last Modified time: 2021-04-08 14:54:41
  * 创建动态
  */
 import React, { Component } from 'react';
 import { Modal, Row, Col, Input, message, Select, DatePicker, Icon } from 'antd';
 import { connect } from 'dva';
 import Upload from '@/components/Upload/Upload';
-import {getDay} from  '@/utils/utils';
+import { getDay } from '@/utils/utils';
 import RcViewer from 'rc-viewer';
 import moment from 'moment';
 const { TextArea } = Input;
@@ -35,12 +35,18 @@ class DynamicAdd extends Component {
     };
   }
   componentDidMount() {
-    const { dispatch ,status} = this.props;
+    const { dispatch, status } = this.props;
     dispatch({
       type: 'DictConfig/queryDicModel',
       payload: { dicModuleCodes: 'DM001' },
+    }).then(res => {
+      if (res && res.code === 200) {
+        const data = res.data['DM001']
+          .filter(item => item.status === '1')
+          .filter(item => item.code === status);
+        this.setState({ diaryDate: getDay(), gongdiStage: (data.length > 0 && status) || [] });
+      }
     });
-    this.setState({ diaryDate: getDay() ,gongdiStage:status});
   }
   render() {
     const dateFormat = 'YYYY-MM-DD';
@@ -63,7 +69,7 @@ class DynamicAdd extends Component {
           </Col>
           <Col span={18}>
             <Select
-            value={this.state.gongdiStage||[]}
+              value={this.state.gongdiStage || []}
               onChange={this.handleSelectChange}
               style={{ width: '100%' }}
               placeholder="请选择所属阶段"
@@ -89,7 +95,13 @@ class DynamicAdd extends Component {
             施工日期：
           </Col>
           <Col span={18}>
-            <DatePicker value={moment(diaryDate, dateFormat)} allowClear={false} format={dateFormat} placeholder="请选择施工日期" onChange={this.handleDateChange} />
+            <DatePicker
+              value={moment(diaryDate, dateFormat)}
+              allowClear={false}
+              format={dateFormat}
+              placeholder="请选择施工日期"
+              onChange={this.handleDateChange}
+            />
           </Col>
         </Row>
         <Row style={{ margin: '20px 0' }}>
@@ -141,7 +153,7 @@ class DynamicAdd extends Component {
                   );
                 })}
 
-              {diaryPics.length <= 9 && (
+              {diaryPics.length < 9 && (
                 <div
                   className="previewimgs"
                   style={{ border: '1px dashed #d9d9d9' }}
@@ -159,6 +171,7 @@ class DynamicAdd extends Component {
             selectNum={9}
             selected={diaryPics.length}
             rep={rep}
+            size={10}
             handleOk={data => this.handleUploadOk(data)}
             handleCancel={() => this.handleUploadCancel()}
           />
@@ -194,17 +207,24 @@ class DynamicAdd extends Component {
   };
   handleOk = () => {
     const { diaryContent, diaryDate, gongdiStage, diaryPics } = this.state;
+    const imglist =
+      (diaryPics.length > 0 && diaryPics.map(item => item.path).filter(item => item)) || [];
     if (!gongdiStage) {
       message.error('请选择所属阶段');
+      return false;
     } else if (!diaryDate) {
       message.error('请选择施工日期');
+      return false;
+    } else if (!diaryContent && imglist.length == 0) {
+      message.error('请填写 工作内容 或上传 施工照片');
+      return false;
     } else {
       // createDynamicModel
       const { dispatch, record } = this.props;
       dispatch({
         type: 'SiteLibrary/createDynamicModel',
         payload: {
-          diaryPics: diaryPics.map(item => item.path),
+          diaryPics: imglist,
           diaryContent,
           diaryDate,
           gongdiStage,

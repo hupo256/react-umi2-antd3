@@ -25,9 +25,9 @@ class NotBound extends PureComponent {
           </div>
         </div>
         <div className={styles.mark}>
-          <p>微门户</p>
-          <p>为装企提供可以快速搭建自己微信门户的服务，</p>
-          <p>让装企可以通过简单的内容配置，即具备超越90%装企的微信营销能力</p>
+          <p>营销站</p>
+          <p>帮助装企快速塑造专业形象，</p>
+          <p>让装企可以通过简单的内容配置，即具备超越90%装企的微信营销能力！</p>
         </div>
 
         <Button

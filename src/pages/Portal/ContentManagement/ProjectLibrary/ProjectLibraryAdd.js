@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-15 20:23:51
+ * @Last Modified time: 2021-04-09 17:53:52
  * 专题库
  */
 import React, { PureComponent } from 'react';
@@ -37,11 +37,11 @@ class ProjectLibrary extends PureComponent {
           <Card bordered={false}>
             <Steps current={setp}>
               <Step title="填写基本信息" />
-              <Step title="上传案例图片" />
+              <Step title="上传专题图片" />
               <Step title="完成" />
             </Steps>
             {setp == 0 && <CreateStepOne handleOk={() => this.handleOk(1)} />}
-            {setp == 1 && <CreateStepTwo handleOk={() => this.handleOk(0)} />}
+            {setp == 1 && <CreateStepTwo />}
             {setp == 2 && <CreateStepThree />}
           </Card>
         </PageHeaderWrapper>
@@ -49,8 +49,11 @@ class ProjectLibrary extends PureComponent {
     );
   }
   handleOk(status) {
-    const { dispatch } = this.props;
-    const activeKey = getQueryUrlVal('uid');
+    const {
+      dispatch,
+      ProjectLibrary: { specialUid },
+    } = this.props;
+    const activeKey = getQueryUrlVal('uid') || specialUid;
     if (activeKey) {
       dispatch({
         type: 'ProjectLibrary/specialGetModel',

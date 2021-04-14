@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import { connect } from "dva";
-import router from "umi/router";
-import { message } from "antd";
-import styles from "./ChoiceCompany.less";
+import React, { Component } from 'react';
+import { connect } from 'dva';
+import router from 'umi/router';
+import { message } from 'antd';
+import styles from './ChoiceCompany.less';
 
 @connect(({ login }) => ({
   login,
@@ -22,7 +22,8 @@ class ChoiceCompany extends Component {
   }
 
   render() {
-    const companyList = JSON.parse(sessionStorage.getItem("companyList"));
+    const companyList = JSON.parse(sessionStorage.getItem('companyList'));
+    console.log(companyList);
     let arr =
       companyList &&
       companyList.map((item, index) => {
@@ -34,38 +35,37 @@ class ChoiceCompany extends Component {
               this.handleLogin(item);
             }}
           >
-            {item}
+            {item.companyName}
           </div>
         );
       });
     return (
       <div className={styles.maint}>
         <h1>欢迎回来</h1>
-        <div className={styles.tip}>
-          您的账号属于多个公司，请选择要登录的公司
-        </div>
+        <div className={styles.tip}>您的账号属于多个公司，请选择要登录的公司</div>
         {arr}
       </div>
     );
   }
   handleLogin(item) {
     const { dispatch } = this.props;
-    const PasswordData = JSON.parse(sessionStorage.getItem("PasswordData"));
+    const PasswordData = JSON.parse(sessionStorage.getItem('PasswordData'));
     dispatch({
-      type: "login/loginPasswordModel",
+      type: 'login/loginPasswordModel',
       payload: {
         companyCode: item.companyCode,
+        systemCode: 'S005',
         ...PasswordData,
       },
-    }).then((res) => {
-      localStorage.setItem("companyCode", item.companyCode);
+    }).then(res => {
+      localStorage.setItem('companyCode', item.companyCode);
       if (res && res.code === 200) {
         dispatch({
-          type: "login/setAuthModel",
+          type: 'login/setAuthModel',
           payload: {},
-        }).then((res) => {
+        }).then(res => {
           if (res && res.code === 200) {
-            window.location.href = "/";
+            window.location.href = '/';
           }
         });
       } else {
