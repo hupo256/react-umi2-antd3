@@ -124,6 +124,14 @@ export default function request(
     .update(fingerprint)
     .digest('hex');
 
+  // mothed为get时，将query拼到url后面
+  const { query } = options;
+  let Url = url;
+  if (query)
+    Url += `?${Object.keys(query)
+      .map(key => key + '=' + query[key])
+      .join('&')}`;
+
   const defaultOptions = {
     // credentials: 'include',
   };
@@ -170,7 +178,7 @@ export default function request(
   }
   if (exp) {
     //导出特殊操作
-    return fetch(url, newOptions)
+    return fetch(Url, newOptions)
       .then(checkStatus)
       .then(response => response.blob())
       .then(blob => {
@@ -184,7 +192,7 @@ export default function request(
       .catch(e => {});
   }
   return Promise.race([
-    fetch(url, newOptions),
+    fetch(Url, newOptions),
     new Promise((resolve, reject) => {
       let error = new Error('请求超时');
       error.name = 100;

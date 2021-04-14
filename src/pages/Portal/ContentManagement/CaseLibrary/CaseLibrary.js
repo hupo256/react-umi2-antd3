@@ -12,7 +12,7 @@ import { Card, Button, Icon, Divider, Table, Input, message, Modal } from 'antd'
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { paginations, getUrl, successIcon, waringInfo } from '@/utils/utils';
 import styles from './CaseLibrary.less';
-import { getauth } from "@/utils/authority";
+import { getauth } from '@/utils/authority';
 const { confirm } = Modal;
 const { Search } = Input;
 
@@ -38,7 +38,7 @@ class CaseLibrary extends PureComponent {
       Loading,
       CaseLibrary: { CaseList },
     } = this.props;
-    const permissionsBtn = getauth().permissions||[];
+    const permissionsBtn = getauth().permissions || [];
     const columns = [
       {
         title: '案例',
@@ -133,18 +133,23 @@ class CaseLibrary extends PureComponent {
         render: (t, r) => {
           return (
             <div className="operateWrap">
-              {permissionsBtn.includes('BTN210326000033')&&<span
-                className="operateBtn"
-                onClick={() => {
-                  router.push(`/portal/contentmanagement/caselibrary/edit?uid=${r.uid}`);
-                }}
-              >
-                编辑
-              </span>}
-              {permissionsBtn.includes('BTN210326000033')&&permissionsBtn.includes('BTN210326000034')&&<span className="operateLine" />}
-              {permissionsBtn.includes('BTN210326000034')&&<span className="operateBtn" onClick={() => this.handleChangeStatus(r)}>
-                {r.status === '1' ? '停用' : '启用'}{' '}
-              </span>}
+              {permissionsBtn.includes('BTN210326000033') && (
+                <span
+                  className="operateBtn"
+                  onClick={() => {
+                    router.push(`/portal/contentmanagement/caselibrary/edit?uid=${r.uid}`);
+                  }}
+                >
+                  编辑
+                </span>
+              )}
+              {permissionsBtn.includes('BTN210326000033') &&
+                permissionsBtn.includes('BTN210326000034') && <span className="operateLine" />}
+              {permissionsBtn.includes('BTN210326000034') && (
+                <span className="operateBtn" onClick={() => this.handleChangeStatus(r)}>
+                  {r.status === '1' ? '停用' : '启用'}{' '}
+                </span>
+              )}
             </div>
           );
         },
@@ -188,19 +193,21 @@ class CaseLibrary extends PureComponent {
             </p>
           </Card>
           <Card bordered={false} style={{ marginTop: 20 }}>
-          {permissionsBtn.includes('BTN210326000032')&&<Button
-              type="primary"
-              onClick={() => {
-                this.props.dispatch({
-                  type: 'CaseLibrary/resetDataModel',
-                  payload: { caseRes: {}, stepOne: {}, stepTwo: {} },
-                });
-                router.push(`/portal/contentmanagement/caselibrary/add`);
-              }}
-            >
-              <Icon type="plus" />
-              创建案例
-            </Button>}
+            {permissionsBtn.includes('BTN210326000032') && (
+              <Button
+                type="primary"
+                onClick={() => {
+                  this.props.dispatch({
+                    type: 'CaseLibrary/resetDataModel',
+                    payload: { caseRes: {}, stepOne: {}, stepTwo: {} },
+                  });
+                  router.push(`/portal/contentmanagement/caselibrary/add`);
+                }}
+              >
+                <Icon type="plus" />
+                创建案例
+              </Button>
+            )}
             <Table
               loading={Loading}
               style={{ marginTop: 20 }}
@@ -217,12 +224,12 @@ class CaseLibrary extends PureComponent {
   }
   handleSrarchStatus = status => {
     this.setState({ status }, () => {
-      this.getList({ status ,pageNum:1});
+      this.getList({ status, pageNum: 1 });
     });
   };
   handleSrarch = () => {
     const { searchWord } = this.state;
-    this.getList({ searchWord:searchWord&&searchWord.substring(0,30) ,pageNum:1});
+    this.getList({ searchWord, pageNum: 1 });
   };
 
   // 分页

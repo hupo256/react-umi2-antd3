@@ -23,7 +23,7 @@ class Upload extends Component {
   componentDidMount() {}
   render() {
     const { activeKey, checkedData } = this.state;
-    const { selected, selectNum, rep } = this.props;
+    const { selected, selectNum, rep, destroy = false } = this.props;
     const num = rep ? 1 : (selectNum || 1) - (selected || 0);
     return (
       <Modal
@@ -35,6 +35,7 @@ class Upload extends Component {
         maskClosable={false}
         width={710}
         className={styles.uploadmodel}
+        destroyOnClose={destroy}
       >
         <div className={styles.uploadwrap}>
           <div className={styles.uploadleft}>
@@ -62,11 +63,15 @@ class Upload extends Component {
                 }
                 key="key2"
               />*/}
-              </Tabs>
+            </Tabs>
           </div>
           <div className={styles.uploadright}>
             {activeKey === 'key1' && (
-              <ImageUpload size={this.props.size} selectNum={num } handleOk={data => this.handleConfirm(data)} />
+              <ImageUpload
+                size={this.props.size}
+                selectNum={num}
+                handleOk={data => this.handleConfirm(data)}
+              />
             )}
             {activeKey === 'key2' && (
               <AlreadyUpload selectNum={num || 1} handleOk={data => this.handleConfirm(data)} />
