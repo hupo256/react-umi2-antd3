@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2020-04-15 13:37:41 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-18 19:12:05
+ * @Last Modified time: 2021-04-15 16:07:20
  */
 import React from 'react';
 // 引入编辑器组件
@@ -25,11 +25,11 @@ export default class EditorDemo extends React.Component {
     hodt: '',
     picData: {},
     previewVisible: false, //预览
-    previewphoneVisible:false
+    previewphoneVisible: false,
   };
 
   render() {
-    const { editorState, previewVisible, picData,previewphoneVisible  } = this.state;
+    const { editorState, previewVisible, picData, previewphoneVisible } = this.state;
     const extendControls = [
       {
         key: 'custom-button',
@@ -39,14 +39,14 @@ export default class EditorDemo extends React.Component {
           this.preview();
         },
       },
-      {
-        key: 'custom-button2',
-        type: 'button',
-        text: '预览移动端',
-        onClick: () => {
-          this.preview2();
-        },
-      },
+      // {
+      //   key: 'custom-button2',
+      //   type: 'button',
+      //   text: '预览移动端',
+      //   onClick: () => {
+      //     this.preview2();
+      //   },
+      // },
       {
         key: 'antd-uploader',
         type: 'component',
@@ -141,10 +141,10 @@ export default class EditorDemo extends React.Component {
   preview2 = () => {
     this.setState({ previewphoneVisible: true });
   };
- // 关闭预览
- handleCancel2 = () => {
-  this.setState({ previewphoneVisible: false });
-};
+  // 关闭预览
+  handleCancel2 = () => {
+    this.setState({ previewphoneVisible: false });
+  };
   handleEditorChange = editorState => {
     this.setState({ editorState }, () => {
       const previewContent = editorState.toHTML();
@@ -203,7 +203,7 @@ export default class EditorDemo extends React.Component {
           if (data.data.fileName !== '') {
             filenames = `${data.data.fileName}.${fiename}`;
           }
-          
+
           self.setState(
             {
               host: data.data.host,
@@ -244,7 +244,7 @@ export default class EditorDemo extends React.Component {
           //   resolve(true);
           // });
           // }
-        }  else {
+        } else {
           message.error(data.message);
           return reject();
         }

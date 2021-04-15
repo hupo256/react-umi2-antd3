@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:50:21 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-04-14 15:12:00
+ * @Last Modified time: 2021-04-15 16:12:40
  * 文章库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -216,6 +216,8 @@ class ArticleLibrary extends PureComponent {
   callback = step => {
     this.setState({ step, status: null, searchWord: null }, () => {
       this.getList({ articleDicCode: step, articleStatus: null, searchText: null, pageNum: 1 });
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
     });
   };
 
@@ -226,7 +228,7 @@ class ArticleLibrary extends PureComponent {
   };
   handleSrarch = () => {
     const { searchWord } = this.state;
-    this.getList({ searchText: searchWord, pageNum: 1 });
+    this.getList({ searchText: searchWord && searchWord.substring(0, 30), pageNum: 1 });
   };
 
   // 修改设计师状态
