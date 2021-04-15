@@ -12,6 +12,7 @@ export function Provider({ children }) {
   const [activityCode, setactivityCode] = useState(''); //活动code
   const [activityTitle, setactivityTitle] = useState(''); //活动标题
   const [goodsDone, setgoodsDone] = useState(false); // 奖品创建成功与否
+  const [stepNum, setstepNum] = useState(0); // step所处状态
 
   const value = {
     activityCode,
@@ -20,6 +21,8 @@ export function Provider({ children }) {
     setactivityTitle,
     goodsDone,
     setgoodsDone,
+    stepNum,
+    setstepNum,
   };
 
   return <ctx.Provider value={value}>{children}</ctx.Provider>;

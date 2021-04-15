@@ -29,9 +29,9 @@ export default {
 
   'menu.contentmanagement.minProgram': '装企小程序',
 
-  'menu.contentmanagement.mktManagement': '营销游戏',
+  'menu.contentmanagement.mktManagement': '营销小游戏',
   'menu.contentmanagement.mktManagement.activity': '游戏列表',
-  'menu.contentmanagement.mktManagement.addGame': '创建游戏',
+  'menu.contentmanagement.mktManagement.addGame': '创建小游戏',
   'menu.contentmanagement.mktManagement.drawRec': '抽奖记录',
 
   'menu.home': '首页',

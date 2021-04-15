@@ -51,6 +51,11 @@ export const goodsColumns = [
   {
     title: '奖项图片',
     dataIndex: 'prizeImage',
+    render: (text, record, index) => (
+      <div className="minImgBox">
+        <img src={record.prizeImage} />
+      </div>
+    ),
   },
   {
     title: '奖项名称',

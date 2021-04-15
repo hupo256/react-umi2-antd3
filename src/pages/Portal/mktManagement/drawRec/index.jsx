@@ -10,6 +10,7 @@ import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import mktApi from '@/services/mktActivity';
 import { Card, Button, Input, Table, Tabs } from 'antd';
 import { recColumns, goodsColumns } from '../tools/data';
+import { urlParamHash } from '../tools';
 import styles from './drawRec.less';
 
 const { Search } = Input;
@@ -20,37 +21,49 @@ export default function DrawRec(props) {
   const [goodsList, setgoodsList] = useState([]);
 
   useEffect(() => {
+    const { mobile, activityCode, prizeName } = urlParamHash(location.href);
+    touchRecds({ mobile, activityCode });
+    touchPrize({ activityCode, prizeName });
+  }, []);
+
+  // 获取获奖记录
+  function touchRecds(config = {}) {
     const params = {
       mobile: '',
+      activityCode: '',
       pageNum: 1,
       pageSize: 10,
     };
-
-    mktApi.queryActivityPrizeRewardList(params).then(res => {
+    mktApi.queryActivityPrizeRewardList({ ...params, ...config }).then(res => {
       console.log(res);
       const { data } = res;
       if (!data) return;
       setrecList(data.list);
     });
-  }, []);
+  }
 
-  useEffect(() => {
-    const listParam = {
+  // 获取奖品
+  function touchPrize(config = {}) {
+    const params = {
       activityCode: '',
       pageNum: 1,
       pageSize: 10,
       prizeName: '',
     };
-    mktApi.queryActivityPrizeList(listParam).then(res => {
+    mktApi.queryActivityPrizeList({ ...params, ...config }).then(res => {
       console.log(res);
       const { data } = res;
       if (!data) return;
       setgoodsList(data.list);
     });
-  }, []);
+  }
 
   function tabChange() {
     console.log();
+  }
+
+  function toSearch(tex) {
+    touchRecds({ mobile: tex });
   }
 
   return (
@@ -58,11 +71,13 @@ export default function DrawRec(props) {
       <Card bordered={false}>
         <Tabs defaultActiveKey="1" onChange={tabChange}>
           <TabPane tab="抽奖明细" key="1">
-            <Search
-              placeholder="可通过领取手机号进行搜索"
-              onSearch={val => console.log(val)}
-              style={{ width: 200 }}
-            />
+            <div className={styles.recSearch}>
+              <Search
+                placeholder="可通过领取手机号进行搜索"
+                onSearch={val => toSearch(val)}
+                style={{ width: 200 }}
+              />
+            </div>
             <Table size="middle" dataSource={recList} columns={recColumns} rowKey={(r, i) => i} />
           </TabPane>
 

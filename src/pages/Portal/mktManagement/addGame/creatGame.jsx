@@ -18,7 +18,7 @@ const { TextArea } = Input;
 const { RangePicker } = DatePicker;
 
 const formItemLayout = {
-  labelCol: { span: 8 },
+  labelCol: { span: 6 },
   wrapperCol: { span: 16 },
 };
 const formTailLayout = {
@@ -31,7 +31,7 @@ function AddNewGoods(props) {
     form: { validateFields, getFieldDecorator, setFieldsValue },
     gData,
   } = props;
-  const { setactivityCode, setactivityTitle } = useContext(ctx);
+  const { setactivityCode, setactivityTitle, setstepNum } = useContext(ctx);
 
   useEffect(
     () => {
@@ -111,6 +111,7 @@ function AddNewGoods(props) {
         const { activityCode, activityTitle } = data;
         setactivityCode(activityCode);
         setactivityTitle(activityTitle);
+        setstepNum(1);
       });
     });
   }
@@ -119,7 +120,9 @@ function AddNewGoods(props) {
     <div className={styles.fromOut}>
       <Form {...formItemLayout}>
         <Item label="游戏形式">
-          {getFieldDecorator('activityType', { rules: [{ required: true }] })(
+          {getFieldDecorator('activityType', {
+            rules: [{ required: true, message: '请选择游戏形式' }],
+          })(
             <Group>
               <Radio value={1}>大转盘</Radio>
               <Radio value={2}>砸金蛋</Radio>
@@ -128,15 +131,17 @@ function AddNewGoods(props) {
           )}
         </Item>
         <Item label="游戏标题">
-          {getFieldDecorator('activityTitle', { rules: [{ required: true }] })(
-            <Input placeholder="游戏标题" style={{ width: 345 }} />
-          )}
+          {getFieldDecorator('activityTitle', {
+            rules: [{ required: true, message: '请填写游戏标题' }],
+          })(<Input placeholder="游戏标题" style={{ width: 345 }} />)}
         </Item>
         <Item label="游戏副文本">
           {getFieldDecorator('activitySubtitle')(<Input placeholder="游戏副文本" />)}
         </Item>
         <Item label="起止时间">
-          {getFieldDecorator('activityTime', { rules: [{ required: true }] })(
+          {getFieldDecorator('activityTime', {
+            rules: [{ required: true, message: '请选择起止时间' }],
+          })(
             <RangePicker
               disabledDate={disabledDate}
               disabledTime={disabledRangeTime}
@@ -149,26 +154,28 @@ function AddNewGoods(props) {
           )}
         </Item>
         <Item label="参与次数类型">
-          {getFieldDecorator('activityJoinType', { rules: [{ required: true }] })(
+          {getFieldDecorator('activityJoinType', {
+            rules: [{ required: true, message: '请填写参与次数类型' }],
+          })(
             <Group>
               <Radio value={1}>总次数</Radio>
               <Radio value={2}>每日次数</Radio>
             </Group>
           )}
         </Item>
-        <Item label=" ">
-          {getFieldDecorator('activityJoinNum', { rules: [{ required: true }] })(
-            <InputNumber min={1} step={1} />
-          )}
+        <Item label="参与次数">
+          {getFieldDecorator('activityJoinNum', {
+            rules: [{ required: true, message: '请填写参与次数' }],
+          })(<InputNumber min={1} step={1} />)}
           <span style={{ paddingLeft: '.5em' }}>次</span>
         </Item>
         <Item label="规则说明">
           {getFieldDecorator('activityRule')(<TextArea placeholder="请输入规则说明" allowClear />)}
         </Item>
         <Item label="兑换说明">
-          {getFieldDecorator('actvityConvertRule', { rules: [{ required: true }] })(
-            <TextArea placeholder="请输入兑换说明" allowClear />
-          )}
+          {getFieldDecorator('actvityConvertRule', {
+            rules: [{ required: true, message: '请填写兑换说明' }],
+          })(<TextArea placeholder="请输入兑换说明" allowClear />)}
         </Item>
 
         <Item {...formTailLayout}>

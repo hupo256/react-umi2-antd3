@@ -7,12 +7,12 @@
  */
 import React, { useState, useEffect, useContext } from 'react';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
-import mktApi from '@/services/mktActivity';
 import { Provider, ctx } from '../common/context';
 import { Card } from 'antd';
 import CreatGame from './creatGame';
 import CreatGoods from './creatGoods';
 import CreatDone from './creatDone';
+import ShowSteps from './steps';
 
 function CreatAct(props) {
   const { activityCode, goodsDone } = useContext(ctx);
@@ -20,14 +20,10 @@ function CreatAct(props) {
   console.log(activityCode);
   useEffect(() => {}, []);
 
-  function addNew() {
-    console.log(22);
-    setgoodsModal(true);
-  }
-
   return (
     <PageHeaderWrapper>
       <Card bordered={false}>
+        <ShowSteps />
         {!activityCode && <CreatGame />}
         {activityCode && !goodsDone && <CreatGoods />}
         {goodsDone && <CreatDone />}

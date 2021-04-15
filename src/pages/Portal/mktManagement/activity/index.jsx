@@ -37,20 +37,22 @@ export default function Activityer(props) {
     router.push(`${baseRouteKey}activityEdit?uid=${uid}`);
   }
 
-  function toDelete(uid) {
-    mktApi.delActivity({ uid }).then(res => {
-      console.log(res);
-    });
+  function toRecod(uid) {
+    // mktApi.delActivity({ uid }).then(res => {
+    //   console.log(res);
+    // });
+    router.push(`${baseRouteKey}drawRec?uid=${uid}`);
   }
 
   function creatColumn() {
     const col = {
       title: '操作',
       dataIndex: 'action',
+      width: 130,
       render: (text, record, index) => (
         <p className={styles.actions}>
           <a onClick={() => toEdit(record.uid)}>编辑</a>|{' '}
-          <a onClick={() => toDelete(record.uid)}>删除</a>
+          <a onClick={() => toRecod(record.uid)}>抽奖记录</a>
         </p>
       ),
     };
@@ -73,15 +75,17 @@ export default function Activityer(props) {
     settbColumns([...actColumns, col]);
   }
 
+  function addNew() {
+    router.push(`${baseRouteKey}addGame`);
+  }
+
   // 获取活动们
   function touchActList(config = {}) {
     const params = {
       activeName: '',
-      endTime: '',
       pageNum: 1,
       pageSize: 10,
-      startTime: '',
-      state: 0,
+      // state: 0,
     };
     mktApi.queryActivityList({ ...params, ...config }).then(res => {
       console.log(res);
@@ -91,16 +95,15 @@ export default function Activityer(props) {
     });
   }
 
-  function addNew() {
-    console.log();
-  }
-
   function searchWidhTag(ind) {
-    setsearchInd(ind);
     console.log(ind);
+    // setsearchInd(ind);
+    touchActList({ state: ind - 1 });
   }
 
-  function toSearch() {}
+  function toSearch(tex) {
+    touchActList({ activeName: tex });
+  }
 
   return (
     <PageHeaderWrapper>
@@ -129,7 +132,7 @@ export default function Activityer(props) {
 
       <Card bordered={false}>
         <Button className={styles.addBtn} onClick={addNew} type="primary">
-          建议小游戏
+          创建小游戏
         </Button>
 
         <Table size="middle" dataSource={actList} columns={tbColumns} rowKey={(r, i) => i} />

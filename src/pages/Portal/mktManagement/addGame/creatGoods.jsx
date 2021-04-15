@@ -18,7 +18,7 @@ const defaultImg =
 
 export default function CreatGoods(props) {
   const { gData } = props;
-  const { activityCode, activityTitle, setgoodsDone } = useContext(ctx);
+  const { activityCode, activityTitle, setgoodsDone, setstepNum } = useContext(ctx);
   const [gsList, setgsList] = useState(() => touchgsList());
   const [imgEdtor, setimgEdtor] = useState(false);
   const gsColumns = creatGoodsCol(defaultGoods.length);
@@ -134,7 +134,10 @@ export default function CreatGoods(props) {
       console.log(res);
       const { code } = res;
       if (gData) return;
-      if (code === 200) setgoodsDone(true);
+      if (code === 200) {
+        setgoodsDone(true);
+        setstepNum(2);
+      }
     });
   }
 

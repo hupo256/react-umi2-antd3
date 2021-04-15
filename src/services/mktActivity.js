@@ -1,7 +1,7 @@
 import request from '../utils/request';
-// import { baseurl } from './config';
+import { baseurl } from './config';
 
-const baseurl = 'http://10.1.4.58:8291';
+// const baseurl = 'http://10.1.4.58:8291';
 
 /**
  * 小游戏
