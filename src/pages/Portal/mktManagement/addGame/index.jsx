@@ -15,7 +15,7 @@ import CreatDone from './creatDone';
 import ShowSteps from './steps';
 
 function CreatAct(props) {
-  const { activityCode, goodsDone } = useContext(ctx);
+  const { activityCode, newUrl } = useContext(ctx);
 
   console.log(activityCode);
   useEffect(() => {}, []);
@@ -25,8 +25,8 @@ function CreatAct(props) {
       <Card bordered={false}>
         <ShowSteps />
         {!activityCode && <CreatGame />}
-        {activityCode && !goodsDone && <CreatGoods />}
-        {goodsDone && <CreatDone />}
+        {activityCode && !newUrl && <CreatGoods />}
+        {newUrl && <CreatDone />}
       </Card>
     </PageHeaderWrapper>
   );

@@ -5,22 +5,27 @@
  * @Last Modified time: 2021-04-12 14:49:12 
  * 添加、修改商品
  */
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { ctx } from '../common/context';
 import router from 'umi/router';
 import { baseRouteKey } from '../tools/data';
-import { defaultGoods } from '../tools/data';
-import Upload from '@/components/Upload/Upload';
-import mktApi from '@/services/mktActivity';
-import { Button, Icon } from 'antd';
+import { Button, Icon, Input, message } from 'antd';
 import styles from './addGame.less';
 
 export default function CreatGoods(props) {
-  const { activityTitle } = useContext(ctx);
-  const [actUrl, setactUrl] = useState(false);
+  const { activityTitle, newUrl } = useContext(ctx);
+  const urlHolder = useRef();
 
   function gotoRoute(key) {
     router.push(`${baseRouteKey}${key}`);
+  }
+
+  function copyLink() {
+    const inp = urlHolder.current;
+    console.log(inp);
+    inp.select(); // 选中文本
+    document.execCommand('copy'); // 执行浏览器复制命令
+    message.success('复制成功!');
   }
 
   return (
@@ -35,7 +40,12 @@ export default function CreatGoods(props) {
         </p>
         <p>
           游戏链接：
-          {actUrl} 复制链接
+          <span>{newUrl} </span>
+          <Input ref={urlHolder} className={styles.inpHidden} value={newUrl} />
+          <a onClick={copyLink} className={styles.tocopy}>
+            <Icon type="copy" />
+            复制链接
+          </a>
         </p>
       </div>
       <div className={styles.btnBox}>

@@ -37,7 +37,7 @@ function ActivityEdit(props) {
   return (
     <PageHeaderWrapper>
       <Card bordered={false}>
-        <Tabs defaultActiveKey="1" onChange={tabChange}>
+        <Tabs defaultActiveKey="2" onChange={tabChange}>
           <TabPane tab="基本信息" key="1">
             <CreatGame gData={gData} />
           </TabPane>

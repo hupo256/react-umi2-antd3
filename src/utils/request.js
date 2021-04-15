@@ -210,6 +210,7 @@ export default function request(
       let res = response.json();
       return res.then(item => {
         if (item.code === 200 || item.code === 666) {
+          // if (item.message) message.error(item.message);
           return res;
         } else {
           // 返回的数据状态码不对进行提示

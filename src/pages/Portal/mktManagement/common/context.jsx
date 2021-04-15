@@ -11,7 +11,8 @@ export const ctx = createContext();
 export function Provider({ children }) {
   const [activityCode, setactivityCode] = useState(''); //活动code
   const [activityTitle, setactivityTitle] = useState(''); //活动标题
-  const [goodsDone, setgoodsDone] = useState(false); // 奖品创建成功与否
+  // const [newUrl, setnewUrl] = useState(''); // 奖品创建成功与否
+  const [newUrl, setnewUrl] = useState('https://www.baidu.com'); // 奖品创建成功与否
   const [stepNum, setstepNum] = useState(0); // step所处状态
 
   const value = {
@@ -19,8 +20,8 @@ export function Provider({ children }) {
     setactivityCode,
     activityTitle,
     setactivityTitle,
-    goodsDone,
-    setgoodsDone,
+    newUrl,
+    setnewUrl,
     stepNum,
     setstepNum,
   };

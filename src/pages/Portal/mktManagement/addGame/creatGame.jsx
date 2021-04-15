@@ -10,6 +10,7 @@ import { ctx } from '../common/context';
 import moment from 'moment';
 import mktApi from '@/services/mktActivity';
 import { Form, Input, InputNumber, Button, Radio, DatePicker } from 'antd';
+import { urlParamHash } from '../tools';
 import styles from './addGame.less';
 
 const { Item } = Form;
@@ -96,10 +97,12 @@ function AddNewGoods(props) {
   function updateGame() {
     validateFields((err, values) => {
       if (err) return;
+      const { uid } = urlParamHash(location.href);
       const { activityTime } = values;
       const [st, et] = activityTime;
       const newRec = {
         ...values,
+        uid,
         startTime: moment(st).format('YYYY-MM-DD hh:mm:ss'),
         endTime: moment(et).format('YYYY-MM-DD hh:mm:ss'),
       };
@@ -136,7 +139,9 @@ function AddNewGoods(props) {
           })(<Input placeholder="游戏标题" style={{ width: 345 }} />)}
         </Item>
         <Item label="游戏副文本">
-          {getFieldDecorator('activitySubtitle')(<Input placeholder="游戏副文本" />)}
+          {getFieldDecorator('activitySubtitle', {
+            rules: [{ required: true, message: '请填写游戏副文本' }],
+          })(<Input placeholder="游戏副文本" />)}
         </Item>
         <Item label="起止时间">
           {getFieldDecorator('activityTime', {
