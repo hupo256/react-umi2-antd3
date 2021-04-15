@@ -10,7 +10,7 @@ import { ctx } from '../common/context';
 import { defaultGoods } from '../tools/data';
 import Upload from '@/components/Upload/Upload';
 import mktApi from '@/services/mktActivity';
-import { Button, Input, Table, Checkbox } from 'antd';
+import { Button, Input, Table, Checkbox, Icon } from 'antd';
 import styles from './addGame.less';
 
 const defaultImg =
@@ -18,7 +18,7 @@ const defaultImg =
 
 export default function CreatGoods(props) {
   const { gData } = props;
-  const { activityCode, activityTitle, setgoodsDone, setstepNum } = useContext(ctx);
+  const { activityCode, activityTitle, setnewUrl, setstepNum } = useContext(ctx);
   const [gsList, setgsList] = useState(() => touchgsList());
   const [imgEdtor, setimgEdtor] = useState(false);
   const gsColumns = creatGoodsCol(defaultGoods.length);
@@ -93,7 +93,7 @@ export default function CreatGoods(props) {
       {
         title: '操作',
         dataIndex: 'isPrize',
-        width: 180,
+        width: 150,
         render: (text, record, ind) => (
           <div className={styles.tbOpration}>
             <Checkbox checked={!!record.isPrize} onChange={checkboxChange}>
@@ -101,13 +101,13 @@ export default function CreatGoods(props) {
             </Checkbox>
             <div className={styles.abox}>
               <a disabled={ind === 0} onClick={() => toMove(ind, -1)}>
-                up
+                <Icon type="arrow-up" />
               </a>
               <a disabled={ind === len - 1} onClick={() => toMove(ind, 1)}>
-                down
+                <Icon type="arrow-down" />
               </a>
-              <a disabled={len === 1} onClick={() => delImg(ind)}>
-                del
+              <a disabled={len < 5} onClick={() => delImg(ind)}>
+                <Icon type="delete" />
               </a>
             </div>
           </div>
@@ -116,12 +116,15 @@ export default function CreatGoods(props) {
     ];
   }
 
-  function toMove() {
-    console.log();
+  function toMove(ind, num) {
+    const rec = gsList.splice(ind, 1)[0];
+    gsList.splice(ind + num, 0, rec);
+    setgsList(gsList.slice());
   }
 
-  function delImg() {
-    console.log();
+  function delImg(num) {
+    gsList.splice(num, 1);
+    setgsList(gsList.slice());
   }
 
   function updateGoods() {
@@ -133,12 +136,11 @@ export default function CreatGoods(props) {
 
     mktApi.newPrize(params).then(res => {
       console.log(res);
-      const { code } = res;
+      const { data } = res;
+      if (!data) return;
       if (gData) return;
-      if (code === 200) {
-        setgoodsDone(true);
-        setstepNum(2);
-      }
+      setnewUrl(data.linkUrl);
+      setstepNum(2);
     });
   }
 

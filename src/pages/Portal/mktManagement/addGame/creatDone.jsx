@@ -16,11 +16,20 @@ import { Button, Icon } from 'antd';
 import styles from './addGame.less';
 
 export default function CreatGoods(props) {
-  const { activityTitle } = useContext(ctx);
-  const [actUrl, setactUrl] = useState(false);
+  const { activityTitle, newUrl } = useContext(ctx);
 
   function gotoRoute(key) {
     router.push(`${baseRouteKey}${key}`);
+  }
+
+  function copyLink() {
+    var rng = document.body.createTextRange();
+    rng.moveToElementText(obj);
+    rng.scrollIntoView();
+    rng.select();
+    rng.execCommand('Copy');
+    rng.collapse(false);
+    alert('复制成功!');
   }
 
   return (
@@ -35,7 +44,11 @@ export default function CreatGoods(props) {
         </p>
         <p>
           游戏链接：
-          {actUrl} 复制链接
+          <span>{newUrl} </span>
+          <a onClick={copyLink} className={styles.tocopy}>
+            <Icon type="copy" />
+            复制链接
+          </a>
         </p>
       </div>
       <div className={styles.btnBox}>
