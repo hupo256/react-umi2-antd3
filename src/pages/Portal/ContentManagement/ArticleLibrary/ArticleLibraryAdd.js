@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-03-18 11:21:43 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-19 11:26:40
+ * @Last Modified time: 2021-04-15 16:21:10
  * 创建文章
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -47,28 +47,28 @@ class ArticleLibraryAdd extends PureComponent {
       status: null,
       coverImg: null,
       uploadVisible: false,
-      dictionaries:[],
-      editorContent:null
+      dictionaries: [],
+      editorContent: null,
     };
   }
 
   componentDidMount() {
     // 获取字典数据 queryDicModel
     const { dispatch } = this.props;
-   
+
     dispatch({
       type: 'DictConfig/queryDicModel',
       payload: { dicModuleCodes: 'DM006' },
     }).then(res => {
       if (res && res.code === 200) {
         const dictionaries = res.data['DM006'].filter(item => item.status !== '2');
-        this.setState({ dictionaries,step: dictionaries[0].code});
+        this.setState({ dictionaries, step: dictionaries[0].code });
       }
     });
   }
 
   render() {
-    const { status, coverImg, uploadVisible,dictionaries  ,editorContent} = this.state;
+    const { status, coverImg, uploadVisible, dictionaries, editorContent } = this.state;
     const { getFieldDecorator } = this.props.form;
     const {
       DictConfig: { dicData },
@@ -104,30 +104,28 @@ class ArticleLibraryAdd extends PureComponent {
                 })(<Input style={{ width: 400 }} placeholder="请输入文章标题" />)}
               </Form.Item>
               <Form.Item label="所属栏目">
-              {getFieldDecorator('articleDicCode', {
-                rules: [
-                  {
-                    required: true,
-                    message: '请选择所属栏目',
-                  },
-                ],
-              })(
-                <Select  style={{ width: 400 }} placeholder="请选择所属栏目">
-                  {dictionaries.map(item => {
-                        return (
-                          <Option value={item.code} key={item.uid}>
-                            {item.name}
-                          </Option>
-                        );
-                    })}
-                </Select>
-              )}
-            </Form.Item>
-            <Form.Item label="封面图">
-                {getFieldDecorator('articleCoverImg', {
+                {getFieldDecorator('articleDicCode', {
                   rules: [
-                    
+                    {
+                      required: true,
+                      message: '请选择所属栏目',
+                    },
                   ],
+                })(
+                  <Select style={{ width: 400 }} placeholder="请选择所属栏目">
+                    {dictionaries.map(item => {
+                      return (
+                        <Option value={item.code} key={item.uid}>
+                          {item.name}
+                        </Option>
+                      );
+                    })}
+                  </Select>
+                )}
+              </Form.Item>
+              <Form.Item label="封面图">
+                {getFieldDecorator('articleCoverImg', {
+                  rules: [],
                 })(
                   <div className="coverImg">
                     {coverImg ? (
@@ -167,22 +165,23 @@ class ArticleLibraryAdd extends PureComponent {
                   </div>
                 )}
               </Form.Item>
-             
-              <Form.Item label="文章正文">
+
+              <Form.Item label={<span className="beforeStar">文章正文</span>}>
                 {getFieldDecorator('articleContent', {
-                  initialValue: editorContent ||null,
+                  initialValue: editorContent || null,
                   rules: [
                     {
-                      required: true,
+                      required: false,
                       message: '请输入文章正文',
                     },
                   ],
-                })(<BraftEditor
-                  defval={editorContent}
-                  editorCont={cont => {
-                    this.handleEditorCont(cont);
-                  }}
-                />
+                })(
+                  <BraftEditor
+                    defval={editorContent}
+                    editorCont={cont => {
+                      this.handleEditorCont(cont);
+                    }}
+                  />
                 )}
               </Form.Item>
               <Form.Item label="关键词">
@@ -195,9 +194,7 @@ class ArticleLibraryAdd extends PureComponent {
                   ],
                 })(<Input style={{ width: 400 }} placeholder="请输入关键词" />)}
               </Form.Item>
-         
-            
-             
+
               <Form.Item label="文章说明">
                 {getFieldDecorator('articleDescription', {
                   rules: [
@@ -252,14 +249,16 @@ class ArticleLibraryAdd extends PureComponent {
       if (err) throw err;
       console.log(values);
       const { editorContent } = this.state;
-      console.log('====================================');
-      console.log(editorContent);
-      console.log('====================================');
+      if (!editorContent) {
+        message.error('请输入文章正文');
+        return false;
+      }
       const { dispatch } = this.props;
       dispatch({
         type: 'ArticleLibrary/createArticleModel',
         payload: {
           ...values,
+          articleContent: editorContent,
         },
       }).then(res => {
         if (res && res.code === 200) {
@@ -286,4 +285,3 @@ class ArticleLibraryAdd extends PureComponent {
 }
 
 export default ArticleLibraryAdd;
-
