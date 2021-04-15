@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-09 17:53:52
+ * @Last Modified time: 2021-04-15 20:27:09
  * 专题库
  */
 import React, { PureComponent } from 'react';
@@ -37,7 +37,7 @@ class ProjectLibrary extends PureComponent {
           <Card bordered={false}>
             <Steps current={setp}>
               <Step title="填写基本信息" />
-              <Step title="上传专题图片" />
+              <Step title="配置专题界面" />
               <Step title="完成" />
             </Steps>
             {setp == 0 && <CreateStepOne handleOk={() => this.handleOk(1)} />}
