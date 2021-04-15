@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-13 11:10:53
+ * @Last Modified time: 2021-04-15 16:16:52
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -41,35 +41,65 @@ class ProjectLibrary extends PureComponent {
   }
 
   componentDidMount() {
-    const activeKey = getQueryUrlVal('uid');
+    let activeKey;
     const { dispatch } = this.props;
+    if (getQueryUrlVal('copy')) {
+      activeKey = getQueryUrlVal('copy');
+      dispatch({
+        type: 'ProjectLibrary/getCollocationModels',
+        payload: {
+          specialUid: activeKey,
+        },
+      }).then(res => {
+        if (res && res.code === 200) {
+          res.data &&
+            res.data.elementList &&
+            res.data.elementList.map((item, index) => {
+              item.isEdit = true;
+            });
+          dispatch({
+            type: 'ProjectLibrary/saveDataModel',
+            payload: {
+              key: 'compentList',
+              value: res.data.elementList || [],
+            },
+          });
+          this.setState({
+            title: res.data.specialTitle,
+          });
+        }
+      });
+    } else {
+      activeKey = getQueryUrlVal('uid');
+      dispatch({
+        type: 'ProjectLibrary/getCollocationModel',
+        payload: {
+          specialUid: activeKey,
+        },
+      }).then(res => {
+        if (res && res.code === 200) {
+          res.data &&
+            res.data.elementList &&
+            res.data.elementList.map((item, index) => {
+              item.isEdit = true;
+            });
+          dispatch({
+            type: 'ProjectLibrary/saveDataModel',
+            payload: {
+              key: 'compentList',
+              value: res.data.elementList || [],
+            },
+          });
+          this.setState({
+            title: res.data.specialTitle,
+          });
+        }
+      });
+    }
+
     dispatch({
       type: 'login/setAuthModel',
       payload: {},
-    });
-    dispatch({
-      type: 'ProjectLibrary/getCollocationModel',
-      payload: {
-        specialUid: activeKey,
-      },
-    }).then(res => {
-      if (res && res.code === 200) {
-        res.data &&
-          res.data.elementList &&
-          res.data.elementList.map((item, index) => {
-            item.isEdit = true;
-          });
-        dispatch({
-          type: 'ProjectLibrary/saveDataModel',
-          payload: {
-            key: 'compentList',
-            value: res.data.elementList || [],
-          },
-        });
-        this.setState({
-          title: res.data.specialTitle,
-        });
-      }
     });
     dispatch({
       type: 'ProjectLibrary/elementTreeModel',

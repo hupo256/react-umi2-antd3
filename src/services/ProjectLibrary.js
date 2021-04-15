@@ -40,6 +40,13 @@ export async function pageList(params) {
     body: params,
   });
 }
+// 公有专题列表
+export async function pageLists(params) {
+  return request(baseurl + '/api/v1/sso/special/pageListNoPermission', {
+    method: 'POST',
+    body: params,
+  });
+}
 // 配置专题
 export async function specialCollocate(params) {
   return request(baseurl + '/api/v1/wechat/special/collocate', {
@@ -50,6 +57,13 @@ export async function specialCollocate(params) {
 // 获取专题配置
 export async function getCollocation(params) {
   return request(baseurl + '/api/v1/wechat/special/getCollocation', {
+    method: 'POST',
+    body: params,
+  });
+}
+// 获取公有专题配置
+export async function getCollocations(params) {
+  return request(baseurl + '/api/v1/sso/special/getCollocationNoPermission', {
     method: 'POST',
     body: params,
   });

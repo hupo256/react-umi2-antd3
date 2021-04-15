@@ -11,20 +11,16 @@ switch (APP_ENVIRONMENT) {
     break;
   case 'test': // 测试
     console.log = function() {};
-    url = 'http://test.gateway.ingongdi.com';
+    url = 'http://testgw.ingongdi.com';
     break;
   case 'dev': // 开发环境
     console.warn = function() {};
-    url = 'http://dev.gateway.ingongdi.com';
+    url = 'http://devgw.ingongdi.com';
     break;
   case 'local': // 本地开发
     console.warn = function() {};
-    url = 'http://dev.gateway.ingongdi.com';
+    url = 'http://devgw.ingongdi.com';
     //url = 'http://pre.gateway.ingongdi.com';
-    break;
-  case 'rc': // fix
-    console.warn = function() {};
-    url = 'http://rc.api.platform.in-deco.com:1980';
     break;
   default:
     console.log('环境配置出错，请检查！！==', APP_ENVIRONMENT);
