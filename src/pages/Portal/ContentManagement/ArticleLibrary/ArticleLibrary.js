@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:50:21 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-04-15 16:12:40
+ * @Last Modified time: 2021-04-15 19:29:10
  * 文章库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -144,7 +144,7 @@ class ArticleLibrary extends PureComponent {
           </Tabs>
         </div>
         <PageHeaderWrapper fixedTitle={fixedTitle()}>
-          <Card bordered={false} style={{ marginTop: 108 }}>
+          <Card bordered={false} style={{ marginTop: 108 }} className={styles.search}>
             <Search
               placeholder="可通过文章标题 / 内容进行搜索"
               value={this.state.searchWord}

@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-03-18 11:22:23 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-04-15 16:25:12
+ * @Last Modified time: 2021-04-15 19:51:25
  * 编辑文章
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -49,6 +49,7 @@ class ArticleLibraryEdit extends PureComponent {
       uploadVisible: false,
       dictionaries: [],
       editorContent: null,
+      disabled: [],
     };
   }
 
@@ -72,13 +73,14 @@ class ArticleLibraryEdit extends PureComponent {
       payload: { dicModuleCodes: 'DM006' },
     }).then(res => {
       if (res && res.code === 200) {
+        const disabled = res.data['DM006'].filter(item => item.status === '2');
         const dictionaries = res.data['DM006'].filter(item => item.status !== '2');
-        this.setState({ dictionaries, step: dictionaries[0].code });
+        this.setState({ dictionaries, disabled, step: dictionaries[0].code });
       }
     });
   }
   render() {
-    const { status, coverImg, uploadVisible, dictionaries, editorContent } = this.state;
+    const { status, coverImg, uploadVisible, dictionaries, editorContent, disabled } = this.state;
     const { getFieldDecorator } = this.props.form;
     const {
       ArticleLibrary: { ArticleDetail },
@@ -93,9 +95,6 @@ class ArticleLibraryEdit extends PureComponent {
         sm: { span: 16 },
       },
     };
-    console.log('====================================');
-    console.log(editorContent);
-    console.log('====================================');
     return (
       <div>
         <PageHeaderWrapper>
@@ -133,6 +132,20 @@ class ArticleLibraryEdit extends PureComponent {
                           {item.name}
                         </Option>
                       );
+                    })}
+                    {disabled.map(item => {
+                      if (
+                        ArticleDetail.articleDicCode &&
+                        ArticleDetail.articleDicCode.includes(item.code)
+                      ) {
+                        return (
+                          <Option disabled={true} value={item.code} key={item.uid}>
+                            {item.name}
+                          </Option>
+                        );
+                      } else {
+                        return null;
+                      }
                     })}
                   </Select>
                 )}

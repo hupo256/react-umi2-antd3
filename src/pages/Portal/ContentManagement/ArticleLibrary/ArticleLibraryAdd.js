@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-03-18 11:21:43 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-04-15 16:21:10
+ * @Last Modified time: 2021-04-15 19:24:46
  * 创建文章
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -250,6 +250,10 @@ class ArticleLibraryAdd extends PureComponent {
       console.log(values);
       const { editorContent } = this.state;
       if (!editorContent) {
+        message.error('请输入文章正文');
+        return false;
+      }
+      if (editorContent === '<p></p>') {
         message.error('请输入文章正文');
         return false;
       }
