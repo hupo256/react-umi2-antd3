@@ -93,12 +93,13 @@ export default function CreatGoods(props) {
       {
         title: '操作',
         dataIndex: 'isPrize',
+        width: 180,
         render: (text, record, ind) => (
           <div className={styles.tbOpration}>
             <Checkbox checked={!!record.isPrize} onChange={checkboxChange}>
               奖品
             </Checkbox>
-            <div className="abox">
+            <div className={styles.abox}>
               <a disabled={ind === 0} onClick={() => toMove(ind, -1)}>
                 up
               </a>

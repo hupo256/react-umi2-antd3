@@ -8,7 +8,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import mktApi from '@/services/mktActivity';
-import { Card, Button, Input, Table, Tabs } from 'antd';
+import { Card, Input, Table, Tabs } from 'antd';
 import { recColumns, goodsColumns } from '../tools/data';
 import { urlParamHash } from '../tools';
 import styles from './drawRec.less';
@@ -19,6 +19,8 @@ const { TabPane } = Tabs;
 export default function DrawRec(props) {
   const [recList, setrecList] = useState([]);
   const [goodsList, setgoodsList] = useState([]);
+  const [recTotal, setrecTotal] = useState(0);
+  const [total, settotal] = useState(0);
 
   useEffect(() => {
     const { mobile, activityCode, prizeName } = urlParamHash(location.href);
@@ -38,7 +40,9 @@ export default function DrawRec(props) {
       console.log(res);
       const { data } = res;
       if (!data) return;
-      setrecList(data.list);
+      const { list, recordTotal } = data;
+      setrecList(list);
+      setrecTotal(recordTotal);
     });
   }
 
@@ -54,7 +58,9 @@ export default function DrawRec(props) {
       console.log(res);
       const { data } = res;
       if (!data) return;
-      setgoodsList(data.list);
+      const { list, recordTotal } = data;
+      setgoodsList(list);
+      settotal(recordTotal);
     });
   }
 
@@ -78,7 +84,13 @@ export default function DrawRec(props) {
                 style={{ width: 200 }}
               />
             </div>
-            <Table size="middle" dataSource={recList} columns={recColumns} rowKey={(r, i) => i} />
+            <Table
+              size="middle"
+              dataSource={recList}
+              columns={recColumns}
+              pagination={{ recTotal }}
+              rowKey={(r, i) => i}
+            />
           </TabPane>
 
           <TabPane tab="奖项概况" key="2">
@@ -86,6 +98,7 @@ export default function DrawRec(props) {
               size="middle"
               dataSource={goodsList}
               columns={goodsColumns}
+              pagination={{ total }}
               rowKey={(r, i) => i}
             />
           </TabPane>

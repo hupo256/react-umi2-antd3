@@ -20,6 +20,7 @@ export default function Activityer(props) {
   const [actList, setactList] = useState([]);
   const [tbColumns, settbColumns] = useState([]);
   const [searchInd, setsearchInd] = useState(0);
+  const [total, settotal] = useState(0);
 
   useEffect(() => {
     // 获取第一页的活动列表
@@ -37,11 +38,8 @@ export default function Activityer(props) {
     router.push(`${baseRouteKey}activityEdit?uid=${uid}`);
   }
 
-  function toRecod(uid) {
-    // mktApi.delActivity({ uid }).then(res => {
-    //   console.log(res);
-    // });
-    router.push(`${baseRouteKey}drawRec?uid=${uid}`);
+  function toRecod(code) {
+    router.push(`${baseRouteKey}drawRec?activityCode=${code}`);
   }
 
   function creatColumn() {
@@ -52,7 +50,7 @@ export default function Activityer(props) {
       render: (text, record, index) => (
         <p className={styles.actions}>
           <a onClick={() => toEdit(record.uid)}>编辑</a>|{' '}
-          <a onClick={() => toRecod(record.uid)}>抽奖记录</a>
+          <a onClick={() => toRecod(record.activityCode)}>抽奖记录</a>
         </p>
       ),
     };
@@ -91,13 +89,15 @@ export default function Activityer(props) {
       console.log(res);
       const { data } = res;
       if (!data) return;
-      setactList(data.list);
+      const { list, recordTotal } = data;
+      setactList(list);
+      settotal(recordTotal);
     });
   }
 
   function searchWidhTag(ind) {
     console.log(ind);
-    // setsearchInd(ind);
+    setsearchInd(ind);
     touchActList({ state: ind - 1 });
   }
 
@@ -135,7 +135,13 @@ export default function Activityer(props) {
           创建小游戏
         </Button>
 
-        <Table size="middle" dataSource={actList} columns={tbColumns} rowKey={(r, i) => i} />
+        <Table
+          size="middle"
+          dataSource={actList}
+          columns={tbColumns}
+          pagination={{ total }}
+          rowKey={(r, i) => i}
+        />
       </Card>
     </PageHeaderWrapper>
   );
