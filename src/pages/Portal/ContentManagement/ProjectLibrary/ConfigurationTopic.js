@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-31 14:15:17
+ * @Last Modified time: 2021-04-15 16:16:52
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -17,6 +17,7 @@ import { getauth } from '@/utils/authority';
 import ImgComponent from './TopicComponent/ImgComponent';
 import FootComponent from './TopicComponent/FootComponent';
 import ViewFormComponent from './TopicComponent/ViewFormComponent';
+import TextComponent from './TopicComponent/TextComponent';
 import styles from './index.less';
 import logo from '../../../../assets/whiteLog.png';
 import logoImg from '../../../../assets/logoImg.png';
@@ -40,35 +41,65 @@ class ProjectLibrary extends PureComponent {
   }
 
   componentDidMount() {
-    const activeKey = getQueryUrlVal('uid');
+    let activeKey;
     const { dispatch } = this.props;
+    if (getQueryUrlVal('copy')) {
+      activeKey = getQueryUrlVal('copy');
+      dispatch({
+        type: 'ProjectLibrary/getCollocationModels',
+        payload: {
+          specialUid: activeKey,
+        },
+      }).then(res => {
+        if (res && res.code === 200) {
+          res.data &&
+            res.data.elementList &&
+            res.data.elementList.map((item, index) => {
+              item.isEdit = true;
+            });
+          dispatch({
+            type: 'ProjectLibrary/saveDataModel',
+            payload: {
+              key: 'compentList',
+              value: res.data.elementList || [],
+            },
+          });
+          this.setState({
+            title: res.data.specialTitle,
+          });
+        }
+      });
+    } else {
+      activeKey = getQueryUrlVal('uid');
+      dispatch({
+        type: 'ProjectLibrary/getCollocationModel',
+        payload: {
+          specialUid: activeKey,
+        },
+      }).then(res => {
+        if (res && res.code === 200) {
+          res.data &&
+            res.data.elementList &&
+            res.data.elementList.map((item, index) => {
+              item.isEdit = true;
+            });
+          dispatch({
+            type: 'ProjectLibrary/saveDataModel',
+            payload: {
+              key: 'compentList',
+              value: res.data.elementList || [],
+            },
+          });
+          this.setState({
+            title: res.data.specialTitle,
+          });
+        }
+      });
+    }
+
     dispatch({
       type: 'login/setAuthModel',
       payload: {},
-    });
-    dispatch({
-      type: 'ProjectLibrary/getCollocationModel',
-      payload: {
-        specialUid: activeKey,
-      },
-    }).then(res => {
-      if (res && res.code === 200) {
-        res.data &&
-          res.data.elementList &&
-          res.data.elementList.map((item, index) => {
-            item.isEdit = true;
-          });
-        dispatch({
-          type: 'ProjectLibrary/saveDataModel',
-          payload: {
-            key: 'compentList',
-            value: res.data.elementList || [],
-          },
-        });
-        this.setState({
-          title: res.data.specialTitle,
-        });
-      }
     });
     dispatch({
       type: 'ProjectLibrary/elementTreeModel',
@@ -146,6 +177,7 @@ class ProjectLibrary extends PureComponent {
     let tags = [];
     let foot = '';
     let ViewForm = [];
+    let text = [];
     compentList &&
       compentList.map((item, index) => {
         switch (item.elementType) {
@@ -163,8 +195,24 @@ class ProjectLibrary extends PureComponent {
               ),
             });
             break;
+          // case 'TEXT':
+          //   tags.push({
+          //     id: index,
+          //     content: (
+          //       <TextComponent
+          //         data={item}
+          //         index={index}
+          //         handleCheck={data => this.handleCheck(data)}
+          //         handleDeletePic={data => this.handleDeletePic(data)}
+          //       />
+          //     ),
+          //   });
+          //   break;
           case 'FORM':
             ViewForm.push({ data: item, idx: index });
+            break;
+          case 'MODAL_TEXT':
+            text.push({ data: item, idx: index });
             break;
           case 'MODAL':
             foot = (
@@ -183,6 +231,21 @@ class ProjectLibrary extends PureComponent {
     let vie = ViewForm.map((item, index) => {
       return (
         <ViewFormComponent
+          key={index}
+          data={item.data}
+          index={item.idx}
+          handleCheck={data => this.handleCheck(data)}
+          handleColor={(data, index, code) => this.handleColor(data, index, code)}
+          fnDown={(e, indx) => {
+            this.fnDown(e, indx);
+          }}
+          handleDeletePic={data => this.handleDeletePic(data)}
+        />
+      );
+    });
+    let textCont = text.map((item, index) => {
+      return (
+        <TextComponent
           key={index}
           data={item.data}
           index={item.idx}
@@ -247,6 +310,32 @@ class ProjectLibrary extends PureComponent {
           </div>
         </div>
         <div className={styles.confcont}>
+          <div className={styles.thead}>
+            <span className={styles.fontHead}>编辑专题</span>
+            <div className={styles.bth}>
+              {permissionsBtn.permissions.includes('BTN210326000048') ? (
+                <Button
+                  style={{ height: 38, marginRight: 10 }}
+                  onClick={() => {
+                    this.logoutSave();
+                  }}
+                >
+                  退出
+                </Button>
+              ) : null}
+              {permissionsBtn.permissions.includes('BTN210326000048') ? (
+                <Button
+                  type="primary"
+                  style={{ height: 38 }}
+                  onClick={() => {
+                    this.addConfiguration();
+                  }}
+                >
+                  发布
+                </Button>
+              ) : null}
+            </div>
+          </div>
           <div className={styles.phone}>
             <div className={styles.phoneHead}>{title}</div>
             <div className={styles.phoneCont}>
@@ -261,9 +350,10 @@ class ProjectLibrary extends PureComponent {
                   isList
                   tags={tags}
                   render={({ tag, index }) => <div className={styles.tag}>{tag.content}</div>}
-                  onChange={index => console.log(index)}
+                  onChange={index => this.handleDragg(index)}
                 />
                 <div className={styles.vieT}>{vie}</div>
+                <div className={styles.txCont}>{textCont}</div>
                 {foot}
               </div>
             </div>
@@ -280,6 +370,7 @@ class ProjectLibrary extends PureComponent {
     let ishow = 0;
     let left = 0;
     let top = 0;
+    const { tags } = this.state;
     compentList &&
       compentList.map((item, index) => {
         if (item.elementType === 'MODAL' && ite.elementType === 'MODAL') {
@@ -289,7 +380,7 @@ class ProjectLibrary extends PureComponent {
           if (item.elementStyle) {
             let aStyle = JSON.parse(item.elementStyle);
             left = aStyle.left;
-            top = aStyle.top + 220;
+            top = aStyle.top + 280;
           }
         }
       });
@@ -304,7 +395,23 @@ class ProjectLibrary extends PureComponent {
         ite.elementButtonColor = '#fe6a30';
         ite.elementButtonTextColor = '#fff';
         ite.elementButtonText = '立即预约';
+      } else if (ite.elementType === 'MODAL_TEXT') {
+        ite.elementStyle = JSON.stringify({
+          top: top,
+          left: left,
+          fontSize: 14,
+          color: '#000',
+          lineHeight: 1.5,
+          letterSpacing: 1,
+          textAlign: 'center',
+          fontWeight: 'normal',
+          fontStyle: 'normal',
+          textDecorationLine: 'none',
+        });
       }
+      // if (ite.elementType === 'IMG' || ite.elementType === 'TEXT') {
+      //   tags.push(_.cloneDeep(ite));
+      // }
       compentList.push(_.cloneDeep(ite));
     }
     dispatch({
@@ -313,6 +420,9 @@ class ProjectLibrary extends PureComponent {
         key: 'compentList',
         value: [...compentList],
       },
+    });
+    this.setState({
+      tags,
     });
   }
   handleImg(data, index) {
@@ -398,7 +508,6 @@ class ProjectLibrary extends PureComponent {
     } = this.props;
     let height = this.refs.submitf.scrollHeight;
     let aStyle = JSON.parse(compentList[indx].elementStyle);
-
     if (event.clientY - this.disY < 0) {
       aStyle = 0;
     } else if (event.clientY - this.disY > height) {
@@ -406,7 +515,22 @@ class ProjectLibrary extends PureComponent {
     } else {
       aStyle.top = event.clientY - this.disY;
     }
-    compentList[indx].elementStyle = JSON.stringify({ top: aStyle.top, left: aStyle.left });
+    if (compentList[indx].elementType === 'MODAL_TEXT') {
+      compentList[indx].elementStyle = JSON.stringify({
+        top: aStyle.top,
+        left: aStyle.left,
+        fontSize: aStyle.fontSize,
+        color: aStyle.color,
+        lineHeight: aStyle.lineHeight,
+        letterSpacing: aStyle.letterSpacing,
+        textAlign: aStyle.textAlign,
+        fontStyle: aStyle.fontStyle,
+        textDecorationLine: aStyle.textDecorationLine,
+      });
+    } else {
+      compentList[indx].elementStyle = JSON.stringify({ top: aStyle.top, left: aStyle.left });
+    }
+
     dispatch({
       type: 'ProjectLibrary/saveDataModel',
       payload: {
@@ -551,6 +675,31 @@ class ProjectLibrary extends PureComponent {
         message.success('保存成功');
         router.push('/portal/contentmanagement/ProjectLibrary');
       }
+    });
+  }
+  handleDragg(index) {
+    const {
+      dispatch,
+      ProjectLibrary: { compentList },
+    } = this.props;
+    let arr = [];
+    let other = [];
+    index &&
+      index.map((item, index) => {
+        arr.push(item.content.props.data);
+      });
+    compentList &&
+      compentList.map((item, index) => {
+        if (item.elementType !== 'IMG' && item.elementType !== 'TEXT') {
+          other.push(item);
+        }
+      });
+    dispatch({
+      type: 'ProjectLibrary/saveDataModel',
+      payload: {
+        key: 'compentList',
+        value: [...arr, ...other],
+      },
     });
   }
 }

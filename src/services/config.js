@@ -20,14 +20,6 @@ switch (APP_ENVIRONMENT) {
     console.warn = function() {};
     url = 'http://devgw.ingongdi.com';
     break;
-  case 'auto': // 自动化
-    console.warn = function() {};
-    url = 'http://auto.api.platform.in-deco.com:1980';
-    break;
-  case 'rc': // fix
-    console.warn = function() {};
-    url = 'http://rc.api.platform.in-deco.com:1980';
-    break;
   default:
     console.log('环境配置出错，请检查！！==', APP_ENVIRONMENT);
     break;

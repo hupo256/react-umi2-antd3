@@ -74,7 +74,7 @@ class LoginPage extends Component {
                     } else {
                       if (res && res.message) {
                         message.warning(res.message);
-                        this.ReplacementVerificationCode();
+                        //this.ReplacementVerificationCode();
                       }
                     }
                   });
@@ -123,7 +123,7 @@ class LoginPage extends Component {
               } else {
                 if (res && res.message) {
                   message.warning(res.message);
-                  this.ReplacementVerificationCode();
+                  //this.ReplacementVerificationCode();
                 }
               }
             });

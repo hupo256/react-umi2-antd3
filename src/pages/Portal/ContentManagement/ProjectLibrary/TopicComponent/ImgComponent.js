@@ -2,7 +2,11 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
+<<<<<<< HEAD
+ * @Last Modified time: 2021-03-30 17:55:10
+=======
  * @Last Modified time: 2021-04-09 18:03:16
+>>>>>>> 0e94d725a0c0d4eb489ade8a88e7c1ba1fbbe3f8
  * 创建工地
  */
 import React, { PureComponent } from 'react';
