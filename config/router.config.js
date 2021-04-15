@@ -137,21 +137,11 @@ export default [
             PageHeaderName: '编辑设计师',
             component: './Portal/ContentManagement/DesignerLibrary/DesignerLibraryEdit',
           },
-          {
-            path: '/portal/contentmanagement/articlelibrary',
-            name: 'articlelibrary',
-            component: './Portal/ContentManagement/ArticleLibrary/ArticleLibrary',
-          },
-          {
-            path: '/portal/contentmanagement/articlelibrary/add',
-            PageHeaderName: '创建文章',
-            component: './Portal/ContentManagement/ArticleLibrary/ArticleLibraryAdd',
-          },
-          {
-            path: '/portal/contentmanagement/articlelibrary/edit',
-            PageHeaderName: '编辑文章',
-            component: './Portal/ContentManagement/ArticleLibrary/ArticleLibraryEdit',
-          },
+          // {
+          //   path: '/portal/contentmanagement/articlelibrary',
+          //   name: 'articlelibrary',
+          //   component: './Portal/ContentManagement/ArticleLibrary/ArticleLibrary',
+          // },
           {
             path: '/portal/contentmanagement/projectlibrary',
             name: 'projectlibrary',
@@ -174,8 +164,66 @@ export default [
             code: 'MU9000000100010005',
             component: './Portal/ContentManagement/FormLibrary/FormLibrary',
           },
+
+          {
+            path: '/portal/contentmanagement/minProgram', // 定义左侧菜单栏 与 CN文件相匹配
+            name: 'minProgram',
+            routes: [
+              {
+                path: '/portal/contentmanagement/minProgram', // 入口文件，要用redirect作标记，这样路由刷新时才能正确匹配模块下的子路由们
+                redirect: '/portal/contentmanagement/minProgram/home',
+              },
+              {
+                path: '/portal/contentmanagement/minProgram/home', // 接下来，path,name/PageHeaderName, component三要素常规配置
+                PageHeaderName: '当前模板',
+                component: './Portal/minProgram/home',
+              },
+              {
+                path: '/portal/contentmanagement/minProgram/templates',
+                PageHeaderName: '选择模板',
+                component: './Portal/minProgram/templates',
+              },
+              {
+                path: '/portal/contentmanagement/minProgram/edit',
+                PageHeaderName: '编辑模板',
+                component: './Portal/minProgram/edit',
+              },
+            ],
+          },
+
+          {
+            path: '/portal/contentmanagement/mktManagement',
+            name: 'mktManagement',
+            routes: [
+              {
+                path: '/portal/contentmanagement/mktManagement',
+                redirect: '/portal/contentmanagement/mktManagement/activity',
+              },
+              {
+                path: '/portal/contentmanagement/mktManagement/activity',
+                name: 'activity',
+                component: './Portal/mktManagement/activity',
+              },
+              {
+                path: '/portal/contentmanagement/mktManagement/activityEdit',
+                PageHeaderName: '编辑游戏',
+                component: './Portal/mktManagement/activity/activityEdit',
+              },
+              {
+                path: '/portal/contentmanagement/mktManagement/addGame',
+                name: 'addGame',
+                component: './Portal/mktManagement/addGame',
+              },
+              {
+                path: '/portal/contentmanagement/mktManagement/drawRec',
+                name: 'drawRec',
+                component: './Portal/mktManagement/drawRec',
+              },
+            ],
+          },
         ],
       },
+
       // {
       //   path: '/portal/mysite',
       //   name: 'mysite',

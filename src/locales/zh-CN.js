@@ -27,6 +27,13 @@ export default {
   'menu.mysite': '我的网站',
   'menu.mysite.sitepanel': '网站面板',
 
+  'menu.contentmanagement.minProgram': '装企小程序',
+
+  'menu.contentmanagement.mktManagement': '营销小游戏',
+  'menu.contentmanagement.mktManagement.activity': '游戏列表',
+  'menu.contentmanagement.mktManagement.addGame': '创建小游戏',
+  'menu.contentmanagement.mktManagement.drawRec': '抽奖记录',
+
   'menu.home': '首页',
   'menu.list': '列表页',
   'menu.profile': '详情页',
