@@ -1,8 +1,8 @@
 /*
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
- * @Last Modified by: zqm
- * @Last Modified time: 2021-04-10 13:35:08
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2021-04-16 21:43:58
  * 创建工地
  */
 import React, { PureComponent, Fragment, Component } from 'react';
@@ -546,8 +546,8 @@ class CreateStepTwo extends Component {
   // 图片描述
   handleTextChange = (e, r) => {
     const { DicList } = this.state;
-    if (e.target.value.length > 200) {
-      message.error('图片描述最多输入200位字符');
+    if (e.target.value.length > 1000) {
+      message.error('图片描述最多输入1000位字符');
     } else {
       let newDicList = DicList.map(item => {
         if (item.guid === r.guid) {
