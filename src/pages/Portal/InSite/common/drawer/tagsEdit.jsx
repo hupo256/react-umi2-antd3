@@ -7,9 +7,11 @@
  */
 import React, { useState, useEffect, useContext } from 'react';
 import { ctx } from '../context';
-import { Input } from 'antd';
+import { Input, Icon } from 'antd';
 import LinkChoose from './linkChoose';
 import styles from './drawerEditor.less';
+
+const maxLen = 6;
 
 export default function TagsEdit(props) {
   const { pageData, setpageData, curFlag, setlinkEdtor, setcurInd } = useContext(ctx);
@@ -18,7 +20,6 @@ export default function TagsEdit(props) {
   function addNewImgs() {
     if (tagList.length === maxLen) return message.warning('最多可添加6张图片');
     const rec = {};
-    rec.key = createUuid();
     settagList([...tagList, rec].slice());
   }
 
@@ -57,13 +58,13 @@ export default function TagsEdit(props) {
               <li key={ind}>
                 <div className={styles.tbOpration}>
                   <a disabled={ind === 0} onClick={() => toMove(ind, -1)}>
-                    up
+                    <Icon type="arrow-up" />
                   </a>
                   <a disabled={ind === len - 1} onClick={() => toMove(ind, 1)}>
-                    down
+                    <Icon type="arrow-down" />
                   </a>
                   <a disabled={len === 1} onClick={() => delImg(ind)}>
-                    del
+                    <Icon type="delete" />
                   </a>
                 </div>
                 <div className={styles.inpBox}>

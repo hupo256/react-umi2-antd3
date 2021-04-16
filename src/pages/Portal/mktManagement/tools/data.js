@@ -1,4 +1,4 @@
-export const baseRouteKey = '/portal/contentmanagement/mktManagement/';
+export const baseRouteKey = '/portal/activity/mktGame/';
 export const actColumns = [
   {
     title: '游戏标题',

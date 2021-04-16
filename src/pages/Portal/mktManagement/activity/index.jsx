@@ -35,7 +35,7 @@ export default function Activityer(props) {
   );
 
   function toEdit(uid) {
-    router.push(`${baseRouteKey}activityEdit?uid=${uid}`);
+    router.push(`${baseRouteKey}editGame?uid=${uid}`);
   }
 
   function toRecod(code) {

@@ -20,7 +20,7 @@ function TempEdit(props) {
     <PageHeaderWrapper>
       <TitleGuid title="编辑小程序" isEdit={true} />
       <div className={`${styles.currTepBox} ${curFlag ? styles.rightPlaceHolder : ''}`}>
-        <Preview />
+        <Preview from="eidt" />
         <DrawerEditor />
       </div>
     </PageHeaderWrapper>

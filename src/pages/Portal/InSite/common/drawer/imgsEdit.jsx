@@ -7,12 +7,13 @@
  */
 import React, { useState, useEffect, useContext } from 'react';
 import { ctx } from '../context';
-import { Input, Radio, InputNumber } from 'antd';
+import { Input, Radio, InputNumber, Icon } from 'antd';
 import Upload from '@/components/Upload/Upload';
 import LinkChoose from './linkChoose';
 import styles from './drawerEditor.less';
 
 const { Group } = Radio;
+const maxLen = 6;
 
 export default function TagsEdit(props) {
   const {
@@ -43,7 +44,6 @@ export default function TagsEdit(props) {
   function addNewImgs() {
     if (tagList.length === maxLen) return message.warning('最多可添加6张图片');
     const rec = {};
-    rec.key = createUuid();
     settagList([...tagList, rec].slice());
   }
 
@@ -121,13 +121,13 @@ export default function TagsEdit(props) {
 
                 <div className={styles.tbOpration}>
                   <a disabled={ind === 0} onClick={() => toMove(ind, -1)}>
-                    up
+                    <Icon type="arrow-up" />
                   </a>
                   <a disabled={ind === len - 1} onClick={() => toMove(ind, 1)}>
-                    down
+                    <Icon type="arrow-down" />
                   </a>
                   <a disabled={len === 1} onClick={() => delImg(ind)}>
-                    del
+                    <Icon type="delete" />
                   </a>
                 </div>
               </li>

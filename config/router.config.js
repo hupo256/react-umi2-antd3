@@ -78,17 +78,17 @@ export default [
               {
                 path: '/portal/insite/decorate/home', // 接下来，path,name/PageHeaderName, component三要素常规配置
                 PageHeaderName: '当前模板',
-                component: './Portal/minProgram/home',
+                component: './Portal/InSite/home',
               },
               {
                 path: '/portal/insite/decorate/templates',
                 PageHeaderName: '选择模板',
-                component: './Portal/minProgram/templates',
+                component: './Portal/InSite/templates',
               },
               {
                 path: '/portal/insite/decorate/edit',
                 PageHeaderName: '编辑模板',
-                component: './Portal/minProgram/edit',
+                component: './Portal/InSite/edit',
               },
             ],
           },

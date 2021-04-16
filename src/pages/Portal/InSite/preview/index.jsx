@@ -8,7 +8,11 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import router from 'umi/router';
 import { ctx } from '../common/context';
-import { getHomePagePublishedData } from '@/services/miniProgram';
+import {
+  getHomePagePublishedData,
+  getHomePageEditData,
+  getHomePagePublishState,
+} from '@/services/miniProgram';
 import { Button } from 'antd';
 import { baseRouteKey } from '../tools/data';
 import HoverMd from './components/hoverMd';
@@ -57,7 +61,30 @@ export default function Preview(props) {
   const contentBox = useRef();
 
   useEffect(() => {
-    getJsonData();
+    // 之前有发布过吗
+    getHomePagePublishState().then(res => {
+      if (!res?.data) return;
+      const { isPublished } = res.data;
+      const param = [
+        {
+          key: 'case',
+          pageNum: '1',
+          pageSize: '4',
+        },
+        {
+          key: 'site',
+          pageNum: '1',
+          pageSize: '4',
+        },
+        {
+          key: 'design',
+          pageNum: '1',
+          pageSize: '4',
+        },
+      ];
+      !isPublished && getJsonWithNoPub(param);
+      isPublished && getJsonData(param);
+    });
   }, []);
 
   useEffect(() => {
@@ -75,29 +102,21 @@ export default function Preview(props) {
     settotopShow(scrollTop > clientHeight / 2);
   }
 
-  function getJsonData() {
-    const param = [
-      {
-        key: 'case',
-        pageNum: '1',
-        pageSize: '4',
-      },
-      {
-        key: 'site',
-        pageNum: '1',
-        pageSize: '4',
-      },
-      {
-        key: 'design',
-        pageNum: '1',
-        pageSize: '4',
-      },
-    ];
-    getHomePagePublishedData(param).then(res => {
+  function getJsonWithNoPub(pdata) {
+    getHomePageEditData(pdata).then(res => {
       console.log(res);
-      const { data } = res;
-      if (!data) return;
-      const { templateCode, templateJson } = data;
+      if (!res?.data) return;
+      const { editTemplateCode, editTemplateJson } = res.data;
+      setpageData(addMapToData(editTemplateJson));
+      settemplateCode(editTemplateCode);
+    });
+  }
+
+  function getJsonData(pdata) {
+    getHomePagePublishedData(pdata).then(res => {
+      console.log(res);
+      if (!res?.data) return;
+      const { templateCode, templateJson } = res.data;
       setpageData(addMapToData(templateJson));
       settemplateCode(templateCode);
     });
