@@ -59,6 +59,42 @@ export default [
           },
         ],
       },
+
+      // 站点 - 首页装修
+      {
+        path: '/portal/insite',
+        name: 'insite',
+        icon: 'dribbble',
+        // icon: 'web',
+        routes: [
+          {
+            path: '/portal/insite/decorate', // 定义左侧菜单栏 与 CN文件相匹配
+            name: 'decorate',
+            routes: [
+              {
+                path: '/portal/insite/decorate', // 入口文件，要用redirect作标记，这样路由刷新时才能正确匹配模块下的子路由们
+                redirect: '/portal/insite/decorate/home',
+              },
+              {
+                path: '/portal/insite/decorate/home', // 接下来，path,name/PageHeaderName, component三要素常规配置
+                PageHeaderName: '当前模板',
+                component: './Portal/minProgram/home',
+              },
+              {
+                path: '/portal/insite/decorate/templates',
+                PageHeaderName: '选择模板',
+                component: './Portal/minProgram/templates',
+              },
+              {
+                path: '/portal/insite/decorate/edit',
+                PageHeaderName: '编辑模板',
+                component: './Portal/minProgram/edit',
+              },
+            ],
+          },
+        ],
+      },
+
       // v2.0
       // 门户
       // {
@@ -164,59 +200,41 @@ export default [
             code: 'MU9000000100010005',
             component: './Portal/ContentManagement/FormLibrary/FormLibrary',
           },
+        ],
+      },
 
+      // 活动 - 营销小游戏
+      {
+        path: '/portal/activity',
+        name: 'activity',
+        icon: 'smile',
+        routes: [
           {
-            path: '/portal/contentmanagement/minProgram', // 定义左侧菜单栏 与 CN文件相匹配
-            name: 'minProgram',
+            path: '/portal/activity/mktGame', // 定义左侧菜单栏 与 CN文件相匹配
+            name: 'mktGame',
             routes: [
               {
-                path: '/portal/contentmanagement/minProgram', // 入口文件，要用redirect作标记，这样路由刷新时才能正确匹配模块下的子路由们
-                redirect: '/portal/contentmanagement/minProgram/home',
+                path: '/portal/activity/mktGame', // 入口文件，要用redirect作标记，这样路由刷新时才能正确匹配模块下的子路由们
+                redirect: '/portal/activity/mktGame/games',
               },
               {
-                path: '/portal/contentmanagement/minProgram/home', // 接下来，path,name/PageHeaderName, component三要素常规配置
-                PageHeaderName: '当前模板',
-                component: './Portal/minProgram/home',
-              },
-              {
-                path: '/portal/contentmanagement/minProgram/templates',
-                PageHeaderName: '选择模板',
-                component: './Portal/minProgram/templates',
-              },
-              {
-                path: '/portal/contentmanagement/minProgram/edit',
-                PageHeaderName: '编辑模板',
-                component: './Portal/minProgram/edit',
-              },
-            ],
-          },
-
-          {
-            path: '/portal/contentmanagement/mktManagement',
-            name: 'mktManagement',
-            routes: [
-              {
-                path: '/portal/contentmanagement/mktManagement',
-                redirect: '/portal/contentmanagement/mktManagement/activity',
-              },
-              {
-                path: '/portal/contentmanagement/mktManagement/activity',
-                name: 'activity',
+                path: '/portal/activity/mktGame/games', // 接下来，path,name/PageHeaderName, component三要素常规配置
+                PageHeaderName: '营销小游戏',
                 component: './Portal/mktManagement/activity',
               },
               {
-                path: '/portal/contentmanagement/mktManagement/activityEdit',
+                path: '/portal/activity/mktGame/editGame',
                 PageHeaderName: '编辑游戏',
                 component: './Portal/mktManagement/activity/activityEdit',
               },
               {
-                path: '/portal/contentmanagement/mktManagement/addGame',
-                name: 'addGame',
+                path: '/portal/activity/mktGame/addGame',
+                PageHeaderName: '创建游戏',
                 component: './Portal/mktManagement/addGame',
               },
               {
-                path: '/portal/contentmanagement/mktManagement/drawRec',
-                name: 'drawRec',
+                path: '/portal/activity/mktGame/drawRec',
+                PageHeaderName: '抽奖记录',
                 component: './Portal/mktManagement/drawRec',
               },
             ],
