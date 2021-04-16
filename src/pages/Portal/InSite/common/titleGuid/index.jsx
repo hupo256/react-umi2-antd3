@@ -30,6 +30,7 @@ export default function TitleGuid(props) {
   function addBgImgToDesign(jsonData) {
     const desArr = jsonData[4].list.map((item, ind) => {
       const { name } = item;
+
       item.name = name.length > 4 ? name.substr(0, 4) : name;
       item.bgImg = bgImgs[ind];
       return item;
