@@ -65,15 +65,22 @@ export async function activityList(params) {
   });
 }
 // 新增/修改活动
-export async function newActivity(params) {
-  return request(baseurl + '/api/v1/wechat/activity/newActivity', {
+export async function reviseActivity(params) {
+  return request(baseurl + '/api/v1/wechat/activity/reviseActivity', {
     method: 'POST',
     body: params,
   });
 }
 // 新增/修改活动奖品
-export async function newPrize(params) {
-  return request(baseurl + '/api/v1/wechat/activity/newPrize', {
+export async function updatePrize(params) {
+  return request(baseurl + '/api/v1/wechat/activity/updatePrize', {
+    method: 'POST',
+    body: params,
+  });
+}
+// 新增活动、奖品
+export async function newlyActivity(params) {
+  return request(baseurl + '/api/v1/wechat/activity/newlyActivity', {
     method: 'POST',
     body: params,
   });
@@ -147,8 +154,9 @@ export default {
   getActivity,
   getActivityPrize,
   activityList,
-  newActivity,
-  newPrize,
+  reviseActivity,
+  updatePrize,
+  newlyActivity,
   queryActivityList,
   queryActivityPrizeRewardList,
   queryActivityPrizeList,

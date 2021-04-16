@@ -15,18 +15,15 @@ import CreatDone from './creatDone';
 import ShowSteps from './steps';
 
 function CreatAct(props) {
-  const { activityCode, newUrl } = useContext(ctx);
-
-  console.log(activityCode);
-  useEffect(() => {}, []);
+  const { stepNum } = useContext(ctx);
 
   return (
     <PageHeaderWrapper>
       <Card bordered={false}>
         <ShowSteps />
-        {!activityCode && <CreatGame />}
-        {activityCode && !newUrl && <CreatGoods />}
-        {newUrl && <CreatDone />}
+        {stepNum === 0 && <CreatGame />}
+        {stepNum === 1 && <CreatGoods />}
+        {stepNum === 2 && <CreatDone />}
       </Card>
     </PageHeaderWrapper>
   );

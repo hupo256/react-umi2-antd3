@@ -9,7 +9,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { ctx } from '../common/context';
 import moment from 'moment';
 import mktApi from '@/services/mktActivity';
-import { Form, Input, InputNumber, Button, Radio, DatePicker } from 'antd';
+import { Form, Input, InputNumber, Button, Radio, DatePicker, message } from 'antd';
 import { urlParamHash } from '../tools';
 import styles from './addGame.less';
 
@@ -32,7 +32,7 @@ function AddNewGoods(props) {
     form: { validateFields, getFieldDecorator, setFieldsValue },
     gData,
   } = props;
-  const { setactivityCode, setactivityTitle, setstepNum } = useContext(ctx);
+  const { setstepNum, setnewAct } = useContext(ctx);
 
   useEffect(
     () => {
@@ -96,26 +96,27 @@ function AddNewGoods(props) {
 
   function updateGame() {
     validateFields((err, values) => {
+      console.log(values);
       if (err) return;
       const { uid } = urlParamHash(location.href);
       const { activityTime } = values;
       const [st, et] = activityTime;
-      const newRec = {
+      const newAct = {
         ...values,
         uid,
         startTime: moment(st).format('YYYY-MM-DD hh:mm:ss'),
         endTime: moment(et).format('YYYY-MM-DD hh:mm:ss'),
       };
 
-      mktApi.newActivity(newRec).then(res => {
-        console.log(res);
-        const { data } = res;
-        if (!data && gData) return;
-        const { activityCode, activityTitle } = data;
-        setactivityCode(activityCode);
-        setactivityTitle(activityTitle);
+      setnewAct(newAct); // 刷新一下以便下步使用
+      if (!gData) {
         setstepNum(1);
-      });
+      } else {
+        mktApi.reviseActivity(newAct).then(res => {
+          console.log(res);
+          res?.data && message.success('保存成功');
+        });
+      }
     });
   }
 
@@ -148,7 +149,7 @@ function AddNewGoods(props) {
             rules: [{ required: true, message: '请选择起止时间' }],
           })(
             <RangePicker
-              disabledDate={disabledDate}
+              // disabledDate={disabledDate}
               disabledTime={disabledRangeTime}
               showTime={{
                 hideDisabledOptions: true,
@@ -184,7 +185,7 @@ function AddNewGoods(props) {
         </Item>
 
         <Item {...formTailLayout}>
-          <Button type="primary" onClick={() => updateGame(gData)}>
+          <Button type="primary" onClick={updateGame}>
             {gData ? '保存' : '下一步'}
           </Button>
         </Item>

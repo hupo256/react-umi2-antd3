@@ -21,6 +21,7 @@ function ActivityEdit(props) {
   useEffect(() => {
     const { hash } = location;
     const [, uid] = hash.split('?uid=');
+    if (!uid) return;
     mktApi.getActivity({ uid }).then(res => {
       console.log(res);
       const { data } = res;
@@ -30,7 +31,7 @@ function ActivityEdit(props) {
     });
   }, []);
 
-  function tabChange() {
+  function tabChange(e) {
     console.log();
   }
 
@@ -43,7 +44,7 @@ function ActivityEdit(props) {
           </TabPane>
 
           <TabPane tab="奖项设置" key="2">
-            <CreatGoods gData={gData?.prizeList} />
+            <CreatGoods gData={gData} />
           </TabPane>
         </Tabs>
       </Card>
