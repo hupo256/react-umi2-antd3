@@ -15,6 +15,23 @@
   &.min {
     transform-origin: 50% 0;
     transform: scale3d(0.8, 0.8, 1);
+
+    .conBox {
+      .hoverBox {
+        cursor: default;
+
+        &:hover,
+        &.curMd {
+          border: 1px solid rgba(254, 106, 48, 0);
+        }
+
+        &:hover {
+          .hoverHandle {
+            opacity: 0;
+          }
+        }
+      }
+    }
   }
 
   p {

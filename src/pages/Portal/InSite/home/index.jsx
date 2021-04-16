@@ -17,8 +17,8 @@ import Preview from '../preview';
 import styles from './home.less';
 
 function Home(props) {
+  const { pageData, templateName } = useContext(ctx);
   const [authorInf, setauthorInf] = useState(null);
-  const [isPublished, setisPublished] = useState(false);
 
   useEffect(() => {
     const code = localStorage.getItem('auth');
@@ -44,7 +44,7 @@ function Home(props) {
   return (
     <PageHeaderWrapper>
       <div className={styles.homeBox}>
-        <TitleGuid title="模板名称" />
+        <TitleGuid title={templateName || pageData.templateName || '模板名称'} />
         {authorInf && (
           <>
             {authorInf.isAuthedWechatMini ? (

@@ -6,6 +6,11 @@
  * mini program 里的store
  */
 import React, { useState, createContext } from 'react';
+import {
+  getHomePagePublishedData,
+  getHomePageEditData,
+  getHomePagePublishState,
+} from '@/services/miniProgram';
 
 export const ctx = createContext();
 export function Provider({ children }) {
@@ -14,8 +19,66 @@ export function Provider({ children }) {
   const [curInd, setcurInd] = useState(-1); // 当前修改的数据索引值
   const [linkEdtor, setlinkEdtor] = useState(false); //抽屉状态
   const [imgEdtor, setimgEdtor] = useState(false); //抽屉状态
+  const [templateCode, settemplateCode] = useState(''); //当前模板code
+  const [templateName, settemplateName] = useState(''); //当前模板name
 
-  const [homeEdit, sethomeEdit] = useState(false); // 编辑状态
+  function touchPageData() {
+    // 之前有发布过吗
+    getHomePagePublishState().then(res => {
+      if (!res?.data) return;
+      const { isPublished } = res.data;
+      const param = [
+        {
+          key: 'case',
+          pageNum: '1',
+          pageSize: '4',
+        },
+        {
+          key: 'site',
+          pageNum: '1',
+          pageSize: '4',
+        },
+        {
+          key: 'design',
+          pageNum: '1',
+          pageSize: '4',
+        },
+      ];
+      !isPublished && getJsonWithNoPub(param);
+      isPublished && getJsonData(param);
+    });
+  }
+
+  function getJsonWithNoPub(pdata) {
+    getHomePageEditData(pdata).then(res => {
+      console.log(res);
+      if (!res?.data) return;
+      const { editTemplateCode, editTemplateJson } = res.data;
+      setpageData(addMapToData(editTemplateJson));
+      settemplateCode(editTemplateCode);
+    });
+  }
+
+  function getJsonData(pdata) {
+    getHomePagePublishedData(pdata).then(res => {
+      console.log(res);
+      if (!res?.data) return;
+      const { templateCode, templateJson } = res.data;
+      setpageData(addMapToData(templateJson));
+      settemplateCode(templateCode);
+    });
+  }
+
+  function addMapToData(pData) {
+    const arr = pData.jsonData;
+    const map = {};
+    arr.forEach(item => {
+      const pName = item.flag;
+      map[pName] = item;
+    });
+    pData.maps = map;
+    return pData;
+  }
 
   const value = {
     curFlag,
@@ -26,10 +89,13 @@ export function Provider({ children }) {
     setimgEdtor,
     curInd,
     setcurInd,
-    homeEdit,
-    sethomeEdit,
+    templateCode,
+    settemplateCode,
     pageData,
     setpageData,
+    touchPageData,
+    templateName,
+    settemplateName,
   };
 
   return <ctx.Provider value={value}>{children}</ctx.Provider>;

@@ -8,11 +8,6 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import router from 'umi/router';
 import { ctx } from '../common/context';
-import {
-  getHomePagePublishedData,
-  getHomePageEditData,
-  getHomePagePublishState,
-} from '@/services/miniProgram';
 import { Button } from 'antd';
 import { baseRouteKey } from '../tools/data';
 import HoverMd from './components/hoverMd';
@@ -55,36 +50,12 @@ const componentMap = {
 
 export default function Preview(props) {
   const { from } = props;
-  const { setpageData, pageData } = useContext(ctx);
-  const [templateCode, settemplateCode] = useState('');
+  const { pageData, touchPageData } = useContext(ctx);
   const [totopShow, settotopShow] = useState(false);
   const contentBox = useRef();
 
   useEffect(() => {
-    // 之前有发布过吗
-    getHomePagePublishState().then(res => {
-      if (!res?.data) return;
-      const { isPublished } = res.data;
-      const param = [
-        {
-          key: 'case',
-          pageNum: '1',
-          pageSize: '4',
-        },
-        {
-          key: 'site',
-          pageNum: '1',
-          pageSize: '4',
-        },
-        {
-          key: 'design',
-          pageNum: '1',
-          pageSize: '4',
-        },
-      ];
-      !isPublished && getJsonWithNoPub(param);
-      isPublished && getJsonData(param);
-    });
+    touchPageData();
   }, []);
 
   useEffect(() => {
@@ -100,37 +71,6 @@ export default function Preview(props) {
     const scrollTop = target.scrollTop; //滚动条滚动高度
     const scrollHeight = target.scrollHeight; //滚动内容高度
     settotopShow(scrollTop > clientHeight / 2);
-  }
-
-  function getJsonWithNoPub(pdata) {
-    getHomePageEditData(pdata).then(res => {
-      console.log(res);
-      if (!res?.data) return;
-      const { editTemplateCode, editTemplateJson } = res.data;
-      setpageData(addMapToData(editTemplateJson));
-      settemplateCode(editTemplateCode);
-    });
-  }
-
-  function getJsonData(pdata) {
-    getHomePagePublishedData(pdata).then(res => {
-      console.log(res);
-      if (!res?.data) return;
-      const { templateCode, templateJson } = res.data;
-      setpageData(addMapToData(templateJson));
-      settemplateCode(templateCode);
-    });
-  }
-
-  function addMapToData(pData) {
-    const arr = pData.jsonData;
-    const map = {};
-    arr.forEach(item => {
-      const pName = item.flag;
-      map[pName] = item;
-    });
-    pData.maps = map;
-    return pData;
   }
 
   function gotoRoute(key) {
@@ -214,7 +154,7 @@ export default function Preview(props) {
           <Button onClick={() => gotoRoute('edit')} type="primary">
             继续编辑
           </Button>
-          <Button onClick={() => gotoRoute(`templates?tochange=${templateCode}`)}>更换模板</Button>
+          <Button onClick={() => gotoRoute(`templates?tochange=1`)}>更换模板</Button>
         </div>
       )}
     </>

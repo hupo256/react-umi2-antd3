@@ -5,17 +5,19 @@
  * @Last Modified time: 2021-03-23 13:49:12 
  * 小程序UI模板
  */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { Provider, ctx } from '../common/context';
 import router from 'umi/router';
-import { baseRouteKey } from '../tools/data';
+import { baseRouteKey, themes } from '../tools/data';
+import { updateHomePageEditData } from '@/services/miniProgram';
 import TitleGuid from '../common/titleGuid';
 import { queryTemplate } from '@/services/miniProgram';
 import { imgBaseUrl } from '../tools';
 import styles from './templates.less';
 
 function Templates(props) {
+  const { pageData, touchPageData, settemplateName } = useContext(ctx);
   const [isChange, setisChange] = useState(false);
   const [tepList, settepList] = useState([]);
 
@@ -45,12 +47,23 @@ function Templates(props) {
         data.push(moreObj);
       }
       settepList(data);
+      touchPageData(); // 拿到最新的data以备用
     });
   }
 
-  function routerOut() {
-    const key = isChange ? 'home' : 'edit';
-    router.push(`${baseRouteKey}${key}`);
+  function routerOut(code, name) {
+    settemplateName(name);
+    pageData.templateName = name;
+    const parmas = {
+      editTemplateCode: code,
+      editTemplateJson: pageData,
+    };
+    updateHomePageEditData(parmas).then(res => {
+      if (res.code === 200) {
+        const key = isChange ? 'home' : 'edit';
+        router.push(`${baseRouteKey}${key}`);
+      }
+    });
   }
 
   return (
@@ -59,7 +72,7 @@ function Templates(props) {
       <ul className={styles.tembox}>
         {tepList.length > 0 &&
           tepList.map((tem, ind) => {
-            const { isDefault, name, showPicUrl, moreTag } = tem;
+            const { isDefault, name, showPicUrl, code, moreTag } = tem;
             return (
               <li key={ind}>
                 <div className={styles.itemBox}>
@@ -71,7 +84,9 @@ function Templates(props) {
                     <img src={showPicUrl} alt="" />
                     {!moreTag && (
                       <span>
-                        <button onClick={routerOut}>{isChange ? '换成它' : '开始编辑'}</button>
+                        <button onClick={() => routerOut(code, name)}>
+                          {isChange ? '换成它' : '开始编辑'}
+                        </button>
                       </span>
                     )}
                   </div>

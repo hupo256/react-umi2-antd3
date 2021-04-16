@@ -8,11 +8,7 @@
 import React, { useContext } from 'react';
 import { Button } from 'antd';
 import { ctx } from '../context';
-import {
-  updateHomePageEditData,
-  publishEditData,
-  getHomePagePublishedData,
-} from '@/services/miniProgram';
+import { updateHomePageEditData, publishEditData } from '@/services/miniProgram';
 import styles from './titleGuid.less';
 
 const bgImgs = [
@@ -24,44 +20,11 @@ const bgImgs = [
 
 export default function TitleGuid(props) {
   const { title = '标题', disc, isEdit } = props;
-  const { pageData, setpageData, setcurFlag } = useContext(ctx);
+  const { pageData, setcurFlag, templateCode, templateName, touchPageData } = useContext(ctx);
 
-  function getJsonData() {
-    const param = [
-      {
-        key: 'case',
-        pageNum: '1',
-        pageSize: '4',
-      },
-      {
-        key: 'site',
-        pageNum: '1',
-        pageSize: '4',
-      },
-      {
-        key: 'design',
-        pageNum: '1',
-        pageSize: '4',
-      },
-    ];
+  function cancelData() {
     setcurFlag('');
-    getHomePagePublishedData(param).then(res => {
-      console.log(res);
-      const { data } = res;
-      if (!data) return;
-      setpageData(addMapToData(data.templateJson));
-    });
-  }
-
-  function addMapToData(pData) {
-    const arr = pData.jsonData;
-    const map = {};
-    arr.forEach(item => {
-      const pName = item.flag;
-      map[pName] = item;
-    });
-    pData.maps = map;
-    return pData;
+    touchPageData();
   }
 
   function addBgImgToDesign(jsonData) {
@@ -77,26 +40,11 @@ export default function TitleGuid(props) {
 
   function toPublich() {
     console.log(pageData);
-    let { jsonData, themeData } = pageData;
+    const { jsonData, themeData } = pageData;
     const { customerService } = JSON.parse(localStorage.getItem('auth'));
-
-    themeData = {
-      baseColor: 'rgba(49, 181, 89, 1)',
-      gradientColor: {
-        header: {
-          dark: 'rgba(198, 234, 209, 1)',
-          light: 'rgba(236, 248, 240, 1)',
-        },
-        moduleTitle: {
-          dark: 'rgba(58, 184, 96, 1)',
-          light: 'rgba(231, 246, 236, 1)',
-        },
-      },
-    };
-
     const parmas = {
-      editTemplateCode: 'WMHPT0001',
-      editTemplateJson: { jsonData, themeData, globalInfor: { customerService } },
+      editTemplateCode: templateCode,
+      editTemplateJson: { jsonData, themeData, templateName, globalInfor: { customerService } },
     };
     updateHomePageEditData(parmas).then(res => {
       res.code === 200 && publishEditData();
@@ -109,7 +57,7 @@ export default function TitleGuid(props) {
         <span>{title}</span>
         {isEdit && (
           <div className={styles.btnBox}>
-            <Button onClick={getJsonData}>放弃更改</Button>
+            <Button onClick={cancelData}>放弃更改</Button>
             <Button onClick={toPublich} type="primary">
               发布
             </Button>
