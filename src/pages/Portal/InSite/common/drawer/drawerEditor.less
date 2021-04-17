@@ -7,6 +7,9 @@
   background: #fff;
   box-shadow: -1px 0 1px #ccc;
   transition: right 0.2s ease;
+  overflow: hidden;
+  overflow-y: auto;
+  z-index: 5;
 
   &.show {
     right: -18px;
@@ -48,13 +51,15 @@
       border-bottom: 1px solid #ddd;
       padding: 10px 16px 22px;
 
-      .inpBox {
-        input {
+      .taginpBox {
+        input,
+        form {
+          display: inline-block;
+          vertical-align: middle;
           margin: 4px 0;
         }
-        input:nth-child(1) {
-          width: 35%;
-          margin-right: 10px;
+        form {
+          width: 38%;
         }
         input:nth-child(2) {
           width: 62%;

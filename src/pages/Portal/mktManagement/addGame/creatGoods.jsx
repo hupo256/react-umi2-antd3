@@ -26,26 +26,34 @@ export default function CreatGoods(props) {
   const gsColumns = creatGoodsCol(curGoods?.length) || [];
 
   useEffect(() => {
-    console.log(curGoods?.length);
-    if (curGoods?.length === 0) {
-      console.log(23);
-      const list = touchgsList();
-      calcNumInArr(list);
-    }
+    // console.log(curGoods?.length);
+    // if (curGoods?.length === 0) {
+    //   console.log(23);
+    //   const list = touchgsList();
+    //   calcNumInArr(list);
+    // }
+
+    const list = curGoods?.length === 0 ? touchgsList() : curGoods;
+    calcNumInArr(list);
   }, []);
 
   // 获取奖品们
   function touchgsList() {
     const len = defaultGoods.length;
     return defaultGoods.map((gs, ind) => {
-      const isPrize = ind === len - 1 ? 0 : 1;
+      let isPrize = 1;
+      let prizeNum = 100;
+      if (ind === len - 1) {
+        isPrize = 0;
+        prizeNum = 1000;
+      }
       return {
         prizeImage: defaultImg,
         prizeName: gs,
-        prizeNum: 100,
         prizeBeNum: 0,
         probability: '6.67',
         prizeSuNum: 100,
+        prizeNum,
         isPrize,
       };
     });
@@ -68,7 +76,7 @@ export default function CreatGoods(props) {
 
   // input值变化时更新数据
   function inpChange(e, key, ind) {
-    const val = e?.target ? target.value : e;
+    const val = e?.target ? e.target?.value : e;
     curGoods[ind][key] = val;
     setcurGoods(curGoods.slice());
   }

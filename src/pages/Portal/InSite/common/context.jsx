@@ -15,7 +15,7 @@ import {
 export const ctx = createContext();
 export function Provider({ children }) {
   const [pageData, setpageData] = useState({}); // 页面渲染数据
-  const [curFlag, setcurFlag] = useState(''); // 当前编辑数据的标签
+  const [curFlag, setcurFlag] = useState('advertising'); // 当前编辑数据的标签
   const [curInd, setcurInd] = useState(-1); // 当前修改的数据索引值
   const [linkEdtor, setlinkEdtor] = useState(false); //抽屉状态
   const [imgEdtor, setimgEdtor] = useState(false); //抽屉状态

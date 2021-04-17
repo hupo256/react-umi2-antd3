@@ -18,7 +18,7 @@ export default function DrawerEditor(props) {
 
   return (
     <div className={`drawerEditor ${styles.drawerBox} ${isShow ? styles.show : ''}`}>
-      <h3>{`编辑${curFlag === 'highlights' ? '轮播' : '亮点'}`}</h3>
+      <h3>{`编辑${curFlag === 'highlights' ? '亮点' : '轮播'}`}</h3>
       {curFlag === 'banner' && <ImgsEdit />}
       {curFlag === 'highlights' && <TagsEdit />}
       {curFlag === 'advertising' && <ImgsEdit />}

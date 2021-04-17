@@ -7,18 +7,28 @@
  */
 import React, { useState, useEffect, useContext } from 'react';
 import { ctx } from '../context';
-import { Input, Icon, message } from 'antd';
+import { Input, Icon, message, Form } from 'antd';
 import LinkChoose from './linkChoose';
 import styles from './drawerEditor.less';
 
 const maxLen = 6;
+const { Item } = Form;
 
 export default function TagsEdit(props) {
   const { pageData, setpageData, curFlag, setlinkEdtor, setcurInd } = useContext(ctx);
   const [tagList = [], settagList] = useState(() => pageData?.maps?.[curFlag]?.list);
 
+  useEffect(() => {}, []);
+
+  function formatData(arr) {
+    return arr?.map(item => {
+      item.vaStatus = 'success';
+      item.errMsg = '';
+    });
+  }
+
   function addNewImgs() {
-    if (tagList.length === maxLen) return message.warning(`最多可添加${maxLen}张图片`);
+    if (tagList.length === maxLen) return message.warning(`最多可添加${maxLen}个亮点`);
     const rec = {};
     settagList([...tagList, rec].slice());
   }
@@ -42,12 +52,34 @@ export default function TagsEdit(props) {
     setpageData(pageData);
   }
 
+  function tagsTexChange(e, rec) {
+    const val = e?.target?.value;
+    rec.title = val;
+    if (val) {
+      rec.vaStatus = 'success';
+      rec.errMsg = '';
+    }
+    settagList(tagList.slice());
+    setpageData(pageData);
+  }
+
+  function tagsTexBlur(e, rec) {
+    const val = e?.target?.value;
+    if (!val) {
+      rec.vaStatus = 'error';
+      rec.errMsg = '请您先输入主标题';
+    }
+    settagList(tagList.slice());
+  }
+
+  function titleTexChange(rec) {}
+
   return (
     <>
       <ul>
-        {tagList.length > 0 &&
+        {tagList?.length > 0 &&
           tagList.map((tag, ind) => {
-            const { title, desc, uid, text = '' } = tag;
+            const { title, desc, vaStatus = 'success', errMsg = '', text = '' } = tag;
             const len = tagList.length;
             return (
               <li key={ind}>
@@ -62,9 +94,23 @@ export default function TagsEdit(props) {
                     <Icon type="delete" />
                   </a>
                 </div>
-                <div className={styles.inpBox}>
-                  <Input value={title} placeholder="请输入文本" />
-                  <Input value={desc} placeholder="请输入文本" />
+                <div className={styles.taginpBox}>
+                  <Form layout="inline">
+                    <Item validateStatus={vaStatus} help={errMsg}>
+                      <Input
+                        style={{ width: '100%' }}
+                        value={title}
+                        onBlur={e => tagsTexBlur(e, tag)}
+                        onChange={e => tagsTexChange(e, tag)}
+                        placeholder="请输入主标题"
+                      />
+                    </Item>
+                  </Form>
+                  <Input
+                    value={desc}
+                    onChange={() => titleTexChange(tag)}
+                    placeholder="请输入副文本"
+                  />
                   <Input
                     value={text}
                     placeholder="请设置跳转链接"

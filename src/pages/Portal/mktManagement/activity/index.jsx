@@ -20,6 +20,7 @@ export default function Activityer(props) {
   const [actList, setactList] = useState([]);
   const [tbColumns, settbColumns] = useState([]);
   const [searchInd, setsearchInd] = useState(0);
+  const [searchTex, setsearchTex] = useState('');
   const [total, settotal] = useState(0);
 
   useEffect(() => {
@@ -93,7 +94,7 @@ export default function Activityer(props) {
   // 获取活动们
   function touchActList(config = {}) {
     const params = {
-      activeName: '',
+      activityTitle: searchTex,
       pageNum: 1,
       pageSize: 10,
       // state: 0,
@@ -124,7 +125,8 @@ export default function Activityer(props) {
   }
 
   function toSearch(tex) {
-    touchActList({ activeName: tex });
+    setsearchTex(tex);
+    touchActList({ activityTitle: tex });
   }
 
   return (
