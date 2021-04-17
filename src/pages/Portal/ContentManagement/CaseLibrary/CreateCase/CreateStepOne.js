@@ -1,8 +1,8 @@
 /*
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
- * @Last Modified by: zqm
- * @Last Modified time: 2021-04-09 17:46:40
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2021-04-17 12:21:49
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -77,7 +77,7 @@ class CreateStepOne extends PureComponent {
         const disabledDesigner = designerList.filter(item => item.uid === stepOne.designerUid);
         this.setState({
           designerList,
-          disabledDesigner: (disabledDesigner.length>0 && disabledDesigner[0].uid) || '',
+          disabledDesigner: (disabledDesigner.length > 0 && disabledDesigner[0].uid) || '',
         });
       }
     });
@@ -316,8 +316,8 @@ class CreateStepOne extends PureComponent {
               initialValue: stepOne.caseDesc || '',
               rules: [
                 {
-                  max: 200,
-                  message: '最多可输入200位字符!',
+                  max: 1000,
+                  message: '最多可输入1000位字符!',
                 },
               ],
             })(<TextArea rows={4} style={{ width: 400 }} placeholder="请输入案例说明" />)}
