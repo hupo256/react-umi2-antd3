@@ -58,14 +58,27 @@ export default function Activityer(props) {
       title: '状态',
       dataIndex: 'state',
       render: (text, record, index) => {
-        let tex = '未开始';
         const { state } = record;
+        const cls = `cls${state}`;
+        let tex = '未开始';
         state === 1 && (tex = '进行中');
         state === 2 && (tex = '已结束');
         return (
           <div className={styles.stateBox}>
-            <u />
-            <span>{tex}</span>
+            <u className={styles[cls]} />
+            {tex}
+          </div>
+        );
+      },
+    };
+    actColumns[2] = {
+      title: '起止时间',
+      dataIndex: 'time',
+      render: (text, record, index) => {
+        const [st, et] = text.split('_');
+        return (
+          <div className={styles.timeBox}>
+            {st} 至 <br /> {et}
           </div>
         );
       },
@@ -87,11 +100,20 @@ export default function Activityer(props) {
     };
     mktApi.queryActivityList({ ...params, ...config }).then(res => {
       console.log(res);
+      if (!res?.data) return;
       const { data } = res;
-      if (!data) return;
       const { list, recordTotal } = data;
-      setactList(list);
+      setactList(mergeTime(list));
       settotal(recordTotal);
+    });
+  }
+
+  function mergeTime(arr) {
+    return arr?.map(item => {
+      const { startTime, endTime } = item;
+      // console.log
+      item.time = startTime.slice(0, 16) + '_' + endTime.slice(0, 16);
+      return item;
     });
   }
 

@@ -6,7 +6,9 @@
  * 移动端首页 公用头部
  */
 import React, { useContext } from 'react';
-import { Button } from 'antd';
+import { Button, message } from 'antd';
+import router from 'umi/router';
+import { baseRouteKey } from '../../tools/data';
 import { ctx } from '../context';
 import { updateHomePageEditData, publishEditData } from '@/services/miniProgram';
 import styles from './titleGuid.less';
@@ -48,7 +50,13 @@ export default function TitleGuid(props) {
       editTemplateJson: { jsonData, themeData, templateName, globalInfor: { customerService } },
     };
     updateHomePageEditData(parmas).then(res => {
-      res.code === 200 && publishEditData();
+      res.code === 200 &&
+        publishEditData().then(res => {
+          message.success('发布成功');
+          setTimeout(() => {
+            router.push(`${baseRouteKey}home`);
+          }, 1500);
+        });
     });
   }
 

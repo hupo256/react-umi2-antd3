@@ -68,8 +68,7 @@ export default function CreatGoods(props) {
 
   // input值变化时更新数据
   function inpChange(e, key, ind) {
-    const { target } = e;
-    const val = target ? target.value : e;
+    const val = e?.target ? target.value : e;
     curGoods[ind][key] = val;
     setcurGoods(curGoods.slice());
   }
