@@ -1,4 +1,4 @@
-@hightColor: #fe601c;
+@hightColor: rgba(222, 57, 45, 1);
 @fontColor: #222;
 @fontGray: #a1a1a1;
 @borderRadius: 6px;
@@ -104,7 +104,7 @@
 
       &:hover,
       &.curMd {
-        border: 1px solid rgba(254, 106, 48, 1);
+        border: 1px solid @hightColor;
       }
 
       &:hover {
@@ -155,7 +155,7 @@
         h3 {
           font-size: 14px;
           margin-bottom: 0;
-          color: #ff6f0c;
+          color: @hightColor;
         }
         p {
           font-size: 20px;
@@ -514,5 +514,280 @@
   text-align: center;
   button {
     margin: 0 5px;
+  }
+}
+
+// themes edit
+.WMHPT0001 {
+  @themColor: rgba(222, 57, 45, 1);
+  .headerBox {
+    background: linear-gradient(180deg, rgba(255, 215, 212, 1) 0%, rgba(252, 237, 236, 1) 100%);
+  }
+  .conBox {
+    background: linear-gradient(180deg, rgba(252, 237, 236, 1) 0%, #fff 100%);
+    .mdBlock > h3 > b::after {
+      background: linear-gradient(270deg, rgba(223, 64, 53, 1) 100%, rgba(251, 233, 231, 1) 0%);
+    }
+    .tagBox > li > h3 {
+      color: @themColor;
+    }
+    .caseBox > .caseImgs > u {
+      background: @themColor;
+    }
+    .caseBox > .caseImgs > .caseList > li.on > img {
+      border-color: @themColor;
+    }
+    .hoverBox {
+      &:hover,
+      &.curMd {
+        border: 1px solid @themColor;
+      }
+    }
+  }
+  .footerBox {
+    ul > li.on {
+      color: @themColor;
+    }
+  }
+  .totopBox {
+    color: @themColor;
+  }
+  .btn {
+    background: @themColor;
+  }
+}
+
+.WMHPT0002 {
+  @themColor: rgba(255, 111, 12, 1);
+  .headerBox {
+    background: linear-gradient(180deg, rgba(255, 214, 187, 1) 0%, rgba(255, 242, 234, 1) 100%);
+  }
+  .conBox {
+    background: linear-gradient(180deg, rgba(255, 242, 234, 1) 0%, #fff 100%);
+    .mdBlock > h3 > b::after {
+      background: linear-gradient(270deg, rgba(255, 117, 22, 1) 100%, rgba(255, 239, 229, 1) 0%);
+    }
+    .tagBox > li > h3 {
+      color: @themColor;
+    }
+    .caseBox > .caseImgs > u {
+      background: @themColor;
+    }
+    .caseBox > .caseImgs > .caseList > li.on > img {
+      border-color: @themColor;
+    }
+    .hoverBox {
+      &:hover,
+      &.curMd {
+        border: 1px solid @themColor;
+      }
+    }
+  }
+  .footerBox {
+    ul > li.on {
+      color: @themColor;
+    }
+  }
+  .totopBox {
+    color: @themColor;
+  }
+  .btn {
+    background: @themColor;
+  }
+}
+
+.WMHPT0003 {
+  @themColor: rgba(49, 181, 89, 1);
+  .headerBox {
+    background: linear-gradient(180deg, rgba(198, 234, 209, 1) 0%, rgba(236, 248, 240, 1) 100%);
+  }
+  .conBox {
+    background: linear-gradient(180deg, rgba(236, 248, 240, 1) 0%, #fff 100%);
+    .mdBlock > h3 > b::after {
+      background: linear-gradient(270deg, rgba(58, 184, 96, 1) 100%, rgba(231, 246, 236, 1) 0%);
+    }
+    .tagBox > li > h3 {
+      color: @themColor;
+    }
+    .caseBox > .caseImgs > u {
+      background: @themColor;
+    }
+    .caseBox > .caseImgs > .caseList > li.on > img {
+      border-color: @themColor;
+    }
+    .hoverBox {
+      &:hover,
+      &.curMd {
+        border: 1px solid @themColor;
+      }
+    }
+  }
+  .footerBox {
+    ul > li.on {
+      color: @themColor;
+    }
+  }
+  .totopBox {
+    color: @themColor;
+  }
+  .btn {
+    background: @themColor;
+  }
+}
+
+.WMHPT0004 {
+  @themColor: rgba(55, 184, 194, 1);
+  .headerBox {
+    background: linear-gradient(180deg, rgba(200, 235, 238, 1) 0%, rgba(236, 248, 249, 1) 100%);
+  }
+  .conBox {
+    background: linear-gradient(180deg, rgba(236, 248, 249, 1) 0%, #fff 100%);
+
+    .mdBlock > h3 > b::after {
+      background: linear-gradient(270deg, rgba(65, 190, 199, 1) 100%, rgba(229, 246, 247, 1) 0%);
+    }
+    .tagBox > li > h3 {
+      color: @themColor;
+    }
+    .caseBox > .caseImgs > u {
+      background: @themColor;
+    }
+    .caseBox > .caseImgs > .caseList > li.on > img {
+      border-color: @themColor;
+    }
+    .hoverBox {
+      &:hover,
+      &.curMd {
+        border: 1px solid @themColor;
+      }
+    }
+  }
+  .footerBox {
+    ul > li.on {
+      color: @themColor;
+    }
+  }
+  .totopBox {
+    color: @themColor;
+  }
+  .btn {
+    background: @themColor;
+  }
+}
+
+.WMHPT0005 {
+  @themColor: rgba(4, 118, 213, 1);
+  .headerBox {
+    background: linear-gradient(180deg, rgba(185, 216, 243, 1) 0%, rgba(234, 243, 251, 1) 100%);
+  }
+  .conBox {
+    background: linear-gradient(180deg, rgba(234, 243, 251, 1) 0%, #fff 100%);
+    .mdBlock > h3 > b::after {
+      background: linear-gradient(270deg, rgba(15, 124, 214, 1) 100%, rgba(228, 240, 250, 1) 0%);
+    }
+    .tagBox > li > h3 {
+      color: @themColor;
+    }
+    .caseBox > .caseImgs > u {
+      background: @themColor;
+    }
+    .caseBox > .caseImgs > .caseList > li.on > img {
+      border-color: @themColor;
+    }
+    .hoverBox {
+      &:hover,
+      &.curMd {
+        border: 1px solid @themColor;
+      }
+    }
+  }
+  .footerBox {
+    ul > li.on {
+      color: @themColor;
+    }
+  }
+  .totopBox {
+    color: @themColor;
+  }
+  .btn {
+    background: @themColor;
+  }
+}
+
+.WMHPT0006 {
+  @themColor: rgba(173, 143, 104, 1);
+  .headerBox {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 1) 100%);
+  }
+  .conBox {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, #fff 100%);
+    .mdBlock > h3 > b::after {
+      background: linear-gradient(270deg, rgba(175, 133, 80, 1) 100%, rgba(245, 241, 235, 1) 0%);
+    }
+    .tagBox > li > h3 {
+      color: @themColor;
+    }
+    .caseBox > .caseImgs > u {
+      background: @themColor;
+    }
+    .caseBox > .caseImgs > .caseList > li.on > img {
+      border-color: @themColor;
+    }
+    .hoverBox {
+      &:hover,
+      &.curMd {
+        border: 1px solid @themColor;
+      }
+    }
+  }
+  .footerBox {
+    ul > li.on {
+      color: @themColor;
+    }
+  }
+  .totopBox {
+    color: @themColor;
+  }
+  .btn {
+    background: @themColor;
+  }
+}
+
+.WMHPT0007 {
+  @themColor: rgba(34, 34, 34, 1);
+  .headerBox {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 1) 100%);
+  }
+  .conBox {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, #fff 100%);
+    .mdBlock > h3 > b::after {
+      background: linear-gradient(270deg, rgba(44, 44, 44, 1) 100%, rgba(233, 233, 233, 1) 0%);
+    }
+    .tagBox > li > h3 {
+      color: @themColor;
+    }
+    .caseBox > .caseImgs > u {
+      background: @themColor;
+    }
+    .caseBox > .caseImgs > .caseList > li.on > img {
+      border-color: @themColor;
+    }
+    .hoverBox {
+      &:hover,
+      &.curMd {
+        border: 1px solid @themColor;
+      }
+    }
+  }
+  .footerBox {
+    ul > li.on {
+      color: @themColor;
+    }
+  }
+  .totopBox {
+    color: @themColor;
+  }
+  .btn {
+    background: @themColor;
   }
 }

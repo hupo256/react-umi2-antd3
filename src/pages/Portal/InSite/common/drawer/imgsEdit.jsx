@@ -7,7 +7,7 @@
  */
 import React, { useState, useEffect, useContext } from 'react';
 import { ctx } from '../context';
-import { Input, Radio, InputNumber, Icon } from 'antd';
+import { Input, Radio, InputNumber, Icon, message } from 'antd';
 import Upload from '@/components/Upload/Upload';
 import LinkChoose from './linkChoose';
 import styles from './drawerEditor.less';
@@ -42,7 +42,10 @@ export default function TagsEdit(props) {
   }
 
   function addNewImgs() {
-    if (tagList.length === maxLen) return message.warning('最多可添加6张图片');
+    if (tagList.length === maxLen) {
+      message.warning(`最多可添加${maxLen}张图片`);
+      return;
+    }
     const rec = {};
     settagList([...tagList, rec].slice());
   }

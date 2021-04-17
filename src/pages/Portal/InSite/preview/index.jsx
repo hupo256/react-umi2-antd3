@@ -9,6 +9,7 @@ import React, { useState, useEffect, useContext, useRef } from 'react';
 import router from 'umi/router';
 import { ctx } from '../common/context';
 import { Button } from 'antd';
+import { urlParamHash } from '../tools';
 import { baseRouteKey } from '../tools/data';
 import HoverMd from './components/hoverMd';
 import SwiperBar from '../common/swiperBar';
@@ -50,11 +51,13 @@ const componentMap = {
 
 export default function Preview(props) {
   const { from } = props;
-  const { pageData, touchPageData } = useContext(ctx);
+  const { pageData, touchPageData, templateCode } = useContext(ctx);
   const [totopShow, settotopShow] = useState(false);
+  const [curTheme, setcurTheme] = useState('WMHPT0001');
   const contentBox = useRef();
 
   useEffect(() => {
+    touchThemes();
     touchPageData();
   }, []);
 
@@ -64,6 +67,12 @@ export default function Preview(props) {
       contentBox.current.removeEventListener('scroll', conScroll);
     };
   }, []);
+
+  function touchThemes() {
+    const formPre = urlParamHash(location.href).templateCode;
+    const code = formPre ? formPre : templateCode;
+    setcurTheme(code);
+  }
 
   function conScroll(e) {
     const { target } = e;
@@ -84,7 +93,7 @@ export default function Preview(props) {
 
   return (
     <>
-      <div className={`${pageStyle.phoneBox} ${from ? pageStyle.min : ''}`}>
+      <div className={`${pageStyle.phoneBox} ${pageStyle[curTheme]} ${from ? pageStyle.min : ''} `}>
         <div className={pageStyle.headerBox}>
           <div className={pageStyle.ptit}>
             <span>首页</span>
@@ -151,7 +160,7 @@ export default function Preview(props) {
 
       {from && (
         <div className={pageStyle.btnbox}>
-          <Button onClick={() => gotoRoute('edit')} type="primary">
+          <Button onClick={() => gotoRoute(`edit?templateCode=${curTheme}`)} type="primary">
             继续编辑
           </Button>
           <Button onClick={() => gotoRoute(`templates?tochange=1`)}>更换模板</Button>

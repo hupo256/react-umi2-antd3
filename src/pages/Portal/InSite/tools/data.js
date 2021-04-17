@@ -54,7 +54,7 @@ export const themes = {
       },
       moduleTitle: {
         dark: 'rgba(255, 117, 22, 1)',
-        light: 'rgba(255, 239, 229, 1))',
+        light: 'rgba(255, 239, 229, 1)',
       },
     },
   },

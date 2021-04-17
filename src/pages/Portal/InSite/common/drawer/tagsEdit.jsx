@@ -7,7 +7,7 @@
  */
 import React, { useState, useEffect, useContext } from 'react';
 import { ctx } from '../context';
-import { Input, Icon } from 'antd';
+import { Input, Icon, message } from 'antd';
 import LinkChoose from './linkChoose';
 import styles from './drawerEditor.less';
 
@@ -18,14 +18,9 @@ export default function TagsEdit(props) {
   const [tagList = [], settagList] = useState(() => pageData?.maps?.[curFlag]?.list);
 
   function addNewImgs() {
-    if (tagList.length === maxLen) return message.warning('最多可添加6张图片');
+    if (tagList.length === maxLen) return message.warning(`最多可添加${maxLen}张图片`);
     const rec = {};
     settagList([...tagList, rec].slice());
-  }
-
-  function toChooseImg(num) {
-    setcurInd(num);
-    setimgEdtor(true);
   }
 
   function toChooseLink(num) {

@@ -17,8 +17,8 @@ export default function DrawerEditor(props) {
   const isShow = canEditTags.includes(curFlag);
 
   return (
-    <div className={`${styles.drawerBox} ${isShow ? styles.show : ''}`}>
-      <h3>编辑轮播图</h3>
+    <div className={`drawerEditor ${styles.drawerBox} ${isShow ? styles.show : ''}`}>
+      <h3>{`编辑${curFlag === 'banner' ? '轮播' : '亮点'}`}</h3>
       {curFlag === 'banner' && <ImgsEdit />}
       {curFlag === 'highlights' && <TagsEdit />}
     </div>
