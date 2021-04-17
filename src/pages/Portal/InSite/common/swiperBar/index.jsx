@@ -26,7 +26,7 @@ export default function SwiperBar(props) {
 
   return (
     <>
-      {tagList.length > 0 ? (
+      {tagList?.length > 0 ? (
         <Swiper
           autoplay={{
             delay: 3000, // 自动播放

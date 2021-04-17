@@ -12,9 +12,10 @@ export function Provider({ children }) {
   const [activityCode, setactivityCode] = useState(''); //活动code
   const [activityTitle, setactivityTitle] = useState(''); //活动标题
   const [newUrl, setnewUrl] = useState(''); // 奖品创建成功与否
-  // const [newUrl, setnewUrl] = useState('https://www.baidu.com'); // 奖品创建成功与否
   const [stepNum, setstepNum] = useState(0); // step所处状态
-  const [newAct, setnewAct] = useState(null); // step所处状态
+  const [newAct, setnewAct] = useState(null); // 新增游戏 暂存数据
+  const [curActDate, setcurActDate] = useState(null); // 当前游戏数据
+  const [curGoods, setcurGoods] = useState([]); // 当前奖项数据
 
   const value = {
     activityCode,
@@ -27,6 +28,10 @@ export function Provider({ children }) {
     setstepNum,
     newAct,
     setnewAct,
+    curActDate,
+    setcurActDate,
+    curGoods,
+    setcurGoods,
   };
 
   return <ctx.Provider value={value}>{children}</ctx.Provider>;

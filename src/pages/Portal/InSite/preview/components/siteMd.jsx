@@ -15,7 +15,7 @@ export default function CaseMd(props) {
   return (
     <div className={`${pageStyle.mdBlock} ${pageStyle.hasbg}`}>
       <MdTitle title={title} />
-      {list.length > 0 ? (
+      {list?.length > 0 ? (
         <div className={pageStyle.siteBox}>
           <ul>
             {list.map((site, ind) => {

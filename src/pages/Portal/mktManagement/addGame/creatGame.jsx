@@ -30,15 +30,15 @@ const formTailLayout = {
 function AddNewGoods(props) {
   const {
     form: { validateFields, getFieldDecorator, setFieldsValue },
-    gData,
+    isEdit,
   } = props;
-  const { setstepNum, setnewAct } = useContext(ctx);
+  const { setstepNum, setnewAct, curActDate } = useContext(ctx);
 
   useEffect(
     () => {
-      gData && fillForm();
+      isEdit && curActDate?.activityType && fillForm();
     },
-    [gData]
+    [curActDate]
   );
 
   function fillForm() {
@@ -52,7 +52,7 @@ function AddNewGoods(props) {
       activityJoinType,
       startTime,
       endTime,
-    } = gData;
+    } = curActDate;
     const activityTime = [moment(startTime), moment(endTime)];
     setFieldsValue({
       activityType,
@@ -109,7 +109,7 @@ function AddNewGoods(props) {
       };
 
       setnewAct(newAct); // 刷新一下以便下步使用
-      if (!gData) {
+      if (!isEdit) {
         setstepNum(1);
       } else {
         mktApi.reviseActivity(newAct).then(res => {
@@ -149,7 +149,7 @@ function AddNewGoods(props) {
             rules: [{ required: true, message: '请选择起止时间' }],
           })(
             <RangePicker
-              // disabledDate={disabledDate}
+              disabledDate={disabledDate}
               disabledTime={disabledRangeTime}
               showTime={{
                 hideDisabledOptions: true,
@@ -186,7 +186,7 @@ function AddNewGoods(props) {
 
         <Item {...formTailLayout}>
           <Button type="primary" onClick={updateGame}>
-            {gData ? '保存' : '下一步'}
+            {isEdit ? '保存' : '下一步'}
           </Button>
         </Item>
       </Form>

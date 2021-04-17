@@ -16,7 +16,7 @@ import CreatGoods from '../addGame/creatGoods';
 const { TabPane } = Tabs;
 
 function ActivityEdit(props) {
-  const [gData, setgData] = useState(null);
+  const { setcurActDate, setcurGoods } = useContext(ctx);
 
   useEffect(() => {
     const { hash } = location;
@@ -27,7 +27,8 @@ function ActivityEdit(props) {
       const { data } = res;
       if (!data) return;
       // 拿到数据，开始填充from
-      setgData(data); // 给出数据
+      setcurActDate(data); // 给出数据
+      setcurGoods(data?.prizeList || []);
     });
   }, []);
 
@@ -38,13 +39,13 @@ function ActivityEdit(props) {
   return (
     <PageHeaderWrapper>
       <Card bordered={false}>
-        <Tabs defaultActiveKey="2" onChange={tabChange}>
+        <Tabs defaultActiveKey="1" onChange={tabChange}>
           <TabPane tab="基本信息" key="1">
-            <CreatGame gData={gData} />
+            <CreatGame isEdit={true} />
           </TabPane>
 
           <TabPane tab="奖项设置" key="2">
-            <CreatGoods gData={gData} />
+            <CreatGoods isEdit={true} />
           </TabPane>
         </Tabs>
       </Card>

@@ -13,7 +13,7 @@ export default function CaseMd(props) {
 
   return (
     <ul className={pageStyle.tagBox}>
-      {list.map((tag, ind) => {
+      {list?.map((tag, ind) => {
         const { title, desc, bgImg } = tag;
         return (
           <li key={ind}>

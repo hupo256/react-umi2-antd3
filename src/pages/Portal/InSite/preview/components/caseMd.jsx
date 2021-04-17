@@ -17,7 +17,7 @@ export default function CaseMd(props) {
   return (
     <div className={pageStyle.mdBlock}>
       <MdTitle title={title} />
-      {list.length > 0 ? (
+      {list?.length > 0 ? (
         <div className={pageStyle.caseBox}>
           <div className={pageStyle.hightImg}>
             <img src={coverPicUrl} alt="" />
