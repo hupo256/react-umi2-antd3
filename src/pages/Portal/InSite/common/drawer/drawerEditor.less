@@ -1,19 +1,33 @@
+.drawerOut {
+  position: absolute;
+  width: calc(100% + 36px);
+  height: calc(100% + 36px);
+  background: rgba(0, 0, 0, 0);
+  top: -18px;
+  left: -18px;
+  z-index: 5;
+  display: none;
+
+  &.show {
+    display: block;
+
+    .drawerBox {
+      right: 0;
+    }
+  }
+}
 .drawerBox {
   position: absolute;
   right: -110%;
-  top: -18px;
+  top: 0;
   width: 376px;
-  height: 114%;
+  // height: calc(100% - 92px);
+  height: 100%;
   background: #fff;
   box-shadow: -1px 0 1px #ccc;
-  transition: right 0.2s ease;
+  transition: right 0.2s ease 0.2s;
   overflow: hidden;
   overflow-y: auto;
-  z-index: 5;
-
-  &.show {
-    right: -18px;
-  }
 
   h3 {
     font-size: 14px;

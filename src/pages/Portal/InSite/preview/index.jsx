@@ -79,7 +79,7 @@ export default function Preview(props) {
     const clientHeight = target.clientHeight; //可视区域高度
     const scrollTop = target.scrollTop; //滚动条滚动高度
     const scrollHeight = target.scrollHeight; //滚动内容高度
-    settotopShow(scrollTop > clientHeight / 2);
+    settotopShow(scrollTop > clientHeight / 3);
   }
 
   function gotoRoute(key) {

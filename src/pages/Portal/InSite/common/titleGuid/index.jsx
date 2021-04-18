@@ -29,18 +29,6 @@ export default function TitleGuid(props) {
     touchPageData();
   }
 
-  function addBgImgToDesign(jsonData) {
-    const desArr = jsonData[4].list.map((item, ind) => {
-      const { name } = item;
-
-      item.name = name.length > 4 ? name.substr(0, 4) : name;
-      item.bgImg = bgImgs[ind];
-      return item;
-    });
-
-    jsonData[4].list = desArr;
-  }
-
   function toPublich() {
     console.log(pageData);
     const { jsonData, themeData } = pageData;
@@ -52,6 +40,7 @@ export default function TitleGuid(props) {
     updateHomePageEditData(parmas).then(res => {
       res.code === 200 &&
         publishEditData().then(res => {
+          setcurFlag(''); // 置空
           message.success('发布成功');
           setTimeout(() => {
             router.push(`${baseRouteKey}home`);

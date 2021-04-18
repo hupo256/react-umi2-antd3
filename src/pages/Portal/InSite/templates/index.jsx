@@ -9,7 +9,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { Provider, ctx } from '../common/context';
 import router from 'umi/router';
-import { baseRouteKey, themes } from '../tools/data';
+import { baseRouteKey } from '../tools/data';
 import { updateHomePageEditData } from '@/services/miniProgram';
 import TitleGuid from '../common/titleGuid';
 import { queryTemplate } from '@/services/miniProgram';

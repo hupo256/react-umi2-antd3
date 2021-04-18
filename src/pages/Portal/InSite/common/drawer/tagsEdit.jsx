@@ -18,15 +18,6 @@ export default function TagsEdit(props) {
   const { pageData, setpageData, curFlag, setlinkEdtor, setcurInd } = useContext(ctx);
   const [tagList = [], settagList] = useState(() => pageData?.maps?.[curFlag]?.list);
 
-  useEffect(() => {}, []);
-
-  function formatData(arr) {
-    return arr?.map(item => {
-      item.vaStatus = 'success';
-      item.errMsg = '';
-    });
-  }
-
   function addNewImgs() {
     if (tagList.length === maxLen) return message.warning(`最多可添加${maxLen}个亮点`);
     const rec = {};
@@ -40,27 +31,30 @@ export default function TagsEdit(props) {
 
   function delImg(num) {
     tagList.splice(num, 1);
-    settagList(tagList.slice());
-    setpageData(pageData);
+    forUpdatePageData();
   }
 
   function toMove(ind, num) {
     const rec = tagList.splice(ind, 1)[0];
     tagList.splice(ind + num, 0, rec);
-    pageData.jsonData[1].list = tagList;
-    settagList(tagList.slice());
-    setpageData(pageData);
+    forUpdatePageData();
   }
 
-  function tagsTexChange(e, rec) {
-    const val = e?.target?.value;
+  function tagsTexChange(e, num, rec) {
+    const val = e.target.value;
     rec.title = val;
     if (val) {
       rec.vaStatus = 'success';
       rec.errMsg = '';
     }
+    forUpdatePageData();
+  }
+
+  function forUpdatePageData() {
+    const newObj = { ...pageData };
+    newObj.maps[curFlag].list = tagList;
     settagList(tagList.slice());
-    setpageData(pageData);
+    setpageData(newObj);
   }
 
   function tagsTexBlur(e, rec) {
@@ -101,7 +95,7 @@ export default function TagsEdit(props) {
                         style={{ width: '100%' }}
                         value={title}
                         onBlur={e => tagsTexBlur(e, tag)}
-                        onChange={e => tagsTexChange(e, tag)}
+                        onChange={e => tagsTexChange(e, ind, tag)}
                         placeholder="请输入主标题"
                       />
                     </Item>
