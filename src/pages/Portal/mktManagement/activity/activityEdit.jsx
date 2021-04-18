@@ -10,6 +10,7 @@ import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { Provider, ctx } from '../common/context';
 import mktApi from '@/services/mktActivity';
 import { Card, Tabs } from 'antd';
+import { urlParamHash, calcNumInArr } from '../tools';
 import CreatGame from '../addGame/creatGame';
 import CreatGoods from '../addGame/creatGoods';
 
@@ -19,16 +20,16 @@ function ActivityEdit(props) {
   const { setcurActDate, setcurGoods } = useContext(ctx);
 
   useEffect(() => {
-    const { hash } = location;
-    const [, uid] = hash.split('?uid=');
+    const { uid } = urlParamHash(location.href);
     if (!uid) return;
     mktApi.getActivity({ uid }).then(res => {
       console.log(res);
+      if (!res?.data) return;
       const { data } = res;
-      if (!data) return;
       // 拿到数据，开始填充from
-      setcurActDate(data); // 给出数据
-      setcurGoods(data?.prizeList || []);
+      setcurActDate(data);
+      const arr = calcNumInArr(data?.prizeList || []);
+      setcurGoods(arr.slice());
     });
   }, []);
 
@@ -39,7 +40,7 @@ function ActivityEdit(props) {
   return (
     <PageHeaderWrapper>
       <Card bordered={false}>
-        <Tabs defaultActiveKey="1" onChange={tabChange}>
+        <Tabs defaultActiveKey="2" onChange={tabChange}>
           <TabPane tab="基本信息" key="1">
             <CreatGame isEdit={true} />
           </TabPane>

@@ -7,15 +7,15 @@
  */
 import React, { useState, useEffect, useContext } from 'react';
 import { ctx } from '../common/context';
-import { defaultGoods } from '../tools/data';
+import { defaultGoods, prizeImg } from '../tools/data';
+import { calcNumInArr, urlParamHash } from '../tools';
 import Upload from '@/components/Upload/Upload';
 import mktApi from '@/services/mktActivity';
-import { Button, Input, Table, Checkbox, Icon, message, InputNumber, Modal } from 'antd';
+import { Button, Input, Table, Checkbox, Icon, message, InputNumber, Modal, Form } from 'antd';
 import styles from './addGame.less';
 
 const maxLen = 8;
-const defaultImg =
-  'https://test.img.inbase.in-deco.com/crm_saas/dev/20210408/3b600bce739e40e799f24dd6278070eb/img_banner_lake@2x.png';
+const { Item } = Form;
 
 export default function CreatGoods(props) {
   const { isEdit } = props;
@@ -26,52 +26,33 @@ export default function CreatGoods(props) {
   const gsColumns = creatGoodsCol(curGoods?.length) || [];
 
   useEffect(() => {
-    // console.log(curGoods?.length);
-    // if (curGoods?.length === 0) {
-    //   console.log(23);
-    //   const list = touchgsList();
-    //   calcNumInArr(list);
-    // }
-
-    const list = curGoods?.length === 0 ? touchgsList() : curGoods;
-    calcNumInArr(list);
+    !isEdit && touchgsList();
   }, []);
 
   // 获取奖品们
   function touchgsList() {
     const len = defaultGoods.length;
-    return defaultGoods.map((gs, ind) => {
+    const dArr = defaultGoods.map((gs, ind) => {
       let isPrize = 1;
       let prizeNum = 100;
       if (ind === len - 1) {
         isPrize = 0;
         prizeNum = 1000;
       }
+      // prizeNum 总数， prizeBeNum 已抽, prizeSuNum 剩余
       return {
-        prizeImage: defaultImg,
+        prizeImage: `${prizeImg}${ind + 1}@2x.png`,
         prizeName: gs,
         prizeBeNum: 0,
-        probability: '6.67',
+        probability: 0,
         prizeSuNum: 100,
         prizeNum,
         isPrize,
       };
     });
-  }
 
-  // 计算 抽中概率 剩余数量 并加工数据
-  // prizeNum 总数， prizeBeNum 已抽, prizeSuNum 剩余
-  function calcNumInArr(list) {
-    const numArr = list.map(li => +(li.prizeNum || 0));
-    const totals = numArr.reduce((p, c) => +p + +c); //计算总和
-    list.forEach((gs, ind) => {
-      // gs.prizeBeNum = 120;
-      const { prizeNum = 0, prizeBeNum = 0 } = gs;
-      gs['originNum'] = +prizeNum; // 暂存
-      gs['probability'] = ((+prizeNum * 100) / totals).toFixed(2); // 抽中概率
-      gs['prizeSuNum'] = +prizeNum - +prizeBeNum; // 剩余
-    });
-    setcurGoods(list.slice());
+    const arr = calcNumInArr(dArr);
+    setcurGoods(arr.slice());
   }
 
   // input值变化时更新数据
@@ -81,6 +62,7 @@ export default function CreatGoods(props) {
     setcurGoods(curGoods.slice());
   }
 
+  // 失去焦点时计算抽中率
   function inpNumBlur(e, rec) {
     const { target } = e;
     const { prizeNum, prizeBeNum, originNum } = rec;
@@ -91,7 +73,8 @@ export default function CreatGoods(props) {
       rec.prizeNum = originNum; //赋原值
       setcurGoods(curGoods.slice());
     } else {
-      calcNumInArr(curGoods);
+      const arr = calcNumInArr(curGoods);
+      setcurGoods(arr.slice());
     }
   }
 
@@ -111,27 +94,41 @@ export default function CreatGoods(props) {
         title: '奖项名称',
         dataIndex: 'prizeName',
         width: 160,
-        render: (text, record, ind) => (
-          <Input
-            maxLength={6}
-            value={record.prizeName}
-            onChange={e => inpChange(e, 'prizeName', ind)}
-          />
-        ),
+        render: (text, record, ind) => {
+          const { prizeNameStatus = 'success', prizeNameErrMsg = '', prizeName } = record;
+          return (
+            <Form layout="inline">
+              <Item validateStatus={prizeNameStatus} help={prizeNameErrMsg}>
+                <Input
+                  maxLength={6}
+                  value={prizeName}
+                  onChange={e => inpChange(e, 'prizeName', ind)}
+                />
+              </Item>
+            </Form>
+          );
+        },
       },
       {
         title: '奖项数量',
         dataIndex: 'prizeNum',
         width: 100,
-        render: (text, record, ind) => (
-          <InputNumber
-            max={99999}
-            min={1}
-            value={record.prizeNum}
-            onBlur={e => inpNumBlur(e, record)}
-            onChange={e => inpChange(e, 'prizeNum', ind)}
-          />
-        ),
+        render: (text, record, ind) => {
+          const { prizeNumStatus = 'success', prizeNumErrMsg = '', prizeNum } = record;
+          return (
+            <Form layout="inline">
+              <Item validateStatus={prizeNumStatus} help={prizeNumErrMsg}>
+                <InputNumber
+                  max={99999}
+                  min={1}
+                  value={prizeNum}
+                  onBlur={e => inpNumBlur(e, record)}
+                  onChange={e => inpChange(e, 'prizeNum', ind)}
+                />
+              </Item>
+            </Form>
+          );
+        },
       },
       {
         title: '抽中概率(%)',
@@ -204,6 +201,7 @@ export default function CreatGoods(props) {
     setcurGoods(curGoods.slice());
   }
 
+  // 奖项数量更新提醒
   function showError(arr) {
     Modal.error({
       title: '奖项数量更新提醒',
@@ -222,32 +220,66 @@ export default function CreatGoods(props) {
     });
   }
 
-  // 找出数字不正确的项
+  // 找出数量不正确的项
   function touchErrNums(list) {
     const errArr = [];
     list.forEach(gs => {
-      const { prizeNum, prizeBeNum } = gs;
+      const { prizeNum, prizeBeNum, prizeSuNum } = gs;
       console.log(prizeNum, prizeBeNum);
-      prizeNum < prizeBeNum && errArr.push(gs);
+      prizeNum < prizeBeNum + prizeSuNum && errArr.push(gs);
     });
     return errArr;
   }
 
+  // 将最新的数据合成进来
+  // 用uid作为key，寻找已经更新过的 prizeBeNum，赋值给目标
+  function updateCurArr(latestArr) {
+    const arr = curGoods.map(gs => {
+      const { uid, prizeBeNum } = gs;
+      for (let i = 0, k = latestArr.length; i < k; i++) {
+        const item = latestArr[i];
+        // 找到相同uid下的已抽数据，如果不相等，则认为数据已变
+        if (uid === item.uid && prizeBeNum !== item.prizeBeNum) {
+          gs.prizeBeNum = item.prizeBeNum;
+          break;
+        }
+      }
+    });
+
+    return touchErrNums(arr);
+  }
+
+  // 指定字段为空，则视为未填
+  function isValEmpty() {
+    const arr = curGoods.map(gs => {
+      if (!gs.prizeName.replace(/(^\s*)|(\s*$)/g, '')) {
+        gs.prizeNameStatus = 'error';
+        gs.prizeNameErrMsg = '请填写奖项名称';
+      }
+      if (!gs.prizeNum) {
+        gs.prizeNumStatus = 'error';
+        gs.prizeNumErrMsg = '请填写奖项数量';
+      }
+      return gs;
+    });
+    setcurGoods(arr.slice());
+    return arr.length > 0;
+  }
+
+  // 提交奖项
   function submitGoods() {
     // 非空校验
+    if (isValEmpty()) return;
 
     // 数字合格校验
-    let errArr = [];
     if (isEdit) {
-      const { hash } = location;
-      const [, uid] = hash.split('?uid=');
-      if (!uid) return;
+      const { uid } = urlParamHash(location.href);
       mktApi.getActivity({ uid }).then(res => {
-        if (!res?.data) return;
-        errArr = touchErrNums(res.data?.prizeList);
+        if (!res?.data) return message.error(res.message);
+        const errArr = updateCurArr(res.data?.prizeList);
         if (errArr.length > 0) return showError(errArr);
 
-        // 不然，就提交
+        // 校验通过后再提交
         const params = {
           activityCode: curActDate.activityCode,
           activityTitle: curActDate.activityTitle,
