@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-15 16:16:52
+ * @Last Modified time: 2021-04-19 16:00:22
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -370,6 +370,7 @@ class ProjectLibrary extends PureComponent {
     let ishow = 0;
     let left = 0;
     let top = 0;
+    let textTop = 0;
     const { tags } = this.state;
     compentList &&
       compentList.map((item, index) => {
@@ -381,6 +382,12 @@ class ProjectLibrary extends PureComponent {
             let aStyle = JSON.parse(item.elementStyle);
             left = aStyle.left;
             top = aStyle.top + 280;
+          }
+        }
+        if (item.elementType === 'MODAL_TEXT') {
+          if (item.elementStyle) {
+            let aStyle = JSON.parse(item.elementStyle);
+            textTop = aStyle.top + 43;
           }
         }
       });
@@ -397,7 +404,7 @@ class ProjectLibrary extends PureComponent {
         ite.elementButtonText = '立即预约';
       } else if (ite.elementType === 'MODAL_TEXT') {
         ite.elementStyle = JSON.stringify({
-          top: top,
+          top: textTop,
           left: left,
           fontSize: 14,
           color: '#000',
