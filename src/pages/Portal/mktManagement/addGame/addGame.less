@@ -94,3 +94,17 @@
     font-size: 14px;
   }
 }
+
+:global {
+  .joinNumTag {
+    margin-top: -2em;
+
+    label {
+      font-size: 0;
+
+      &::before {
+        font-size: 0;
+      }
+    }
+  }
+}

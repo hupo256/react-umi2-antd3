@@ -7,11 +7,22 @@
  */
 import React, { useState, useEffect, useContext } from 'react';
 import { ctx } from '../common/context';
-import { defaultGoods, prizeImg } from '../tools/data';
+import { defaultGoods, prizeImg, tipsTable } from '../tools/data';
 import { calcNumInArr, urlParamHash } from '../tools';
 import Upload from '@/components/Upload/Upload';
 import mktApi from '@/services/mktActivity';
-import { Button, Input, Table, Checkbox, Icon, message, InputNumber, Modal, Form } from 'antd';
+import {
+  Button,
+  Input,
+  Table,
+  Checkbox,
+  Icon,
+  Tooltip,
+  message,
+  InputNumber,
+  Modal,
+  Form,
+} from 'antd';
 import styles from './addGame.less';
 
 const maxLen = 8;
@@ -143,7 +154,16 @@ export default function CreatGoods(props) {
         dataIndex: 'prizeSuNum',
       },
       {
-        title: '操作',
+        title: () => {
+          return (
+            <>
+              <span>操作</span>
+              <Tooltip placement="topLeft" title={tipsTable}>
+                <Icon type="question-circle" />
+              </Tooltip>
+            </>
+          );
+        },
         dataIndex: 'isPrize',
         width: 150,
         render: (text, record, ind) => (
@@ -243,6 +263,7 @@ export default function CreatGoods(props) {
           break;
         }
       }
+      return gs;
     });
 
     return touchErrNums(arr);
@@ -250,23 +271,29 @@ export default function CreatGoods(props) {
 
   // 指定字段为空，则视为未填
   function isValEmpty() {
+    const isEmpty = [];
     const arr = curGoods.map(gs => {
-      if (!gs.prizeName.replace(/(^\s*)|(\s*$)/g, '')) {
+      const { prizeName, prizeNum } = gs;
+      if (!prizeName.replace(/(^\s*)|(\s*$)/g, '')) {
         gs.prizeNameStatus = 'error';
         gs.prizeNameErrMsg = '请填写奖项名称';
+        isEmpty.push(prizeName);
       }
-      if (!gs.prizeNum) {
+      if (!prizeNum) {
         gs.prizeNumStatus = 'error';
         gs.prizeNumErrMsg = '请填写奖项数量';
+        isEmpty.push(prizeNum);
       }
       return gs;
     });
     setcurGoods(arr.slice());
-    return arr.length > 0;
+    // console.log
+    return isEmpty.length > 0;
   }
 
   // 提交奖项
   function submitGoods() {
+    console.log(22);
     // 非空校验
     if (isValEmpty()) return;
 
@@ -274,6 +301,7 @@ export default function CreatGoods(props) {
     if (isEdit) {
       const { uid } = urlParamHash(location.href);
       mktApi.getActivity({ uid }).then(res => {
+        console.log(res);
         if (!res?.data) return message.error(res.message);
         const errArr = updateCurArr(res.data?.prizeList);
         if (errArr.length > 0) return showError(errArr);

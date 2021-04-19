@@ -1,5 +1,6 @@
 export const baseRouteKey = '/portal/activity/mktGame/';
 export const prizeImg = 'http://img.inbase.in-deco.com/crm-saas/img/games/prize/';
+export const defaultImg = 'http://img.inbase.in-deco.com/crm-saas/img/games/default/';
 export const actColumns = [
   {
     title: '游戏标题',

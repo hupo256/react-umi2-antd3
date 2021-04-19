@@ -134,6 +134,7 @@ export default function Activityer(props) {
   }
 
   function mergeTime(arr) {
+    if (!arr) return [];
     return arr?.map(item => {
       const { startTime, endTime } = item;
       // console.log
@@ -143,9 +144,9 @@ export default function Activityer(props) {
   }
 
   function searchWidhTag(ind) {
-    console.log(ind);
     setsearchInd(ind);
-    touchActList({ state: ind - 1 });
+    const conf = ind ? { state: ind - 1 } : {};
+    touchActList(conf);
   }
 
   function toSearch(tex) {

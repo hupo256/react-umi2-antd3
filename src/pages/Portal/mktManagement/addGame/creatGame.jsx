@@ -120,14 +120,23 @@ function AddNewGoods(props) {
     });
   }
 
+  function onRadioChange(e) {
+    let tit = '幸运大转盘';
+    const val = e.target.value;
+    val === 2 && (tit = '幸运砸金蛋');
+    val === 3 && (tit = '幸运跑马灯');
+    setFieldsValue({ activityTitle: tit });
+  }
+
   return (
     <div className={styles.fromOut}>
       <Form {...formItemLayout}>
         <Item label="游戏形式">
           {getFieldDecorator('activityType', {
+            initialValue: 1,
             rules: [{ required: true, message: '请选择游戏形式' }],
           })(
-            <Group>
+            <Group onChange={onRadioChange}>
               <Radio value={1}>大转盘</Radio>
               <Radio value={2}>砸金蛋</Radio>
               <Radio value={3}>跑马灯</Radio>
@@ -136,13 +145,15 @@ function AddNewGoods(props) {
         </Item>
         <Item label="游戏标题">
           {getFieldDecorator('activityTitle', {
+            initialValue: '幸运大转盘',
             rules: [{ required: true, message: '请填写游戏标题' }],
-          })(<Input placeholder="游戏标题" style={{ width: 345 }} />)}
+          })(<Input maxLength={15} placeholder="游戏标题" style={{ width: 345 }} />)}
         </Item>
         <Item label="游戏副文本">
           {getFieldDecorator('activitySubtitle', {
+            initialValue: '-好运连连，点击GO开启好运-',
             rules: [{ required: true, message: '请填写游戏副文本' }],
-          })(<Input placeholder="游戏副文本" />)}
+          })(<Input maxLength={15} placeholder="游戏副文本" />)}
         </Item>
         <Item label="起止时间">
           {getFieldDecorator('activityTime', {
@@ -159,8 +170,9 @@ function AddNewGoods(props) {
             />
           )}
         </Item>
-        <Item label="参与次数类型">
+        <Item label="参与次数">
           {getFieldDecorator('activityJoinType', {
+            initialValue: 1,
             rules: [{ required: true, message: '请填写参与次数类型' }],
           })(
             <Group>
@@ -169,19 +181,22 @@ function AddNewGoods(props) {
             </Group>
           )}
         </Item>
-        <Item label="参与次数">
+        <Item label=" " className="joinNumTag">
           {getFieldDecorator('activityJoinNum', {
+            initialValue: 1,
             rules: [{ required: true, message: '请填写参与次数' }],
-          })(<InputNumber min={1} step={1} />)}
+          })(<InputNumber min={1} step={1} style={{ width: 150 }} />)}
           <span style={{ paddingLeft: '.5em' }}>次</span>
         </Item>
         <Item label="规则说明">
-          {getFieldDecorator('activityRule')(<TextArea placeholder="请输入规则说明" allowClear />)}
+          {getFieldDecorator('activityRule')(
+            <TextArea maxLength={200} placeholder="请输入规则说明" allowClear />
+          )}
         </Item>
         <Item label="兑换说明">
           {getFieldDecorator('actvityConvertRule', {
             rules: [{ required: true, message: '请填写兑换说明' }],
-          })(<TextArea placeholder="请输入兑换说明" allowClear />)}
+          })(<TextArea maxLength={200} placeholder="请输入兑换说明" allowClear />)}
         </Item>
 
         <Item {...formTailLayout}>

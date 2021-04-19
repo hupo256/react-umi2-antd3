@@ -8,6 +8,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { ctx } from '../context';
 import { Input, Radio, InputNumber, Icon, message } from 'antd';
+import { defaultImg } from '../../tools/data';
 import Upload from '@/components/Upload/Upload';
 import LinkChoose from './linkChoose';
 import styles from './drawerEditor.less';
@@ -114,8 +115,11 @@ export default function TagsEdit(props) {
             const len = tagList.length;
             return (
               <li key={ind}>
-                <div className={styles.minImgBox} onClick={() => toChooseImg(ind)}>
-                  <img src={imgUrl} alt="" />
+                <div
+                  className={`${styles.minImgBox} ${imgUrl ? '' : styles.deftImg}`}
+                  onClick={() => toChooseImg(ind)}
+                >
+                  <img src={imgUrl || `${defaultImg}ic_Image.png`} alt="" />
                 </div>
                 <div className={styles.inpBox}>
                   <Input
