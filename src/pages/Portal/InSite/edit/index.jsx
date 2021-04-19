@@ -7,7 +7,9 @@
  */
 import React, { useState, useContext } from 'react';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
+import { Tooltip, Icon } from 'antd';
 import { Provider, ctx } from '../common/context';
+import { tipsText, canEditTags } from '../tools/data';
 import Preview from '../preview';
 import TitleGuid from '../common/titleGuid';
 import DrawerEditor from '../common/drawer';
@@ -16,12 +18,18 @@ import styles from './edit.less';
 
 function TempEdit(props) {
   const { curFlag } = useContext(ctx);
+  const showRight = canEditTags.includes(curFlag);
 
   return (
     <PageHeaderWrapper>
       <TitleGuid title="编辑小程序" isEdit={true} />
-      <div className={`${styles.currTepBox} ${curFlag ? styles.rightPlaceHolder : ''}`}>
+      <div className={`${styles.currTepBox} ${showRight ? styles.rightPlaceHolder : ''}`}>
         <Preview />
+        <div className={styles.tipsBox}>
+          <Tooltip placement="topLeft" title={tipsText}>
+            <Icon type="message" /> 温馨提示
+          </Tooltip>
+        </div>
         <DrawerEditor />
       </div>
 

@@ -86,12 +86,12 @@ export default function CreatGoods(props) {
         dataIndex: 'prizeImage',
         render: (text, record, ind) => (
           <div className={styles.minImgBox} onClick={() => toChooseImg(ind)}>
-            <img src={record.prizeImage || defaultImg} alt="" />
+            <img src={record.prizeImage || `${prizeImg}1@2x.png`} alt="" />
           </div>
         ),
       },
       {
-        title: '奖项名称',
+        title: '* 奖项名称',
         dataIndex: 'prizeName',
         width: 160,
         render: (text, record, ind) => {
@@ -110,7 +110,7 @@ export default function CreatGoods(props) {
         },
       },
       {
-        title: '奖项数量',
+        title: '* 奖项数量',
         dataIndex: 'prizeNum',
         width: 100,
         render: (text, record, ind) => {
@@ -209,10 +209,9 @@ export default function CreatGoods(props) {
         <>
           <p>您好！部分奖项在保存时已抽数量已发生变化，请更新后再提交。</p>
           <div className={styles.tips}>
-            {arr.map((con, ind) => {
+            {arr.map(con => {
               const { prizeName, prizeBeNum } = con;
-              const sdf = ``;
-              return <p> {`${prizeName}，当前已抽${prizeBeNum}，请调整`}</p>;
+              return <p key={prizeName}> {`${prizeName}，当前已抽${prizeBeNum}，请调整`}</p>;
             })}
           </div>
         </>

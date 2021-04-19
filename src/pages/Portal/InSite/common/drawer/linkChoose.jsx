@@ -75,7 +75,12 @@ function ImgUrlEdit(props) {
         type,
       };
 
-      setpageData(pageData);
+      console.log(curInd);
+      console.log(dList);
+
+      const newObj = { ...pageData };
+      newObj.maps[curFlag].list = dList;
+      setpageData(newObj);
       setlinkEdtor(false);
     });
   }
@@ -90,9 +95,13 @@ function ImgUrlEdit(props) {
       <Form {...formItemLayout}>
         <Item label="站内链接">
           {getFieldDecorator('type', {
-            rules: [{ required: true }],
+            rules: [{ required: true, message: '请添加站内链接' }],
           })(
-            <Select placeholder="请选择跳转类型" onSelect={typeSelect}>
+            <Select
+              placeholder="请选择跳转类型"
+              onSelect={typeSelect}
+              getPopupContainer={n => n.parentNode}
+            >
               {LinkType.map(item => {
                 const { name, value } = item;
                 return (
@@ -107,9 +116,9 @@ function ImgUrlEdit(props) {
 
         <Item label="具体页面">
           {getFieldDecorator('uid', {
-            rules: [{ required: true }],
+            rules: [{ required: true, message: '请添加具体页面' }],
           })(
-            <Select placeholder="可输入关键字进行检索">
+            <Select placeholder="可输入关键字进行检索" getPopupContainer={n => n.parentNode}>
               {itemList.length > 0 &&
                 itemList.map(item => {
                   const { name, value } = item;

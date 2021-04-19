@@ -98,6 +98,9 @@ export default function TagsEdit(props) {
         {imgHeightType === 2 && (
           <InputNumber
             size="small"
+            max={1000}
+            min={1}
+            defaultValue={580}
             style={{ width: 70, marginLeft: '-10px' }}
             onChange={widthChange}
           />

@@ -10,7 +10,7 @@ import mktApi from '@/services/mktActivity';
 import router from 'umi/router';
 import { baseRouteKey } from '../tools/data';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
-import { Card, Button, Table, Input } from 'antd';
+import { Card, Button, Table, Input, Icon, message } from 'antd';
 import { actColumns, searchTags } from '../tools/data';
 import styles from './activity.less';
 
@@ -44,20 +44,9 @@ export default function Activityer(props) {
   }
 
   function creatColumn() {
-    const col = {
-      title: '操作',
-      dataIndex: 'action',
-      width: 130,
-      render: (text, record, index) => (
-        <p className={styles.actions}>
-          <a onClick={() => toEdit(record.uid)}>编辑</a>|{' '}
-          <a onClick={() => toRecod(record.activityCode)}>抽奖记录</a>
-        </p>
-      ),
-    };
+    const [, col1, col2, col3, rest] = actColumns;
     actColumns[1] = {
-      title: '状态',
-      dataIndex: 'state',
+      ...col1,
       render: (text, record, index) => {
         const { state } = record;
         const cls = `cls${state}`;
@@ -73,8 +62,7 @@ export default function Activityer(props) {
       },
     };
     actColumns[2] = {
-      title: '起止时间',
-      dataIndex: 'time',
+      ...col2,
       render: (text, record, index) => {
         const [st, et] = text.split('_');
         return (
@@ -84,7 +72,43 @@ export default function Activityer(props) {
         );
       },
     };
+    actColumns[3] = {
+      ...col3,
+      render: (text, record, index) => {
+        const { activityCode, linkUrl } = record;
+        return (
+          <>
+            <span>{linkUrl} </span>
+            <Input id={activityCode} className={styles.inpHidden} value={linkUrl} />
+            <p>
+              <a onClick={() => copyLink(activityCode)} className={styles.tocopy}>
+                <Icon type="copy" /> 复制链接
+              </a>
+            </p>
+          </>
+        );
+      },
+    };
+    const col = {
+      title: '操作',
+      dataIndex: 'action',
+      width: 130,
+      render: (text, record, index) => (
+        <p className={styles.actions}>
+          <a onClick={() => toEdit(record.uid)}>编辑</a>|{' '}
+          <a onClick={() => toRecod(record.activityCode)}>抽奖记录</a>
+        </p>
+      ),
+    };
     settbColumns([...actColumns, col]);
+  }
+
+  function copyLink(id) {
+    const inp = document.getElementById(id);
+    console.log(inp);
+    inp.select(); // 选中文本
+    document.execCommand('copy'); // 执行浏览器复制命令
+    message.success('复制成功!');
   }
 
   function addNew() {
@@ -104,7 +128,7 @@ export default function Activityer(props) {
       if (!res?.data) return;
       const { data } = res;
       const { list, recordTotal } = data;
-      setactList(mergeTime(list));
+      setactList(mergeTime(list).slice());
       settotal(recordTotal);
     });
   }
