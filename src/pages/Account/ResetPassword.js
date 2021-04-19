@@ -5,6 +5,19 @@ import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { Card, Input, Row, Col, Radio, Button, message, Modal } from 'antd';
 import { regExpConfig } from '@/utils/regular.config';
 import { MyIcon } from '@/utils/utils';
+import { getauth } from '@/utils/authority';
+
+const SMS_LIMIT_TIME = 60;
+const VERIFY_CODE_LIMIT = 6;
+
+async function captchaValidation(cb) {
+  return new Promise((resolve, reject) => {
+    const captcha1 = new TencentCaptcha('2071327168', res => {
+      res && resolve(res);
+    });
+    captcha1.show();
+  });
+}
 
 @connect(({ login, base }) => ({ login, base }))
 class ResetPassword extends Component {
@@ -21,9 +34,10 @@ class ResetPassword extends Component {
 
   componentDidMount() {
     const { dispatch } = this.props;
+    const { uid } = getauth();
     dispatch({
       type: 'base/getSystemuserModel',
-      payload: {},
+      payload: { uid },
     }).then(res => {
       if (res && res.code === 200) {
         const data = res.data;
@@ -45,15 +59,20 @@ class ResetPassword extends Component {
               <Input
                 disabled
                 value={this.state.mobile}
-                onChange={e => this.setState({ mobile: e.target.value })}
+                onChange={e =>
+                  this.setState({
+                    mobile: e.target.value,
+                  })
+                }
                 placeholder="请输入手机号"
                 style={{ marginBottom: 18, width: 400, display: 'block' }}
               />
               <Input
-                autocomplete="new-password"
+                autoComplete="new-password"
                 placeholder="请输入验证码"
                 onChange={e => this.setState({ code: e.target.value })}
                 style={{ marginBottom: 18, width: 400, display: 'block' }}
+                maxLength={VERIFY_CODE_LIMIT}
                 addonAfter={
                   <button
                     style={{
@@ -67,7 +86,7 @@ class ResetPassword extends Component {
                       outline: 'none',
                     }}
                     disabled={text !== '获取验证码'}
-                    onClick={() => this.handleSendCode()}
+                    onClick={() => this.sendVerifyCode()}
                   >
                     {text}
                   </button>
@@ -75,7 +94,7 @@ class ResetPassword extends Component {
               />
               <div style={{ marginBottom: 18, width: 400, position: 'relative' }}>
                 <Input
-                  autocomplete="new-password"
+                  autoComplete="new-password"
                   type={`${show ? 'text' : 'password'}`}
                   value={this.state.password}
                   onChange={e => this.setState({ password: e.target.value.trim() })}
@@ -92,13 +111,17 @@ class ResetPassword extends Component {
                   }}
                 >
                   <MyIcon
-                    onClick={() => this.setState({ show: !this.state.show })}
+                    onClick={() =>
+                      this.setState({
+                        show: !this.state.show,
+                      })
+                    }
                     type={`${!show ? 'icon-password-invisible' : 'icon-password-visible'}`}
                   />
                 </p>
               </div>
               <Button
-                onClick={() => this.handleClickSave()}
+                onClick={() => this.saveToServer()}
                 type="primary"
                 style={{ marginLeft: 200, transform: 'translateX(-50%)' }}
               >
@@ -112,67 +135,81 @@ class ResetPassword extends Component {
   }
 
   // 发送验证码
-  handleSendCode = () => {
+  sendVerifyCode = async () => {
     const { mobile } = this.state;
+    const that = this;
+
     if (!regExpConfig.phone.test(mobile)) {
       message.error('请输入正确的手机号');
       return false;
-    } else {
-      this.setState({ disabled: true });
-      // 调短信 接口
-      const { dispatch } = this.props;
-      dispatch({
-        type: 'base/sendMobileMsgModel',
-        payload: { mobile },
-      }).then(res => {
-        if (res && res.code === 200) {
-          message.success('发送成功');
-          const that = this;
-          let num = 60;
-          function timer() {
-            num = num - 1;
-            that.setState({ text: num + 's后从新获取' }, () => {
-              if (num === 0) {
-                that.setState({ text: '获取验证码', disabled: false });
-              } else {
-                setTimeout(() => timer(), 1000);
-              }
-            });
+    }
+
+    this.setState({ disabled: true });
+
+    const { randstr, ticket } = await captchaValidation();
+
+    // 调短信 接口
+    // source: 2 找回密码
+    const { dispatch } = this.props;
+    const { code } = await dispatch({
+      type: 'base/sendUserMobileMsgModel',
+      payload: { mobile, randstr, source: 2, ticket },
+    });
+
+    if (code === 200) {
+      message.success('发送成功');
+
+      let num = SMS_LIMIT_TIME;
+      function timer() {
+        num = num - 1;
+        that.setState({ text: num + 's后从新获取' }, () => {
+          if (num === 0) {
+            that.setState({ text: '获取验证码', disabled: false });
+          } else {
+            setTimeout(() => timer(), 1000);
           }
-          timer();
-        }
-      });
+        });
+      }
+      timer();
     }
   };
 
   // 保存
-  handleClickSave = () => {
+  saveToServer = async () => {
     const { dispatch } = this.props;
     const { mobile, code, password } = this.state;
     if (!code) {
       message.error('请输入验证码');
-    } else if (!password) {
+      return;
+    }
+    if (!password) {
       message.error('请设置登录密码');
-    } else if (password.length < 6 || password.length > 20) {
+      return;
+    }
+    if (password.length < 6 || password.length > 20) {
       message.error('密码长度限制为6-20位');
-    } else {
-      // 登录
-      dispatch({
-        type: 'login/retrieveUserPasswordModel',
+      return;
+    }
+
+    try {
+      const editPsdResponse = await dispatch({
+        type: 'login/editPasswordModel',
         payload: {
           mobile,
-          msgCode: code,
+          smsVerificationCode: code,
           password,
         },
-      }).then(res => {
-        if (res && res.code === 200) {
-          message.success('修改成功');
-          // 跳转到登录页
-          dispatch({
-            type: 'login/logout',
-          });
-        }
       });
+
+      if (editPsdResponse.code === 200) {
+        message.success('修改成功');
+        // 跳转到登录页
+        dispatch({ type: 'login/logout' });
+        return;
+      }
+      throw new Error(editPsdResponse);
+    } catch (e) {
+      console.log(e.message);
     }
   };
 }

@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import router from 'umi/router';
 import { Card, Input, Row, Col, Radio, Button, message, Modal, Spin } from 'antd';
-import RcViewer from 'rc-viewer';
-import { getQueryUrlVal } from '@/utils/utils';
-import { setAuthority } from '@/utils/authority';
+
+import { getauth } from '@/utils/authority';
 import { regExpConfig } from '@/utils/regular.config';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import ImgUploads from '@/components/Upload/FileUpload';
 import styles from './BaseView.less';
+
+const REAL_NAME_LIMIT = 10;
+const MOBILE_LIMIT = 11;
+const VERIFY_CODE_LIMIT = 6;
+const SMS_LIMIT_TIME = 60;
+
 @connect(({ login, base, loading }) => ({
   login,
   base, //
@@ -22,33 +26,32 @@ class BaseView extends Component {
       userHeadImg: '',
       visible: false,
       text: '获取验证码',
-      phone: null,
-      oldmobile: null,
+      mobile: null,
+      lastMobileNumber: null,
       disabled: false,
       code: null,
       imgLoading: false,
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const { dispatch } = this.props;
-    dispatch({
-      type: 'base/getSystemuserModel',
-      payload: {},
-    }).then(res => {
-      if (res && res.code === 200) {
-        const data = res.data;
-        this.setState({
-          email: data && data.email,
-          mobile: data && data.mobile,
-          oldmobile: data && data.mobile,
-          sex: data && data.sex,
-          realName: data && data.realName,
-          wechatId: data && data.wechatId,
-          userHeadImg: data && data.userHeadImg,
-        });
-      }
-    });
+    const { uid } = getauth();
+
+    const res = await dispatch({ type: 'base/getSystemuserModel', payload: { uid } });
+
+    if (res && res.code === 200) {
+      const data = res.data;
+      this.setState({
+        email: data && data.email,
+        mobile: data && data.mobile,
+        lastMobileNumber: data && data.mobile,
+        sex: data && data.sex,
+        realName: data && data.realName,
+        wechatId: data && data.wechatId,
+        userHeadImg: data && data.userHeadImg,
+      });
+    }
   }
 
   render() {
@@ -69,10 +72,10 @@ class BaseView extends Component {
                   </Col>
                   <Col span={12}>
                     <Input
-                      disabled={SystemUserData && !SystemUserData.canModifyRealName}
                       placeholder="请输入姓名"
                       value={this.state.realName}
                       style={{ width: 300 }}
+                      maxLength={REAL_NAME_LIMIT}
                       onChange={e => {
                         if (e.target.value.length > 30) {
                           message.error('最多输入30位字符');
@@ -81,8 +84,6 @@ class BaseView extends Component {
                         }
                       }}
                     />
-                    {SystemUserData &&
-                      SystemUserData.canModifyRealName && <p>姓名仅允许修改一次，请谨慎修改.</p>}
                   </Col>
                 </Row>
                 <Row style={{ marginBottom: 16 }}>
@@ -103,28 +104,10 @@ class BaseView extends Component {
                   </Col>
                   <Col span={12} style={{ position: 'relative' }}>
                     <Input
-                      disabled={SystemUserData && !SystemUserData.canModifyMobile}
                       value={this.state.mobile}
                       style={{ width: 300, display: 'inline-block' }}
+                      maxLength={MOBILE_LIMIT}
                       onChange={e => this.setState({ mobile: e.target.value })}
-                    />
-                    <p>6个月内仅可修改1次，请谨慎修改</p>
-                  </Col>
-                </Row>
-                <Row style={{ marginBottom: 16 }}>
-                  <Col span={4}> 微信：</Col>
-                  <Col span={12}>
-                    <Input
-                      value={this.state.wechatId}
-                      placeholder="请输入微信号"
-                      style={{ width: 300 }}
-                      onChange={e => {
-                        if (e.target.value.length > 30) {
-                          message.error('最多输入30位字符');
-                        } else {
-                          this.setState({ wechatId: e.target.value });
-                        }
-                      }}
                     />
                   </Col>
                 </Row>
@@ -146,7 +129,7 @@ class BaseView extends Component {
                   </Col>
                 </Row>
 
-                <Button onClick={this.handleSave} type="primary" style={{ marginLeft: 80 }}>
+                <Button onClick={this.clickSave} type="primary" style={{ marginLeft: 80 }}>
                   保存
                 </Button>
                 <Button onClick={() => history.go(-1)} style={{ marginLeft: 12 }}>
@@ -202,10 +185,10 @@ class BaseView extends Component {
             <Modal
               visible={this.state.visible}
               title="更换手机验证"
-              onOk={this.handleOk}
+              onOk={this.confirmNewMobile}
               onCancel={this.handleCancel}
               footer={[
-                <Button type="primary" onClick={this.handleOk}>
+                <Button type="primary" onClick={this.confirmNewMobile}>
                   确认更换
                 </Button>,
                 <Button loading={false} onClick={this.handleCancel}>
@@ -216,13 +199,16 @@ class BaseView extends Component {
               <p>更换手机号后，下次登录请用新手机号登录</p>
               <Input
                 value={this.state.mobile}
+                disabled
                 onChange={e => this.setState({ mobile: e.target.value })}
                 placeholder="请输入新手机号"
+                maxLength={MOBILE_LIMIT}
                 style={{ marginBottom: 18 }}
               />
               <Input
                 placeholder="请输入验证码"
                 onChange={e => this.setState({ code: e.target.value })}
+                maxLength={VERIFY_CODE_LIMIT}
                 addonAfter={
                   <button
                     disabled={disabled}
@@ -236,7 +222,7 @@ class BaseView extends Component {
                       border: '0px',
                       outline: 'none',
                     }}
-                    onClick={() => this.handleSendCode()}
+                    onClick={() => this.sendVerifyCode()}
                   >
                     {text}
                   </button>
@@ -248,65 +234,85 @@ class BaseView extends Component {
       </div>
     );
   }
+
   handleCancel = () => {
+    const lastMobileNumber = this.state.lastMobileNumber;
     this.setState({
       visible: false,
-      // phone: null,
+      mobile: lastMobileNumber,
       disabled: false,
       code: null,
       text: '获取验证码',
     });
   };
-  handleOk = () => {
+
+  confirmNewMobile = () => {
     const { mobile, code } = this.state;
+
     if (!mobile) {
       message.error('请输入手机号');
       return false;
-    } else if (!regExpConfig.phone.test(mobile)) {
+    }
+
+    if (!regExpConfig.phone.test(mobile)) {
       message.error('手机号格式不正确');
       return false;
-    } else if (!code) {
+    }
+
+    if (!code) {
       message.error('请输入验证码');
       return false;
     }
-    this.handleSaves();
+
+    this.saveToServer();
   };
+
   // 发送验证码
-  handleSendCode = () => {
+  sendVerifyCode = async () => {
+    // 调短信 接口
+    const { dispatch } = this.props;
     const { mobile } = this.state;
+    const that = this;
     if (!mobile) {
       message.error('请输入手机号');
       return false;
-    } else if (!regExpConfig.phone.test(mobile)) {
+    }
+
+    if (!regExpConfig.phone.test(mobile)) {
       message.error('请输入正确的手机号');
       return false;
-    } else {
-      this.setState({ disabled: true });
-      // 调短信 接口
-      const { dispatch } = this.props;
-      dispatch({
+    }
+
+    this.setState({ disabled: true });
+
+    try {
+      const { appid, bizState, randstr, ret, ticket } = await captchaValidation();
+
+      const { code } = await dispatch({
         type: 'base/sendUserMobileMsgModel',
-        payload: { mobile },
-      }).then(res => {
-        if (res && res.code === 200) {
-          message.success('发送成功');
-          const that = this;
-          let num = 60;
-          function timer() {
-            num = num - 1;
-            that.setState({ text: num + 's后从新获取' }, () => {
-              if (num === 0) {
-                that.setState({ text: '获取验证码', disabled: false });
-              } else {
-                setTimeout(() => timer(), 1000);
-              }
-            });
-          }
-          timer();
-        } else {
-          this.setState({ disabled: false });
-        }
+        payload: { mobile, randstr, source: 3, ticket },
       });
+
+      if (code === 200) {
+        message.success('发送成功');
+
+        let num = SMS_LIMIT_TIME;
+        function timer() {
+          num = num - 1;
+          that.setState({ text: num + 's后从新获取' }, () => {
+            if (num === 0) {
+              that.setState({ text: '获取验证码', disabled: false });
+            } else {
+              setTimeout(() => timer(), 1000);
+            }
+          });
+        }
+        timer();
+      } else {
+        this.setState({ disabled: false });
+      }
+    } catch (e) {
+      console.log(e.message);
     }
   };
 
@@ -329,86 +335,90 @@ class BaseView extends Component {
     this.setState({ [name]: lists[0] });
   };
 
-  handleSave = () => {
-    const { email, mobile, sex, realName, wechatId, userHeadImg, oldmobile, code } = this.state;
+  clickSave = () => {
+    const {
+      email,
+      mobile,
+      sex,
+      realName,
+      wechatId,
+      userHeadImg,
+      lastMobileNumber,
+      code,
+    } = this.state;
     if (!realName || realName.trim().length < 1) {
       message.error('请输入姓名');
       return false;
-    } else if (!sex && sex !== 0) {
+    }
+    if (!sex && sex !== 0) {
       message.error('请选择性别');
       return false;
-    } else if (wechatId && !regExpConfig.wechat.test(wechatId)) {
+    }
+
+    if (wechatId && !regExpConfig.wechat.test(wechatId)) {
       message.error('微信格式不正确');
       return false;
-    } else if (email && !regExpConfig.emails.test(email)) {
+    }
+
+    if (email && !regExpConfig.emails.test(email)) {
       message.error('邮箱格式不正确');
       return false;
-    } else if (!regExpConfig.phone.test(mobile)) {
+    }
+
+    if (!regExpConfig.phone.test(mobile)) {
       message.error('请输入正确的手机号');
       return false;
-    } else if (!userHeadImg) {
+    }
+
+    if (!userHeadImg) {
       message.error('请上传头像');
       return false;
     }
-    if (mobile !== oldmobile) {
+
+    if (mobile !== lastMobileNumber) {
       this.setState({ visible: true });
-    } else {
-      this.handleSaves();
+      return false;
+    }
+
+    this.saveToServer();
+  };
+
+  saveToServer = async () => {
+    const { email, mobile, sex, realName, userHeadImg, code } = this.state;
+    const { dispatch } = this.props;
+    try {
+      const updateResCode = await dispatch({
+        type: 'base/setSystemuserModel',
+        payload: {
+          email,
+          mobile,
+          sex,
+          realName,
+          userHeadImg,
+          smsVerificationCode: code,
+        },
+      });
+
+      if (updateResCode.code === 200) {
+        this.setState({ visible: false, mobile, code: null, lastMobileNumber: mobile });
+        message.success('保存成功', 2, () => window.location.reload());
+        return;
+      }
+
+      throw new Error(updateResCode.message);
+    } catch (e) {
+      console.log(e.message);
     }
   };
-  handleSaves = () => {
-    const { email, mobile, sex, realName, wechatId, userHeadImg, oldmobile, code } = this.state;
+}
 
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'base/setSystemuserModel',
-      payload: {
-        email,
-        mobile,
-        sex,
-        realName,
-        wechatId,
-        userHeadImg,
-        smsVerifyCode: code,
-      },
-    }).then(res => {
-      if (res && res.code === 200) {
-        // 更改手机号设置新token
-        if (res.data && res.data.status) {
-          setAuthority(res.data.token);
-        }
-        message.success('保存成功');
-        // 保存成功后刷新用户信息
-        // 从新加载个人信息
-        dispatch({
-          type: 'login/setAuthModel',
-          payload: {},
-        }).then(res => {
-          setTimeout(() => {
-            // window.location.reload();
-          }, 1000);
-        });
-        this.setState({ text: '获取验证码', disabled: false, visible: false, code: null });
-        dispatch({
-          type: 'base/getSystemuserModel',
-          payload: {},
-        }).then(res => {
-          if (res && res.code === 200) {
-            const data = res.data;
-            this.setState({
-              email: data && data.email,
-              mobile: data && data.mobile,
-              oldmobile: data && data.mobile,
-              sex: data && data.sex,
-              realName: data && data.realName,
-              wechatId: data && data.wechatId,
-              userHeadImg: data && data.userHeadImg,
-            });
-          }
-        });
-      }
+async function captchaValidation(cb) {
+  return new Promise((resolve, reject) => {
+    const captcha1 = new TencentCaptcha('2071327168', res => {
+      res && resolve(res);
     });
-  };
+    captcha1.show();
+  });
 }
 
 export default BaseView;
