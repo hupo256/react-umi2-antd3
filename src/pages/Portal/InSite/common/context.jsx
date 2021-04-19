@@ -44,8 +44,7 @@ export function Provider({ children }) {
           pageSize: '4',
         },
       ];
-      !isPublished && getEditData(param);
-      isPublished && getPublishedData(param);
+      getEditData(param);
     });
   }
 
