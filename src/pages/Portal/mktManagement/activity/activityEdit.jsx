@@ -10,40 +10,43 @@ import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { Provider, ctx } from '../common/context';
 import mktApi from '@/services/mktActivity';
 import { Card, Tabs } from 'antd';
+import { urlParamHash, calcNumInArr } from '../tools';
 import CreatGame from '../addGame/creatGame';
 import CreatGoods from '../addGame/creatGoods';
 
 const { TabPane } = Tabs;
 
 function ActivityEdit(props) {
-  const [gData, setgData] = useState(null);
+  const { setcurActDate, setcurGoods } = useContext(ctx);
 
   useEffect(() => {
-    const { hash } = location;
-    const [, uid] = hash.split('?uid=');
+    const { uid } = urlParamHash(location.href);
+    if (!uid) return;
     mktApi.getActivity({ uid }).then(res => {
       console.log(res);
+      if (!res?.data) return;
       const { data } = res;
-      if (!data) return;
       // 拿到数据，开始填充from
-      setgData(data); // 给出数据
+      setcurActDate(data);
+      const arr = calcNumInArr(data?.prizeList || []);
+      setcurGoods(arr.slice());
     });
   }, []);
 
-  function tabChange() {
+  function tabChange(e) {
     console.log();
   }
 
   return (
     <PageHeaderWrapper>
       <Card bordered={false}>
-        <Tabs defaultActiveKey="2" onChange={tabChange}>
+        <Tabs defaultActiveKey="1" onChange={tabChange}>
           <TabPane tab="基本信息" key="1">
-            <CreatGame gData={gData} />
+            <CreatGame isEdit={true} />
           </TabPane>
 
           <TabPane tab="奖项设置" key="2">
-            <CreatGoods gData={gData?.prizeList} />
+            <CreatGoods isEdit={true} />
           </TabPane>
         </Tabs>
       </Card>

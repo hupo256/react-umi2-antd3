@@ -1,7 +1,9 @@
-export const baseRouteKey = '/portal/contentmanagement/mktManagement/';
+export const baseRouteKey = '/portal/activity/mktGame/';
+export const prizeImg = 'http://img.inbase.in-deco.com/crm-saas/img/games/prize/';
 export const actColumns = [
   {
     title: '游戏标题',
+    width: 100,
     dataIndex: 'activityTitle',
   },
   {
@@ -9,8 +11,8 @@ export const actColumns = [
     dataIndex: 'state',
   },
   {
-    title: '起始时间',
-    dataIndex: 'startTime',
+    title: '起止时间',
+    dataIndex: 'time',
   },
   {
     title: '小游戏链接',

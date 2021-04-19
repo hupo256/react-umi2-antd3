@@ -10,7 +10,7 @@ import mktApi from '@/services/mktActivity';
 import router from 'umi/router';
 import { baseRouteKey } from '../tools/data';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
-import { Card, Button, Table, Input } from 'antd';
+import { Card, Button, Table, Input, Icon, message } from 'antd';
 import { actColumns, searchTags } from '../tools/data';
 import styles from './activity.less';
 
@@ -20,6 +20,7 @@ export default function Activityer(props) {
   const [actList, setactList] = useState([]);
   const [tbColumns, settbColumns] = useState([]);
   const [searchInd, setsearchInd] = useState(0);
+  const [searchTex, setsearchTex] = useState('');
   const [total, settotal] = useState(0);
 
   useEffect(() => {
@@ -35,7 +36,7 @@ export default function Activityer(props) {
   );
 
   function toEdit(uid) {
-    router.push(`${baseRouteKey}activityEdit?uid=${uid}`);
+    router.push(`${baseRouteKey}editGame?uid=${uid}`);
   }
 
   function toRecod(code) {
@@ -43,6 +44,51 @@ export default function Activityer(props) {
   }
 
   function creatColumn() {
+    const [, col1, col2, col3, rest] = actColumns;
+    actColumns[1] = {
+      ...col1,
+      render: (text, record, index) => {
+        const { state } = record;
+        const cls = `cls${state}`;
+        let tex = '未开始';
+        state === 1 && (tex = '进行中');
+        state === 2 && (tex = '已结束');
+        return (
+          <div className={styles.stateBox}>
+            <u className={styles[cls]} />
+            {tex}
+          </div>
+        );
+      },
+    };
+    actColumns[2] = {
+      ...col2,
+      render: (text, record, index) => {
+        const [st, et] = text.split('_');
+        return (
+          <div className={styles.timeBox}>
+            {st} 至 <br /> {et}
+          </div>
+        );
+      },
+    };
+    actColumns[3] = {
+      ...col3,
+      render: (text, record, index) => {
+        const { activityCode, linkUrl } = record;
+        return (
+          <>
+            <span>{linkUrl} </span>
+            <Input id={activityCode} className={styles.inpHidden} value={linkUrl} />
+            <p>
+              <a onClick={() => copyLink(activityCode)} className={styles.tocopy}>
+                <Icon type="copy" /> 复制链接
+              </a>
+            </p>
+          </>
+        );
+      },
+    };
     const col = {
       title: '操作',
       dataIndex: 'action',
@@ -54,23 +100,15 @@ export default function Activityer(props) {
         </p>
       ),
     };
-    actColumns[1] = {
-      title: '状态',
-      dataIndex: 'state',
-      render: (text, record, index) => {
-        let tex = '未开始';
-        const { state } = record;
-        state === 1 && (tex = '进行中');
-        state === 2 && (tex = '已结束');
-        return (
-          <div className={styles.stateBox}>
-            <u />
-            <span>{tex}</span>
-          </div>
-        );
-      },
-    };
     settbColumns([...actColumns, col]);
+  }
+
+  function copyLink(id) {
+    const inp = document.getElementById(id);
+    console.log(inp);
+    inp.select(); // 选中文本
+    document.execCommand('copy'); // 执行浏览器复制命令
+    message.success('复制成功!');
   }
 
   function addNew() {
@@ -80,18 +118,27 @@ export default function Activityer(props) {
   // 获取活动们
   function touchActList(config = {}) {
     const params = {
-      activeName: '',
+      activityTitle: searchTex,
       pageNum: 1,
       pageSize: 10,
       // state: 0,
     };
     mktApi.queryActivityList({ ...params, ...config }).then(res => {
       console.log(res);
+      if (!res?.data) return;
       const { data } = res;
-      if (!data) return;
       const { list, recordTotal } = data;
-      setactList(list);
+      setactList(mergeTime(list).slice());
       settotal(recordTotal);
+    });
+  }
+
+  function mergeTime(arr) {
+    return arr?.map(item => {
+      const { startTime, endTime } = item;
+      // console.log
+      item.time = startTime.slice(0, 16) + '_' + endTime.slice(0, 16);
+      return item;
     });
   }
 
@@ -102,7 +149,8 @@ export default function Activityer(props) {
   }
 
   function toSearch(tex) {
-    touchActList({ activeName: tex });
+    setsearchTex(tex);
+    touchActList({ activityTitle: tex });
   }
 
   return (

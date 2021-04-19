@@ -1,3 +1,5 @@
+export const imgBaseUrl = 'https://img.inbase.in-deco.com/crm-saas/img/dflfwc/';
+
 export function createUuid() {
   let s = [];
   let hexDigits = '0123456789abcdef';
@@ -20,20 +22,4 @@ export function urlParamHash(url) {
     params[h[0]] = h[1];
   }
   return params;
-}
-
-// 计算 抽中概率 剩余数量 并加工数据
-// prizeNum 总数， prizeBeNum 已抽, prizeSuNum 剩余
-export function calcNumInArr(arr) {
-  const numArr = arr.map(li => +(li.prizeNum || 0));
-  if (numArr.length === 0) return [];
-  const totals = numArr.reduce((p, c) => +p + +c); //计算总和
-  arr.forEach(gs => {
-    // gs.prizeBeNum = 120;
-    const { prizeNum = 0, prizeBeNum = 0 } = gs;
-    gs['originNum'] = +prizeNum; // 暂存一下总数
-    gs['prizeSuNum'] = +prizeNum - +prizeBeNum; // 剩余数
-    gs['probability'] = ((+prizeNum * 100) / totals).toFixed(2); // 抽中概率
-  });
-  return arr;
 }
