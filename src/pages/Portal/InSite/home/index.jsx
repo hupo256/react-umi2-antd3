@@ -50,7 +50,7 @@ function Home(props) {
             {authorInf.isAuthedWechatMini ? (
               <Preview from="home" />
             ) : (
-              <NotBound jumpUrl={`${baseUrlKey}home`} />
+              <NotBound jumpUrl={`${baseRouteKey}home`} />
             )}
           </>
         )}
