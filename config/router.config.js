@@ -229,7 +229,7 @@ export default [
               },
               {
                 path: '/portal/activity/mktGame/addGame',
-                PageHeaderName: '创建游戏',
+                PageHeaderName: '创建小游戏',
                 component: './Portal/mktManagement/addGame',
               },
               {

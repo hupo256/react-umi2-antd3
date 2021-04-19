@@ -225,7 +225,8 @@ export default function CreatGoods(props) {
 
   function delImg(num) {
     curGoods.splice(num, 1);
-    setcurGoods(curGoods.slice());
+    const arr = calcNumInArr(curGoods);
+    setcurGoods(arr.slice());
   }
 
   // 奖项数量更新提醒
@@ -280,7 +281,7 @@ export default function CreatGoods(props) {
   function isValEmpty() {
     const isEmpty = [];
     const arr = curGoods.map(gs => {
-      const { prizeName, prizeNum } = gs;
+      const { prizeName = '', prizeNum = 0 } = gs;
       if (!prizeName.replace(/(^\s*)|(\s*$)/g, '')) {
         gs.prizeNameStatus = 'error';
         gs.prizeNameErrMsg = '请填写奖项名称';

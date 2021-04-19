@@ -44,7 +44,7 @@ export default function Activityer(props) {
   }
 
   function creatColumn() {
-    const [, col1, col2, col3, rest] = actColumns;
+    const [, col1, col2, col3, col4] = actColumns;
     actColumns[1] = {
       ...col1,
       render: (text, record, index) => {
@@ -85,6 +85,18 @@ export default function Activityer(props) {
                 <Icon type="copy" /> 复制链接
               </a>
             </p>
+          </>
+        );
+      },
+    };
+    actColumns[4] = {
+      ...col4,
+      render: (text, record, index) => {
+        const { startTime, creater = '' } = record;
+        return (
+          <>
+            <span>{startTime} </span>
+            <p>{creater}</p>
           </>
         );
       },
@@ -136,9 +148,10 @@ export default function Activityer(props) {
   function mergeTime(arr) {
     if (!arr) return [];
     return arr?.map(item => {
-      const { startTime, endTime } = item;
+      const { startTime, endTime, createTime } = item;
       // console.log
       item.time = startTime.slice(0, 16) + '_' + endTime.slice(0, 16);
+      item.createTime = createTime.slice(0, 16);
       return item;
     });
   }
