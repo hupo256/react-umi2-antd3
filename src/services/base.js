@@ -94,17 +94,11 @@ export async function saveShowField(params) {
 
 // 获取个人中心数据（pc端）
 export async function getSystemuser(params) {
-  return request(`${baseurl}/api/v1/saas/systemuser/pc/center`, {
-    method: 'POST',
-    body: params,
-  });
+  return request(`${baseurl}/api/v1/sso/user/get`, { method: 'POST', body: params });
 }
 // 修改用户信息（pc端）
 export async function setSystemuser(params) {
-  return request(`${baseurl}/api/v1/saas/systemuser/pc/modifyUserInfo`, {
-    method: 'POST',
-    body: params,
-  });
+  return request(`${baseurl}/api/v1/sso/usercompany/editUser`, { method: 'POST', body: params });
 }
 // 个人中心修改手机号发送短信
 export async function sendUserMobileMsg(params) {
@@ -137,15 +131,5 @@ export async function columnReset(params) {
 }
 //个人中心修改手机号
 export async function sendMobileMsg(params) {
-  return request(`${baseurl}/api/v1/saas/systemuser/app/sendMobileMsg`, {
-    method: 'POST',
-    body: params,
-  });
-}
-
-export async function sendMobileMsgs(params) {
-  return request(`${baseurl}/api/v1/saas/systemuser/app/sendMobileMsgPassword`, {
-    method: 'POST',
-    body: params,
-  });
+  return request(`${baseurl}/api/v1/sso/login/sendMsg`, { method: 'POST', body: params });
 }

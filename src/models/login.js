@@ -8,6 +8,7 @@ import {
   loginPassword,
   logout,
   switchSystem,
+  editPassword,
 } from '@/services/api';
 import { setAuthority, cleanAuthority, setauth } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
@@ -98,6 +99,11 @@ export default {
 
     *loginCountModel({ payload }, { call }) {
       const response = yield call(loginCount, payload);
+      return response;
+    },
+    //修改密码
+    *editPasswordModel({ payload }, { call }) {
+      const response = yield call(editPassword, payload);
       return response;
     },
     *logout(_, { put }) {

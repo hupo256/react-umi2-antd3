@@ -137,6 +137,14 @@ export async function loginPassword(params) {
   });
 }
 
+export async function editPassword(params) {
+  //找回密码
+  return request(baseurl + '/api/v1/sso/usercompany/editPassword', {
+    method: 'POST',
+    body: params,
+  });
+}
+
 export async function logout(params) {
   //退出登录
   return request(baseurl + '/api/v1/sso/login/out', {
