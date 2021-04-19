@@ -11,6 +11,7 @@ import pageStyle from '../preview.less';
 export default function CaseMd(props) {
   const { list } = props;
 
+  console.log(list);
   return (
     <ul className={pageStyle.tagBox}>
       {list?.map((tag, ind) => {

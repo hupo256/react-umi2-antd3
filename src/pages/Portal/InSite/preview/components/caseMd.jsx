@@ -6,11 +6,12 @@
  * 精选案例
  */
 import React, { useState, useEffect } from 'react';
-import MdTitle from './mdTitle';
+import MdTitle from './common/mdTitle';
+import EmptyMd from './common/emptyMd';
 import pageStyle from '../preview.less';
 
 export default function CaseMd(props) {
-  const { list, title } = props;
+  const { list, title, flag } = props;
   const [curInd, setcurInd] = useState(0);
   const { coverPicUrl, styleDic, acreage, bedroom, decorationCost } = list[curInd] || {};
 
@@ -43,12 +44,7 @@ export default function CaseMd(props) {
           </div>
         </div>
       ) : (
-        <div className={pageStyle.defaultImgBox}>
-          <svg className="icon" aria-hidden="true">
-            <use href="#iconic_case_no" />
-          </svg>
-          <span>请在案例库中添加案例</span>
-        </div>
+        <EmptyMd flag={flag} />
       )}
     </div>
   );

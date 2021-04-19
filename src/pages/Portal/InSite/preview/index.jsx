@@ -29,19 +29,19 @@ const componentMap = {
   },
   highlights: {
     tips: '亮点',
-    creatCom: (l, t) => <HighlightsMd list={l} />,
+    creatCom: e => <HighlightsMd {...e} />,
   },
   case: {
     tips: '精选案例',
-    creatCom: (l, t) => <CaseMd list={l} title={t} />,
+    creatCom: e => <CaseMd {...e} />,
   },
   site: {
     tips: '工地',
-    creatCom: (l, t) => <SiteMd list={l} title={t} />,
+    creatCom: e => <SiteMd {...e} />,
   },
   design: {
     tips: '设计师',
-    creatCom: (l, t) => <DesignMd list={l} title={t} />,
+    creatCom: e => <DesignMd {...e} />,
   },
   advertising: {
     tips: '广告',
@@ -107,8 +107,8 @@ export default function Preview(props) {
               const { flag, list = [], title = '' } = item;
               const { tips, creatCom } = componentMap[flag];
               return (
-                <HoverMd key={ind} tips={tips} flag={flag}>
-                  {creatCom(list, title)}
+                <HoverMd key={ind} tips={tips} flag={flag} isEmpty={list.length === 0}>
+                  {creatCom({ list, title, flag })}
                 </HoverMd>
               );
             })}

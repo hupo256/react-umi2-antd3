@@ -29,6 +29,13 @@ export default function TagsEdit(props) {
     setlinkEdtor(true);
   }
 
+  function forUpdatePageData() {
+    const newObj = { ...pageData };
+    newObj.maps[curFlag].list = tagList;
+    settagList(tagList.slice());
+    setpageData(newObj);
+  }
+
   function delImg(num) {
     tagList.splice(num, 1);
     forUpdatePageData();
@@ -40,23 +47,6 @@ export default function TagsEdit(props) {
     forUpdatePageData();
   }
 
-  function tagsTexChange(e, num, rec) {
-    const val = e.target.value;
-    rec.title = val;
-    if (val) {
-      rec.vaStatus = 'success';
-      rec.errMsg = '';
-    }
-    forUpdatePageData();
-  }
-
-  function forUpdatePageData() {
-    const newObj = { ...pageData };
-    newObj.maps[curFlag].list = tagList;
-    settagList(tagList.slice());
-    setpageData(newObj);
-  }
-
   function tagsTexBlur(e, rec) {
     const val = e?.target?.value;
     if (!val) {
@@ -66,7 +56,21 @@ export default function TagsEdit(props) {
     settagList(tagList.slice());
   }
 
-  function titleTexChange(rec) {}
+  function tagsTexChange(e, rec) {
+    const val = e.target.value;
+    rec.title = val;
+    if (val) {
+      rec.vaStatus = 'success';
+      rec.errMsg = '';
+    }
+    forUpdatePageData();
+  }
+
+  function discTexChange(e, rec) {
+    const val = e.target.value;
+    rec.desc = val;
+    forUpdatePageData();
+  }
 
   return (
     <>
@@ -95,14 +99,14 @@ export default function TagsEdit(props) {
                         style={{ width: '100%' }}
                         value={title}
                         onBlur={e => tagsTexBlur(e, tag)}
-                        onChange={e => tagsTexChange(e, ind, tag)}
+                        onChange={e => tagsTexChange(e, tag)}
                         placeholder="请输入主标题"
                       />
                     </Item>
                   </Form>
                   <Input
                     value={desc}
-                    onChange={() => titleTexChange(tag)}
+                    onChange={() => discTexChange(e, tag)}
                     placeholder="请输入副文本"
                   />
                   <Input

@@ -37,11 +37,6 @@ export default function TagsEdit(props) {
     [curFlag]
   );
 
-  function radioChage(e) {
-    console.log(e);
-    setimgHeightType(e.target.value);
-  }
-
   function addNewImgs() {
     if (tagList.length === maxLen) {
       message.warning(`最多可添加${maxLen}张图片`);
@@ -73,6 +68,13 @@ export default function TagsEdit(props) {
     pageData.jsonData[1].list = tagList;
     settagList(tagList.slice());
     setpageData(pageData);
+  }
+
+  function radioChage(e) {
+    const { value } = e.target;
+    console.log(typeof e.target.value);
+    if (value === 1) pageData.jsonData[0].height = 176;
+    setimgHeightType(value);
   }
 
   function widthChange(e) {
@@ -111,7 +113,7 @@ export default function TagsEdit(props) {
       <ul className={styles.imgEditBox}>
         {tagList.length > 0 &&
           tagList.map((tag, ind) => {
-            const { title, desc, uid, imgUrl } = tag;
+            const { title, imgUrl } = tag;
             const len = tagList.length;
             return (
               <li key={ind}>

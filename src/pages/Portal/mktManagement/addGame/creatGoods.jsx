@@ -102,7 +102,11 @@ export default function CreatGoods(props) {
         ),
       },
       {
-        title: '* 奖项名称',
+        title: () => (
+          <>
+            <span style={{ color: 'red' }}>*</span> 奖项名称
+          </>
+        ),
         dataIndex: 'prizeName',
         width: 160,
         render: (text, record, ind) => {
@@ -121,7 +125,11 @@ export default function CreatGoods(props) {
         },
       },
       {
-        title: '* 奖项数量',
+        title: () => (
+          <>
+            <span style={{ color: 'red' }}>*</span> 奖项数量
+          </>
+        ),
         dataIndex: 'prizeNum',
         width: 100,
         render: (text, record, ind) => {
@@ -157,9 +165,8 @@ export default function CreatGoods(props) {
         title: () => {
           return (
             <>
-              <span>操作</span>
-              <Tooltip placement="topLeft" title={tipsTable}>
-                <Icon type="question-circle" />
+              <Tooltip title={tipsTable}>
+                操作 <Icon type="question-circle" style={{ color: '#16a' }} />
               </Tooltip>
             </>
           );
@@ -348,7 +355,6 @@ export default function CreatGoods(props) {
         pagination={false}
         rowKey={(r, i) => i}
       />
-
       {actType !== 3 && (
         <p className={styles.addImg} onClick={addNewImgs}>
           <span>+</span>
@@ -361,7 +367,6 @@ export default function CreatGoods(props) {
         </Button>
         {!isEdit && <Button onClick={() => setstepNum(0)}>上一步</Button>}
       </div>
-
       <Upload
         visible={imgEdtor}
         selectNum={1}

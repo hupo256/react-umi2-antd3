@@ -160,7 +160,7 @@ function AddNewGoods(props) {
             rules: [{ required: true, message: '请选择起止时间' }],
           })(
             <RangePicker
-              disabledDate={disabledDate}
+              // disabledDate={disabledDate}
               disabledTime={disabledRangeTime}
               showTime={{
                 hideDisabledOptions: true,

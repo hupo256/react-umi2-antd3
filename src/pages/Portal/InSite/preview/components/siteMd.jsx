@@ -6,11 +6,12 @@
  * 工地直播
  */
 import React, { useState, useEffect } from 'react';
-import MdTitle from './mdTitle';
+import MdTitle from './common/mdTitle';
+import EmptyMd from './common/emptyMd';
 import pageStyle from '../preview.less';
 
 export default function CaseMd(props) {
-  const { list, title } = props;
+  const { list, title, flag } = props;
 
   return (
     <div className={`${pageStyle.mdBlock} ${pageStyle.hasbg}`}>
@@ -43,12 +44,7 @@ export default function CaseMd(props) {
           </ul>
         </div>
       ) : (
-        <div className={pageStyle.defaultImgBox}>
-          <svg className="icon" aria-hidden="true">
-            <use href="#iconic_case_no" />
-          </svg>
-          <span>请在工地库中添加工地</span>
-        </div>
+        <EmptyMd flag={flag} />
       )}
     </div>
   );
