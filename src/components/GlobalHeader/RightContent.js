@@ -1,17 +1,17 @@
-import React, { PureComponent } from "react";
-import { FormattedMessage, setLocale, getLocale } from "umi/locale";
-import { Spin, Badge, Menu, Icon, Dropdown, Avatar } from "antd";
-import { getauth } from "../../utils/authority";
-import headerimg from "../../assets/headerimg.jpg";
-import styles from "./index.less";
+import React, { PureComponent } from 'react';
+import { FormattedMessage, setLocale, getLocale } from 'umi/locale';
+import { Spin, Badge, Menu, Icon, Dropdown, Avatar } from 'antd';
+import { getauth } from '../../utils/authority';
+import headerimg from '../../assets/headerimg.jpg';
+import styles from './index.less';
 
 export default class GlobalHeaderRight extends PureComponent {
   changLang = () => {
     const locale = getLocale();
-    if (!locale || locale === "zh-CN") {
-      setLocale("en-US");
+    if (!locale || locale === 'zh-CN') {
+      setLocale('en-US');
     } else {
-      setLocale("zh-CN");
+      setLocale('zh-CN');
     }
   };
 
@@ -26,13 +26,7 @@ export default class GlobalHeaderRight extends PureComponent {
     //let dot = userinfo.record == 1 || (userinfo && userinfo.record == undefined) ? false : true;
     const menu = (
       <Menu className={styles.menu} selectedKeys={[]} onClick={onMenuClick}>
-        {/*<Menu.Item key="userCenter">
-          <Badge dot={dot}>
-            <Icon type="control" />
-            更新记录
-          </Badge>
-    </Menu.Item>*/}
-        {/*<Menu.Item key="userinfo">
+        <Menu.Item key="userinfo">
           <Icon type="setting" />
           <FormattedMessage id="menu.account.settings" defaultMessage="account settings" />
         </Menu.Item>
@@ -41,7 +35,7 @@ export default class GlobalHeaderRight extends PureComponent {
           <Icon type="edit" />
           <FormattedMessage id="menu.account.resetpasswords" defaultMessage="resetpasswords" />
         </Menu.Item>
-  <Menu.Divider />*/}
+        <Menu.Divider />
         <Menu.Item key="logout">
           <Icon type="logout" />
           <FormattedMessage id="menu.account.logout" defaultMessage="logout" />
@@ -49,7 +43,7 @@ export default class GlobalHeaderRight extends PureComponent {
       </Menu>
     );
     let className = styles.right;
-    if (theme === "dark") {
+    if (theme === 'dark') {
       className = `${styles.right}  ${styles.dark}`;
     }
     return (
@@ -60,11 +54,11 @@ export default class GlobalHeaderRight extends PureComponent {
               <Avatar
                 size="small"
                 className={styles.avatar}
-                src={permissionsBtn.handImage || headerimg}
+                src={permissionsBtn.userHeadImg || headerimg}
                 alt="avatar"
               />
               <span className={styles.name}>
-                {permissionsBtn.nikeName ? permissionsBtn.nikeName : ""}
+                {permissionsBtn.nikeName ? permissionsBtn.nikeName : ''}
               </span>
             </span>
           </Dropdown>
