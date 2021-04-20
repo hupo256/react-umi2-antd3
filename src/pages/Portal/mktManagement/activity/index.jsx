@@ -78,13 +78,17 @@ export default function Activityer(props) {
         const { activityCode, linkUrl } = record;
         return (
           <>
-            <span>{linkUrl} </span>
-            <Input id={activityCode} className={styles.inpHidden} value={linkUrl} />
-            <p>
-              <a onClick={() => copyLink(activityCode)} className={styles.tocopy}>
-                <Icon type="copy" /> 复制链接
-              </a>
-            </p>
+            {linkUrl && (
+              <>
+                <span>{linkUrl} </span>
+                <Input id={activityCode} className={styles.inpHidden} value={linkUrl} />
+                <p>
+                  <a onClick={() => copyLink(activityCode)} className={styles.tocopy}>
+                    <Icon type="copy" /> 复制链接
+                  </a>
+                </p>
+              </>
+            )}
           </>
         );
       },
@@ -129,12 +133,13 @@ export default function Activityer(props) {
 
   // 获取活动们
   function touchActList(config = {}) {
-    const params = {
+    const param = {
       activityTitle: searchTex,
       pageNum: 1,
       pageSize: 10,
-      // state: 0,
     };
+    const conf = searchInd ? { state: searchInd - 1 } : {};
+    const params = { ...param, ...conf };
     mktApi.queryActivityList({ ...params, ...config }).then(res => {
       console.log(res);
       if (!res?.data) return;
@@ -149,7 +154,6 @@ export default function Activityer(props) {
     if (!arr) return [];
     return arr?.map(item => {
       const { startTime, endTime, createTime } = item;
-      // console.log
       item.time = startTime.slice(0, 16) + '_' + endTime.slice(0, 16);
       item.createTime = createTime.slice(0, 16);
       return item;
@@ -165,6 +169,15 @@ export default function Activityer(props) {
   function toSearch(tex) {
     setsearchTex(tex);
     touchActList({ activityTitle: tex });
+  }
+
+  function pageChange(num, size) {
+    console.log(num, size);
+    const conf = {
+      pageNum: num,
+      pageSize: size,
+    };
+    touchActList(conf);
   }
 
   return (
@@ -201,7 +214,7 @@ export default function Activityer(props) {
           size="middle"
           dataSource={actList}
           columns={tbColumns}
-          pagination={{ total }}
+          pagination={{ total, onChange: pageChange }}
           rowKey={(r, i) => i}
         />
       </Card>
