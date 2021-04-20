@@ -55,6 +55,13 @@ function ImgUrlEdit(props) {
           name: specialTitle || gongdiTitle || title || name || activityTitle,
           value: specialUid || gongdiUid || uid,
         };
+        // const tex = specialTitle || gongdiTitle || title || name || activityTitle;
+        // const val = specialUid || gongdiUid || uid;
+        // return (
+        //   <Option key={val} value={val}>
+        //     {tex}
+        //   </Option>
+        // );
       });
       setitemList(arr);
     });
@@ -80,13 +87,6 @@ function ImgUrlEdit(props) {
       setpageData(newObj);
       setlinkEdtor(false);
     });
-  }
-
-  function AutoSelect(e) {
-    console.log(e);
-  }
-  function AutoChange(e) {
-    console.log(e);
   }
 
   return (
@@ -122,28 +122,20 @@ function ImgUrlEdit(props) {
           {getFieldDecorator('uid', {
             rules: [{ required: true, message: '请添加具体页面' }],
           })(
-            // <Select placeholder="可输入关键字进行检索" getPopupContainer={n => n.parentNode}>
-            //   {itemList.length > 0 &&
-            //     itemList.map(item => {
-            //       const { name, value } = item;
-            //       return (
-            //         <Option key={value} value={`${value}_${name}`}>
-            //           {name}
-            //         </Option>
-            //       );
-            //     })}
-            // </Select>
-
             <AutoComplete
-              // value={value}
-              // dataSource={itemList}
-              dataSource={['23', '34', '45', '67']}
               style={{ width: 200 }}
-              onSelect={AutoSelect}
-              // onSearch={this.onSearch}
-              onChange={AutoChange}
+              filterOption={(val, opt) => opt?.props?.children.includes(val)}
               placeholder="可输入关键字进行检索"
-            />
+            >
+              {itemList?.map(item => {
+                const { name, value } = item;
+                return (
+                  <Option key={value} value={value}>
+                    {name}
+                  </Option>
+                );
+              })}
+            </AutoComplete>
           )}
         </Item>
       </Form>
