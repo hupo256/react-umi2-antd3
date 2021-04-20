@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-15 16:10:09
+ * @Last Modified time: 2021-04-19 16:04:32
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -151,6 +151,7 @@ class CreateStepTwo extends PureComponent {
           <Modal
             title={'公有专题库'}
             visible={visible}
+            maskClosable={false}
             footer={null}
             width={900}
             onCancel={() => {
@@ -163,7 +164,11 @@ class CreateStepTwo extends PureComponent {
                   onSearch={() => this.thSearch()}
                   placeholder={'请输入专题名称进行搜索'}
                   className={styles.sers}
-                  onChange={e => this.setState({ searchWord: e.target.value })}
+                  onChange={e =>
+                    this.setState({ searchWord: e.target.value }, () => {
+                      this.thSearch();
+                    })
+                  }
                   onPressEnter={() => {
                     this.thSearch();
                   }}
@@ -193,6 +198,7 @@ class CreateStepTwo extends PureComponent {
           <Modal
             title={'预览'}
             visible={visibles}
+            maskClosable={false}
             footer={null}
             width={720}
             onCancel={() => {

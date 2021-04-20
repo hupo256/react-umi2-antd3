@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-15 16:16:52
+ * @Last Modified time: 2021-04-20 13:48:06
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -251,9 +251,9 @@ class ProjectLibrary extends PureComponent {
           index={item.idx}
           handleCheck={data => this.handleCheck(data)}
           handleColor={(data, index, code) => this.handleColor(data, index, code)}
-          fnDown={(e, indx) => {
-            this.fnDown(e, indx);
-          }}
+          // fnDown={(e, indx) => {
+          //   this.fnDown(e, indx);
+          // }}
           handleDeletePic={data => this.handleDeletePic(data)}
         />
       );
@@ -370,6 +370,7 @@ class ProjectLibrary extends PureComponent {
     let ishow = 0;
     let left = 0;
     let top = 0;
+    let textTop = 0;
     const { tags } = this.state;
     compentList &&
       compentList.map((item, index) => {
@@ -381,6 +382,12 @@ class ProjectLibrary extends PureComponent {
             let aStyle = JSON.parse(item.elementStyle);
             left = aStyle.left;
             top = aStyle.top + 280;
+          }
+        }
+        if (item.elementType === 'MODAL_TEXT') {
+          if (item.elementStyle) {
+            let aStyle = JSON.parse(item.elementStyle);
+            textTop = aStyle.top + 43;
           }
         }
       });
@@ -397,7 +404,7 @@ class ProjectLibrary extends PureComponent {
         ite.elementButtonText = '立即预约';
       } else if (ite.elementType === 'MODAL_TEXT') {
         ite.elementStyle = JSON.stringify({
-          top: top,
+          top: textTop,
           left: left,
           fontSize: 14,
           color: '#000',
@@ -515,22 +522,24 @@ class ProjectLibrary extends PureComponent {
     } else {
       aStyle.top = event.clientY - this.disY;
     }
-    if (compentList[indx].elementType === 'MODAL_TEXT') {
-      compentList[indx].elementStyle = JSON.stringify({
-        top: aStyle.top,
-        left: aStyle.left,
-        fontSize: aStyle.fontSize,
-        color: aStyle.color,
-        lineHeight: aStyle.lineHeight,
-        letterSpacing: aStyle.letterSpacing,
-        textAlign: aStyle.textAlign,
-        fontStyle: aStyle.fontStyle,
-        textDecorationLine: aStyle.textDecorationLine,
-      });
-    } else {
-      compentList[indx].elementStyle = JSON.stringify({ top: aStyle.top, left: aStyle.left });
-    }
-
+    // if (compentList[indx].elementType === 'MODAL_TEXT') {
+    //   compentList[indx].elementStyle = JSON.stringify({
+    //     top: aStyle.top,
+    //     left: aStyle.left,
+    //     fontSize: aStyle.fontSize,
+    //     color: aStyle.color,
+    //     lineHeight: aStyle.lineHeight,
+    //     letterSpacing: aStyle.letterSpacing,
+    //     textAlign: aStyle.textAlign,
+    //     fontStyle: aStyle.fontStyle,
+    //     textDecorationLine: aStyle.textDecorationLine,
+    //     width: 150,
+    //     height: 43,
+    //   });
+    // } else {
+    //   compentList[indx].elementStyle = JSON.stringify({ top: aStyle.top, left: aStyle.left });
+    // }
+    compentList[indx].elementStyle = JSON.stringify({ top: aStyle.top, left: aStyle.left });
     dispatch({
       type: 'ProjectLibrary/saveDataModel',
       payload: {
