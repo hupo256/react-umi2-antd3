@@ -41,7 +41,7 @@ class NotBound extends PureComponent {
     );
   }
   handleUrl = () => {
-    const { dispatch, jumpUrl = '/setting/miniprogram' } = this.props;
+    const { dispatch, jumpUrl = '' } = this.props;
     const code = localStorage.getItem('auth');
     const saasSellerCode = JSON.parse(code).companyCode;
     dispatch({ type: 'MiniProgram/getAuthUrlModel', payload: { saasSellerCode, jumpUrl } }).then(
