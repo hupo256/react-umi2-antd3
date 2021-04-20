@@ -9,7 +9,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { ctx } from '../context';
 import { LinkType, apiMap } from '../../tools/data';
 import mktApi from '@/services/mktActivity';
-import { Form, Modal, Select } from 'antd';
+import { Form, Modal, Select, AutoComplete } from 'antd';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -75,14 +75,18 @@ function ImgUrlEdit(props) {
         type,
       };
 
-      console.log(curInd);
-      console.log(dList);
-
       const newObj = { ...pageData };
       newObj.maps[curFlag].list = dList;
       setpageData(newObj);
       setlinkEdtor(false);
     });
+  }
+
+  function AutoSelect(e) {
+    console.log(e);
+  }
+  function AutoChange(e) {
+    console.log(e);
   }
 
   return (
@@ -118,17 +122,28 @@ function ImgUrlEdit(props) {
           {getFieldDecorator('uid', {
             rules: [{ required: true, message: '请添加具体页面' }],
           })(
-            <Select placeholder="可输入关键字进行检索" getPopupContainer={n => n.parentNode}>
-              {itemList.length > 0 &&
-                itemList.map(item => {
-                  const { name, value } = item;
-                  return (
-                    <Option key={value} value={`${value}_${name}`}>
-                      {name}
-                    </Option>
-                  );
-                })}
-            </Select>
+            // <Select placeholder="可输入关键字进行检索" getPopupContainer={n => n.parentNode}>
+            //   {itemList.length > 0 &&
+            //     itemList.map(item => {
+            //       const { name, value } = item;
+            //       return (
+            //         <Option key={value} value={`${value}_${name}`}>
+            //           {name}
+            //         </Option>
+            //       );
+            //     })}
+            // </Select>
+
+            <AutoComplete
+              // value={value}
+              // dataSource={itemList}
+              dataSource={['23', '34', '45', '67']}
+              style={{ width: 200 }}
+              onSelect={AutoSelect}
+              // onSearch={this.onSearch}
+              onChange={AutoChange}
+              placeholder="可输入关键字进行检索"
+            />
           )}
         </Item>
       </Form>

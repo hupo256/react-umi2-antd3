@@ -104,9 +104,13 @@ function AddNewGoods(props) {
       const newAct = {
         ...values,
         uid,
-        startTime: moment(st).format('YYYY-MM-DD hh:mm:ss'),
-        endTime: moment(et).format('YYYY-MM-DD hh:mm:ss'),
+        startTime: moment(st).format('YYYY-MM-DD HH:mm'),
+        endTime: moment(et).format('YYYY-MM-DD HH:mm'),
       };
+
+      console.log(newAct.startTime);
+      console.log(newAct.endTime);
+      return;
 
       setnewAct(newAct); // 刷新一下以便下步使用
       if (!isEdit) {
@@ -161,12 +165,12 @@ function AddNewGoods(props) {
           })(
             <RangePicker
               // disabledDate={disabledDate}
-              disabledTime={disabledRangeTime}
+              // disabledTime={disabledRangeTime}
               showTime={{
                 hideDisabledOptions: true,
-                defaultValue: [moment('00:00:00', 'HH:mm:ss'), moment('11:59:59', 'HH:mm:ss')],
+                defaultValue: [moment('00:00:00', 'HH:mm'), moment('23:59:59', 'HH:mm')],
               }}
-              format="YYYY-MM-DD HH:mm:ss"
+              format="YYYY-MM-DD HH:mm"
             />
           )}
         </Item>

@@ -71,19 +71,20 @@ export const goodsColumns = [
   },
   {
     title: '抽中概率(%)',
-    dataIndex: 'qq',
+    dataIndex: 'probability',
   },
   {
     title: '已抽数量',
-    dataIndex: 'ww',
+    dataIndex: 'prizeBeNum',
   },
   {
     title: '剩余数量',
-    dataIndex: 'ee',
+    dataIndex: 'prizeSuNum',
   },
   {
     title: '是否是奖品',
-    dataIndex: 'tt',
+    dataIndex: 'isPrize',
+    render: (text, recod, index) => (text ? '是' : '否'),
   },
 ];
 
