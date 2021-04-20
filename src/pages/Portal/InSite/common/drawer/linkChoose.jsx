@@ -126,6 +126,7 @@ function ImgUrlEdit(props) {
               style={{ width: 200 }}
               filterOption={(val, opt) => opt?.props?.children.includes(val)}
               placeholder="可输入关键字进行检索"
+              getPopupContainer={n => n.parentNode}
             >
               {itemList?.map(item => {
                 const { name, value } = item;
