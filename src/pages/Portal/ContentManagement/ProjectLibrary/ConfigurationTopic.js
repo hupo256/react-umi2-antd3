@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-19 16:00:22
+ * @Last Modified time: 2021-04-20 13:48:06
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -251,9 +251,9 @@ class ProjectLibrary extends PureComponent {
           index={item.idx}
           handleCheck={data => this.handleCheck(data)}
           handleColor={(data, index, code) => this.handleColor(data, index, code)}
-          fnDown={(e, indx) => {
-            this.fnDown(e, indx);
-          }}
+          // fnDown={(e, indx) => {
+          //   this.fnDown(e, indx);
+          // }}
           handleDeletePic={data => this.handleDeletePic(data)}
         />
       );
@@ -522,22 +522,24 @@ class ProjectLibrary extends PureComponent {
     } else {
       aStyle.top = event.clientY - this.disY;
     }
-    if (compentList[indx].elementType === 'MODAL_TEXT') {
-      compentList[indx].elementStyle = JSON.stringify({
-        top: aStyle.top,
-        left: aStyle.left,
-        fontSize: aStyle.fontSize,
-        color: aStyle.color,
-        lineHeight: aStyle.lineHeight,
-        letterSpacing: aStyle.letterSpacing,
-        textAlign: aStyle.textAlign,
-        fontStyle: aStyle.fontStyle,
-        textDecorationLine: aStyle.textDecorationLine,
-      });
-    } else {
-      compentList[indx].elementStyle = JSON.stringify({ top: aStyle.top, left: aStyle.left });
-    }
-
+    // if (compentList[indx].elementType === 'MODAL_TEXT') {
+    //   compentList[indx].elementStyle = JSON.stringify({
+    //     top: aStyle.top,
+    //     left: aStyle.left,
+    //     fontSize: aStyle.fontSize,
+    //     color: aStyle.color,
+    //     lineHeight: aStyle.lineHeight,
+    //     letterSpacing: aStyle.letterSpacing,
+    //     textAlign: aStyle.textAlign,
+    //     fontStyle: aStyle.fontStyle,
+    //     textDecorationLine: aStyle.textDecorationLine,
+    //     width: 150,
+    //     height: 43,
+    //   });
+    // } else {
+    //   compentList[indx].elementStyle = JSON.stringify({ top: aStyle.top, left: aStyle.left });
+    // }
+    compentList[indx].elementStyle = JSON.stringify({ top: aStyle.top, left: aStyle.left });
     dispatch({
       type: 'ProjectLibrary/saveDataModel',
       payload: {
