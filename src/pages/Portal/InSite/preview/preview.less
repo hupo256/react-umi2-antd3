@@ -10,11 +10,15 @@
   margin: 0 auto;
   position: relative;
   background: #fff;
-  box-shadow: 0 0 8px #ccc;
+  // box-shadow: 0 0 8px #ccc;
 
   &.min {
     transform-origin: 50% 0;
     transform: scale3d(0.8, 0.8, 1);
+    background: url(https://img.inbase.in-deco.com/crm-saas/img/dflfwc/phone.png) no-repeat;
+    background-size: contain;
+    box-sizing: content-box;
+    padding: 39px 20px;
 
     .conBox {
       .hoverBox {
@@ -30,6 +34,16 @@
             opacity: 0;
           }
         }
+      }
+    }
+
+    .footerBox {
+      width: 90.5%;
+      bottom: 40px;
+      left: 4.7%;
+
+      ul {
+        border-radius: 0 0 3px 3px;
       }
     }
   }
@@ -165,8 +179,11 @@
           font-size: 20px;
           transform-origin: 0 0;
           transform: scale3d(0.5, 0.5, 1);
-          width: 190%;
-          color: #bbb;
+          width: 200%;
+          color: @fontGray;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
         }
         img {
           width: 44px;
@@ -425,6 +442,7 @@
           > img {
             background: #ccc;
             width: 32%;
+            border-radius: 5px;
           }
         }
       }

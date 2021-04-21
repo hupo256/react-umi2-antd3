@@ -21,18 +21,19 @@ import pageStyle from '../../preview/preview.less';
 SwiperCore.use([Pagination, Scrollbar, Virtual, Autoplay]);
 
 export default function SwiperBar(props) {
-  const { pageData } = useContext(ctx);
-  const tagList = pageData?.maps?.banner?.list || [];
+  // const { pageData } = useContext(ctx);
+  const { list, title, flag } = props;
+  // const tagList = pageData?.maps?.banner?.list || [];
 
   return (
     <>
-      {tagList?.length > 0 ? (
+      {list?.length > 0 ? (
         <Swiper
-          // autoplay={{
-          //   delay: 3000, // 自动播放
-          //   stopOnLastSlide: false,
-          //   disableOnInteraction: true,
-          // }}
+          autoplay={{
+            delay: 3000, // 自动播放
+            stopOnLastSlide: false,
+            disableOnInteraction: true,
+          }}
           pagination={{ clickable: true }} // 分页标志
           spaceBetween={50}
           slidesPerView={1} // 每次滚动几格
@@ -41,14 +42,13 @@ export default function SwiperBar(props) {
           // onSlideChange={() => console.log('slide change')}
           // onSwiper={swiper => console.log(swiper)}
         >
-          {tagList.length > 0 &&
-            tagList.map((img, ind) => {
-              return (
-                <SwiperSlide key={ind}>
-                  <img src={img.imgUrl} alt="ban" />
-                </SwiperSlide>
-              );
-            })}
+          {list.map((img, ind) => {
+            return (
+              <SwiperSlide key={ind}>
+                <img src={img.imgUrl} alt="ban" />
+              </SwiperSlide>
+            );
+          })}
         </Swiper>
       ) : (
         <div className={pageStyle.defaultImgBox}>

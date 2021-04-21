@@ -20,18 +20,20 @@ export default function DrawRec(props) {
   const [recList, setrecList] = useState([]);
   const [goodsList, setgoodsList] = useState([]);
   const [recTotal, setrecTotal] = useState(0);
+  const [actCode, setactCode] = useState('');
 
   useEffect(() => {
     const { mobile, activityCode, prizeName } = urlParamHash(location.href);
+    setactCode(activityCode);
     touchRecds({ mobile, activityCode });
-    touchPrize({ activityCode, prizeName });
+    touchPrize({ prizeName, activityCode });
   }, []);
 
   // 获取获奖记录
   function touchRecds(config = {}) {
     const params = {
       mobile: '',
-      activityCode: '',
+      activityCode: actCode,
       pageNum: 1,
       pageSize: 10,
     };
@@ -48,7 +50,7 @@ export default function DrawRec(props) {
   // 获取奖品
   function touchPrize(config = {}) {
     const params = {
-      activityCode: '',
+      activityCode: actCode,
       pageNum: 1,
       pageSize: 10,
       prizeName: '',

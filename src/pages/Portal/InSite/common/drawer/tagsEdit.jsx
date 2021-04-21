@@ -56,22 +56,43 @@ export default function TagsEdit(props) {
     if (!val) {
       rec.vaStatus = 'error';
       rec.errMsg = '请先输入主标题';
+    } else {
+      rec.vaStatus = 'success';
+      rec.errMsg = '';
     }
     settagList(tagList.slice());
   }
 
-  function tagsTexChange(e, rec) {
-    const val = e.target.value;
-    rec.title = val;
+  function discTexBlur(e, rec) {
+    const val = e?.target?.value;
     if (val) {
       rec.vaStatus = 'success';
       rec.errMsg = '';
     }
+  }
+
+  function tagsTexChange(e, rec) {
+    let val = e.target.value;
+    if (val) {
+      rec.vaStatus = 'success';
+      rec.errMsg = '';
+    }
+    if (val?.length > 6) {
+      rec.vaStatus = 'error';
+      rec.errMsg = '~最多6个字符';
+      val = val.substr(0, 6);
+    }
+    rec.title = val;
     forUpdatePageData();
   }
 
   function discTexChange(e, rec) {
-    const val = e.target.value;
+    let val = e.target.value;
+    if (val?.length > 14) {
+      rec.vaStatus = 'error';
+      rec.errMsg = '最多14个字符';
+      val = val.substr(0, 14);
+    }
     rec.desc = val;
     forUpdatePageData();
   }
@@ -111,6 +132,7 @@ export default function TagsEdit(props) {
                   </Form>
                   <Input
                     value={desc}
+                    onBlur={e => discTexBlur(e, tag)}
                     onChange={e => discTexChange(e, tag)}
                     placeholder="请输入副文本"
                   />

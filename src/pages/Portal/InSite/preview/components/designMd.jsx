@@ -49,7 +49,9 @@ export default function CaseMd(props) {
                   </p>
                   <div className={`${pageStyle.desCase} ${pageStyle.flex}`}>
                     {caseCoverUrlList.length > 0 &&
-                      caseCoverUrlList.map((item, i) => <img key={i} src={item} />)}
+                      caseCoverUrlList.map((item, i) => {
+                        return i < 3 ? <img key={i} src={item} /> : '';
+                      })}
                   </div>
                 </li>
               );

@@ -26,9 +26,16 @@ function ImgUrlEdit(props) {
   } = props;
   const { linkEdtor, setlinkEdtor, curFlag, curInd, pageData, setpageData } = useContext(ctx);
   const [itemList, setitemList] = useState([]);
+  const [curKey, setcurKey] = useState('');
+  const [total, settotal] = useState(0);
 
   function typeSelect(val) {
     const key = apiMap[val];
+    setcurKey(key);
+    touchItems(key);
+  }
+
+  function touchItems(key, config) {
     const param = {
       pageNum: 1,
       pageSize: 10,
@@ -36,10 +43,11 @@ function ImgUrlEdit(props) {
       specialStatus: 1,
       gongdiStatus: 1,
     };
-    mktApi[key](param).then(res => {
+    mktApi[key]({ ...param, ...config }).then(res => {
       console.log(res);
       if (!res?.data) return;
-      const arr = res.data?.list?.map(item => {
+      const { data } = res;
+      const arr = data?.list?.map(item => {
         const {
           specialTitle,
           specialUid,
@@ -56,6 +64,7 @@ function ImgUrlEdit(props) {
         };
       });
       setitemList(arr);
+      settotal(data.recordTotal);
     });
   }
 
@@ -80,6 +89,12 @@ function ImgUrlEdit(props) {
       setpageData(newObj);
       setlinkEdtor(false);
     });
+  }
+
+  function getMoreList(open) {
+    if (open) {
+      touchItems(curKey, { pageSize: total });
+    }
   }
 
   return (
@@ -119,6 +134,7 @@ function ImgUrlEdit(props) {
               style={{ width: 200 }}
               filterOption={(val, opt) => opt?.props?.children.includes(val)}
               placeholder="可输入关键字进行检索"
+              onDropdownVisibleChange={getMoreList}
               getPopupContainer={n => n.parentNode}
             >
               {itemList?.map(item => {

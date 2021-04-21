@@ -25,7 +25,7 @@ import pageStyle from './preview.less';
 const componentMap = {
   banner: {
     tips: '轮播',
-    creatCom: () => <SwiperBar />,
+    creatCom: e => <SwiperBar {...e} />,
   },
   highlights: {
     tips: '亮点',
@@ -44,8 +44,8 @@ const componentMap = {
     creatCom: e => <DesignMd {...e} />,
   },
   advertising: {
-    tips: '广告',
-    creatCom: () => <AdMd />,
+    tips: '轮播',
+    creatCom: e => <AdMd {...e} />,
   },
 };
 

@@ -108,10 +108,6 @@ function AddNewGoods(props) {
         endTime: moment(et).format('YYYY-MM-DD HH:mm:ss'),
       };
 
-      console.log(newAct.startTime);
-      console.log(newAct.endTime);
-      // return;
-
       setnewAct(newAct); // 刷新一下以便下步使用
       if (!isEdit) {
         setstepNum(1);

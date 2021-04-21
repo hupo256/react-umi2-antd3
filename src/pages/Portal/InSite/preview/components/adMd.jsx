@@ -11,7 +11,7 @@ import SwiperBar from '../../common/swiperBar';
 export default function CaseMd(props) {
   return (
     <div className="adbox">
-      <SwiperBar />
+      <SwiperBar {...props} />
     </div>
   );
 }
