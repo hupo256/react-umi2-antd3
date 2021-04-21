@@ -40,8 +40,14 @@ function AddNewGoods(props) {
     () => {
       if (isEdit) {
         const type = curActDate?.activityType;
-        const arr = typeOpts.filter(opt => opt.code === type);
-        settypeOpts(arr);
+        console.log(type);
+        console.log(typeof type);
+        const arr = typeOpts.filter(opt => {
+          console.log(opt.code);
+          return opt.code === type;
+        });
+        console.log(arr);
+        arr.length && settypeOpts(arr);
         type && fillForm();
       }
     },
@@ -168,7 +174,7 @@ function AddNewGoods(props) {
           {getFieldDecorator('activitySubtitle', {
             initialValue: '-好运连连，点击GO开启好运-',
             rules: [{ required: true, message: '请填写游戏副文本' }],
-          })(<Input maxLength={15} placeholder="游戏副文本" />)}
+          })(<Input maxLength={15} placeholder="游戏副文本" style={{ width: 345 }} />)}
         </Item>
         <Item label="起止时间">
           {getFieldDecorator('activityTime', {
@@ -182,6 +188,7 @@ function AddNewGoods(props) {
                 defaultValue: [moment('00:00:00', 'HH:mm'), moment('23:59:59', 'HH:mm')],
               }}
               format="YYYY-MM-DD HH:mm"
+              style={{ width: 345 }}
             />
           )}
         </Item>
@@ -200,7 +207,7 @@ function AddNewGoods(props) {
           {getFieldDecorator('activityJoinNum', {
             initialValue: 1,
             rules: [{ required: true, message: '请填写参与次数' }],
-          })(<InputNumber min={1} step={1} style={{ width: 150 }} />)}
+          })(<InputNumber min={1} step={1} precision={0} style={{ width: 150 }} />)}
           <span style={{ paddingLeft: '.5em' }}>次</span>
         </Item>
         <Item label="规则说明">

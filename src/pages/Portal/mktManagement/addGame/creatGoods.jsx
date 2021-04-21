@@ -67,9 +67,18 @@ export default function CreatGoods(props) {
   }
 
   // input值变化时更新数据
-  function inpChange(e, key, ind) {
+  function inpChange(e, key, rec) {
     const val = e?.target ? e.target?.value : e;
-    curGoods[ind][key] = val;
+    const statusKey = `${key}Status`;
+    const errKey = `${key}ErrMsg`;
+    if (!val) {
+      rec[statusKey] = 'error';
+      rec[errKey] = '请先输入主标题';
+    } else {
+      rec[statusKey] = 'success';
+      rec[errKey] = '';
+    }
+    rec[key] = val;
     setcurGoods(curGoods.slice());
   }
 
@@ -117,7 +126,7 @@ export default function CreatGoods(props) {
                 <Input
                   maxLength={6}
                   value={prizeName}
-                  onChange={e => inpChange(e, 'prizeName', ind)}
+                  onChange={e => inpChange(e, 'prizeName', record)}
                 />
               </Item>
             </Form>
@@ -138,11 +147,12 @@ export default function CreatGoods(props) {
             <Form layout="inline">
               <Item validateStatus={prizeNumStatus} help={prizeNumErrMsg}>
                 <InputNumber
+                  precision={0}
                   max={99999}
                   min={1}
                   value={prizeNum}
                   onBlur={e => inpNumBlur(e, record)}
-                  onChange={e => inpChange(e, 'prizeNum', ind)}
+                  onChange={e => inpChange(e, 'prizeNum', record)}
                   style={{ width: 110 }}
                 />
               </Item>
@@ -301,7 +311,6 @@ export default function CreatGoods(props) {
 
   // 提交奖项
   function submitGoods() {
-    console.log(22);
     // 非空校验
     if (isValEmpty()) return;
 

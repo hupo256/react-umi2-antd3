@@ -79,7 +79,7 @@ export default function TagsEdit(props) {
     }
     if (val?.length > 6) {
       rec.vaStatus = 'error';
-      rec.errMsg = '~最多6个字符';
+      rec.errMsg = '最多6个字符';
       val = val.substr(0, 6);
     }
     rec.title = val;

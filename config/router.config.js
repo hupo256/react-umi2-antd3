@@ -219,7 +219,7 @@ export default [
               },
               {
                 path: '/portal/activity/mktGame/games', // 接下来，path,name/PageHeaderName, component三要素常规配置
-                PageHeaderName: '营销小游戏',
+                // PageHeaderName: '营销小游戏',
                 component: './Portal/mktManagement/activity',
               },
               {

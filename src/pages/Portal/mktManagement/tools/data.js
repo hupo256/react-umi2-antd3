@@ -28,7 +28,7 @@ export const actColumns = [
 
 export const recColumns = [
   {
-    title: '序号',
+    title: '序',
     dataIndex: 'no',
     render: (text, record, index) => index + 1,
   },
@@ -37,16 +37,12 @@ export const recColumns = [
     dataIndex: 'createTime',
   },
   {
-    title: '抽奖用户昵称',
-    dataIndex: 'userName',
+    title: '抽奖用户手机号码',
+    dataIndex: 'userPhone',
   },
   {
     title: '抽中奖项',
     dataIndex: 'prizeName',
-  },
-  {
-    title: '领取手机号',
-    dataIndex: 'userPhone',
   },
 ];
 
@@ -66,12 +62,12 @@ export const goodsColumns = [
     dataIndex: 'prizeName',
   },
   {
-    title: '奖项数量',
-    dataIndex: 'prizeNum',
-  },
-  {
     title: '抽中概率(%)',
     dataIndex: 'probability',
+  },
+  {
+    title: '奖项总量',
+    dataIndex: 'prizeNum',
   },
   {
     title: '已抽数量',
