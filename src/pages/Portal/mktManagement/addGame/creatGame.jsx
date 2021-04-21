@@ -104,8 +104,8 @@ function AddNewGoods(props) {
       const newAct = {
         ...values,
         uid,
-        startTime: moment(st).format('YYYY-MM-DD HH:mm'),
-        endTime: moment(et).format('YYYY-MM-DD HH:mm'),
+        startTime: moment(st).format('YYYY-MM-DD HH:mm:ss'),
+        endTime: moment(et).format('YYYY-MM-DD HH:mm:ss'),
       };
 
       console.log(newAct.startTime);
@@ -141,9 +141,19 @@ function AddNewGoods(props) {
             rules: [{ required: true, message: '请选择游戏形式' }],
           })(
             <Group onChange={onRadioChange}>
-              <Radio value={1}>大转盘</Radio>
-              <Radio value={2}>砸金蛋</Radio>
-              <Radio value={3}>跑马灯</Radio>
+              {isEdit ? (
+                <>
+                  {curActDate.activityType === 1 && <Radio value={1}>大转盘</Radio>}
+                  {curActDate.activityType === 2 && <Radio value={2}>砸金蛋</Radio>}
+                  {curActDate.activityType === 3 && <Radio value={3}>跑马灯</Radio>}
+                </>
+              ) : (
+                <>
+                  <Radio value={1}>大转盘</Radio>
+                  <Radio value={2}>砸金蛋</Radio>
+                  <Radio value={3}>跑马灯</Radio>
+                </>
+              )}
             </Group>
           )}
         </Item>

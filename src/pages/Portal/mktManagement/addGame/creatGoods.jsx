@@ -143,6 +143,7 @@ export default function CreatGoods(props) {
                   value={prizeNum}
                   onBlur={e => inpNumBlur(e, record)}
                   onChange={e => inpChange(e, 'prizeNum', ind)}
+                  style={{ width: 110 }}
                 />
               </Item>
             </Form>

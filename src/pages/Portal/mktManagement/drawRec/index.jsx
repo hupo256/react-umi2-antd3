@@ -80,7 +80,7 @@ export default function DrawRec(props) {
               <Search
                 placeholder="可通过领取手机号进行搜索"
                 onSearch={val => toSearch(val)}
-                style={{ width: 200 }}
+                style={{ width: 400 }}
               />
             </div>
             <Table

@@ -38,9 +38,8 @@ function ImgUrlEdit(props) {
     };
     mktApi[key](param).then(res => {
       console.log(res);
-      const { data } = res;
-      if (!data) return;
-      const arr = data.list.map(item => {
+      if (!res?.data) return;
+      const arr = res.data?.list?.map(item => {
         const {
           specialTitle,
           specialUid,
@@ -55,13 +54,6 @@ function ImgUrlEdit(props) {
           name: specialTitle || gongdiTitle || title || name || activityTitle,
           value: specialUid || gongdiUid || uid,
         };
-        // const tex = specialTitle || gongdiTitle || title || name || activityTitle;
-        // const val = specialUid || gongdiUid || uid;
-        // return (
-        //   <Option key={val} value={val}>
-        //     {tex}
-        //   </Option>
-        // );
       });
       setitemList(arr);
     });
@@ -72,7 +64,7 @@ function ImgUrlEdit(props) {
       if (err) return;
       console.log(vals);
       const { type, uid } = vals;
-      const [id, showTex] = uid.split('_');
+      const [showTex, id] = uid.split('_');
       const curObj = dList[curInd];
       const pName = curFlag === 'highlights' ? 'text' : 'title';
       dList[curInd] = {
@@ -84,6 +76,7 @@ function ImgUrlEdit(props) {
 
       const newObj = { ...pageData };
       newObj.maps[curFlag].list = dList;
+      console.log(newObj);
       setpageData(newObj);
       setlinkEdtor(false);
     });
@@ -131,7 +124,7 @@ function ImgUrlEdit(props) {
               {itemList?.map(item => {
                 const { name, value } = item;
                 return (
-                  <Option key={value} value={value}>
+                  <Option key={value} value={`${name}_${value}`}>
                     {name}
                   </Option>
                 );

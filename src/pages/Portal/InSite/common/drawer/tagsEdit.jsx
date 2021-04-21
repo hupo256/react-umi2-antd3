@@ -5,7 +5,7 @@
  * @Last Modified time: 2021-03-23 13:49:12 
  * 编辑亮点
  */
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { ctx } from '../context';
 import { Input, Icon, message, Form } from 'antd';
 import LinkChoose from './linkChoose';
@@ -17,11 +17,15 @@ const { Item } = Form;
 export default function TagsEdit(props) {
   const { pageData, setpageData, curFlag, setlinkEdtor, setcurInd } = useContext(ctx);
   const [tagList = [], settagList] = useState(() => pageData?.maps?.[curFlag]?.list);
+  const titInp = useRef();
 
   function addNewImgs() {
     if (tagList.length === maxLen) return message.warning(`最多可添加${maxLen}个亮点`);
     const rec = {};
     settagList([...tagList, rec].slice());
+    setTimeout(() => {
+      titInp.current.focus();
+    });
   }
 
   function toChooseLink(num) {
@@ -51,7 +55,7 @@ export default function TagsEdit(props) {
     const val = e?.target?.value;
     if (!val) {
       rec.vaStatus = 'error';
-      rec.errMsg = '请您先输入主标题';
+      rec.errMsg = '请先输入主标题';
     }
     settagList(tagList.slice());
   }
@@ -96,6 +100,7 @@ export default function TagsEdit(props) {
                   <Form layout="inline">
                     <Item validateStatus={vaStatus} help={errMsg}>
                       <Input
+                        ref={titInp}
                         style={{ width: '100%' }}
                         value={title}
                         onBlur={e => tagsTexBlur(e, tag)}
@@ -106,7 +111,7 @@ export default function TagsEdit(props) {
                   </Form>
                   <Input
                     value={desc}
-                    onChange={() => discTexChange(e, tag)}
+                    onChange={e => discTexChange(e, tag)}
                     placeholder="请输入副文本"
                   />
                   <Input

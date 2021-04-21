@@ -23,7 +23,6 @@
   right: -110%;
   top: 0;
   width: 376px;
-  // height: calc(100% - 92px);
   height: 100%;
   background: #fff;
   box-shadow: -1px 0 1px #ccc;
@@ -31,6 +30,7 @@
   overflow: hidden;
   overflow-y: auto;
   padding-bottom: 3em;
+  border-bottom: 1px solid #ddd;
 
   h3 {
     font-size: 14px;
@@ -72,8 +72,8 @@
         input,
         form {
           display: inline-block;
-          vertical-align: middle;
-          margin: 4px 0;
+          vertical-align: top;
+          // margin: 4px 0;
         }
         form {
           width: 38%;
@@ -83,6 +83,11 @@
         }
         input:nth-child(3) {
           width: 100%;
+        }
+        :global {
+          .ant-form-item-with-help {
+            margin-bottom: 5px;
+          }
         }
       }
     }

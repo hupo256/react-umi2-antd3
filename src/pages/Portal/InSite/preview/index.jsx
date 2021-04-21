@@ -107,7 +107,7 @@ export default function Preview(props) {
               const { flag, list = [], title = '' } = item;
               const { tips, creatCom } = componentMap[flag];
               return (
-                <HoverMd key={ind} tips={tips} flag={flag} isEmpty={list?.length === 0}>
+                <HoverMd key={ind} tips={tips} flag={flag} isEmpty={!list?.length}>
                   {creatCom({ list, title, flag })}
                 </HoverMd>
               );

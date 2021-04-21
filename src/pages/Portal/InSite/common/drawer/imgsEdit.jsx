@@ -56,18 +56,22 @@ export default function TagsEdit(props) {
     setlinkEdtor(true);
   }
 
+  function forUpdatePageData() {
+    const newObj = { ...pageData };
+    newObj.maps[curFlag].list = tagList;
+    settagList(tagList.slice());
+    setpageData(newObj);
+  }
+
   function delImg(num) {
     tagList.splice(num, 1);
-    settagList(tagList.slice());
-    setpageData(pageData);
+    forUpdatePageData();
   }
 
   function toMove(ind, num) {
     const rec = tagList.splice(ind, 1)[0];
     tagList.splice(ind + num, 0, rec);
-    pageData.jsonData[1].list = tagList;
-    settagList(tagList.slice());
-    setpageData(pageData);
+    forUpdatePageData();
   }
 
   function radioChage(e) {
@@ -85,8 +89,10 @@ export default function TagsEdit(props) {
   // 图片选择
   function handleUploadOk(data) {
     console.log(data[0].path);
+    const newObj = { ...pageData };
     tagList[curInd].imgUrl = data[0].path;
-    setpageData(pageData);
+    newObj.maps[curFlag].list = tagList;
+    setpageData(newObj);
     setimgEdtor(false);
   }
 
@@ -103,7 +109,7 @@ export default function TagsEdit(props) {
             size="small"
             max={1000}
             min={1}
-            defaultValue={580}
+            defaultValue={170}
             style={{ width: 70, marginLeft: '-10px' }}
             onChange={widthChange}
           />
