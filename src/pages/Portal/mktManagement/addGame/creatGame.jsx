@@ -211,14 +211,12 @@ function AddNewGoods(props) {
           <span style={{ paddingLeft: '.5em' }}>次</span>
         </Item>
         <Item label="规则说明">
-          {getFieldDecorator('activityRule')(
-            <TextArea maxLength={200} placeholder="请输入规则说明" allowClear />
-          )}
+          {getFieldDecorator('activityRule')(<TextArea placeholder="请输入规则说明" />)}
         </Item>
         <Item label="兑换说明">
           {getFieldDecorator('actvityConvertRule', {
             rules: [{ required: true, message: '请填写兑换说明' }],
-          })(<TextArea maxLength={200} placeholder="请输入兑换说明" allowClear />)}
+          })(<TextArea placeholder="请输入兑换说明" />)}
         </Item>
 
         <Item {...formTailLayout}>

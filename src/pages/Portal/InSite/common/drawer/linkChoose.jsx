@@ -21,7 +21,7 @@ const formItemLayout = {
 
 function ImgUrlEdit(props) {
   const {
-    form: { validateFields, getFieldDecorator },
+    form: { validateFields, getFieldDecorator, getFieldsValue, setFieldsValue },
     dList,
   } = props;
   const { linkEdtor, setlinkEdtor, curFlag, curInd, pageData, setpageData } = useContext(ctx);
@@ -68,7 +68,9 @@ function ImgUrlEdit(props) {
     });
   }
 
-  function getItemInfor(e) {
+  function getItemInfor() {
+    const { uid } = getFieldsValue();
+    uid.includes('_') || setFieldsValue({ uid: '' });
     validateFields((err, vals) => {
       if (err) return;
       console.log(vals);
@@ -92,9 +94,7 @@ function ImgUrlEdit(props) {
   }
 
   function getMoreList(open) {
-    if (open) {
-      touchItems(curKey, { pageSize: total });
-    }
+    open && touchItems(curKey, { pageSize: total });
   }
 
   return (

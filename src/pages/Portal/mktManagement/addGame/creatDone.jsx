@@ -38,7 +38,7 @@ export default function CreatGoods(props) {
     <div className={styles.doneBox}>
       <Icon type="check-circle" theme="filled" style={{ fontSize: '70px', color: '#fe6a30' }} />
       <h3>创建成功</h3>
-      <p>可在所需的呈现的菜单，选择当前小戏啦</p>
+      <p>可在所需的呈现的菜单，选择当前小游戏啦</p>
       <div className={styles.titBox}>
         <p>
           游戏标题：
