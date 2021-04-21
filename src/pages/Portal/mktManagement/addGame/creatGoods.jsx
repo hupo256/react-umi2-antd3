@@ -253,7 +253,6 @@ export default function CreatGoods(props) {
     const errArr = [];
     list.forEach(gs => {
       const { prizeNum, prizeBeNum, prizeSuNum } = gs;
-      console.log(prizeNum, prizeBeNum);
       prizeNum < prizeBeNum + prizeSuNum && errArr.push(gs);
     });
     return errArr;

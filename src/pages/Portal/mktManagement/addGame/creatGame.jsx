@@ -11,6 +11,7 @@ import moment from 'moment';
 import mktApi from '@/services/mktActivity';
 import { Form, Input, InputNumber, Button, Radio, DatePicker, message } from 'antd';
 import { urlParamHash } from '../tools';
+import { gameTypes } from '../tools/data';
 import styles from './addGame.less';
 
 const { Item } = Form;
@@ -33,10 +34,16 @@ function AddNewGoods(props) {
     isEdit,
   } = props;
   const { setstepNum, setnewAct, curActDate } = useContext(ctx);
+  const [typeOpts, settypeOpts] = useState(gameTypes);
 
   useEffect(
     () => {
-      isEdit && curActDate?.activityType && fillForm();
+      if (isEdit) {
+        const type = curActDate?.activityType;
+        const arr = typeOpts.filter(opt => opt.code === type);
+        settypeOpts(arr);
+        type && fillForm();
+      }
     },
     [curActDate]
   );
@@ -137,19 +144,17 @@ function AddNewGoods(props) {
             rules: [{ required: true, message: '请选择游戏形式' }],
           })(
             <Group onChange={onRadioChange}>
-              {isEdit ? (
-                <>
-                  {curActDate.activityType === 1 && <Radio value={1}>大转盘</Radio>}
-                  {curActDate.activityType === 2 && <Radio value={2}>砸金蛋</Radio>}
-                  {curActDate.activityType === 3 && <Radio value={3}>跑马灯</Radio>}
-                </>
-              ) : (
-                <>
-                  <Radio value={1}>大转盘</Radio>
-                  <Radio value={2}>砸金蛋</Radio>
-                  <Radio value={3}>跑马灯</Radio>
-                </>
-              )}
+              {typeOpts?.map(opt => {
+                const { name, code, imgUrl } = opt;
+                return (
+                  <div key={code} className={styles.typeOpt}>
+                    <Radio value={code}>
+                      <img src={imgUrl} />
+                      <p>{name}</p>
+                    </Radio>
+                  </div>
+                );
+              })}
             </Group>
           )}
         </Item>

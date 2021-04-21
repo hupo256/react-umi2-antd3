@@ -88,5 +88,22 @@ export const goodsColumns = [
   },
 ];
 
+export const gameTypes = [
+  {
+    name: '大转盘',
+    code: 1,
+    imgUrl: `${defaultImg}wheelIcon.png`,
+  },
+  {
+    name: '砸金蛋',
+    code: 2,
+    imgUrl: `${defaultImg}eggIcon.png`,
+  },
+  {
+    name: '跑马灯',
+    code: 3,
+    imgUrl: `${defaultImg}gridIcon.png`,
+  },
+];
 export const defaultGoods = ['一等奖', '二等奖', '三等奖', '四等奖', '五等奖', '谢谢参与'];
 export const searchTags = ['全部', '未开始', '进行中', '已结束'];
