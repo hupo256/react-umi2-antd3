@@ -96,10 +96,10 @@ export default function Activityer(props) {
     actColumns[4] = {
       ...col4,
       render: (text, record, index) => {
-        const { startTime, creater = '' } = record;
+        const { createTime, creater = '' } = record;
         return (
           <>
-            <span>{startTime} </span>
+            <span>{createTime} </span>
             <p>{creater}</p>
           </>
         );

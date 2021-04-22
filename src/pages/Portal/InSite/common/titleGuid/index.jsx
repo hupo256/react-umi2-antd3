@@ -27,6 +27,9 @@ export default function TitleGuid(props) {
   function cancelData() {
     setcurFlag('');
     touchPageData();
+    setTimeout(() => {
+      message.success('已放弃完毕');
+    }, 200);
   }
 
   function toPublich() {
