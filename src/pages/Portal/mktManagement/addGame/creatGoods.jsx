@@ -7,7 +7,7 @@
  */
 import React, { useState, useEffect, useContext } from 'react';
 import { ctx } from '../common/context';
-import { defaultGoods, prizeImg, tipsTable } from '../tools/data';
+import { defaultGoods, girdGoods, prizeImg, tipsTable } from '../tools/data';
 import { calcNumInArr, urlParamHash } from '../tools';
 import Upload from '@/components/Upload/Upload';
 import mktApi from '@/services/mktActivity';
@@ -45,16 +45,26 @@ export default function CreatGoods(props) {
   function touchgsList() {
     const dArr = [];
     const len = newAct?.activityType === 3 ? 8 : 6;
+    const goods = newAct?.activityType === 3 ? girdGoods : defaultGoods;
+    let imgNum = 0;
     for (let i = 0; i < len; i++) {
       let isPrize = 1;
       let prizeNum = 100;
-      if (i === 5) {
+      if (i === len - 1) {
         isPrize = 0;
         prizeNum = 1000;
       }
+      if (len === 8 && i > 4) {
+        imgNum = i + 2;
+      } else {
+        imgNum = i + 1;
+      }
+      if (i === 7) {
+        imgNum = 6;
+      }
       dArr.push({
-        prizeImage: `${prizeImg}${i + 1}@2x.png`,
-        prizeName: defaultGoods[i],
+        prizeImage: `${prizeImg}${imgNum}@2x.png`,
+        prizeName: goods[i],
         prizeBeNum: 0,
         probability: 0,
         prizeSuNum: 100,
@@ -196,7 +206,7 @@ export default function CreatGoods(props) {
               <a disabled={ind === len - 1} onClick={() => toMove(ind, 1)}>
                 <Icon type="arrow-down" />
               </a>
-              <a disabled={ind < 4 || actType === 3} onClick={() => delImg(ind)}>
+              <a disabled={isEdit || ind < 4 || actType === 3} onClick={() => delImg(ind)}>
                 <Icon type="delete" />
               </a>
             </div>

@@ -101,14 +101,16 @@ export const gameTypes = [
     imgUrl: `${defaultImg}gridIcon.png`,
   },
 ];
-export const defaultGoods = [
+
+export const defaultGoods = ['一等奖', '二等奖', '三等奖', '四等奖', '五等奖', '谢谢参与'];
+export const girdGoods = [
   '一等奖',
   '二等奖',
   '三等奖',
   '四等奖',
   '五等奖',
-  '谢谢参与',
   '六等奖',
   '七等奖',
+  '谢谢参与',
 ];
 export const searchTags = ['全部', '未开始', '进行中', '已结束'];

@@ -116,7 +116,7 @@ function AddNewGoods(props) {
     };
   }
 
-  function strToHtml(str) {
+  function strToHtml(str = '') {
     str = str.replace(/\r\n/g, '<br/>'); //IE9、FF、chrome
     str = str.replace(/\n/g, '<br/>'); //IE7-8
     str = str.replace(/\s/g, '&nbsp;'); //空格处理
