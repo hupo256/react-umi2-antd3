@@ -2,16 +2,16 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-13 11:12:39
+ * @Last Modified time: 2021-04-20 14:31:15
  * 创建工地
  */
 import React, { PureComponent } from 'react';
 import ContentEditable from 'react-contenteditable';
+import { Rnd } from 'react-rnd';
 import { connect } from 'dva';
 import { Icon, Drawer, Input, Tooltip, InputNumber } from 'antd';
 import { SketchPicker } from 'react-color';
 import styles from './index.less';
-import { concatSeries } from 'async';
 @connect(({ ProjectLibrary }) => ({
   ProjectLibrary,
 }))
@@ -19,9 +19,27 @@ class TextComponent extends PureComponent {
   constructor() {
     super();
     this.contentEditable = React.createRef();
-    this.state = { isTrue: 1, visible: false, show: false };
+    this.state = {
+      isTrue: 1,
+      visible: false,
+      show: false,
+      width: 0,
+      height: 0,
+      x: 0,
+      y: 0,
+    };
   }
-  componentDidMount() {}
+  componentDidMount() {
+    const { data } = this.props;
+    let isStyle = JSON.parse(data.elementStyle);
+    console.log(isStyle);
+    this.setState({
+      width: isStyle.width ? isStyle.width : 150,
+      height: isStyle.height,
+      x: isStyle.left,
+      y: isStyle.top,
+    });
+  }
 
   render() {
     const { data, index } = this.props;
@@ -39,56 +57,80 @@ class TextComponent extends PureComponent {
         return '';
       }
     };
-    console.log(data);
     return (
-      <div
-        className={data.checked === 1 ? styles.ViewFormsg : styles.ViewFormborders}
-        style={data.elementStyle ? JSON.parse(data.elementStyle) : {}}
-      >
-        {isTrue === 1 ? (
+      <div>
+        <Rnd
+          minHeight={43}
+          size={{ width: this.state.width, height: this.state.height }}
+          position={{ x: this.state.x, y: this.state.y }}
+          onDrag={(e, d) => {
+            this.setState({ x: d.x, y: d.y }, () => {
+              this.changeOnDrag(d);
+            });
+          }}
+          onResize={(e, direction, ref, delta, position) => {
+            this.setState(
+              {
+                width: ref.style.width,
+                height: ref.style.height,
+                ...position,
+              },
+              () => {
+                this.changeSize(ref, delta, position);
+              }
+            );
+          }}
+        >
           <div
-            onDoubleClick={() => {
-              this.onDb();
-            }}
-            onClick={() => {
-              this.changePic();
-            }}
-            onMouseDown={e => {
-              this.props.fnDown(e, index);
-            }}
-            className={styles.vif}
-          />
-        ) : null}
-        <div className={data.checked === 1 ? styles.roundLeftTop : ''} />
-        <div className={data.checked === 1 ? styles.roundRightTop : ''} />
-        <div className={data.checked === 1 ? styles.roundLeftBottom : ''} />
-        <div className={data.checked === 1 ? styles.roundRightBottom : ''} />
-        <div className={styles.arwrap}>
-          <ContentEditable
-            innerRef={this.contentEditable}
-            html={data.paramList[0].defaultValue} // innerHTML of the editable div
-            disabled={false} // use true to disable editing
-            onChange={this.handleChange} // handle innerHTML change
-            onBlur={this.handleonBlur}
-            tagName="article" // Use a custom HTML tag (uses a div by default)
-          />
-        </div>
-        {data.checked === 1 ? (
-          <span
-            className={styles.closePic}
-            onClick={() => {
-              this.deletePic();
-            }}
+            className={data.checked === 1 ? styles.ViewFormsg : styles.ViewFormborders}
+            style={data.elementStyle ? JSON.parse(data.elementStyle) : {}}
           >
-            <img
-              src="https://test.img.inbase.in-deco.com/crm_saas/dev/20210409/3b91901276824e0da6ff9fc49fe729fb/ic_delete.png"
-              width="20"
-              height="20"
-            />
-          </span>
-        ) : (
-          ''
-        )}
+            {isTrue === 1 ? (
+              <div
+                // onDoubleClick={() => {
+                //   this.onDb();
+                // }}
+                onClick={() => {
+                  this.changePic();
+                }}
+                // onMouseDown={e => {
+                //   this.props.fnDown(e, index);
+                // }}
+                className={styles.vif}
+              />
+            ) : null}
+            <div className={data.checked === 1 ? styles.roundLeftTop : ''} />
+            <div className={data.checked === 1 ? styles.roundRightTop : ''} />
+            <div className={data.checked === 1 ? styles.roundLeftBottom : ''} />
+            <div className={data.checked === 1 ? styles.roundRightBottom : ''} />
+            <div className={styles.arwrap}>
+              <ContentEditable
+                innerRef={this.contentEditable}
+                html={data.paramList[0].defaultValue} // innerHTML of the editable div
+                disabled={false} // use true to disable editing
+                onChange={this.handleChange} // handle innerHTML change
+                onBlur={this.handleonBlur}
+                tagName="article" // Use a custom HTML tag (uses a div by default)
+              />
+            </div>
+            {data.checked === 1 ? (
+              <span
+                className={styles.closePic}
+                onClick={() => {
+                  this.deletePic();
+                }}
+              >
+                <img
+                  src="https://test.img.inbase.in-deco.com/crm_saas/dev/20210409/3b91901276824e0da6ff9fc49fe729fb/ic_delete.png"
+                  width="20"
+                  height="20"
+                />
+              </span>
+            ) : (
+              ''
+            )}
+          </div>
+        </Rnd>
         {visible && data.checked === 1 ? (
           <Drawer
             width="550"
@@ -274,6 +316,7 @@ class TextComponent extends PureComponent {
     this.props.handleCheck(index);
     this.setState({
       visible: true,
+      isTrue: 0,
     });
   }
   deletePic() {
@@ -351,6 +394,46 @@ class TextComponent extends PureComponent {
     } = this.props;
     let aStyle = JSON.parse(compentList[index].elementStyle);
     aStyle[name] = e;
+    compentList[index].elementStyle = JSON.stringify(aStyle);
+    dispatch({
+      type: 'ProjectLibrary/saveDataModel',
+      payload: {
+        key: 'compentList',
+        value: [...compentList],
+      },
+    });
+  }
+  changeSize(ref, delta, position) {
+    const {
+      dispatch,
+      index,
+      ProjectLibrary: { compentList },
+    } = this.props;
+    console.log('ref', ref);
+    let aStyle = JSON.parse(compentList[index].elementStyle);
+    console.log('aStyle', aStyle);
+    let awidth = ref.style.width.replace('px', '');
+    let aheight = ref.style.height.replace('px', '');
+    aStyle.width = Number(awidth);
+    aStyle.height = Number(aheight);
+    compentList[index].elementStyle = JSON.stringify(aStyle);
+    dispatch({
+      type: 'ProjectLibrary/saveDataModel',
+      payload: {
+        key: 'compentList',
+        value: [...compentList],
+      },
+    });
+  }
+  changeOnDrag(d) {
+    const {
+      dispatch,
+      index,
+      ProjectLibrary: { compentList },
+    } = this.props;
+    let aStyle = JSON.parse(compentList[index].elementStyle);
+    aStyle.top = d.y;
+    aStyle.left = d.x;
     compentList[index].elementStyle = JSON.stringify(aStyle);
     dispatch({
       type: 'ProjectLibrary/saveDataModel',

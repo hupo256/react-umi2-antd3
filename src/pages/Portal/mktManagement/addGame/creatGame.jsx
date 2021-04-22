@@ -9,7 +9,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { ctx } from '../common/context';
 import moment from 'moment';
 import mktApi from '@/services/mktActivity';
-import { Form, Input, InputNumber, Button, Radio, DatePicker } from 'antd';
+import { Form, Input, InputNumber, Button, Radio, DatePicker, message } from 'antd';
 import { urlParamHash } from '../tools';
 import styles from './addGame.less';
 
@@ -30,15 +30,15 @@ const formTailLayout = {
 function AddNewGoods(props) {
   const {
     form: { validateFields, getFieldDecorator, setFieldsValue },
-    gData,
+    isEdit,
   } = props;
-  const { setactivityCode, setactivityTitle, setstepNum } = useContext(ctx);
+  const { setstepNum, setnewAct, curActDate } = useContext(ctx);
 
   useEffect(
     () => {
-      gData && fillForm();
+      isEdit && curActDate?.activityType && fillForm();
     },
-    [gData]
+    [curActDate]
   );
 
   function fillForm() {
@@ -52,7 +52,7 @@ function AddNewGoods(props) {
       activityJoinType,
       startTime,
       endTime,
-    } = gData;
+    } = curActDate;
     const activityTime = [moment(startTime), moment(endTime)];
     setFieldsValue({
       activityType,
@@ -96,26 +96,27 @@ function AddNewGoods(props) {
 
   function updateGame() {
     validateFields((err, values) => {
+      console.log(values);
       if (err) return;
       const { uid } = urlParamHash(location.href);
       const { activityTime } = values;
       const [st, et] = activityTime;
-      const newRec = {
+      const newAct = {
         ...values,
         uid,
         startTime: moment(st).format('YYYY-MM-DD hh:mm:ss'),
         endTime: moment(et).format('YYYY-MM-DD hh:mm:ss'),
       };
 
-      mktApi.newActivity(newRec).then(res => {
-        console.log(res);
-        const { data } = res;
-        if (!data && gData) return;
-        const { activityCode, activityTitle } = data;
-        setactivityCode(activityCode);
-        setactivityTitle(activityTitle);
+      setnewAct(newAct); // 刷新一下以便下步使用
+      if (!isEdit) {
         setstepNum(1);
-      });
+      } else {
+        mktApi.reviseActivity(newAct).then(res => {
+          console.log(res);
+          res?.data && message.success('保存成功');
+        });
+      }
     });
   }
 
@@ -184,8 +185,8 @@ function AddNewGoods(props) {
         </Item>
 
         <Item {...formTailLayout}>
-          <Button type="primary" onClick={() => updateGame(gData)}>
-            {gData ? '保存' : '下一步'}
+          <Button type="primary" onClick={updateGame}>
+            {isEdit ? '保存' : '下一步'}
           </Button>
         </Item>
       </Form>

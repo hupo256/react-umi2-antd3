@@ -41,6 +41,12 @@ export default {
   },
 
   effects: {
+    *resetSearchModel({ payload }, { call, put }) {
+      yield put({
+        type: 'upData',
+        payload: { fromData: { ...payload } },
+      });
+    },
     // 专题列表
     *pageListModel({ payload }, { call, put }) {
       const response = yield call(pageList, {

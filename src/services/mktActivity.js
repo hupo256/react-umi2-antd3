@@ -65,15 +65,22 @@ export async function activityList(params) {
   });
 }
 // 新增/修改活动
-export async function newActivity(params) {
-  return request(baseurl + '/api/v1/wechat/activity/newActivity', {
+export async function reviseActivity(params) {
+  return request(baseurl + '/api/v1/wechat/activity/reviseActivity', {
     method: 'POST',
     body: params,
   });
 }
 // 新增/修改活动奖品
-export async function newPrize(params) {
-  return request(baseurl + '/api/v1/wechat/activity/newPrize', {
+export async function updatePrize(params) {
+  return request(baseurl + '/api/v1/wechat/activity/updatePrize', {
+    method: 'POST',
+    body: params,
+  });
+}
+// 新增活动、奖品
+export async function newlyActivity(params) {
+  return request(baseurl + '/api/v1/wechat/activity/newlyActivity', {
     method: 'POST',
     body: params,
   });
@@ -108,7 +115,7 @@ export async function queryActivityPrizeRewardList(params) {
  */
 // 查询案例
 export async function queryCaseList(params) {
-  return request('http://dev.gateway.ingongdi.com/api/v1/wechat/case/queryCaseList', {
+  return request(baseurl + '/api/v1/wechat/case/queryCaseList', {
     method: 'POST',
     body: params,
   });
@@ -116,7 +123,7 @@ export async function queryCaseList(params) {
 
 // 查询设计师
 export async function queryDesignerList(params) {
-  return request('http://dev.gateway.ingongdi.com/api/v1/wechat/designer/queryDesignerList', {
+  return request(baseurl + '/api/v1/wechat/designer/queryDesignerList', {
     method: 'POST',
     body: params,
   });
@@ -124,7 +131,7 @@ export async function queryDesignerList(params) {
 
 // 查询工地
 export async function sitePageList(params) {
-  return request('http://dev.gateway.ingongdi.com/api/v1/wechat/site/pageList', {
+  return request(baseurl + '/api/v1/wechat/site/pageList', {
     method: 'POST',
     body: params,
   });
@@ -132,7 +139,7 @@ export async function sitePageList(params) {
 
 // 查询专题
 export async function specialPageList(params) {
-  return request('http://dev.gateway.ingongdi.com/api/v1/wechat/special/pageList', {
+  return request(baseurl + 'api/v1/wechat/special/pageList', {
     method: 'POST',
     body: params,
   });
@@ -147,8 +154,9 @@ export default {
   getActivity,
   getActivityPrize,
   activityList,
-  newActivity,
-  newPrize,
+  reviseActivity,
+  updatePrize,
+  newlyActivity,
   queryActivityList,
   queryActivityPrizeRewardList,
   queryActivityPrizeList,

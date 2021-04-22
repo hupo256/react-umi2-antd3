@@ -34,17 +34,39 @@
 }
 
 .stateBox {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  width: 60px;
 
   u {
-    background: #ccc;
+    background: rgb(245, 121, 5);
     width: 4px;
     height: 4px;
     border-radius: 2px;
     margin-right: 10px;
+    display: inline-block;
+    vertical-align: middle;
+
+    .cls1 {
+      background: rgb(6, 168, 0);
+    }
+    .cls2 {
+      background: rgb(119, 119, 119);
+    }
   }
+}
+
+.timeBox {
+  width: 160px;
+}
+
+.tocopy {
+  cursor: pointer;
+  font-size: 12px;
+  padding-right: 0.5em;
+}
+.inpHidden {
+  border: none;
+  position: absolute;
+  z-index: -2;
 }
 
 :global {
