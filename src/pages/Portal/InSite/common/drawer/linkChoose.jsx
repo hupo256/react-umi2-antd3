@@ -69,7 +69,7 @@ function LinkChoose(props) {
   }
 
   function getItemInfor() {
-    const { uid } = getFieldsValue();
+    const { uid = '' } = getFieldsValue();
     uid.includes('_') || setFieldsValue({ uid: '' });
     validateFields((err, vals) => {
       if (err) return;

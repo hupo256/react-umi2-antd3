@@ -116,16 +116,25 @@ function AddNewGoods(props) {
     };
   }
 
+  function strToHtml(str) {
+    str = str.replace(/\r\n/g, '<br/>'); //IE9、FF、chrome
+    str = str.replace(/\n/g, '<br/>'); //IE7-8
+    str = str.replace(/\s/g, '&nbsp;'); //空格处理
+    return str;
+  }
+
   function updateGame() {
     validateFields((err, values) => {
       console.log(values);
       if (err) return;
       const { uid } = urlParamHash(location.href);
-      const { activityTime } = values;
+      const { activityTime, actvityConvertRule, activityRule } = values;
       const [st, et] = activityTime;
       const newAct = {
         ...values,
         uid,
+        actvityConvertRule: strToHtml(actvityConvertRule),
+        activityRule: strToHtml(activityRule),
         startTime: moment(st).format('YYYY-MM-DD HH:mm:ss'),
         endTime: moment(et).format('YYYY-MM-DD HH:mm:ss'),
       };
@@ -146,7 +155,6 @@ function AddNewGoods(props) {
     const val = e.target.value;
     setformDatas({ ...formDatas, [curType]: getFieldsValue() }); //切换前先存一下
     setFieldsValue(formDatas[val]); // 刷新form
-    // getFieldsValue(['activityTitle']) || setFieldsValue({ activityTitle: tit });
     setcurType(val); // 刷新当前的type
   }
 

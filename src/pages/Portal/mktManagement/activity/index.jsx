@@ -166,8 +166,9 @@ export default function Activityer(props) {
   }
 
   function toSearch(tex) {
-    setsearchTex(tex);
-    touchActList({ activityTitle: tex });
+    const str = tex.substr(0, 30);
+    setsearchTex(str);
+    touchActList({ activityTitle: str });
   }
 
   function pageChange(num, size) {
