@@ -43,9 +43,7 @@ function AddNewGoods(props) {
     () => {
       if (isEdit) {
         const type = curActDate?.activityType;
-        console.log(type);
         const arr = gameTypes.filter(opt => opt.code === type);
-        console.log(arr);
         arr.length && settypeOpts(arr);
         type && fillForm();
       } else {

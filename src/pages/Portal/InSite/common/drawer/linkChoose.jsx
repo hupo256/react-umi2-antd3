@@ -41,7 +41,7 @@ function ImgUrlEdit(props) {
       pageSize: 10,
       status: 1,
       specialStatus: 1,
-      gongdiStatus: 1,
+      gongdiStatus: 0,
     };
     mktApi[key]({ ...param, ...config }).then(res => {
       console.log(res);
@@ -84,10 +84,8 @@ function ImgUrlEdit(props) {
         [pName]: showTex,
         type,
       };
-
       const newObj = { ...pageData };
       newObj.maps[curFlag].list = dList;
-      console.log(newObj);
       setpageData(newObj);
       setlinkEdtor(false);
     });
