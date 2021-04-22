@@ -37,31 +37,30 @@ export default function CreatGoods(props) {
   const gsColumns = creatGoodsCol(curGoods?.length) || [];
 
   useEffect(() => {
-    !isEdit && touchgsList();
+    !isEdit && newAct?.activityType && touchgsList();
   }, []);
 
   // 获取奖品们
   function touchgsList() {
-    const len = defaultGoods.length;
-    const dArr = defaultGoods.map((gs, ind) => {
+    const dArr = [];
+    const len = newAct?.activityType === 3 ? 8 : 6;
+    for (let i = 0; i < len; i++) {
       let isPrize = 1;
       let prizeNum = 100;
-      if (ind === len - 1) {
+      if (i === 5) {
         isPrize = 0;
         prizeNum = 1000;
       }
-      // prizeNum 总数， prizeBeNum 已抽, prizeSuNum 剩余
-      return {
-        prizeImage: `${prizeImg}${ind + 1}@2x.png`,
-        prizeName: gs,
+      dArr.push({
+        prizeImage: `${prizeImg}${i + 1}@2x.png`,
+        prizeName: defaultGoods[i],
         prizeBeNum: 0,
         probability: 0,
         prizeSuNum: 100,
         prizeNum,
         isPrize,
-      };
-    });
-
+      });
+    }
     const arr = calcNumInArr(dArr);
     setcurGoods(arr.slice());
   }
@@ -71,7 +70,6 @@ export default function CreatGoods(props) {
     const val = e?.target ? e.target?.value : e;
     const statusKey = `${key}Status`;
     const errKey = `${key}ErrMsg`;
-    // const errTex =
     if (!val) {
       rec[statusKey] = 'error';
       rec[errKey] = `请输入${key === 'prizeName' ? '奖项名称' : '奖项数量'}`;

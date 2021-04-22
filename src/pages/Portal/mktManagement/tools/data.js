@@ -28,7 +28,7 @@ export const actColumns = [
 
 export const recColumns = [
   {
-    title: '序',
+    title: '序号',
     dataIndex: 'no',
     render: (text, record, index) => index + 1,
   },
@@ -101,5 +101,14 @@ export const gameTypes = [
     imgUrl: `${defaultImg}gridIcon.png`,
   },
 ];
-export const defaultGoods = ['一等奖', '二等奖', '三等奖', '四等奖', '五等奖', '谢谢参与'];
+export const defaultGoods = [
+  '一等奖',
+  '二等奖',
+  '三等奖',
+  '四等奖',
+  '五等奖',
+  '谢谢参与',
+  '六等奖',
+  '七等奖',
+];
 export const searchTags = ['全部', '未开始', '进行中', '已结束'];

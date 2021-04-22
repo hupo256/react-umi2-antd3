@@ -35,7 +35,7 @@ export default function DrawRec(props) {
       mobile: '',
       activityCode: actCode,
       pageNum: 1,
-      pageSize: 10,
+      pageSize: 100,
     };
     mktApi.queryActivityPrizeRewardList({ ...params, ...config }).then(res => {
       console.log(res);
@@ -80,7 +80,7 @@ export default function DrawRec(props) {
           <TabPane tab="抽奖明细" key="1">
             <div className={styles.recSearch}>
               <Search
-                placeholder="可通过领取手机号进行搜索"
+                placeholder="可通过抽奖用户手机号进行搜索"
                 onSearch={val => toSearch(val)}
                 style={{ width: 400 }}
               />
@@ -89,7 +89,7 @@ export default function DrawRec(props) {
               size="middle"
               dataSource={recList}
               columns={recColumns}
-              pagination={{ recTotal }}
+              pagination={{ total: recTotal, defaultPageSize: 100 }}
               rowKey={(r, i) => i}
             />
           </TabPane>
