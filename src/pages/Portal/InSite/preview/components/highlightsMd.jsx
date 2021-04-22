@@ -6,6 +6,7 @@
  * 亮点
  */
 import React, { useState, useEffect } from 'react';
+import { highlightsBgImgs } from '../../tools/data';
 import pageStyle from '../preview.less';
 
 export default function CaseMd(props) {
@@ -14,12 +15,12 @@ export default function CaseMd(props) {
   return (
     <ul className={pageStyle.tagBox}>
       {list?.map((tag, ind) => {
-        const { title, desc, bgImg } = tag;
+        const { title, desc } = tag;
         return (
           <li key={ind}>
             <h3>{title}</h3>
             <p>{desc}</p>
-            <img src={bgImg} alt="" />
+            <img src={highlightsBgImgs[ind]} alt="" />
           </li>
         );
       })}

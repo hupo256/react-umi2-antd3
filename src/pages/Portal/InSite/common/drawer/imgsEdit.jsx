@@ -8,6 +8,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { ctx } from '../context';
 import { Input, Radio, InputNumber, Icon, message } from 'antd';
+import { defaultImg } from '../../tools/data';
 import Upload from '@/components/Upload/Upload';
 import LinkChoose from './linkChoose';
 import styles from './drawerEditor.less';
@@ -27,19 +28,22 @@ export default function TagsEdit(props) {
     curInd,
   } = useContext(ctx);
   const [tagList = [], settagList] = useState(() => pageData?.maps?.[curFlag]?.list);
+  const [height, setHeight] = useState(176);
   const [imgHeightType, setimgHeightType] = useState(1);
 
   useEffect(
     () => {
+      const hgt = pageData?.maps?.[curFlag]?.height;
+      if (hgt === 176) {
+        setimgHeightType(1);
+      } else {
+        setimgHeightType(2);
+        setHeight(hgt);
+      }
       settagList(pageData?.maps?.[curFlag]?.list);
     },
     [curFlag]
   );
-
-  function radioChage(e) {
-    console.log(e);
-    setimgHeightType(e.target.value);
-  }
 
   function addNewImgs() {
     if (tagList.length === maxLen) {
@@ -60,30 +64,44 @@ export default function TagsEdit(props) {
     setlinkEdtor(true);
   }
 
+  function forUpdatePageData() {
+    const newObj = { ...pageData };
+    newObj.maps[curFlag].list = tagList;
+    settagList(tagList.slice());
+    setpageData(newObj);
+  }
+
   function delImg(num) {
     tagList.splice(num, 1);
-    settagList(tagList.slice());
-    setpageData(pageData);
+    forUpdatePageData();
   }
 
   function toMove(ind, num) {
     const rec = tagList.splice(ind, 1)[0];
     tagList.splice(ind + num, 0, rec);
-    pageData.jsonData[1].list = tagList;
-    settagList(tagList.slice());
-    setpageData(pageData);
+    forUpdatePageData();
+  }
+
+  function radioChage(e) {
+    const { value } = e.target;
+    const newObj = { ...pageData };
+    if (value === 1) newObj.jsonData[0].height = 176;
+    setimgHeightType(value);
   }
 
   function widthChange(e) {
-    pageData.jsonData[0].height = +e;
-    setpageData(pageData);
+    const newObj = { ...pageData };
+    newObj.jsonData[0].height = +e;
+    setpageData(newObj);
   }
 
   // 图片选择
   function handleUploadOk(data) {
     console.log(data[0].path);
+    const newObj = { ...pageData };
     tagList[curInd].imgUrl = data[0].path;
-    setpageData(pageData);
+    newObj.maps[curFlag].list = tagList;
+    setpageData(newObj);
     setimgEdtor(false);
   }
 
@@ -100,7 +118,7 @@ export default function TagsEdit(props) {
             size="small"
             max={1000}
             min={1}
-            defaultValue={580}
+            defaultValue={height}
             style={{ width: 70, marginLeft: '-10px' }}
             onChange={widthChange}
           />
@@ -110,12 +128,15 @@ export default function TagsEdit(props) {
       <ul className={styles.imgEditBox}>
         {tagList.length > 0 &&
           tagList.map((tag, ind) => {
-            const { title, desc, uid, imgUrl } = tag;
+            const { title, imgUrl } = tag;
             const len = tagList.length;
             return (
               <li key={ind}>
-                <div className={styles.minImgBox} onClick={() => toChooseImg(ind)}>
-                  <img src={imgUrl} alt="" />
+                <div
+                  className={`${styles.minImgBox} ${imgUrl ? '' : styles.deftImg}`}
+                  onClick={() => toChooseImg(ind)}
+                >
+                  <img src={imgUrl || `${defaultImg}ic_Image.png`} alt="" />
                 </div>
                 <div className={styles.inpBox}>
                   <Input

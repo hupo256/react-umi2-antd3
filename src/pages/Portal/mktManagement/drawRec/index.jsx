@@ -9,8 +9,8 @@ import React, { useState, useEffect, useContext } from 'react';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import mktApi from '@/services/mktActivity';
 import { Card, Input, Table, Tabs } from 'antd';
+import { calcNumInArr, urlParamHash } from '../tools';
 import { recColumns, goodsColumns } from '../tools/data';
-import { urlParamHash } from '../tools';
 import styles from './drawRec.less';
 
 const { Search } = Input;
@@ -20,26 +20,27 @@ export default function DrawRec(props) {
   const [recList, setrecList] = useState([]);
   const [goodsList, setgoodsList] = useState([]);
   const [recTotal, setrecTotal] = useState(0);
-  const [total, settotal] = useState(0);
+  const [actCode, setactCode] = useState('');
 
   useEffect(() => {
     const { mobile, activityCode, prizeName } = urlParamHash(location.href);
+    setactCode(activityCode);
     touchRecds({ mobile, activityCode });
-    touchPrize({ activityCode, prizeName });
+    touchPrize({ prizeName, activityCode });
   }, []);
 
   // 获取获奖记录
   function touchRecds(config = {}) {
     const params = {
       mobile: '',
-      activityCode: '',
+      activityCode: actCode,
       pageNum: 1,
-      pageSize: 10,
+      pageSize: 100,
     };
     mktApi.queryActivityPrizeRewardList({ ...params, ...config }).then(res => {
       console.log(res);
+      if (!res?.data) return;
       const { data } = res;
-      if (!data) return;
       const { list, recordTotal } = data;
       setrecList(list);
       setrecTotal(recordTotal);
@@ -49,18 +50,18 @@ export default function DrawRec(props) {
   // 获取奖品
   function touchPrize(config = {}) {
     const params = {
-      activityCode: '',
+      activityCode: actCode,
       pageNum: 1,
       pageSize: 10,
       prizeName: '',
     };
     mktApi.queryActivityPrizeList({ ...params, ...config }).then(res => {
       console.log(res);
+      if (!res?.data) return;
       const { data } = res;
-      if (!data) return;
       const { list, recordTotal } = data;
-      setgoodsList(list);
-      settotal(recordTotal);
+      const arr = calcNumInArr(list);
+      setgoodsList(arr);
     });
   }
 
@@ -79,16 +80,16 @@ export default function DrawRec(props) {
           <TabPane tab="抽奖明细" key="1">
             <div className={styles.recSearch}>
               <Search
-                placeholder="可通过领取手机号进行搜索"
+                placeholder="可通过抽奖用户手机号进行搜索"
                 onSearch={val => toSearch(val)}
-                style={{ width: 200 }}
+                style={{ width: 400 }}
               />
             </div>
             <Table
               size="middle"
               dataSource={recList}
               columns={recColumns}
-              pagination={{ recTotal }}
+              pagination={{ total: recTotal, defaultPageSize: 100 }}
               rowKey={(r, i) => i}
             />
           </TabPane>
@@ -98,7 +99,7 @@ export default function DrawRec(props) {
               size="middle"
               dataSource={goodsList}
               columns={goodsColumns}
-              pagination={{ total }}
+              pagination={false}
               rowKey={(r, i) => i}
             />
           </TabPane>

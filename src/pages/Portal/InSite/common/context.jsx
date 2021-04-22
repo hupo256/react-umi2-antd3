@@ -23,49 +23,29 @@ export function Provider({ children }) {
   const [templateName, settemplateName] = useState(''); //当前模板name
 
   function touchPageData() {
-    // 之前有发布过吗
-    getHomePagePublishState().then(res => {
-      if (!res?.data) return;
-      const { isPublished } = res.data;
-      const param = [
-        {
-          key: 'case',
-          pageNum: '1',
-          pageSize: '4',
-        },
-        {
-          key: 'site',
-          pageNum: '1',
-          pageSize: '4',
-        },
-        {
-          key: 'design',
-          pageNum: '1',
-          pageSize: '4',
-        },
-      ];
-      !isPublished && getEditData(param);
-      isPublished && getPublishedData(param);
-    });
-  }
-
-  function getEditData(pdata) {
-    getHomePageEditData(pdata).then(res => {
+    const param = [
+      {
+        key: 'case',
+        pageNum: '1',
+        pageSize: '4',
+      },
+      {
+        key: 'site',
+        pageNum: '1',
+        pageSize: '4',
+      },
+      {
+        key: 'design',
+        pageNum: '1',
+        pageSize: '4',
+      },
+    ];
+    getHomePageEditData(param).then(res => {
       console.log(res);
       if (!res?.data) return;
       const { editTemplateCode, editTemplateJson } = res.data;
       setpageData(addMapToData(editTemplateJson));
       settemplateCode(editTemplateCode);
-    });
-  }
-
-  function getPublishedData(pdata) {
-    getHomePagePublishedData(pdata).then(res => {
-      console.log(res);
-      if (!res?.data) return;
-      const { templateCode, templateJson } = res.data;
-      setpageData(addMapToData(templateJson));
-      settemplateCode(templateCode);
     });
   }
 

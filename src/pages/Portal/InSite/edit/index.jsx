@@ -25,10 +25,14 @@ function TempEdit(props) {
       <TitleGuid title="编辑小程序" isEdit={true} />
       <div className={`${styles.currTepBox} ${showRight ? styles.rightPlaceHolder : ''}`}>
         <Preview />
-        <div className={styles.tipsBox}>
-          <Tooltip placement="topLeft" title={tipsText}>
-            <Icon type="message" /> 温馨提示
-          </Tooltip>
+
+        <div className={styles.tipsOut}>
+          <div className={styles.tipsBox}>
+            <Tooltip placement="topLeft" title={tipsText}>
+              <Icon type="message" style={{ fontSize: '16px' }} />
+              <b>温馨提示</b>
+            </Tooltip>
+          </div>
         </div>
         <DrawerEditor />
       </div>

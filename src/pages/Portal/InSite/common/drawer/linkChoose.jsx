@@ -9,7 +9,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { ctx } from '../context';
 import { LinkType, apiMap } from '../../tools/data';
 import mktApi from '@/services/mktActivity';
-import { Form, Modal, Select } from 'antd';
+import { Form, Modal, Select, AutoComplete } from 'antd';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -19,28 +19,35 @@ const formItemLayout = {
   wrapperCol: { span: 10 },
 };
 
-function ImgUrlEdit(props) {
+function LinkChoose(props) {
   const {
-    form: { validateFields, getFieldDecorator },
+    form: { validateFields, getFieldDecorator, getFieldsValue, setFieldsValue },
     dList,
   } = props;
   const { linkEdtor, setlinkEdtor, curFlag, curInd, pageData, setpageData } = useContext(ctx);
   const [itemList, setitemList] = useState([]);
+  const [curKey, setcurKey] = useState('');
+  const [total, settotal] = useState(0);
 
   function typeSelect(val) {
     const key = apiMap[val];
+    setcurKey(key);
+    touchItems(key);
+  }
+
+  function touchItems(key, config) {
     const param = {
       pageNum: 1,
       pageSize: 10,
       status: 1,
       specialStatus: 1,
-      gongdiStatus: 1,
+      gongdiStatus: 0,
     };
-    mktApi[key](param).then(res => {
+    mktApi[key]({ ...param, ...config }).then(res => {
       console.log(res);
+      if (!res?.data) return;
       const { data } = res;
-      if (!data) return;
-      const arr = data.list.map(item => {
+      const arr = data?.list?.map(item => {
         const {
           specialTitle,
           specialUid,
@@ -57,15 +64,18 @@ function ImgUrlEdit(props) {
         };
       });
       setitemList(arr);
+      settotal(data.recordTotal);
     });
   }
 
-  function getItemInfor(e) {
+  function getItemInfor() {
+    const { uid = '' } = getFieldsValue();
+    uid.includes('_') || setFieldsValue({ uid: '' });
     validateFields((err, vals) => {
       if (err) return;
       console.log(vals);
       const { type, uid } = vals;
-      const [id, showTex] = uid.split('_');
+      const [showTex, id] = uid.split('_');
       const curObj = dList[curInd];
       const pName = curFlag === 'highlights' ? 'text' : 'title';
       dList[curInd] = {
@@ -74,10 +84,6 @@ function ImgUrlEdit(props) {
         [pName]: showTex,
         type,
       };
-
-      console.log(curInd);
-      console.log(dList);
-
       const newObj = { ...pageData };
       newObj.maps[curFlag].list = dList;
       setpageData(newObj);
@@ -85,10 +91,15 @@ function ImgUrlEdit(props) {
     });
   }
 
+  function getMoreList(open) {
+    open && touchItems(curKey, { pageSize: total });
+  }
+
   return (
     <Modal
-      title="设置跳链接"
+      title="设置跳转链接"
       visible={linkEdtor}
+      destroyOnClose={true}
       onOk={getItemInfor}
       onCancel={() => setlinkEdtor(false)}
     >
@@ -118,17 +129,22 @@ function ImgUrlEdit(props) {
           {getFieldDecorator('uid', {
             rules: [{ required: true, message: '请添加具体页面' }],
           })(
-            <Select placeholder="可输入关键字进行检索" getPopupContainer={n => n.parentNode}>
-              {itemList.length > 0 &&
-                itemList.map(item => {
-                  const { name, value } = item;
-                  return (
-                    <Option key={value} value={`${value}_${name}`}>
-                      {name}
-                    </Option>
-                  );
-                })}
-            </Select>
+            <AutoComplete
+              style={{ width: 200 }}
+              filterOption={(val, opt) => opt?.props?.children.includes(val)}
+              placeholder="可输入关键字进行检索"
+              onDropdownVisibleChange={getMoreList}
+              getPopupContainer={n => n.parentNode}
+            >
+              {itemList?.map(item => {
+                const { name, value } = item;
+                return (
+                  <Option key={value} value={`${name}_${value}`}>
+                    {name}
+                  </Option>
+                );
+              })}
+            </AutoComplete>
           )}
         </Item>
       </Form>
@@ -136,4 +152,4 @@ function ImgUrlEdit(props) {
   );
 }
 
-export default Form.create({ name: 'img_url_edit' })(ImgUrlEdit);
+export default Form.create({ name: 'img_url_edit' })(LinkChoose);

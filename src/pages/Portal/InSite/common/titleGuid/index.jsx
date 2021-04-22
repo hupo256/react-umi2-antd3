@@ -5,29 +5,18 @@
  * @Last Modified time: 2021-03-25 16:49:12 
  * 移动端首页 公用头部
  */
-import React, { useContext } from 'react';
-import { Button, message } from 'antd';
+import React, { useContext, useState } from 'react';
+import { Button, message, Popover } from 'antd';
 import router from 'umi/router';
 import { baseRouteKey } from '../../tools/data';
 import { ctx } from '../context';
 import { updateHomePageEditData, publishEditData } from '@/services/miniProgram';
 import styles from './titleGuid.less';
 
-const bgImgs = [
-  'https://test.img.inbase.in-deco.com/crm_saas/dev/20210408/3c485acbe81f42f1ac621b34496ebf51/img_designer_1.png',
-  'https://test.img.inbase.in-deco.com/crm_saas/dev/20210408/17159e292290401cb324c1175ccfe11f/img_designer_2.png',
-  'https://test.img.inbase.in-deco.com/crm_saas/dev/20210408/87382388c88646cb914ef521c9f58036/img_designer_3.png',
-  'https://test.img.inbase.in-deco.com/crm_saas/dev/20210408/8f8b1e6ce303458bb72764b7ba235a0f/img_designer_4.png',
-];
-
 export default function TitleGuid(props) {
   const { title = '标题', disc, isEdit } = props;
   const { pageData, setcurFlag, templateCode, templateName, touchPageData } = useContext(ctx);
-
-  function cancelData() {
-    setcurFlag('');
-    touchPageData();
-  }
+  const [show, setshow] = useState(false);
 
   function toPublich() {
     console.log(pageData);
@@ -49,13 +38,40 @@ export default function TitleGuid(props) {
     });
   }
 
+  function cancelData() {
+    console.log(router);
+    router.go(-1);
+  }
+
+  const ConPopOver = () => {
+    return (
+      <>
+        <p>放弃更改后将不保留当前编辑的内容，确定放弃吗？</p>
+        <p className={styles.popBtns}>
+          <Button onClick={() => setshow(false)}>取消</Button>
+          <Button type="primary" onClick={cancelData}>
+            确定
+          </Button>
+        </p>
+      </>
+    );
+  };
+
   return (
     <div className={styles.guidBox}>
       <h3>
         <span>{title}</span>
         {isEdit && (
           <div className={styles.btnBox}>
-            <Button onClick={cancelData}>放弃更改</Button>
+            <Popover
+              content={<ConPopOver />}
+              trigger="click"
+              visible={show}
+              placement="topRight"
+              onVisibleChange={e => setshow(e)}
+            >
+              <Button onClick={() => setshow(true)}>放弃更改</Button>
+            </Popover>
             <Button onClick={toPublich} type="primary">
               发布
             </Button>

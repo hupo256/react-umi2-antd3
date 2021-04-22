@@ -31,6 +31,7 @@ export function calcNumInArr(arr) {
   arr.forEach(gs => {
     // gs.prizeBeNum = 120;
     const { prizeNum = 0, prizeBeNum = 0 } = gs;
+    !!prizeBeNum || (gs['prizeBeNum'] = 0); // 新增时重置为0
     gs['originNum'] = +prizeNum; // 暂存一下总数
     gs['prizeSuNum'] = +prizeNum - +prizeBeNum; // 剩余数
     gs['probability'] = ((+prizeNum * 100) / totals).toFixed(2); // 抽中概率

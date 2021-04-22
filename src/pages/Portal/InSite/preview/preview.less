@@ -10,11 +10,15 @@
   margin: 0 auto;
   position: relative;
   background: #fff;
-  box-shadow: 0 0 8px #ccc;
+  // box-shadow: 0 0 8px #ccc;
 
   &.min {
     transform-origin: 50% 0;
     transform: scale3d(0.8, 0.8, 1);
+    background: url(https://img.inbase.in-deco.com/crm-saas/img/dflfwc/phone.png) no-repeat;
+    background-size: contain;
+    box-sizing: content-box;
+    padding: 39px 20px;
 
     .conBox {
       .hoverBox {
@@ -30,6 +34,16 @@
             opacity: 0;
           }
         }
+      }
+    }
+
+    .footerBox {
+      width: 90.5%;
+      bottom: 40px;
+      left: 4.7%;
+
+      ul {
+        border-radius: 0 0 3px 3px;
       }
     }
   }
@@ -92,7 +106,7 @@
       background: url('@{picturePath}img_bg.png');
       background-size: 18px 18px;
       width: 110%;
-      margin: -16px 0 -16px -17px;
+      margin: -16px 0 -16px -17.5px;
       padding-left: 16px;
       padding-right: 16px;
     }
@@ -130,6 +144,10 @@
         opacity: 0;
         transition: all 0.2s ease;
 
+        > span {
+          padding-left: 3px;
+        }
+
         &.block {
           color: #999;
         }
@@ -161,7 +179,11 @@
           font-size: 20px;
           transform-origin: 0 0;
           transform: scale3d(0.5, 0.5, 1);
-          width: 190%;
+          width: 200%;
+          color: @fontGray;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
         }
         img {
           width: 44px;
@@ -247,7 +269,7 @@
 
         .caseList {
           display: flex;
-          justify-content: space-between;
+          // justify-content: space-between;
           align-items: center;
           width: 67%;
 
@@ -257,6 +279,7 @@
             overflow: hidden;
             cursor: pointer;
             position: relative;
+            margin-right: 7px;
 
             &.on {
               img {
@@ -370,7 +393,7 @@
           }
 
           > p {
-            padding: 15px 0 7px;
+            padding: 15px 0;
             > span:nth-child(1) {
               width: 80px;
               height: 26px;
@@ -416,9 +439,12 @@
         .desCase {
           height: 74px;
           overflow: hidden;
+          justify-content: flex-start;
           > img {
             background: #ccc;
             width: 32%;
+            border-radius: 5px;
+            margin-right: 12px;
           }
         }
       }
@@ -510,7 +536,7 @@
 
 .btnbox {
   margin: -9.5em auto 0;
-  padding: 1em 0;
+  // padding: 1em 0;
   text-align: center;
   button {
     margin: 0 5px;

@@ -7,11 +7,22 @@
  */
 import React, { useState, useEffect, useContext } from 'react';
 import { ctx } from '../common/context';
-import { defaultGoods, prizeImg } from '../tools/data';
+import { defaultGoods, girdGoods, prizeImg, tipsTable } from '../tools/data';
 import { calcNumInArr, urlParamHash } from '../tools';
 import Upload from '@/components/Upload/Upload';
 import mktApi from '@/services/mktActivity';
-import { Button, Input, Table, Checkbox, Icon, message, InputNumber, Modal, Form } from 'antd';
+import {
+  Button,
+  Input,
+  Table,
+  Checkbox,
+  Icon,
+  Tooltip,
+  message,
+  InputNumber,
+  Modal,
+  Form,
+} from 'antd';
 import styles from './addGame.less';
 
 const maxLen = 8;
@@ -22,43 +33,62 @@ export default function CreatGoods(props) {
   const { newAct, setnewUrl, setstepNum, curGoods, curActDate, setcurGoods } = useContext(ctx);
   const [imgEdtor, setimgEdtor] = useState(false);
   const [curInd, setcurInd] = useState(-1);
-  const actType = newAct?.activityType || 1;
+  const actType = newAct?.activityType || curActDate?.activityType || 1;
   const gsColumns = creatGoodsCol(curGoods?.length) || [];
+  console.log(actType);
 
   useEffect(() => {
-    !isEdit && touchgsList();
+    !isEdit && newAct?.activityType && touchgsList();
   }, []);
 
   // 获取奖品们
   function touchgsList() {
-    const len = defaultGoods.length;
-    const dArr = defaultGoods.map((gs, ind) => {
+    const dArr = [];
+    const len = newAct?.activityType === 3 ? 8 : 6;
+    const goods = newAct?.activityType === 3 ? girdGoods : defaultGoods;
+    let imgNum = 0;
+    for (let i = 0; i < len; i++) {
       let isPrize = 1;
       let prizeNum = 100;
-      if (ind === len - 1) {
+      if (i === len - 1) {
         isPrize = 0;
         prizeNum = 1000;
       }
-      // prizeNum 总数， prizeBeNum 已抽, prizeSuNum 剩余
-      return {
-        prizeImage: `${prizeImg}${ind + 1}@2x.png`,
-        prizeName: gs,
+      if (len === 8 && i > 4) {
+        imgNum = i + 2;
+      } else {
+        imgNum = i + 1;
+      }
+      if (i === 7) {
+        imgNum = 6;
+      }
+      dArr.push({
+        prizeImage: `${prizeImg}${imgNum}@2x.png`,
+        prizeName: goods[i],
         prizeBeNum: 0,
         probability: 0,
         prizeSuNum: 100,
         prizeNum,
         isPrize,
-      };
-    });
-
+      });
+    }
     const arr = calcNumInArr(dArr);
     setcurGoods(arr.slice());
   }
 
   // input值变化时更新数据
-  function inpChange(e, key, ind) {
+  function inpChange(e, key, rec) {
     const val = e?.target ? e.target?.value : e;
-    curGoods[ind][key] = val;
+    const statusKey = `${key}Status`;
+    const errKey = `${key}ErrMsg`;
+    if (!val) {
+      rec[statusKey] = 'error';
+      rec[errKey] = `请输入${key === 'prizeName' ? '奖项名称' : '奖项数量'}`;
+    } else {
+      rec[statusKey] = 'success';
+      rec[errKey] = '';
+    }
+    rec[key] = val;
     setcurGoods(curGoods.slice());
   }
 
@@ -91,7 +121,11 @@ export default function CreatGoods(props) {
         ),
       },
       {
-        title: '* 奖项名称',
+        title: () => (
+          <>
+            <span style={{ color: 'red' }}>*</span> 奖项名称
+          </>
+        ),
         dataIndex: 'prizeName',
         width: 160,
         render: (text, record, ind) => {
@@ -102,7 +136,7 @@ export default function CreatGoods(props) {
                 <Input
                   maxLength={6}
                   value={prizeName}
-                  onChange={e => inpChange(e, 'prizeName', ind)}
+                  onChange={e => inpChange(e, 'prizeName', record)}
                 />
               </Item>
             </Form>
@@ -110,7 +144,11 @@ export default function CreatGoods(props) {
         },
       },
       {
-        title: '* 奖项数量',
+        title: () => (
+          <>
+            <span style={{ color: 'red' }}>*</span> 奖项数量
+          </>
+        ),
         dataIndex: 'prizeNum',
         width: 100,
         render: (text, record, ind) => {
@@ -119,11 +157,13 @@ export default function CreatGoods(props) {
             <Form layout="inline">
               <Item validateStatus={prizeNumStatus} help={prizeNumErrMsg}>
                 <InputNumber
+                  precision={0}
                   max={99999}
                   min={1}
                   value={prizeNum}
                   onBlur={e => inpNumBlur(e, record)}
-                  onChange={e => inpChange(e, 'prizeNum', ind)}
+                  onChange={e => inpChange(e, 'prizeNum', record)}
+                  style={{ width: 110 }}
                 />
               </Item>
             </Form>
@@ -143,7 +183,15 @@ export default function CreatGoods(props) {
         dataIndex: 'prizeSuNum',
       },
       {
-        title: '操作',
+        title: () => {
+          return (
+            <>
+              <Tooltip title={tipsTable}>
+                操作 <Icon type="question-circle" style={{ color: '#16a' }} />
+              </Tooltip>
+            </>
+          );
+        },
         dataIndex: 'isPrize',
         width: 150,
         render: (text, record, ind) => (
@@ -158,7 +206,7 @@ export default function CreatGoods(props) {
               <a disabled={ind === len - 1} onClick={() => toMove(ind, 1)}>
                 <Icon type="arrow-down" />
               </a>
-              <a disabled={ind < 4 || actType === 3} onClick={() => delImg(ind)}>
+              <a disabled={isEdit || ind < 4 || actType === 3} onClick={() => delImg(ind)}>
                 <Icon type="delete" />
               </a>
             </div>
@@ -198,7 +246,8 @@ export default function CreatGoods(props) {
 
   function delImg(num) {
     curGoods.splice(num, 1);
-    setcurGoods(curGoods.slice());
+    const arr = calcNumInArr(curGoods);
+    setcurGoods(arr.slice());
   }
 
   // 奖项数量更新提醒
@@ -224,7 +273,6 @@ export default function CreatGoods(props) {
     const errArr = [];
     list.forEach(gs => {
       const { prizeNum, prizeBeNum, prizeSuNum } = gs;
-      console.log(prizeNum, prizeBeNum);
       prizeNum < prizeBeNum + prizeSuNum && errArr.push(gs);
     });
     return errArr;
@@ -243,6 +291,7 @@ export default function CreatGoods(props) {
           break;
         }
       }
+      return gs;
     });
 
     return touchErrNums(arr);
@@ -250,19 +299,24 @@ export default function CreatGoods(props) {
 
   // 指定字段为空，则视为未填
   function isValEmpty() {
+    const isEmpty = [];
     const arr = curGoods.map(gs => {
-      if (!gs.prizeName.replace(/(^\s*)|(\s*$)/g, '')) {
+      const { prizeName = '', prizeNum = 0 } = gs;
+      if (!prizeName.replace(/(^\s*)|(\s*$)/g, '')) {
         gs.prizeNameStatus = 'error';
         gs.prizeNameErrMsg = '请填写奖项名称';
+        isEmpty.push(prizeName);
       }
-      if (!gs.prizeNum) {
+      if (!prizeNum) {
         gs.prizeNumStatus = 'error';
         gs.prizeNumErrMsg = '请填写奖项数量';
+        isEmpty.push(prizeNum);
       }
       return gs;
     });
     setcurGoods(arr.slice());
-    return arr.length > 0;
+    // console.log
+    return isEmpty.length > 0;
   }
 
   // 提交奖项
@@ -274,6 +328,7 @@ export default function CreatGoods(props) {
     if (isEdit) {
       const { uid } = urlParamHash(location.href);
       mktApi.getActivity({ uid }).then(res => {
+        console.log(res);
         if (!res?.data) return message.error(res.message);
         const errArr = updateCurArr(res.data?.prizeList);
         if (errArr.length > 0) return showError(errArr);
@@ -320,7 +375,6 @@ export default function CreatGoods(props) {
         pagination={false}
         rowKey={(r, i) => i}
       />
-
       {actType !== 3 && (
         <p className={styles.addImg} onClick={addNewImgs}>
           <span>+</span>
@@ -333,7 +387,6 @@ export default function CreatGoods(props) {
         </Button>
         {!isEdit && <Button onClick={() => setstepNum(0)}>上一步</Button>}
       </div>
-
       <Upload
         visible={imgEdtor}
         selectNum={1}

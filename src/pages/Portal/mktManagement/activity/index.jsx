@@ -44,7 +44,7 @@ export default function Activityer(props) {
   }
 
   function creatColumn() {
-    const [, col1, col2, col3, rest] = actColumns;
+    const [, col1, col2, col3, col4] = actColumns;
     actColumns[1] = {
       ...col1,
       render: (text, record, index) => {
@@ -78,13 +78,29 @@ export default function Activityer(props) {
         const { activityCode, linkUrl } = record;
         return (
           <>
-            <span>{linkUrl} </span>
-            <Input id={activityCode} className={styles.inpHidden} value={linkUrl} />
-            <p>
-              <a onClick={() => copyLink(activityCode)} className={styles.tocopy}>
-                <Icon type="copy" /> 复制链接
-              </a>
-            </p>
+            {linkUrl && (
+              <>
+                <span>{linkUrl} </span>
+                <Input id={activityCode} className={styles.inpHidden} value={linkUrl} />
+                <p>
+                  <a onClick={() => copyLink(activityCode)} className={styles.tocopy}>
+                    <Icon type="copy" /> 复制链接
+                  </a>
+                </p>
+              </>
+            )}
+          </>
+        );
+      },
+    };
+    actColumns[4] = {
+      ...col4,
+      render: (text, record, index) => {
+        const { createTime, creater = '' } = record;
+        return (
+          <>
+            <span>{createTime} </span>
+            <p>{creater}</p>
           </>
         );
       },
@@ -117,13 +133,13 @@ export default function Activityer(props) {
 
   // 获取活动们
   function touchActList(config = {}) {
-    const params = {
+    const param = {
       activityTitle: searchTex,
       pageNum: 1,
       pageSize: 10,
-      // state: 0,
+      state: searchInd ? searchInd - 1 : '',
     };
-    mktApi.queryActivityList({ ...params, ...config }).then(res => {
+    mktApi.queryActivityList({ ...param, ...config }).then(res => {
       console.log(res);
       if (!res?.data) return;
       const { data } = res;
@@ -134,23 +150,34 @@ export default function Activityer(props) {
   }
 
   function mergeTime(arr) {
+    if (!arr) return [];
     return arr?.map(item => {
-      const { startTime, endTime } = item;
-      // console.log
+      const { startTime, endTime, createTime } = item;
       item.time = startTime.slice(0, 16) + '_' + endTime.slice(0, 16);
+      item.createTime = createTime.slice(0, 16);
       return item;
     });
   }
 
   function searchWidhTag(ind) {
-    console.log(ind);
     setsearchInd(ind);
-    touchActList({ state: ind - 1 });
+    const state = ind ? ind - 1 : '';
+    touchActList({ state });
   }
 
   function toSearch(tex) {
-    setsearchTex(tex);
-    touchActList({ activityTitle: tex });
+    const str = tex.substr(0, 30);
+    setsearchTex(str);
+    touchActList({ activityTitle: str });
+  }
+
+  function pageChange(num, size) {
+    console.log(num, size);
+    const conf = {
+      pageNum: num,
+      pageSize: size,
+    };
+    touchActList(conf);
   }
 
   return (
@@ -187,7 +214,7 @@ export default function Activityer(props) {
           size="middle"
           dataSource={actList}
           columns={tbColumns}
-          pagination={{ total }}
+          pagination={{ total, onChange: pageChange }}
           rowKey={(r, i) => i}
         />
       </Card>

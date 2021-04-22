@@ -13,7 +13,7 @@ import { Button, Icon, Input, message } from 'antd';
 import styles from './addGame.less';
 
 export default function CreatGoods(props) {
-  const { activityTitle, newUrl } = useContext(ctx);
+  const { activityTitle, newUrl, setcurActDate, setstepNum, setcurGoods } = useContext(ctx);
   const urlHolder = useRef();
 
   function gotoRoute(key) {
@@ -28,11 +28,17 @@ export default function CreatGoods(props) {
     message.success('复制成功!');
   }
 
+  function toMoreAgain() {
+    setcurActDate(null);
+    setcurGoods([]);
+    setstepNum(0);
+  }
+
   return (
     <div className={styles.doneBox}>
       <Icon type="check-circle" theme="filled" style={{ fontSize: '70px', color: '#fe6a30' }} />
       <h3>创建成功</h3>
-      <p>可在所需的呈现的菜单，选择当前小小戏啦</p>
+      <p>可在所需的呈现的菜单，选择当前小游戏啦</p>
       <div className={styles.titBox}>
         <p>
           游戏标题：
@@ -49,10 +55,10 @@ export default function CreatGoods(props) {
         </p>
       </div>
       <div className={styles.btnBox}>
-        <Button type="primary" onClick={() => gotoRoute('addGame')}>
+        <Button type="primary" onClick={toMoreAgain}>
           再创建一个
         </Button>
-        <Button onClick={() => gotoRoute('activity')}>返回营销小游戏</Button>
+        <Button onClick={() => gotoRoute('games')}>返回营销小游戏</Button>
       </div>
     </div>
   );

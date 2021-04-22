@@ -6,7 +6,8 @@
  * 设计师
  */
 import React, { useState, useEffect } from 'react';
-import MdTitle from './mdTitle';
+import MdTitle from './common/mdTitle';
+import EmptyMd from './common/emptyMd';
 import pageStyle from '../preview.less';
 
 const bgImgs = [
@@ -17,7 +18,7 @@ const bgImgs = [
 ];
 
 export default function CaseMd(props) {
-  const { list, title } = props;
+  const { list, title, flag } = props;
 
   return (
     <div className={pageStyle.mdBlock}>
@@ -48,7 +49,9 @@ export default function CaseMd(props) {
                   </p>
                   <div className={`${pageStyle.desCase} ${pageStyle.flex}`}>
                     {caseCoverUrlList.length > 0 &&
-                      caseCoverUrlList.map((item, i) => <img key={i} src={item} />)}
+                      caseCoverUrlList.map((item, i) => {
+                        return i < 3 ? <img key={i} src={item} /> : '';
+                      })}
                   </div>
                 </li>
               );
@@ -56,12 +59,7 @@ export default function CaseMd(props) {
           </ul>
         </div>
       ) : (
-        <div className={pageStyle.defaultImgBox}>
-          <svg className="icon" aria-hidden="true">
-            <use href="#iconic_case_no" />
-          </svg>
-          <span>请在设计师库中添加设计师</span>
-        </div>
+        <EmptyMd flag={flag} />
       )}
     </div>
   );

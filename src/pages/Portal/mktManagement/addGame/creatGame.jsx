@@ -11,6 +11,7 @@ import moment from 'moment';
 import mktApi from '@/services/mktActivity';
 import { Form, Input, InputNumber, Button, Radio, DatePicker, message } from 'antd';
 import { urlParamHash } from '../tools';
+import { gameTypes } from '../tools/data';
 import styles from './addGame.less';
 
 const { Item } = Form;
@@ -19,26 +20,47 @@ const { TextArea } = Input;
 const { RangePicker } = DatePicker;
 
 const formItemLayout = {
-  labelCol: { span: 6 },
-  wrapperCol: { span: 16 },
+  labelCol: { span: 4 },
+  wrapperCol: { span: 18 },
 };
 const formTailLayout = {
-  labelCol: { span: 8 },
+  labelCol: { span: 4 },
   wrapperCol: { span: 8, offset: 8 },
 };
 
 function AddNewGoods(props) {
   const {
-    form: { validateFields, getFieldDecorator, setFieldsValue },
+    form: { validateFields, getFieldDecorator, setFieldsValue, getFieldsValue },
     isEdit,
   } = props;
   const { setstepNum, setnewAct, curActDate } = useContext(ctx);
+  const [typeOpts, settypeOpts] = useState([]);
+  const [curType, setcurType] = useState(1);
+  const [formDatas, setformDatas] = useState({});
+  const [initSubTit, setinitSubTit] = useState('');
 
   useEffect(
     () => {
-      isEdit && curActDate?.activityType && fillForm();
+      if (isEdit) {
+        const type = curActDate?.activityType;
+        const arr = gameTypes.filter(opt => opt.code === type);
+        arr.length && settypeOpts(arr);
+        type && fillForm();
+      } else {
+        settypeOpts(gameTypes);
+      }
     },
     [curActDate]
+  );
+
+  useEffect(
+    () => {
+      let tit = '幸运大转盘';
+      curType === 2 && (tit = '幸运砸金蛋');
+      curType === 3 && (tit = '幸运跑马灯');
+      setinitSubTit(tit);
+    },
+    [curType]
   );
 
   function fillForm() {
@@ -94,18 +116,27 @@ function AddNewGoods(props) {
     };
   }
 
+  function strToHtml(str = '') {
+    str = str.replace(/\r\n/g, '<br/>'); //IE9、FF、chrome
+    str = str.replace(/\n/g, '<br/>'); //IE7-8
+    str = str.replace(/\s/g, '&nbsp;'); //空格处理
+    return str;
+  }
+
   function updateGame() {
     validateFields((err, values) => {
       console.log(values);
       if (err) return;
       const { uid } = urlParamHash(location.href);
-      const { activityTime } = values;
+      const { activityTime, actvityConvertRule, activityRule } = values;
       const [st, et] = activityTime;
       const newAct = {
         ...values,
         uid,
-        startTime: moment(st).format('YYYY-MM-DD hh:mm:ss'),
-        endTime: moment(et).format('YYYY-MM-DD hh:mm:ss'),
+        actvityConvertRule: strToHtml(actvityConvertRule),
+        activityRule: strToHtml(activityRule),
+        startTime: moment(st).format('YYYY-MM-DD HH:mm:ss'),
+        endTime: moment(et).format('YYYY-MM-DD HH:mm:ss'),
       };
 
       setnewAct(newAct); // 刷新一下以便下步使用
@@ -120,48 +151,74 @@ function AddNewGoods(props) {
     });
   }
 
+  function onRadioChange(e) {
+    const val = e.target.value;
+    setformDatas({ ...formDatas, [curType]: getFieldsValue() }); //切换前先存一下
+    setFieldsValue(formDatas[val]); // 刷新form
+    setcurType(val); // 刷新当前的type
+  }
+
   return (
     <div className={styles.fromOut}>
       <Form {...formItemLayout}>
         <Item label="游戏形式">
           {getFieldDecorator('activityType', {
+            initialValue: 1,
             rules: [{ required: true, message: '请选择游戏形式' }],
           })(
-            <Group>
-              <Radio value={1}>大转盘</Radio>
-              <Radio value={2}>砸金蛋</Radio>
-              <Radio value={3}>跑马灯</Radio>
+            <Group onChange={onRadioChange}>
+              {typeOpts?.map(opt => {
+                const { name, code, imgUrl } = opt;
+                return (
+                  <div key={code} className={styles.typeOpt}>
+                    <Radio value={code}>
+                      <img src={imgUrl} />
+                      <p>{name}</p>
+                    </Radio>
+                  </div>
+                );
+              })}
             </Group>
           )}
         </Item>
         <Item label="游戏标题">
           {getFieldDecorator('activityTitle', {
-            rules: [{ required: true, message: '请填写游戏标题' }],
-          })(<Input placeholder="游戏标题" style={{ width: 345 }} />)}
+            initialValue: initSubTit,
+            rules: [
+              { required: true, message: '请填写游戏标题' },
+              { max: 15, message: '最多输入15个字符' },
+            ],
+          })(<Input placeholder="游戏标题" style={{ width: 410 }} />)}
         </Item>
         <Item label="游戏副文本">
           {getFieldDecorator('activitySubtitle', {
-            rules: [{ required: true, message: '请填写游戏副文本' }],
-          })(<Input placeholder="游戏副文本" />)}
+            initialValue: '-好运连连，点击GO开启好运-',
+            rules: [
+              { required: true, message: '请填写游戏副文本' },
+              { max: 15, message: '最多输入15个字符' },
+            ],
+          })(<Input placeholder="游戏副文本" style={{ width: 410 }} />)}
         </Item>
         <Item label="起止时间">
           {getFieldDecorator('activityTime', {
             rules: [{ required: true, message: '请选择起止时间' }],
           })(
             <RangePicker
-              disabledDate={disabledDate}
-              disabledTime={disabledRangeTime}
+              // disabledDate={disabledDate}
+              // disabledTime={disabledRangeTime}
               showTime={{
                 hideDisabledOptions: true,
-                defaultValue: [moment('00:00:00', 'HH:mm:ss'), moment('11:59:59', 'HH:mm:ss')],
+                defaultValue: [moment('00:00:00', 'HH:mm'), moment('23:59:59', 'HH:mm')],
               }}
-              format="YYYY-MM-DD HH:mm:ss"
+              format="YYYY-MM-DD HH:mm"
+              style={{ width: 410 }}
             />
           )}
         </Item>
-        <Item label="参与次数类型">
+        <Item label="参与次数">
           {getFieldDecorator('activityJoinType', {
-            rules: [{ required: true, message: '请填写参与次数类型' }],
+            initialValue: 1,
+            rules: [{ required: true, message: '请选择参与次数类型' }],
           })(
             <Group>
               <Radio value={1}>总次数</Radio>
@@ -169,19 +226,25 @@ function AddNewGoods(props) {
             </Group>
           )}
         </Item>
-        <Item label="参与次数">
+        <Item label=" " className="joinNumTag">
           {getFieldDecorator('activityJoinNum', {
+            initialValue: 1,
             rules: [{ required: true, message: '请填写参与次数' }],
-          })(<InputNumber min={1} step={1} />)}
+          })(<InputNumber min={1} step={1} precision={0} style={{ width: 150 }} />)}
           <span style={{ paddingLeft: '.5em' }}>次</span>
         </Item>
         <Item label="规则说明">
-          {getFieldDecorator('activityRule')(<TextArea placeholder="请输入规则说明" allowClear />)}
+          {getFieldDecorator('activityRule', {
+            rules: [{ max: 200, message: '最多输入200个字符' }],
+          })(<TextArea placeholder="请输入规则说明" />)}
         </Item>
         <Item label="兑换说明">
           {getFieldDecorator('actvityConvertRule', {
-            rules: [{ required: true, message: '请填写兑换说明' }],
-          })(<TextArea placeholder="请输入兑换说明" allowClear />)}
+            rules: [
+              { required: true, message: '请填写兑换说明' },
+              { max: 200, message: '最多输入200个字符' },
+            ],
+          })(<TextArea placeholder="请输入兑换说明" />)}
         </Item>
 
         <Item {...formTailLayout}>
