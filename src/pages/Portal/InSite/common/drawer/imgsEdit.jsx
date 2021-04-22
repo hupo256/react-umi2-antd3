@@ -84,7 +84,7 @@ export default function TagsEdit(props) {
 
   function radioChage(e) {
     const { value } = e.target;
-    console.log(typeof e.target.value);
+    const newObj = { ...pageData };
     if (value === 1) newObj.jsonData[0].height = 176;
     setimgHeightType(value);
   }
