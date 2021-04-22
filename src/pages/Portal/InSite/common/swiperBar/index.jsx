@@ -20,23 +20,21 @@ SwiperCore.use([Pagination, Scrollbar, Virtual, Autoplay]);
 
 export default function SwiperBar(props) {
   const { list, height = 170 } = props;
-  console.log(height);
   return (
     <>
       {list?.length > 0 ? (
         <div style={{ height }}>
           <Swiper
-            // autoplay={{
-            //   delay: 3000, // 自动播放
-            //   stopOnLastSlide: false,
-            //   disableOnInteraction: true,
-            // }}
+            autoplay={{
+              delay: 3000, // 自动播放
+              stopOnLastSlide: false,
+              disableOnInteraction: true,
+            }}
             pagination={{ clickable: true }} // 分页标志
             spaceBetween={50}
             slidesPerView={1} // 每次滚动几格
             initialSlide={1} // 初始化显示哪一个
             loop={true} // 是否循环
-            // height={height}
           >
             {list.map((img, ind) => {
               return (

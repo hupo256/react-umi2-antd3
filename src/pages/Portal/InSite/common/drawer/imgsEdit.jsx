@@ -28,13 +28,13 @@ export default function TagsEdit(props) {
     curInd,
   } = useContext(ctx);
   const [tagList = [], settagList] = useState(() => pageData?.maps?.[curFlag]?.list);
-  const [height, setHeight] = useState(NaN);
+  const [height, setHeight] = useState(176);
   const [imgHeightType, setimgHeightType] = useState(1);
 
   useEffect(
     () => {
       const hgt = pageData?.maps?.[curFlag]?.height;
-      if (hgt === 170) {
+      if (hgt === 176) {
         setimgHeightType(1);
       } else {
         setimgHeightType(2);
@@ -85,7 +85,7 @@ export default function TagsEdit(props) {
   function radioChage(e) {
     const { value } = e.target;
     console.log(typeof e.target.value);
-    if (value === 1) pageData.jsonData[0].height = 176;
+    if (value === 1) newObj.jsonData[0].height = 176;
     setimgHeightType(value);
   }
 

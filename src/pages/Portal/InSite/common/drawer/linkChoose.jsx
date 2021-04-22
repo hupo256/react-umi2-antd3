@@ -101,6 +101,7 @@ function ImgUrlEdit(props) {
     <Modal
       title="设置跳转链接"
       visible={linkEdtor}
+      destroyOnClose={true}
       onOk={getItemInfor}
       onCancel={() => setlinkEdtor(false)}
     >
