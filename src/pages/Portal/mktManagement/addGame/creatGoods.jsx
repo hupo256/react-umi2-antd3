@@ -71,9 +71,10 @@ export default function CreatGoods(props) {
     const val = e?.target ? e.target?.value : e;
     const statusKey = `${key}Status`;
     const errKey = `${key}ErrMsg`;
+    // const errTex =
     if (!val) {
       rec[statusKey] = 'error';
-      rec[errKey] = '请先输入主标题';
+      rec[errKey] = `请输入${key === 'prizeName' ? '奖项名称' : '奖项数量'}`;
     } else {
       rec[statusKey] = 'success';
       rec[errKey] = '';

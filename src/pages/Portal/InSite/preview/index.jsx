@@ -104,11 +104,11 @@ export default function Preview(props) {
         <div className={pageStyle.conBox} ref={contentBox}>
           {pageData?.jsonData?.length > 0 &&
             pageData.jsonData.map((item, ind) => {
-              const { flag, list = [], title = '' } = item;
+              const { flag, list = [] } = item;
               const { tips, creatCom } = componentMap[flag];
               return (
                 <HoverMd key={ind} tips={tips} flag={flag} isEmpty={!list?.length}>
-                  {creatCom({ list, title, flag })}
+                  {creatCom({ ...item })}
                 </HoverMd>
               );
             })}

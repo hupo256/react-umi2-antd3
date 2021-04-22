@@ -28,10 +28,18 @@ export default function TagsEdit(props) {
     curInd,
   } = useContext(ctx);
   const [tagList = [], settagList] = useState(() => pageData?.maps?.[curFlag]?.list);
+  const [height, setHeight] = useState(NaN);
   const [imgHeightType, setimgHeightType] = useState(1);
 
   useEffect(
     () => {
+      const hgt = pageData?.maps?.[curFlag]?.height;
+      if (hgt === 170) {
+        setimgHeightType(1);
+      } else {
+        setimgHeightType(2);
+        setHeight(hgt);
+      }
       settagList(pageData?.maps?.[curFlag]?.list);
     },
     [curFlag]
@@ -82,8 +90,9 @@ export default function TagsEdit(props) {
   }
 
   function widthChange(e) {
-    pageData.jsonData[0].height = +e;
-    setpageData(pageData);
+    const newObj = { ...pageData };
+    newObj.jsonData[0].height = +e;
+    setpageData(newObj);
   }
 
   // 图片选择
@@ -109,7 +118,7 @@ export default function TagsEdit(props) {
             size="small"
             max={1000}
             min={1}
-            defaultValue={170}
+            defaultValue={height}
             style={{ width: 70, marginLeft: '-10px' }}
             onChange={widthChange}
           />
