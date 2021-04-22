@@ -33,8 +33,9 @@ export default function CreatGoods(props) {
   const { newAct, setnewUrl, setstepNum, curGoods, curActDate, setcurGoods } = useContext(ctx);
   const [imgEdtor, setimgEdtor] = useState(false);
   const [curInd, setcurInd] = useState(-1);
-  const actType = newAct?.activityType || 1;
+  const actType = newAct?.activityType || curActDate?.activityType || 1;
   const gsColumns = creatGoodsCol(curGoods?.length) || [];
+  console.log(actType);
 
   useEffect(() => {
     !isEdit && newAct?.activityType && touchgsList();

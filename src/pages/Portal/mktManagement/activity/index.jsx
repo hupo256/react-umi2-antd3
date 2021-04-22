@@ -137,10 +137,9 @@ export default function Activityer(props) {
       activityTitle: searchTex,
       pageNum: 1,
       pageSize: 10,
+      state: searchInd ? searchInd - 1 : '',
     };
-    const conf = searchInd ? { state: searchInd - 1 } : {};
-    const params = { ...param, ...conf };
-    mktApi.queryActivityList({ ...params, ...config }).then(res => {
+    mktApi.queryActivityList({ ...param, ...config }).then(res => {
       console.log(res);
       if (!res?.data) return;
       const { data } = res;
@@ -162,8 +161,8 @@ export default function Activityer(props) {
 
   function searchWidhTag(ind) {
     setsearchInd(ind);
-    const conf = ind ? { state: ind - 1 } : {};
-    touchActList(conf);
+    const state = ind ? ind - 1 : '';
+    touchActList({ state });
   }
 
   function toSearch(tex) {

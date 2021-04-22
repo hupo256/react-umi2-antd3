@@ -19,7 +19,7 @@ const formItemLayout = {
   wrapperCol: { span: 10 },
 };
 
-function ImgUrlEdit(props) {
+function LinkChoose(props) {
   const {
     form: { validateFields, getFieldDecorator, getFieldsValue, setFieldsValue },
     dList,
@@ -152,4 +152,4 @@ function ImgUrlEdit(props) {
   );
 }
 
-export default Form.create({ name: 'img_url_edit' })(ImgUrlEdit);
+export default Form.create({ name: 'img_url_edit' })(LinkChoose);
