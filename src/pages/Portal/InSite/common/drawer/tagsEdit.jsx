@@ -80,7 +80,8 @@ export default function TagsEdit(props) {
     if (val?.length > 6) {
       rec.vaStatus = 'error';
       rec.errMsg = '最多6个字符';
-      val = val.substr(0, 6);
+      // return;
+      // val = val.substr(0, 6);
     }
     rec.title = val;
     forUpdatePageData();
@@ -124,6 +125,7 @@ export default function TagsEdit(props) {
                         ref={titInp}
                         style={{ width: '100%' }}
                         value={title}
+                        maxLength={6}
                         onBlur={e => tagsTexBlur(e, tag)}
                         onChange={e => tagsTexChange(e, tag)}
                         placeholder="请输入主标题"
@@ -132,6 +134,7 @@ export default function TagsEdit(props) {
                   </Form>
                   <Input
                     value={desc}
+                    maxLength={14}
                     onBlur={e => discTexBlur(e, tag)}
                     onChange={e => discTexChange(e, tag)}
                     placeholder="请输入副文本"
