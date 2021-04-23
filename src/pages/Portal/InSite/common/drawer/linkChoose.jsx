@@ -31,10 +31,11 @@ function LinkChoose(props) {
 
   useEffect(
     () => {
-      const curItem = dList[curInd];
-      // console.log(curInd);
-      // const {uid, type} = curItem
-      setFieldsValue(curItem);
+      if (dList?.[curInd]) {
+        const { title = '', type = '', uid = '' } = dList[curInd];
+        setitemList([{ name: title, value: uid }]);
+        setFieldsValue({ type, uid: `${title}_${uid}` });
+      }
     },
     [curInd]
   );
@@ -42,6 +43,7 @@ function LinkChoose(props) {
   function typeSelect(val) {
     setcurKey(val);
     touchItems(val);
+    setFieldsValue({ uid: '' });
   }
 
   function touchItems(key, config) {
