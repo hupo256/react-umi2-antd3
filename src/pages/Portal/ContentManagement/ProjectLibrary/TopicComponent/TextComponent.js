@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-20 14:31:15
+ * @Last Modified time: 2021-04-23 18:51:44
  * 创建工地
  */
 import React, { PureComponent } from 'react';
@@ -103,6 +103,7 @@ class TextComponent extends PureComponent {
             <div className={data.checked === 1 ? styles.roundRightTop : ''} />
             <div className={data.checked === 1 ? styles.roundLeftBottom : ''} />
             <div className={data.checked === 1 ? styles.roundRightBottom : ''} />
+            {isTrue === 1 && data.paramList[0].defaultValue === '' ? <div>请输入文本</div> : null}
             <div className={styles.arwrap}>
               <ContentEditable
                 innerRef={this.contentEditable}
@@ -289,7 +290,7 @@ class TextComponent extends PureComponent {
             {show ? (
               <div className={styles.SketchWraps}>
                 <SketchPicker color={isStyle.color} onChange={this.handleColorChange} />
-                <span
+                {/*<span
                   className={styles.closeColor}
                   onClick={() => {
                     this.closeColor();
@@ -300,11 +301,19 @@ class TextComponent extends PureComponent {
                     width="20"
                     height="20"
                   />
-                </span>
+                </span>*/}
               </div>
             ) : (
               ''
             )}
+            {show ? (
+              <span
+                className={styles.closePicG}
+                onClick={() => {
+                  this.closeColor();
+                }}
+              />
+            ) : null}
           </Drawer>
         ) : null}
       </div>
@@ -314,6 +323,7 @@ class TextComponent extends PureComponent {
   changePic() {
     const { index } = this.props;
     this.props.handleCheck(index);
+    this.props.handleWidth(-360);
     this.setState({
       visible: true,
       isTrue: 0,
@@ -322,6 +332,7 @@ class TextComponent extends PureComponent {
   deletePic() {
     const { index } = this.props;
     this.props.handleDeletePic(index);
+    this.props.handleWidth(-160);
   }
   changePicStaus() {
     this.setState({
@@ -334,7 +345,9 @@ class TextComponent extends PureComponent {
       ProjectLibrary: { compentList },
       index,
     } = this.props;
-    const inputVal = evt.target.value;
+    let inputVal = evt.target.value
+      .replace(/<(?!\/?br|\/?div)[^<>]*>/gi, '')
+      .replace(/style\s*?=\s*?(['"])[\s\S]*?\1/g, '');
     compentList[index].paramList[0].defaultValue = inputVal;
     dispatch({
       type: 'ProjectLibrary/saveDataModel',
@@ -358,6 +371,7 @@ class TextComponent extends PureComponent {
     this.setState({
       visible: false,
     });
+    this.props.handleWidth(-160);
   };
   showColor() {
     this.setState({

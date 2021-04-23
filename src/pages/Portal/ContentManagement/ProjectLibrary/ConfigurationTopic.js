@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-20 13:48:06
+ * @Last Modified time: 2021-04-23 19:21:00
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -34,6 +34,7 @@ class ProjectLibrary extends PureComponent {
       compentList: [],
       tags: [],
       title: '',
+      Left: -160,
     };
     /*定义两个值用来存放鼠标按下的地方距离元素上侧和左侧边界的值*/
     this.disX = 0;
@@ -129,7 +130,7 @@ class ProjectLibrary extends PureComponent {
     const {
       ProjectLibrary: { elementTree, compentList },
     } = this.props;
-    const { collapsed, istrue, title } = this.state;
+    const { collapsed, istrue, title, Left } = this.state;
     const auth = JSON.parse(localStorage.getItem('auth'));
     const bigLogo = (auth && auth.companyLogoBig) || logo;
     const smallLogo = (auth && auth.companyLogoSmall) || logoImg;
@@ -249,6 +250,7 @@ class ProjectLibrary extends PureComponent {
           key={index}
           data={item.data}
           index={item.idx}
+          handleWidth={data => this.handleWidth(data)}
           handleCheck={data => this.handleCheck(data)}
           handleColor={(data, index, code) => this.handleColor(data, index, code)}
           // fnDown={(e, indx) => {
@@ -336,12 +338,13 @@ class ProjectLibrary extends PureComponent {
               ) : null}
             </div>
           </div>
-          <div className={styles.phone}>
+          <div className={styles.phone} style={{ marginLeft: Left }}>
             <div className={styles.phoneHead}>{title}</div>
             <div className={styles.phoneCont}>
               <div
                 className={styles.phoneBox}
                 ref="submitf"
+                id="phoneCont"
                 onMouseMove={() => {
                   this.get_canvas(event);
                 }}
@@ -372,6 +375,8 @@ class ProjectLibrary extends PureComponent {
     let top = 0;
     let textTop = 0;
     const { tags } = this.state;
+    let iscroll = document.getElementById('phoneCont').scrollTop + 285;
+    textTop = iscroll;
     compentList &&
       compentList.map((item, index) => {
         if (item.elementType === 'MODAL' && ite.elementType === 'MODAL') {
@@ -381,15 +386,15 @@ class ProjectLibrary extends PureComponent {
           if (item.elementStyle) {
             let aStyle = JSON.parse(item.elementStyle);
             left = aStyle.left;
-            top = aStyle.top + 280;
+            top = aStyle.top + 360;
           }
         }
-        if (item.elementType === 'MODAL_TEXT') {
-          if (item.elementStyle) {
-            let aStyle = JSON.parse(item.elementStyle);
-            textTop = aStyle.top + 43;
-          }
-        }
+        // if (item.elementType === 'MODAL_TEXT') {
+        //   if (item.elementStyle) {
+        //     let aStyle = JSON.parse(item.elementStyle);
+        //     textTop = aStyle.top + 43;
+        //   }
+        // }
       });
     if (ishow === 0) {
       ite.isEdit = false;
@@ -405,7 +410,7 @@ class ProjectLibrary extends PureComponent {
       } else if (ite.elementType === 'MODAL_TEXT') {
         ite.elementStyle = JSON.stringify({
           top: textTop,
-          left: left,
+          left: 113,
           fontSize: 14,
           color: '#000',
           lineHeight: 1.5,
@@ -414,6 +419,8 @@ class ProjectLibrary extends PureComponent {
           fontWeight: 'normal',
           fontStyle: 'normal',
           textDecorationLine: 'none',
+          width: 150,
+          height: 43,
         });
       }
       // if (ite.elementType === 'IMG' || ite.elementType === 'TEXT') {
@@ -587,11 +594,14 @@ class ProjectLibrary extends PureComponent {
       let isTrueM = 0;
       let isTrueF = 0;
       let formUid = '';
+      let isg = 0;
+      let arrPic = [];
+      let isImg = 0;
       compentList.map((item, index) => {
         if (item.elementType === 'IMG') {
           isTrue = 1;
+          arrPic.push(item.paramList[0].defaultValue);
         }
-
         if (item.elementType === 'MODAL') {
           if (item.formUid) {
             isTrueF = 1;
@@ -600,24 +610,43 @@ class ProjectLibrary extends PureComponent {
           isTrueM = 1;
         }
       });
+      arrPic.map((item, index) => {
+        if (
+          item !==
+          'https://test.img.inbase.in-deco.com/crm_saas/dev/20210408/22925eb86fff44e5b5ed47aa9dbd575e/imgdefault2x.png'
+        ) {
+          isImg = 1;
+        }
+      });
       if (isTrue === 0) {
         return message.error('请添加图片广告组件');
       }
-      if (isTrueM === 0) {
-        return message.error('请添加常驻底部组件');
+      if (isImg === 0) {
+        return message.error('专题中存在未设置图片的图片广告');
       }
-      if (isTrueF === 0) {
-        return message.error('请绑定浮窗表单');
+      // if (isTrueM === 0) {
+      //   return message.error("请添加常驻底部组件");
+      // }
+      if (isTrueM === 1 && isTrueF === 0) {
+        return message.error('请在常驻底部中关联悬浮表单哦');
       }
-      if (isTrue === 1 && isTrueM === 1 && isTrueF === 1) {
-        dispatch({
-          type: 'ProjectLibrary/formBindModel',
-          payload: {
-            directType: 4,
-            directUid: getQueryUrlVal('uid'),
-            formUid: formUid,
-          },
-        });
+      if (isTrueM === 1 && isTrueF === 1) {
+        isg = 1;
+      }
+      if (isTrueM === 0 && isTrueF === 0) {
+        isg = 1;
+      }
+      if (isTrue === 1 && isg === 1 && isImg === 1) {
+        if (formUid !== '') {
+          dispatch({
+            type: 'ProjectLibrary/formBindModel',
+            payload: {
+              directType: 4,
+              directUid: getQueryUrlVal('uid'),
+              formUid: formUid,
+            },
+          });
+        }
         dispatch({
           type: 'ProjectLibrary/specialCollocateModel',
           payload: {
@@ -709,6 +738,11 @@ class ProjectLibrary extends PureComponent {
         key: 'compentList',
         value: [...arr, ...other],
       },
+    });
+  }
+  handleWidth(data) {
+    this.setState({
+      Left: data,
     });
   }
 }

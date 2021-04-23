@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-12 19:49:07
+ * @Last Modified time: 2021-04-23 19:26:05
  * 专题库
  */
 import React, { PureComponent } from 'react';
@@ -213,6 +213,9 @@ class FormConfiguration extends PureComponent {
       elementList[1].paramList.map((item, index) => {
         return (
           <div className={styles.ViewDiv} key={index}>
+            <div style={{ color: elementList[1].elementButtonColor }} className={styles.chediv}>
+              {item.paramName}
+            </div>
             <Input
               style={{ width: 200 }}
               disabled
