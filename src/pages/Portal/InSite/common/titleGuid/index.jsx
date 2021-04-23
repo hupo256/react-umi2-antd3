@@ -6,7 +6,7 @@
  * 移动端首页 公用头部
  */
 import React, { useContext, useState } from 'react';
-import { Button, message, Popover } from 'antd';
+import { Button, message, Popover, Icon } from 'antd';
 import router from 'umi/router';
 import { baseRouteKey } from '../../tools/data';
 import { ctx } from '../context';
@@ -46,7 +46,10 @@ export default function TitleGuid(props) {
   const ConPopOver = () => {
     return (
       <>
-        <p>放弃更改后将不保留当前编辑的内容，确定放弃吗？</p>
+        <p>
+          <Icon type="exclamation-circle" style={{ color: '#ff8e59' }} />
+          放弃更改后将不保留当前编辑的内容，确定放弃吗？
+        </p>
         <p className={styles.popBtns}>
           <Button onClick={() => setshow(false)}>取消</Button>
           <Button type="primary" onClick={cancelData}>

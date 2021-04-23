@@ -70,7 +70,8 @@ export default function DrawRec(props) {
   }
 
   function toSearch(tex) {
-    touchRecds({ mobile: tex });
+    const str = tex.substr(0, 30);
+    touchRecds({ mobile: str });
   }
 
   return (

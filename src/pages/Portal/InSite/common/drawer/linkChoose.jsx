@@ -32,9 +32,10 @@ function LinkChoose(props) {
   useEffect(
     () => {
       if (dList?.[curInd]) {
-        const { title = '', type = '', uid = '' } = dList[curInd];
-        setitemList([{ name: title, value: uid }]);
-        setFieldsValue({ type, uid: `${title}_${uid}` });
+        const { title = '', text = '', type = '', uid = '' } = dList[curInd];
+        const pName = curFlag === 'highlights' ? text : title;
+        setitemList([{ name: pName, value: uid }]);
+        setFieldsValue({ type, uid: `${pName}_${uid}` });
       }
     },
     [curInd]
@@ -96,7 +97,7 @@ function LinkChoose(props) {
     <Modal
       title="设置跳转链接"
       visible={linkEdtor}
-      destroyOnClose={true}
+      // destroyOnClose={true}
       onOk={getItemInfor}
       onCancel={() => setlinkEdtor(false)}
     >

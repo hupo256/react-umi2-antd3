@@ -92,7 +92,7 @@ export default function TagsEdit(props) {
     if (val?.length > 14) {
       rec.vaStatus = 'error';
       rec.errMsg = '最多14个字符';
-      val = val.substr(0, 14);
+      // val = val.substr(0, 14);
     }
     rec.desc = val;
     forUpdatePageData();
