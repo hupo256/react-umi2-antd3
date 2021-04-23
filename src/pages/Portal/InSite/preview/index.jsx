@@ -57,9 +57,15 @@ export default function Preview(props) {
   const contentBox = useRef();
 
   useEffect(() => {
-    touchThemes();
     touchPageData();
   }, []);
+
+  useEffect(
+    () => {
+      touchThemes();
+    },
+    [pageData]
+  );
 
   useEffect(() => {
     contentBox.current.addEventListener('scroll', conScroll);

@@ -23,7 +23,6 @@ function Home(props) {
   useEffect(() => {
     const code = localStorage.getItem('auth');
     const saasSellerCode = JSON.parse(code).companyCode;
-    // getAuthInfo({ saasSellerCode: 'C201asdfas1002' }).then(res => {
     getAuthInfo({ saasSellerCode }).then(res => {
       const { data } = res;
       if (!data) return;

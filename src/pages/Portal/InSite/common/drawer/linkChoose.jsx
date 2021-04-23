@@ -7,8 +7,8 @@
  */
 import React, { useState, useEffect, useContext } from 'react';
 import { ctx } from '../context';
-import { LinkType, apiMap } from '../../tools/data';
-import mktApi from '@/services/mktActivity';
+import { LinkType } from '../../tools/data';
+import { queryHomePageData } from '@/services/miniProgram';
 import { Form, Modal, Select, AutoComplete } from 'antd';
 
 const { Item } = Form;
@@ -29,39 +29,34 @@ function LinkChoose(props) {
   const [curKey, setcurKey] = useState('');
   const [total, settotal] = useState(0);
 
+  useEffect(
+    () => {
+      const curItem = dList[curInd];
+      // console.log(curInd);
+      // const {uid, type} = curItem
+      setFieldsValue(curItem);
+    },
+    [curInd]
+  );
+
   function typeSelect(val) {
-    const key = apiMap[val];
-    setcurKey(key);
-    touchItems(key);
+    setcurKey(val);
+    touchItems(val);
   }
 
   function touchItems(key, config) {
     const param = {
       pageNum: 1,
       pageSize: 10,
-      status: 1,
-      specialStatus: 1,
-      gongdiStatus: 0,
+      type: key,
     };
-    mktApi[key]({ ...param, ...config }).then(res => {
+    queryHomePageData({ ...param, ...config }).then(res => {
       console.log(res);
       if (!res?.data) return;
       const { data } = res;
       const arr = data?.list?.map(item => {
-        const {
-          specialTitle,
-          specialUid,
-          gongdiTitle,
-          gongdiUid,
-          title,
-          uid,
-          name,
-          activityTitle,
-        } = item;
-        return {
-          name: specialTitle || gongdiTitle || title || name || activityTitle,
-          value: specialUid || gongdiUid || uid,
-        };
+        const { homePageUid, homePageTitle } = item;
+        return { name: homePageTitle, value: homePageUid };
       });
       setitemList(arr);
       settotal(data.recordTotal);
