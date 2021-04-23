@@ -7,7 +7,7 @@
  */
 import React, { useState, useEffect, useContext } from 'react';
 import { ctx } from '../common/context';
-import { defaultGoods, girdGoods, prizeImg, tipsTable } from '../tools/data';
+import { defaultGoods, girdGoods, prizeImg, tipsTable, defaultImg } from '../tools/data';
 import { calcNumInArr, urlParamHash } from '../tools';
 import Upload from '@/components/Upload/Upload';
 import mktApi from '@/services/mktActivity';
@@ -35,7 +35,6 @@ export default function CreatGoods(props) {
   const [curInd, setcurInd] = useState(-1);
   const actType = newAct?.activityType || curActDate?.activityType || 1;
   const gsColumns = creatGoodsCol(curGoods?.length) || [];
-  console.log(actType);
 
   useEffect(() => {
     !isEdit && newAct?.activityType && touchgsList();
@@ -363,7 +362,7 @@ export default function CreatGoods(props) {
 
   function addNewImgs() {
     if (curGoods.length >= maxLen) return message.error(`最多可添加${maxLen}个奖项哦`);
-    setcurGoods([...curGoods, {}]);
+    setcurGoods([...curGoods, { prizeImage: `${defaultImg}ic_Image.png` }]);
   }
 
   return (

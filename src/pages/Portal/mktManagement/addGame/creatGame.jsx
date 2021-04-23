@@ -30,14 +30,18 @@ const formTailLayout = {
 
 function AddNewGoods(props) {
   const {
-    form: { validateFields, getFieldDecorator, setFieldsValue, getFieldsValue },
+    form: { validateFields, getFieldDecorator, setFieldsValue, getFieldsValue, resetFields },
     isEdit,
   } = props;
-  const { setstepNum, stepNum, setnewAct, newAct, curActDate } = useContext(ctx);
+  const { setstepNum, setnewAct, newAct, curActDate } = useContext(ctx);
   const [typeOpts, settypeOpts] = useState([]);
   const [curType, setcurType] = useState(1);
   const [formDatas, setformDatas] = useState({});
   const [initSubTit, setinitSubTit] = useState('');
+
+  useEffect(() => {
+    newAct && setFieldsValue(newAct);
+  }, []);
 
   useEffect(
     () => {
@@ -53,18 +57,12 @@ function AddNewGoods(props) {
     [curActDate]
   );
 
-  // useEffect(
-  //   () => {
-  //     stepNum === 0 && setFieldsValue(newAct);
-  //   },
-  //   [stepNum]
-  // );
-
   useEffect(
     () => {
       let tit = '幸运大转盘';
       curType === 2 && (tit = '幸运砸金蛋');
       curType === 3 && (tit = '幸运跑马灯');
+      // resetFields();
       setinitSubTit(tit);
     },
     [curType]
@@ -169,7 +167,19 @@ function AddNewGoods(props) {
   function onRadioChange(e) {
     const val = e.target.value;
     setformDatas({ ...formDatas, [curType]: getFieldsValue() }); //切换前先存一下
-    setFieldsValue(formDatas[val]); // 刷新form数据
+
+    const emptyData = {
+      // activityType,
+      // activityTitle,
+      // activitySubtitle:,
+      activityTime: [],
+      activityJoinNum: 1,
+      activityJoinType: 1,
+      activityRule: '',
+      actvityConvertRule: '',
+    };
+    const formVals = formDatas?.[val] ? formDatas[val] : emptyData;
+    setFieldsValue(formVals); // 刷新form数据
     setcurType(val); // 刷新当前的type
   }
 
