@@ -59,7 +59,12 @@ export default [
           },
         ],
       },
-
+      {
+        path: '/Websetting',
+        icon: 'dashboard',
+            // code: 'MU90000001',
+        component: './WebSetting/index'
+      },
       // v2.0
       // 门户
       // {

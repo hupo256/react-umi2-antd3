@@ -1,0 +1,130 @@
+:global {
+  .Websetting_ContentTabs {
+    background-color: #fff; //设置颜色
+    height: 100%;
+    .ant-tabs-nav-animated{
+        margin-top: 40px;
+        width: 200px !important;
+        .ant-tabs-ink-bar{
+            background-color: #1890ff;
+        }
+        .ant-tabs-tab{
+            text-align: left;
+            font-size: 16px;
+            &:hover{
+                color: rgba(78, 143, 247, 100);
+            }
+        }
+        .ant-tabs-tab-active{
+            background-color: rgba(233, 247, 252, 100);
+            color: rgba(78, 143, 247, 100);
+        }
+    }
+    .ant-tabs-left-content {
+      padding: 31px 30px 0;
+    }
+    .ant-radio-checked {
+      .ant-radio-inner {
+        border-color: #1890ff;
+        &::after {
+          background-color: #1890ff;
+        }
+      }
+    }
+    .ant-radio-input:focus + .ant-radio-inner {
+      box-shadow: none;
+    }
+    .ant-radio:hover {
+      .ant-radio-inner {
+        border-color: #1890ff;
+      }
+    }
+    .hostBindRadio {
+      margin-bottom: 10px;
+    }
+    .hostBindSecondTitle {
+      color: rgba(102, 102, 102, 100);
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+    .customHostInput {
+      width: 400px;
+      height: 30px;
+      text-align: left;
+      border: 1px solid rgba(187, 187, 187, 100);
+      margin-right: 10px;
+    }
+    .customHostBind {
+      width: 100px;
+      height: 30px;
+      line-height: 20px;
+      border-radius: 3px;
+      background-color: rgba(255, 255, 255, 100);
+      color: rgba(93, 93, 93, 100);
+      font-size: 14px;
+      text-align: center;
+      font-family: Roboto;
+      border: 1px solid rgba(217, 217, 217, 100);
+      padding: 0;
+      margin-top: 44px;
+      i {
+        font-size: 12px;
+      }
+    }
+    .customHostWire {
+      width: 100%;
+      height: 0;
+      border-top: 1px solid rgba(187, 187, 187, 40);
+      margin: 0 0 20px;
+    }
+    .customHostText {
+      color: rgba(102, 102, 102, 100);
+      font-size: 14px;
+      text-align: left;
+      margin-bottom: 20px;
+    }
+    .customHostA {
+      width: 200px;
+      height: 46px;
+      line-height: 29px;
+      border-radius: 3px;
+      background-color: rgba(24, 144, 255, 100);
+      color: rgba(255, 255, 255, 100);
+      font-size: 20px;
+      text-align: center;
+    }
+    .defaultHostInput {
+      width: 200px;
+      height: 30px;
+      color: rgba(136, 136, 136, 100);
+      font-size: 14px;
+      text-align: left;
+      border: 1px solid rgba(187, 187, 187, 100);
+      margin: 0 10px 10px 0;
+    }
+    .defaultHostCopyDiv {
+    //   width: 48px;
+      height: 18px;
+      text-align: left;
+      margin-bottom: 20px;
+      color: rgba(51, 51, 51, 100);
+      font-size: 12px;
+      line-height: 18px;
+      cursor: pointer;
+      i {
+        margin-right: 5px;
+        font-size: 16px;
+      }
+    }
+    .defaultHostButton {
+      width: 80px;
+      height: 30px;
+      line-height: 23px;
+      border-radius: 3px;
+      background-color: rgba(24, 144, 255, 100);
+      color: rgba(255, 255, 255, 100);
+      font-size: 16px;
+      text-align: center;
+    }
+  }
+}
