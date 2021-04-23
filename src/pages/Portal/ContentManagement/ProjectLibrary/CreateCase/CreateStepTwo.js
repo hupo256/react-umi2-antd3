@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-19 16:04:32
+ * @Last Modified time: 2021-04-23 18:27:09
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -209,7 +209,7 @@ class CreateStepTwo extends PureComponent {
               <div className={styles.iframe}>
                 <iframe
                   src={dataPre && dataPre.specialUrl}
-                  width="336"
+                  width="375"
                   height="600"
                   frameborder="no"
                   border="0"
@@ -265,22 +265,23 @@ class CreateStepTwo extends PureComponent {
     let searchText = (searchWord && searchWord.substring(0, 30)) || '';
     dispatch({
       type: 'ProjectLibrary/pageListModels',
-      payload: { pageNum: 1, pageSize: 10, searchText },
+      payload: { pageNum: 1, pageSize: 10, searchText, specialStatus: 1 },
     });
   }
   handleTableChange = pagination => {
-    console.log(pagination);
     const { dispatch } = this.props;
+    const { searchWord } = this.state;
+    let searchText = (searchWord && searchWord.substring(0, 30)) || '';
     dispatch({
       type: 'ProjectLibrary/pageListModels',
-      payload: { pageNum: pagination, pageSize: 10 },
+      payload: { pageNum: pagination, pageSize: 10, specialStatus: 1, searchText },
     });
   };
   getList = () => {
     const { dispatch } = this.props;
     dispatch({
       type: 'ProjectLibrary/pageListModels',
-      payload: { pageNum: 1, pageSize: 10 },
+      payload: { pageNum: 1, pageSize: 10, specialStatus: 1 },
     });
   };
 }
