@@ -76,15 +76,16 @@ function AddNewGoods(props) {
       endTime,
     } = curActDate;
     const activityTime = [moment(startTime), moment(endTime)];
+
     setFieldsValue({
       activityType,
       activityTitle,
       activitySubtitle,
       activityTime,
-      actvityConvertRule,
-      activityRule,
       activityJoinNum,
       activityJoinType,
+      activityRule: htmlToStr(activityRule),
+      actvityConvertRule: htmlToStr(actvityConvertRule),
     });
   }
 
@@ -116,9 +117,14 @@ function AddNewGoods(props) {
     };
   }
 
+  function htmlToStr(str = '') {
+    str = str.replace(/<br\/>/g, '\r\n'); //IE9、FF、chrome
+    str = str.replace(/&nbsp;/g, 's'); //空格处理
+    return str;
+  }
+
   function strToHtml(str = '') {
     str = str.replace(/\r\n/g, '<br/>'); //IE9、FF、chrome
-    str = str.replace(/\n/g, '<br/>'); //IE7-8
     str = str.replace(/\s/g, '&nbsp;'); //空格处理
     return str;
   }
