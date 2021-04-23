@@ -33,7 +33,7 @@ function AddNewGoods(props) {
     form: { validateFields, getFieldDecorator, setFieldsValue, getFieldsValue },
     isEdit,
   } = props;
-  const { setstepNum, setnewAct, curActDate } = useContext(ctx);
+  const { setstepNum, stepNum, setnewAct, newAct, curActDate } = useContext(ctx);
   const [typeOpts, settypeOpts] = useState([]);
   const [curType, setcurType] = useState(1);
   const [formDatas, setformDatas] = useState({});
@@ -52,6 +52,13 @@ function AddNewGoods(props) {
     },
     [curActDate]
   );
+
+  // useEffect(
+  //   () => {
+  //     stepNum === 0 && setFieldsValue(newAct);
+  //   },
+  //   [stepNum]
+  // );
 
   useEffect(
     () => {
@@ -160,7 +167,7 @@ function AddNewGoods(props) {
   function onRadioChange(e) {
     const val = e.target.value;
     setformDatas({ ...formDatas, [curType]: getFieldsValue() }); //切换前先存一下
-    setFieldsValue(formDatas[val]); // 刷新form
+    setFieldsValue(formDatas[val]); // 刷新form数据
     setcurType(val); // 刷新当前的type
   }
 

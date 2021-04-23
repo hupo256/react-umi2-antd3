@@ -34,6 +34,7 @@ function LinkChoose(props) {
       if (dList?.[curInd]) {
         const { title = '', text = '', type = '', uid = '' } = dList[curInd];
         const pName = curFlag === 'highlights' ? text : title;
+        setcurKey(type);
         setitemList([{ name: pName, value: uid }]);
         setFieldsValue({ type, uid: `${pName}_${uid}` });
       }
