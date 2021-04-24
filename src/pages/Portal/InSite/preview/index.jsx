@@ -64,7 +64,7 @@ export default function Preview(props) {
     () => {
       touchThemes();
     },
-    [pageData]
+    [templateCode]
   );
 
   useEffect(() => {

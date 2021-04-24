@@ -65,23 +65,22 @@ export default function TagsEdit(props) {
 
   function discTexBlur(e, rec) {
     const val = e?.target?.value;
-    if (val) {
-      rec.vaStatus = 'success';
-      rec.errMsg = '';
+    if (val?.length <= 14) {
+      rec.desStatus = 'success';
+      rec.desMsg = '';
     }
   }
 
   function tagsTexChange(e, rec) {
     let val = e.target.value;
-    if (val) {
-      rec.vaStatus = 'success';
-      rec.errMsg = '';
-    }
     if (val?.length > 6) {
       rec.vaStatus = 'error';
       rec.errMsg = '最多6个字符';
       // return;
       // val = val.substr(0, 6);
+    } else {
+      rec.vaStatus = 'success';
+      rec.errMsg = '';
     }
     rec.title = val;
     forUpdatePageData();
@@ -90,8 +89,8 @@ export default function TagsEdit(props) {
   function discTexChange(e, rec) {
     let val = e.target.value;
     if (val?.length > 14) {
-      rec.vaStatus = 'error';
-      rec.errMsg = '最多14个字符';
+      rec.desStatus = 'error';
+      rec.desMsg = '最多14个字符';
       // val = val.substr(0, 14);
     }
     rec.desc = val;
@@ -103,7 +102,15 @@ export default function TagsEdit(props) {
       <ul>
         {tagList?.length > 0 &&
           tagList.map((tag, ind) => {
-            const { title, desc, vaStatus = 'success', errMsg = '', text = '' } = tag;
+            const {
+              title,
+              desc,
+              vaStatus = 'success',
+              errMsg = '',
+              desStatus = 'success',
+              desMsg = '',
+              text = '',
+            } = tag;
             const len = tagList.length;
             return (
               <li key={ind}>
@@ -131,14 +138,24 @@ export default function TagsEdit(props) {
                         placeholder="请输入主标题"
                       />
                     </Item>
+
+                    <Item validateStatus={desStatus} help={desMsg}>
+                      <Input
+                        value={desc}
+                        maxLength={14}
+                        // onBlur={e => discTexBlur(e, tag)}
+                        onChange={e => discTexChange(e, tag)}
+                        placeholder="请输入副文本"
+                      />
+                    </Item>
                   </Form>
-                  <Input
+                  {/* <Input
                     value={desc}
                     maxLength={14}
                     onBlur={e => discTexBlur(e, tag)}
                     onChange={e => discTexChange(e, tag)}
                     placeholder="请输入副文本"
-                  />
+                  /> */}
                   <Input
                     value={text}
                     placeholder="请设置跳转链接"

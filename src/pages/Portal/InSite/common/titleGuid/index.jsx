@@ -6,17 +6,18 @@
  * 移动端首页 公用头部
  */
 import React, { useContext, useState } from 'react';
-import { Button, message, Popover, Icon } from 'antd';
+import { Button, message, Modal } from 'antd';
 import router from 'umi/router';
 import { baseRouteKey } from '../../tools/data';
 import { ctx } from '../context';
 import { updateHomePageEditData, publishEditData } from '@/services/miniProgram';
 import styles from './titleGuid.less';
 
+const { confirm } = Modal;
+
 export default function TitleGuid(props) {
   const { title = '标题', disc, isEdit } = props;
   const { pageData, setcurFlag, templateCode, templateName, touchPageData } = useContext(ctx);
-  const [show, setshow] = useState(false);
 
   function toPublich() {
     console.log(pageData);
@@ -38,27 +39,18 @@ export default function TitleGuid(props) {
     });
   }
 
-  function cancelData() {
-    console.log(router);
-    router.go(-1);
+  function showConfirm() {
+    confirm({
+      title: '确认要放弃更改吗？',
+      content: '放弃更改后，将不保留当前编辑的内容',
+      onOk() {
+        router.go(-1);
+      },
+      onCancel() {
+        console.log('onCancel');
+      },
+    });
   }
-
-  const ConPopOver = () => {
-    return (
-      <>
-        <p>
-          <Icon type="exclamation-circle" style={{ color: '#ff8e59' }} />
-          放弃更改后将不保留当前编辑的内容，确定放弃吗？
-        </p>
-        <p className={styles.popBtns}>
-          <Button onClick={() => setshow(false)}>取消</Button>
-          <Button type="primary" onClick={cancelData}>
-            确定
-          </Button>
-        </p>
-      </>
-    );
-  };
 
   return (
     <div className={styles.guidBox}>
@@ -66,15 +58,7 @@ export default function TitleGuid(props) {
         <span>{title}</span>
         {isEdit && (
           <div className={styles.btnBox}>
-            <Popover
-              content={<ConPopOver />}
-              trigger="click"
-              visible={show}
-              placement="topRight"
-              onVisibleChange={e => setshow(e)}
-            >
-              <Button onClick={() => setshow(true)}>放弃更改</Button>
-            </Popover>
+            <Button onClick={showConfirm}>放弃更改</Button>
             <Button onClick={toPublich} type="primary">
               发布
             </Button>

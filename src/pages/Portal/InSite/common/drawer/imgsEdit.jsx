@@ -85,13 +85,13 @@ export default function TagsEdit(props) {
   function radioChage(e) {
     const { value } = e.target;
     const newObj = { ...pageData };
-    if (value === 1) newObj.jsonData[0].height = 176;
+    if (value === 1) newObj.maps[curFlag].height = 176;
     setimgHeightType(value);
   }
 
   function widthChange(e) {
     const newObj = { ...pageData };
-    newObj.jsonData[0].height = +e;
+    newObj.maps[curFlag].height = +e;
     setpageData(newObj);
   }
 

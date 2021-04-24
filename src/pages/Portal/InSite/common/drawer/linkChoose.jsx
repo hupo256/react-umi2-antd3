@@ -133,6 +133,7 @@ function LinkChoose(props) {
               filterOption={(val, opt) => opt?.props?.children.includes(val)}
               placeholder="可输入关键字进行检索"
               onDropdownVisibleChange={getMoreList}
+              onChange={getMoreList}
               getPopupContainer={n => n.parentNode}
             >
               {itemList?.map(item => {

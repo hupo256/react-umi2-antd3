@@ -74,18 +74,22 @@
         form {
           display: inline-block;
           vertical-align: top;
-          // margin: 4px 0;
-        }
-        form {
-          width: 38%;
-        }
-        input:nth-child(2) {
-          width: 62%;
         }
         input:nth-child(3) {
           width: 100%;
         }
         :global {
+          .ant-form-inline {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            > div:nth-child(1) {
+              width: 38%;
+            }
+            > div:nth-child(2) {
+              width: 61%;
+            }
+          }
           .ant-form-item-with-help {
             margin-bottom: 5px;
           }

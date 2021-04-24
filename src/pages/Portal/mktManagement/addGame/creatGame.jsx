@@ -211,7 +211,7 @@ function AddNewGoods(props) {
             initialValue: initSubTit,
             rules: [
               { required: true, message: '请填写游戏标题' },
-              { max: 15, message: '最多输入15个字符' },
+              { max: 8, message: '最多输入8个字符' },
             ],
           })(<Input placeholder="游戏标题" style={{ width: 410 }} />)}
         </Item>
@@ -255,7 +255,7 @@ function AddNewGoods(props) {
           {getFieldDecorator('activityJoinNum', {
             initialValue: 1,
             rules: [{ required: true, message: '请填写参与次数' }],
-          })(<InputNumber min={1} step={1} precision={0} style={{ width: 150 }} />)}
+          })(<InputNumber min={1} max={9999} step={1} precision={0} style={{ width: 150 }} />)}
           <span style={{ paddingLeft: '.5em' }}>次</span>
         </Item>
         <Item label="规则说明">

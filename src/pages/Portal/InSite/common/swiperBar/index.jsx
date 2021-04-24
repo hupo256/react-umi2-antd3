@@ -19,7 +19,7 @@ import pageStyle from '../../preview/preview.less';
 SwiperCore.use([Pagination, Scrollbar, Virtual, Autoplay]);
 
 export default function SwiperBar(props) {
-  const { list, height = 170 } = props;
+  const { list, height = 176 } = props;
   return (
     <>
       {list?.length > 0 ? (

@@ -362,7 +362,7 @@ export default function CreatGoods(props) {
 
   function addNewImgs() {
     if (curGoods.length >= maxLen) return message.error(`最多可添加${maxLen}个奖项哦`);
-    setcurGoods([...curGoods, { prizeImage: `${defaultImg}ic_Image.png` }]);
+    setcurGoods([...curGoods, { prizeImage: `${prizeImg}6@2x.png` }]);
   }
 
   return (
