@@ -125,6 +125,7 @@ function AddNewGoods(props) {
   function htmlToStr(str = '') {
     if (!str) return;
     str = str.replace(/<br\/>/g, '\r\n'); //IE9、FF、chrome
+    str = str.replace(/<br\/>/g, '\n'); //IE9
     str = str.replace(/&nbsp;/g, 's'); //空格处理
     return str;
   }
@@ -132,6 +133,7 @@ function AddNewGoods(props) {
   function strToHtml(str = '') {
     if (!str) return;
     str = str.replace(/\r\n/g, '<br/>'); //IE9、FF、chrome
+    str = str.replace(/\n/g, '<br/>'); //IE9
     str = str.replace(/\s/g, '&nbsp;'); //空格处理
     return str;
   }
