@@ -39,7 +39,7 @@ function LinkChoose(props) {
         setFieldsValue({ type, uid: `${pName}_${uid}` });
       }
     },
-    [curInd]
+    [linkEdtor]
   );
 
   function typeSelect(val) {
@@ -104,7 +104,7 @@ function LinkChoose(props) {
     <Modal
       title="设置跳转链接"
       visible={linkEdtor}
-      // destroyOnClose={true}
+      destroyOnClose={true}
       onOk={getItemInfor}
       onCancel={() => setlinkEdtor(false)}
     >
