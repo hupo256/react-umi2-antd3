@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-23 18:27:09
+ * @Last Modified time: 2021-04-24 17:38:06
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -141,7 +141,8 @@ class CreateStepTwo extends PureComponent {
           </div>
           <Button
             onClick={() => {
-              router.push(`/portal/contentmanagement/ProjectLibrary/edit?uid=${specialUid}`);
+              //router.push(`/portal/contentmanagement/ProjectLibrary/edit?uid=${specialUid}`);
+              this.props.handleOk();
             }}
           >
             上一步

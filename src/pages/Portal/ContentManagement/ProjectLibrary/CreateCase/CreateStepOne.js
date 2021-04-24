@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-23 18:24:03
+ * @Last Modified time: 2021-04-24 17:37:17
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -23,9 +23,12 @@ class CreateStepOne extends PureComponent {
 
   componentDidMount() {
     const { specialCoverImg } = this.state;
-    const activeKey = getQueryUrlVal('uid');
+    const {
+      ProjectLibrary: { specialUid },
+      dispatch,
+    } = this.props;
+    const activeKey = getQueryUrlVal('uid') || specialUid;
     if (activeKey) {
-      const { dispatch } = this.props;
       dispatch({
         type: 'ProjectLibrary/specialGetModel',
         payload: {
@@ -69,7 +72,6 @@ class CreateStepOne extends PureComponent {
       ProjectLibrary: { collocationDetail },
     } = this.props;
     const { specialCoverImg, istrue } = this.state;
-    console.log(specialCoverImg);
     const activeKey = getQueryUrlVal('uid');
     return (
       <div style={{ paddingTop: 20 }}>
@@ -175,7 +177,11 @@ class CreateStepOne extends PureComponent {
     }
   };
   handleSubmit = e => {
-    const activeKey = getQueryUrlVal('uid');
+    const {
+      dispatch,
+      ProjectLibrary: { specialUid },
+    } = this.props;
+    const activeKey = getQueryUrlVal('uid') || specialUid;
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (err) throw err;
@@ -185,7 +191,7 @@ class CreateStepOne extends PureComponent {
       values.specialDescription = values.specialDescription ? values.specialDescription : '';
 
       if (activeKey) {
-        values.specialUid = getQueryUrlVal('uid');
+        values.specialUid = getQueryUrlVal('uid') || specialUid;
         dispatch({
           type: 'ProjectLibrary/specialModifyModel',
           payload: {
@@ -193,8 +199,12 @@ class CreateStepOne extends PureComponent {
           },
         }).then(res => {
           if (res && res.code === 200) {
-            router.push('/portal/contentmanagement/ProjectLibrary');
-            message.success('保存成功');
+            if (getQueryUrlVal('uid')) {
+              router.push('/portal/contentmanagement/ProjectLibrary');
+              message.success('保存成功');
+            } else {
+              this.props.handleOk();
+            }
           }
         });
       } else {
