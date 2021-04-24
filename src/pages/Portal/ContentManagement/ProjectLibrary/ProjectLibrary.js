@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-09 18:23:51
+ * @Last Modified time: 2021-04-24 15:37:23
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -78,8 +78,11 @@ class ProjectLibrary extends PureComponent {
     const {
       ProjectLibrary: { fromData },
     } = this.props;
-    let value = [];
-    value.push(fromData.specialStatus);
+    let value = [''];
+    if (fromData.specialStatus && fromData.specialStatus !== '') {
+      value = [fromData.specialStatus];
+    }
+
     return (
       <div className={styles.wrap}>
         <Search
