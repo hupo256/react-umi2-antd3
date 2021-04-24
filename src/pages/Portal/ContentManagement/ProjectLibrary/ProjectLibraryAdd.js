@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-19 16:05:18
+ * @Last Modified time: 2021-04-24 17:34:43
  * 专题库
  */
 import React, { PureComponent } from 'react';
@@ -27,6 +27,16 @@ class ProjectLibrary extends PureComponent {
   }
 
   componentDidMount() {}
+  componentWillUnmount() {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'ProjectLibrary/saveDataModel',
+      payload: {
+        key: 'specialUid',
+        value: '',
+      },
+    });
+  }
   render() {
     const {
       ProjectLibrary: { status },
@@ -51,7 +61,7 @@ class ProjectLibrary extends PureComponent {
               <Step title="完成" />
             </Steps>
             {setp == 0 && <CreateStepOne handleOk={() => this.handleOk(1)} />}
-            {setp == 1 && <CreateStepTwo />}
+            {setp == 1 && <CreateStepTwo handleOk={() => this.handleOk(0)} />}
             {setp == 2 && <CreateStepThree />}
           </Card>
         </PageHeaderWrapper>
