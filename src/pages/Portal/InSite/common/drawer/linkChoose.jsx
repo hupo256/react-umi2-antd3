@@ -91,7 +91,13 @@ function LinkChoose(props) {
   }
 
   function getMoreList(open) {
-    open && touchItems(curKey, { pageSize: total });
+    // open && touchItems(curKey, { pageSize: total });
+    open && autoChange();
+  }
+
+  function autoChange() {
+    const param = total ? { pageSize: total } : {};
+    touchItems(curKey, param);
   }
 
   return (
@@ -133,7 +139,8 @@ function LinkChoose(props) {
               filterOption={(val, opt) => opt?.props?.children.includes(val)}
               placeholder="可输入关键字进行检索"
               onDropdownVisibleChange={getMoreList}
-              onChange={getMoreList}
+              onChange={autoChange}
+              onFocus={autoChange}
               getPopupContainer={n => n.parentNode}
             >
               {itemList?.map(item => {
