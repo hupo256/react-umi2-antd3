@@ -8,6 +8,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import SwiperCore, { Pagination, Virtual, Scrollbar, Autoplay } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { defaultImg } from '../../tools/data';
 
 import 'swiper/swiper.less';
 import 'swiper/components/pagination/pagination.less';
@@ -37,9 +38,19 @@ export default function SwiperBar(props) {
             loop={true} // 是否循环
           >
             {list.map((img, ind) => {
+              const { imgUrl } = img;
               return (
                 <SwiperSlide key={ind}>
-                  <img src={img.imgUrl} alt="ban" />
+                  {imgUrl ? (
+                    <img src={imgUrl} alt="" />
+                  ) : (
+                    <div className="deftImg">
+                      <div>
+                        <img src={`${defaultImg}ic_Image.png`} alt="" />
+                        <p>请在右侧上传图片</p>
+                      </div>
+                    </div>
+                  )}
                 </SwiperSlide>
               );
             })}

@@ -46,6 +46,7 @@ export function Provider({ children }) {
       const { editTemplateCode, editTemplateJson } = res.data;
       setpageData(addMapToData(editTemplateJson));
       settemplateCode(editTemplateCode);
+      settemplateName(editTemplateJson.templateName);
     });
   }
 

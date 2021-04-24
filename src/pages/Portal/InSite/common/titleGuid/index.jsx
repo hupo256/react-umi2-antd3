@@ -17,7 +17,7 @@ const { confirm } = Modal;
 
 export default function TitleGuid(props) {
   const { title = '标题', disc, isEdit } = props;
-  const { pageData, setcurFlag, templateCode, templateName, touchPageData } = useContext(ctx);
+  const { pageData, setcurFlag, templateCode, templateName } = useContext(ctx);
 
   function toPublich() {
     console.log(pageData);
