@@ -62,7 +62,6 @@ function AddNewGoods(props) {
       let tit = '幸运大转盘';
       curType === 2 && (tit = '幸运砸金蛋');
       curType === 3 && (tit = '幸运跑马灯');
-      // resetFields();
       setinitSubTit(tit);
     },
     [curType]
@@ -170,16 +169,21 @@ function AddNewGoods(props) {
     const val = e.target.value;
     setformDatas({ ...formDatas, [curType]: getFieldsValue() }); //切换前先存一下
 
+    let tit = '幸运大转盘';
+    val === 2 && (tit = '幸运砸金蛋');
+    val === 3 && (tit = '幸运跑马灯');
+
     const emptyData = {
       // activityType,
-      // activityTitle,
-      // activitySubtitle:,
+      activityTitle: tit,
+      activitySubtitle: '-好运连连，点击GO开启好运-',
       activityTime: [],
       activityJoinNum: 1,
       activityJoinType: 1,
       activityRule: '',
       actvityConvertRule: '',
     };
+    // formDatas?.[val] 为空表示第一次出现，则置空
     const formVals = formDatas?.[val] ? formDatas[val] : emptyData;
     setFieldsValue(formVals); // 刷新form数据
     setcurType(val); // 刷新当前的type
