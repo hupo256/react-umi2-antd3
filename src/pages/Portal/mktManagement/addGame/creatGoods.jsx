@@ -30,7 +30,9 @@ const { Item } = Form;
 
 export default function CreatGoods(props) {
   const { isEdit } = props;
-  const { newAct, setnewUrl, setstepNum, curGoods, curActDate, setcurGoods } = useContext(ctx);
+  const { newAct, setnewUrl, setstepNum, curGoods, curActDate, setcurGoods, stepNum } = useContext(
+    ctx
+  );
   const [imgEdtor, setimgEdtor] = useState(false);
   const [curInd, setcurInd] = useState(-1);
   const actType = newAct?.activityType || curActDate?.activityType || 1;
@@ -39,6 +41,13 @@ export default function CreatGoods(props) {
   useEffect(() => {
     !isEdit && newAct?.activityType && touchgsList();
   }, []);
+
+  useEffect(
+    () => {
+      curGoods.length > 0 && setcurGoods(curGoods.slice());
+    },
+    [stepNum]
+  );
 
   // 获取奖品们
   function touchgsList() {
@@ -75,7 +84,7 @@ export default function CreatGoods(props) {
     setcurGoods(arr.slice());
   }
 
-  // input值变化时更新数据
+  // 奖项数量值变化时更新数据
   function inpChange(e, key, rec) {
     const val = e?.target ? e.target?.value : e;
     const statusKey = `${key}Status`;
