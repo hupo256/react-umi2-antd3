@@ -87,6 +87,7 @@ export default function TagsEdit(props) {
     const newObj = { ...pageData };
     if (value === 1) newObj.maps[curFlag].height = 176;
     setimgHeightType(value);
+    setpageData(newObj);
   }
 
   function widthChange(e) {

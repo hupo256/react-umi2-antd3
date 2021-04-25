@@ -46,7 +46,7 @@ function Home(props) {
         <TitleGuid title={templateName || pageData.templateName || '模板名称'} />
         {authorInf && (
           <>
-            {!authorInf.isAuthedWechatMini ? (
+            {authorInf.isAuthedWechatMini ? (
               <Preview from="home" />
             ) : (
               <NotBound jumpUrl={`${origin}/#${baseRouteKey}home`} />

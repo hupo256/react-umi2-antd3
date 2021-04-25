@@ -77,7 +77,7 @@ export default [
               },
               {
                 path: '/portal/insite/decorate/home', // 接下来，path,name/PageHeaderName, component三要素常规配置
-                PageHeaderName: '当前模板',
+                // PageHeaderName: '当前模板',
                 component: './Portal/InSite/home',
               },
               {

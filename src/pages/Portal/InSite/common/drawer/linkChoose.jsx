@@ -91,7 +91,6 @@ function LinkChoose(props) {
   }
 
   function getMoreList(open) {
-    // open && touchItems(curKey, { pageSize: total });
     open && autoChange();
   }
 

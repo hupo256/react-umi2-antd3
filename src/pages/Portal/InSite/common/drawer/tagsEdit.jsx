@@ -92,6 +92,9 @@ export default function TagsEdit(props) {
       rec.desStatus = 'error';
       rec.desMsg = '最多14个字符';
       // val = val.substr(0, 14);
+    } else {
+      rec.desStatus = 'success';
+      rec.desMsg = '';
     }
     rec.desc = val;
     forUpdatePageData();
@@ -143,19 +146,12 @@ export default function TagsEdit(props) {
                       <Input
                         value={desc}
                         maxLength={14}
-                        // onBlur={e => discTexBlur(e, tag)}
+                        onBlur={e => discTexBlur(e, tag)}
                         onChange={e => discTexChange(e, tag)}
                         placeholder="请输入副文本"
                       />
                     </Item>
                   </Form>
-                  {/* <Input
-                    value={desc}
-                    maxLength={14}
-                    onBlur={e => discTexBlur(e, tag)}
-                    onChange={e => discTexChange(e, tag)}
-                    placeholder="请输入副文本"
-                  /> */}
                   <Input
                     value={text}
                     placeholder="请设置跳转链接"
