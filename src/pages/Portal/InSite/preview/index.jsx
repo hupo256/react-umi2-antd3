@@ -8,7 +8,6 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import router from 'umi/router';
 import { ctx } from '../common/context';
-import { Button } from 'antd';
 import { urlParamHash } from '../tools';
 import { baseRouteKey } from '../tools/data';
 import HoverMd from './components/hoverMd';
@@ -165,12 +164,12 @@ export default function Preview(props) {
 
         {from && (
           <div className={pageStyle.btnbox}>
-            <Button onClick={() => gotoRoute(`edit?templateCode=${curTheme}`)} type="primary">
+            <a onClick={() => gotoRoute(`edit?templateCode=${curTheme}`)} type="primary">
               继续编辑
-            </Button>
-            <Button onClick={() => gotoRoute(`templates?tochange=1`)} type="primary" ghost>
+            </a>
+            <a onClick={() => gotoRoute(`templates?tochange=1`)} type="primary" ghost>
               更换模板
-            </Button>
+            </a>
           </div>
         )}
       </div>

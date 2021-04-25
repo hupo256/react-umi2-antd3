@@ -5,8 +5,8 @@
 @picturePath: 'https://img.inbase.in-deco.com/crm-saas/img/highlights/';
 
 .phoneOut {
-  border: 1px solid #c00;
-  height: 110vh;
+  // border: 1px solid #c00;
+  height: 80vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -14,11 +14,13 @@
 .phoneBox {
   width: 375px;
   height: 718px;
+  // height: 200px;
+  // overflow: hidden;
   position: relative;
   background: #fff;
 
   &.min {
-    transform-origin: 50% 0;
+    transform-origin: 50% 50%;
     transform: scale3d(0.8, 0.8, 1);
     background: url(https://img.inbase.in-deco.com/crm-saas/img/dflfwc/phone.png) no-repeat;
     background-size: contain;
@@ -559,11 +561,26 @@
 }
 
 .btnbox {
-  margin: -9.5em auto 0;
-  // padding: 1em 0;
   text-align: center;
-  button {
-    margin: 0 5px;
+  padding-top: 7em;
+
+  a {
+    display: inline-block;
+    margin: 0 10px;
+    font-size: 18px;
+    line-height: 40px;
+    width: 100px;
+    height: 40px;
+    background: #fff;
+    border-radius: 2px;
+  }
+  a:nth-child(1) {
+    background: rgba(255, 103, 0, 1);
+    color: #fff;
+  }
+  a:nth-child(2) {
+    color: rgba(255, 103, 0, 1);
+    border: 1px solid rgba(255, 103, 0, 1);
   }
 }
 

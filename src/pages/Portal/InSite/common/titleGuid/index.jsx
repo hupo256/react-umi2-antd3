@@ -8,7 +8,7 @@
 import React, { useContext, useState } from 'react';
 import { Button, message, Modal } from 'antd';
 import router from 'umi/router';
-import { baseRouteKey } from '../../tools/data';
+import { baseRouteKey, themes } from '../../tools/data';
 import { ctx } from '../context';
 import { updateHomePageEditData, publishEditData } from '@/services/miniProgram';
 import styles from './titleGuid.less';
@@ -21,8 +21,9 @@ export default function TitleGuid(props) {
 
   function toPublich() {
     console.log(pageData);
-    const { jsonData, themeData } = pageData;
+    let { jsonData, themeData } = pageData;
     const { customerService } = JSON.parse(localStorage.getItem('auth'));
+    themeData = themes[templateCode];
     const parmas = {
       editTemplateCode: templateCode,
       editTemplateJson: { jsonData, themeData, templateName, globalInfor: { customerService } },
@@ -34,7 +35,7 @@ export default function TitleGuid(props) {
           message.success('发布成功');
           setTimeout(() => {
             router.push(`${baseRouteKey}home`);
-          }, 1500);
+          }, 1000);
         });
     });
   }
