@@ -65,7 +65,7 @@ export default [
         path: '/portal/insite',
         name: 'insite',
         icon: 'dribbble',
-        // icon: 'web',
+        code: 'MU900000011002',
         routes: [
           {
             path: '/portal/insite/decorate', // 定义左侧菜单栏 与 CN文件相匹配
@@ -208,6 +208,7 @@ export default [
         path: '/portal/activity',
         name: 'activity',
         icon: 'smile',
+        code: 'MU90000004',
         routes: [
           {
             path: '/portal/activity/mktGame', // 定义左侧菜单栏 与 CN文件相匹配
@@ -216,11 +217,13 @@ export default [
               {
                 path: '/portal/activity/mktGame', // 入口文件，要用redirect作标记，这样路由刷新时才能正确匹配模块下的子路由们
                 redirect: '/portal/activity/mktGame/games',
+                code: 'MU900000040001',
               },
               {
                 path: '/portal/activity/mktGame/games', // 接下来，path,name/PageHeaderName, component三要素常规配置
                 // PageHeaderName: '营销小游戏',
                 component: './Portal/mktManagement/activity',
+                code: 'MU900000040001',
               },
               {
                 path: '/portal/activity/mktGame/editGame',

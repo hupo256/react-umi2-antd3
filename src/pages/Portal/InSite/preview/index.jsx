@@ -8,6 +8,7 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import router from 'umi/router';
 import { ctx } from '../common/context';
+import { getauth } from '@/utils/authority';
 import { urlParamHash } from '../tools';
 import { baseRouteKey } from '../tools/data';
 import HoverMd from './components/hoverMd';
@@ -20,6 +21,7 @@ import AdMd from './components/adMd';
 
 import './components/fontclass/iconfont.js';
 import pageStyle from './preview.less';
+const permissionsBtn = getauth().permissions || [];
 
 const componentMap = {
   banner: {
@@ -164,12 +166,16 @@ export default function Preview(props) {
 
         {from && (
           <div className={pageStyle.btnbox}>
-            <a onClick={() => gotoRoute(`edit?templateCode=${curTheme}`)} type="primary">
-              继续编辑
-            </a>
-            <a onClick={() => gotoRoute(`templates?tochange=1`)} type="primary" ghost>
-              更换模板
-            </a>
+            {permissionsBtn.includes('BTN210422000004') && (
+              <a onClick={() => gotoRoute(`edit?templateCode=${curTheme}`)} type="primary">
+                继续编辑
+              </a>
+            )}
+            {permissionsBtn.includes('BTN210422000005') && (
+              <a onClick={() => gotoRoute(`templates?tochange=1`)} type="primary" ghost>
+                更换模板
+              </a>
+            )}
           </div>
         )}
       </div>

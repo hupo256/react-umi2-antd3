@@ -11,10 +11,12 @@ import router from 'umi/router';
 import { baseRouteKey } from '../tools/data';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { Card, Button, Table, Input, Icon, message } from 'antd';
+import { getauth } from '@/utils/authority';
 import { actColumns, searchTags } from '../tools/data';
 import styles from './activity.less';
 
 const { Search } = Input;
+const permissionsBtn = getauth().permissions || [];
 
 export default function Activityer(props) {
   const [actList, setactList] = useState([]);
@@ -111,8 +113,12 @@ export default function Activityer(props) {
       width: 130,
       render: (text, record, index) => (
         <p className={styles.actions}>
-          <a onClick={() => toEdit(record.uid)}>编辑</a>|{' '}
-          <a onClick={() => toRecod(record.activityCode)}>抽奖记录</a>
+          {permissionsBtn.includes('BTN210422000002') && (
+            <a onClick={() => toEdit(record.uid)}>编辑</a>
+          )}{' '}
+          {permissionsBtn.includes('BTN210422000003') && (
+            <a onClick={() => toRecod(record.activityCode)}>抽奖记录</a>
+          )}
         </p>
       ),
     };
@@ -206,9 +212,11 @@ export default function Activityer(props) {
       </Card>
 
       <Card bordered={false}>
-        <Button className={styles.addBtn} onClick={addNew} type="primary">
-          创建小游戏
-        </Button>
+        {permissionsBtn.includes('BTN210326000033') && (
+          <Button className={styles.addBtn} onClick={addNew} type="primary">
+            创建小游戏
+          </Button>
+        )}
 
         <Table
           size="middle"
