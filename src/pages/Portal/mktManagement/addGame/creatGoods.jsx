@@ -7,7 +7,7 @@
  */
 import React, { useState, useEffect, useContext } from 'react';
 import { ctx } from '../common/context';
-import { defaultGoods, girdGoods, prizeImg, tipsTable, defaultImg } from '../tools/data';
+import { defaultGoods, girdGoods, prizeImg, tipsTable, btnInterval } from '../tools/data';
 import { calcNumInArr, urlParamHash } from '../tools';
 import Upload from '@/components/Upload/Upload';
 import mktApi from '@/services/mktActivity';
@@ -35,6 +35,8 @@ export default function CreatGoods(props) {
   );
   const [imgEdtor, setimgEdtor] = useState(false);
   const [curInd, setcurInd] = useState(-1);
+  const [isthrough, setisthrough] = useState(true);
+  const [btnLoading, setbtnLoading] = useState(false);
   const actType = newAct?.activityType || curActDate?.activityType || 1;
   const gsColumns = creatGoodsCol(curGoods?.length) || [];
 
@@ -110,6 +112,7 @@ export default function CreatGoods(props) {
       target.focus();
       rec.prizeNum = originNum; //赋原值
       setcurGoods(curGoods.slice());
+      setisthrough(false); // 校验没通过
     } else {
       const arr = calcNumInArr(curGoods);
       setcurGoods(arr.slice());
@@ -166,7 +169,7 @@ export default function CreatGoods(props) {
               <Item validateStatus={prizeNumStatus} help={prizeNumErrMsg}>
                 <InputNumber
                   precision={0}
-                  max={99999}
+                  max={9999}
                   min={1}
                   value={prizeNum}
                   onBlur={e => inpNumBlur(e, record)}
@@ -226,10 +229,8 @@ export default function CreatGoods(props) {
 
   // 点击复选
   function checkboxChange(e, ind) {
-    console.log(e);
     const { target } = e;
     curGoods[ind].isPrize = +target.checked;
-    console.log(curGoods);
     setcurGoods(curGoods.slice());
   }
 
@@ -323,23 +324,23 @@ export default function CreatGoods(props) {
       return gs;
     });
     setcurGoods(arr.slice());
-    // console.log
     return isEmpty.length > 0;
   }
 
   // 提交奖项
   function submitGoods() {
-    // 非空校验
-    if (isValEmpty()) return;
+    if (isValEmpty()) return; // 非空校验
+    if (!isthrough) return; // 数量没过过
 
+    setbtnLoading(true);
     // 数字合格校验
     if (isEdit) {
       const { uid } = urlParamHash(location.href);
       mktApi.getActivity({ uid }).then(res => {
         console.log(res);
-        if (!res?.data) return message.error(res.message);
+        if (!res?.data) return message.error(res.message); // 请求出错退出
         const errArr = updateCurArr(res.data?.prizeList);
-        if (errArr.length > 0) return showError(errArr);
+        if (errArr.length > 0) return showError(errArr); //列出改变的项
 
         // 校验通过后再提交
         const params = {
@@ -367,6 +368,7 @@ export default function CreatGoods(props) {
         setstepNum(2);
       });
     }
+    setTimeout(() => setbtnLoading(false), btnInterval);
   }
 
   function addNewImgs() {
@@ -390,7 +392,7 @@ export default function CreatGoods(props) {
         </p>
       )}
       <div className={styles.btnBox}>
-        <Button type="primary" onClick={submitGoods}>
+        <Button type="primary" loading={btnLoading} onClick={submitGoods}>
           {isEdit ? '保存' : '提交'}
         </Button>
         {!isEdit && <Button onClick={() => setstepNum(0)}>上一步</Button>}

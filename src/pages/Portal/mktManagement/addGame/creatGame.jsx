@@ -11,7 +11,7 @@ import moment from 'moment';
 import mktApi from '@/services/mktActivity';
 import { Form, Input, InputNumber, Button, Radio, DatePicker, message } from 'antd';
 import { urlParamHash } from '../tools';
-import { gameTypes } from '../tools/data';
+import { gameTypes, btnInterval } from '../tools/data';
 import styles from './addGame.less';
 
 const { Item } = Form;
@@ -38,6 +38,7 @@ function AddNewGoods(props) {
   const [curType, setcurType] = useState(1);
   const [formDatas, setformDatas] = useState({});
   const [initSubTit, setinitSubTit] = useState('');
+  const [btnLoading, setbtnLoading] = useState(false);
 
   useEffect(() => {
     newAct && setFieldsValue(newAct);
@@ -157,10 +158,12 @@ function AddNewGoods(props) {
       if (!isEdit) {
         setstepNum(1);
       } else {
+        setbtnLoading(true);
         mktApi.reviseActivity(newAct).then(res => {
           console.log(res);
           res?.data && message.success('保存成功');
         });
+        setTimeout(() => setbtnLoading(false), btnInterval);
       }
     });
   }
@@ -266,20 +269,20 @@ function AddNewGoods(props) {
         </Item>
         <Item label="规则说明">
           {getFieldDecorator('activityRule', {
-            rules: [{ max: 200, message: '最多输入200个字符' }],
+            rules: [{ max: 2000, message: '最多输入2000个字符' }],
           })(<TextArea placeholder="请输入规则说明" />)}
         </Item>
         <Item label="兑换说明">
           {getFieldDecorator('actvityConvertRule', {
             rules: [
               { required: true, message: '请填写兑换说明' },
-              { max: 200, message: '最多输入200个字符' },
+              { max: 2000, message: '最多输入2000个字符' },
             ],
           })(<TextArea placeholder="请输入兑换说明" />)}
         </Item>
 
         <Item {...formTailLayout}>
-          <Button type="primary" onClick={updateGame}>
+          <Button type="primary" loading={btnLoading} onClick={updateGame}>
             {isEdit ? '保存' : '下一步'}
           </Button>
         </Item>

@@ -10,7 +10,7 @@ import { Prompt } from 'react-router-dom';
 import router from 'umi/router';
 import { ctx } from '../common/context';
 import { updateHomePageEditData } from '@/services/miniProgram';
-import { Modal } from 'antd';
+import { Modal, message } from 'antd';
 import styles from './edit.less';
 
 export default function ForPrompt(props) {
@@ -31,7 +31,7 @@ export default function ForPrompt(props) {
       // 保存后再跳转
       updateHomePageEditData(parmas).then(res => {
         if (res.code === 200) {
-          router.push(key);
+          message.success('保存成功', () => router.push(key));
         }
       });
     }
