@@ -6,11 +6,8 @@
  * mini program 里的store
  */
 import React, { useState, createContext } from 'react';
-import {
-  getHomePagePublishedData,
-  getHomePageEditData,
-  getHomePagePublishState,
-} from '@/services/miniProgram';
+import { getHomePageEditData } from '@/services/miniProgram';
+import { highlightsBgImgs } from '../tools/data';
 
 export const ctx = createContext();
 export function Provider({ children }) {
@@ -54,11 +51,19 @@ export function Provider({ children }) {
     const arr = pData.jsonData;
     const map = {};
     arr.forEach(item => {
-      const pName = item.flag;
-      map[pName] = item;
+      const { flag, list } = item;
+      if (flag === 'highlights') item.list = addLightBg(list);
+      map[flag] = item;
     });
     pData.maps = map;
     return pData;
+  }
+
+  function addLightBg(arr) {
+    return arr?.map((item, ind) => {
+      item.imgUrl = highlightsBgImgs[ind];
+      return item;
+    });
   }
 
   const value = {
