@@ -26,11 +26,11 @@ export default function SwiperBar(props) {
       {list?.length > 0 ? (
         <div style={{ height }}>
           <Swiper
-            autoplay={{
-              delay: 3000, // 自动播放
-              stopOnLastSlide: false,
-              disableOnInteraction: true,
-            }}
+            // autoplay={{
+            //   delay: 3000, // 自动播放
+            //   stopOnLastSlide: false,
+            //   disableOnInteraction: true,
+            // }}
             pagination={{ clickable: true }} // 分页标志
             spaceBetween={50}
             slidesPerView={1} // 每次滚动几格

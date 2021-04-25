@@ -31,7 +31,9 @@ export default function CaseMd(props) {
               const { bedroom } = JSON.parse(houseType);
               return (
                 <li key={ind}>
-                  <img src={coverImg} alt="" />
+                  <div className={pageStyle.minImgBox}>
+                    <img src={coverImg} alt="" />
+                  </div>
                   <b>{gongdiTitle}</b>
                   <p>{`${buildingArea}m² | ${bedroom}居室 | ${renovationCosts}万`}</p>
                   <p className={pageStyle.flex}>

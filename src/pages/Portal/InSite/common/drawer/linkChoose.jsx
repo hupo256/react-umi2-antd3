@@ -9,7 +9,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { ctx } from '../context';
 import { LinkType } from '../../tools/data';
 import { queryHomePageData } from '@/services/miniProgram';
-import { Form, Modal, Select, AutoComplete } from 'antd';
+import { Form, Modal, Select } from 'antd';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -134,7 +134,8 @@ function LinkChoose(props) {
           {getFieldDecorator('uid', {
             rules: [{ required: true, message: '请添加具体页面' }],
           })(
-            <AutoComplete
+            <Select
+              showSearch
               style={{ width: 200 }}
               filterOption={(val, opt) => opt?.props?.children.includes(val)}
               placeholder="可输入关键字进行检索"
@@ -151,7 +152,7 @@ function LinkChoose(props) {
                   </Option>
                 );
               })}
-            </AutoComplete>
+            </Select>
           )}
         </Item>
       </Form>

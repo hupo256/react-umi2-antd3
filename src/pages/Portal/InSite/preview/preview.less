@@ -4,13 +4,18 @@
 @borderRadius: 6px;
 @picturePath: 'https://img.inbase.in-deco.com/crm-saas/img/highlights/';
 
+.phoneOut {
+  border: 1px solid #c00;
+  height: 110vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .phoneBox {
   width: 375px;
   height: 718px;
-  margin: 0 auto;
   position: relative;
   background: #fff;
-  // box-shadow: 0 0 8px #ccc;
 
   &.min {
     transform-origin: 50% 0;
@@ -111,7 +116,7 @@
       background: url('@{picturePath}img_bg.png');
       background-size: 18px 18px;
       width: 110%;
-      margin: -16px 0 -16px -17.5px;
+      margin: -16px 0 -16px -16px;
       padding-left: 16px;
       padding-right: 16px;
     }
@@ -123,7 +128,7 @@
 
       &:hover,
       &.curMd {
-        border: 1px solid @hightColor;
+        border: 1px solid rgba(254, 106, 48, 1);
       }
 
       &:hover {
@@ -342,10 +347,20 @@
           display: inline-block;
           margin-right: 3%;
           font-size: 12px;
-          img {
+
+          .minImgBox {
             width: 152px;
             height: 152px;
             border-radius: @borderRadius;
+            margin-right: 5px;
+            overflow: hidden;
+
+            img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+              object-position: 50% 50%;
+            }
           }
           p {
             color: @fontGray;
@@ -357,6 +372,10 @@
             font-weight: 500;
             font-size: 14px;
             padding: 10px 0 0;
+            text-overflow: ellipsis;
+            width: 10em;
+            white-space: nowrap;
+            overflow: hidden;
           }
           .flex {
             align-items: center;
@@ -555,9 +574,9 @@
     background: linear-gradient(180deg, rgba(255, 215, 212, 1) 0%, rgba(252, 237, 236, 1) 100%);
   }
   .conBox {
-    background: linear-gradient(180deg, rgba(252, 237, 236, 1) 0%, #fff 100%);
+    background: linear-gradient(180deg, rgba(252, 237, 236, 1) 0%, #fff 110px);
     .mdBlock > h3 > b::after {
-      background: linear-gradient(270deg, rgba(223, 64, 53, 1) 100%, rgba(251, 233, 231, 1) 0%);
+      background: linear-gradient(90deg, rgba(223, 64, 53, 1) 0%, rgba(251, 233, 231, 1) 100%);
     }
     .tagBox > li > h3 {
       color: @themColor;
@@ -567,12 +586,6 @@
     }
     .caseBox > .caseImgs > .caseList > li.on > img {
       border-color: @themColor;
-    }
-    .hoverBox {
-      &:hover,
-      &.curMd {
-        border: 1px solid @themColor;
-      }
     }
   }
   .footerBox {
@@ -594,9 +607,9 @@
     background: linear-gradient(180deg, rgba(255, 214, 187, 1) 0%, rgba(255, 242, 234, 1) 100%);
   }
   .conBox {
-    background: linear-gradient(180deg, rgba(255, 242, 234, 1) 0%, #fff 100%);
+    background: linear-gradient(180deg, rgba(255, 242, 234, 1) 0%, #fff 110px);
     .mdBlock > h3 > b::after {
-      background: linear-gradient(270deg, rgba(255, 117, 22, 1) 100%, rgba(255, 239, 229, 1) 0%);
+      background: linear-gradient(90deg, rgba(255, 117, 22, 1) 0%, rgba(255, 239, 229, 1) 100%);
     }
     .tagBox > li > h3 {
       color: @themColor;
@@ -606,12 +619,6 @@
     }
     .caseBox > .caseImgs > .caseList > li.on > img {
       border-color: @themColor;
-    }
-    .hoverBox {
-      &:hover,
-      &.curMd {
-        border: 1px solid @themColor;
-      }
     }
   }
   .footerBox {
@@ -633,9 +640,9 @@
     background: linear-gradient(180deg, rgba(198, 234, 209, 1) 0%, rgba(236, 248, 240, 1) 100%);
   }
   .conBox {
-    background: linear-gradient(180deg, rgba(236, 248, 240, 1) 0%, #fff 100%);
+    background: linear-gradient(180deg, rgba(236, 248, 240, 1) 0%, #fff 110px);
     .mdBlock > h3 > b::after {
-      background: linear-gradient(270deg, rgba(58, 184, 96, 1) 100%, rgba(231, 246, 236, 1) 0%);
+      background: linear-gradient(90deg, rgba(58, 184, 96, 1) 0%, rgba(231, 246, 236, 1) 100%);
     }
     .tagBox > li > h3 {
       color: @themColor;
@@ -645,12 +652,6 @@
     }
     .caseBox > .caseImgs > .caseList > li.on > img {
       border-color: @themColor;
-    }
-    .hoverBox {
-      &:hover,
-      &.curMd {
-        border: 1px solid @themColor;
-      }
     }
   }
   .footerBox {
@@ -672,10 +673,10 @@
     background: linear-gradient(180deg, rgba(200, 235, 238, 1) 0%, rgba(236, 248, 249, 1) 100%);
   }
   .conBox {
-    background: linear-gradient(180deg, rgba(236, 248, 249, 1) 0%, #fff 100%);
+    background: linear-gradient(180deg, rgba(236, 248, 249, 1) 0%, #fff 110px);
 
     .mdBlock > h3 > b::after {
-      background: linear-gradient(270deg, rgba(65, 190, 199, 1) 100%, rgba(229, 246, 247, 1) 0%);
+      background: linear-gradient(90deg, rgba(65, 190, 199, 1) 0%, rgba(229, 246, 247, 1) 100%);
     }
     .tagBox > li > h3 {
       color: @themColor;
@@ -685,12 +686,6 @@
     }
     .caseBox > .caseImgs > .caseList > li.on > img {
       border-color: @themColor;
-    }
-    .hoverBox {
-      &:hover,
-      &.curMd {
-        border: 1px solid @themColor;
-      }
     }
   }
   .footerBox {
@@ -712,9 +707,9 @@
     background: linear-gradient(180deg, rgba(185, 216, 243, 1) 0%, rgba(234, 243, 251, 1) 100%);
   }
   .conBox {
-    background: linear-gradient(180deg, rgba(234, 243, 251, 1) 0%, #fff 100%);
+    background: linear-gradient(180deg, rgba(234, 243, 251, 1) 0%, #fff 110px);
     .mdBlock > h3 > b::after {
-      background: linear-gradient(270deg, rgba(15, 124, 214, 1) 100%, rgba(228, 240, 250, 1) 0%);
+      background: linear-gradient(90deg, rgba(15, 124, 214, 1) 0%, rgba(228, 240, 250, 1) 100%);
     }
     .tagBox > li > h3 {
       color: @themColor;
@@ -724,12 +719,6 @@
     }
     .caseBox > .caseImgs > .caseList > li.on > img {
       border-color: @themColor;
-    }
-    .hoverBox {
-      &:hover,
-      &.curMd {
-        border: 1px solid @themColor;
-      }
     }
   }
   .footerBox {
@@ -751,9 +740,9 @@
     background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 1) 100%);
   }
   .conBox {
-    background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, #fff 100%);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, #fff 110px);
     .mdBlock > h3 > b::after {
-      background: linear-gradient(270deg, rgba(175, 133, 80, 1) 100%, rgba(245, 241, 235, 1) 0%);
+      background: linear-gradient(90deg, rgba(175, 133, 80, 1) 0%, rgba(245, 241, 235, 1) 100%);
     }
     .tagBox > li > h3 {
       color: @themColor;
@@ -763,12 +752,6 @@
     }
     .caseBox > .caseImgs > .caseList > li.on > img {
       border-color: @themColor;
-    }
-    .hoverBox {
-      &:hover,
-      &.curMd {
-        border: 1px solid @themColor;
-      }
     }
   }
   .footerBox {
@@ -790,9 +773,9 @@
     background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 1) 100%);
   }
   .conBox {
-    background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, #fff 100%);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, #fff 110px);
     .mdBlock > h3 > b::after {
-      background: linear-gradient(270deg, rgba(44, 44, 44, 1) 100%, rgba(233, 233, 233, 1) 0%);
+      background: linear-gradient(90deg, rgba(44, 44, 44, 1) 0%, rgba(233, 233, 233, 1) 100%);
     }
     .tagBox > li > h3 {
       color: @themColor;
@@ -802,12 +785,6 @@
     }
     .caseBox > .caseImgs > .caseList > li.on > img {
       border-color: @themColor;
-    }
-    .hoverBox {
-      &:hover,
-      &.curMd {
-        border: 1px solid @themColor;
-      }
     }
   }
   .footerBox {

@@ -98,7 +98,7 @@ export default function Preview(props) {
   }
 
   return (
-    <>
+    <div className={pageStyle.phoneOut}>
       <div className={`${pageStyle.phoneBox} ${pageStyle[curTheme]} ${from ? pageStyle.min : ''} `}>
         <div className={pageStyle.headerBox}>
           <div className={pageStyle.ptit}>
@@ -162,18 +162,18 @@ export default function Preview(props) {
             </svg>
           </span>
         </div>
-      </div>
 
-      {from && (
-        <div className={pageStyle.btnbox}>
-          <Button onClick={() => gotoRoute(`edit?templateCode=${curTheme}`)} type="primary">
-            继续编辑
-          </Button>
-          <Button onClick={() => gotoRoute(`templates?tochange=1`)} type="primary" ghost>
-            更换模板
-          </Button>
-        </div>
-      )}
-    </>
+        {from && (
+          <div className={pageStyle.btnbox}>
+            <Button onClick={() => gotoRoute(`edit?templateCode=${curTheme}`)} type="primary">
+              继续编辑
+            </Button>
+            <Button onClick={() => gotoRoute(`templates?tochange=1`)} type="primary" ghost>
+              更换模板
+            </Button>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }

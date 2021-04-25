@@ -160,6 +160,7 @@ export default function TagsEdit(props) {
                     value={text}
                     placeholder="请设置跳转链接"
                     onClick={() => toChooseLink(ind)}
+                    suffix={<Icon type="right" className={styles.inpSuffix} />}
                   />
                 </div>
               </li>
