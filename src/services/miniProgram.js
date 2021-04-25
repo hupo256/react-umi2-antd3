@@ -88,3 +88,11 @@ export async function publishEditData(params) {
     body: params,
   });
 }
+
+// 分级查询
+export async function queryHomePageData(params) {
+  return request(baseurl + '/api/v1/wechat/homePage/queryHomePageData', {
+    method: 'POST',
+    body: params,
+  });
+}

@@ -30,14 +30,18 @@ const formTailLayout = {
 
 function AddNewGoods(props) {
   const {
-    form: { validateFields, getFieldDecorator, setFieldsValue, getFieldsValue },
+    form: { validateFields, getFieldDecorator, setFieldsValue, getFieldsValue, resetFields },
     isEdit,
   } = props;
-  const { setstepNum, setnewAct, curActDate } = useContext(ctx);
+  const { setstepNum, setnewAct, newAct, curActDate } = useContext(ctx);
   const [typeOpts, settypeOpts] = useState([]);
   const [curType, setcurType] = useState(1);
   const [formDatas, setformDatas] = useState({});
   const [initSubTit, setinitSubTit] = useState('');
+
+  useEffect(() => {
+    newAct && setFieldsValue(newAct);
+  }, []);
 
   useEffect(
     () => {
@@ -76,15 +80,16 @@ function AddNewGoods(props) {
       endTime,
     } = curActDate;
     const activityTime = [moment(startTime), moment(endTime)];
+
     setFieldsValue({
       activityType,
       activityTitle,
       activitySubtitle,
       activityTime,
-      actvityConvertRule,
-      activityRule,
       activityJoinNum,
       activityJoinType,
+      activityRule: htmlToStr(activityRule),
+      actvityConvertRule: htmlToStr(actvityConvertRule),
     });
   }
 
@@ -116,9 +121,18 @@ function AddNewGoods(props) {
     };
   }
 
+  function htmlToStr(str = '') {
+    if (!str) return;
+    str = str.replace(/<br\/>/g, '\r\n'); //IE9、FF、chrome
+    str = str.replace(/<br\/>/g, '\n'); //IE9
+    str = str.replace(/&nbsp;/g, 's'); //空格处理
+    return str;
+  }
+
   function strToHtml(str = '') {
+    if (!str) return;
     str = str.replace(/\r\n/g, '<br/>'); //IE9、FF、chrome
-    str = str.replace(/\n/g, '<br/>'); //IE7-8
+    str = str.replace(/\n/g, '<br/>'); //IE9
     str = str.replace(/\s/g, '&nbsp;'); //空格处理
     return str;
   }
@@ -154,7 +168,24 @@ function AddNewGoods(props) {
   function onRadioChange(e) {
     const val = e.target.value;
     setformDatas({ ...formDatas, [curType]: getFieldsValue() }); //切换前先存一下
-    setFieldsValue(formDatas[val]); // 刷新form
+
+    let tit = '幸运大转盘';
+    val === 2 && (tit = '幸运砸金蛋');
+    val === 3 && (tit = '幸运跑马灯');
+
+    const emptyData = {
+      // activityType,
+      activityTitle: tit,
+      activitySubtitle: '-好运连连，点击GO开启好运-',
+      activityTime: [],
+      activityJoinNum: 1,
+      activityJoinType: 1,
+      activityRule: '',
+      actvityConvertRule: '',
+    };
+    // formDatas?.[val] 为空表示第一次出现，则置空
+    const formVals = formDatas?.[val] ? formDatas[val] : emptyData;
+    setFieldsValue(formVals); // 刷新form数据
     setcurType(val); // 刷新当前的type
   }
 
@@ -186,7 +217,7 @@ function AddNewGoods(props) {
             initialValue: initSubTit,
             rules: [
               { required: true, message: '请填写游戏标题' },
-              { max: 15, message: '最多输入15个字符' },
+              { max: 8, message: '最多输入8个字符' },
             ],
           })(<Input placeholder="游戏标题" style={{ width: 410 }} />)}
         </Item>
@@ -230,7 +261,7 @@ function AddNewGoods(props) {
           {getFieldDecorator('activityJoinNum', {
             initialValue: 1,
             rules: [{ required: true, message: '请填写参与次数' }],
-          })(<InputNumber min={1} step={1} precision={0} style={{ width: 150 }} />)}
+          })(<InputNumber min={1} max={9999} step={1} precision={0} style={{ width: 150 }} />)}
           <span style={{ paddingLeft: '.5em' }}>次</span>
         </Item>
         <Item label="规则说明">

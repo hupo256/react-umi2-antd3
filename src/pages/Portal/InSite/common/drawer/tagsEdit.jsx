@@ -65,22 +65,22 @@ export default function TagsEdit(props) {
 
   function discTexBlur(e, rec) {
     const val = e?.target?.value;
-    if (val) {
-      rec.vaStatus = 'success';
-      rec.errMsg = '';
+    if (val?.length <= 14) {
+      rec.desStatus = 'success';
+      rec.desMsg = '';
     }
   }
 
   function tagsTexChange(e, rec) {
     let val = e.target.value;
-    if (val) {
-      rec.vaStatus = 'success';
-      rec.errMsg = '';
-    }
     if (val?.length > 6) {
       rec.vaStatus = 'error';
       rec.errMsg = '最多6个字符';
-      val = val.substr(0, 6);
+      // return;
+      // val = val.substr(0, 6);
+    } else {
+      rec.vaStatus = 'success';
+      rec.errMsg = '';
     }
     rec.title = val;
     forUpdatePageData();
@@ -89,9 +89,12 @@ export default function TagsEdit(props) {
   function discTexChange(e, rec) {
     let val = e.target.value;
     if (val?.length > 14) {
-      rec.vaStatus = 'error';
-      rec.errMsg = '最多14个字符';
-      val = val.substr(0, 14);
+      rec.desStatus = 'error';
+      rec.desMsg = '最多14个字符';
+      // val = val.substr(0, 14);
+    } else {
+      rec.desStatus = 'success';
+      rec.desMsg = '';
     }
     rec.desc = val;
     forUpdatePageData();
@@ -102,7 +105,15 @@ export default function TagsEdit(props) {
       <ul>
         {tagList?.length > 0 &&
           tagList.map((tag, ind) => {
-            const { title, desc, vaStatus = 'success', errMsg = '', text = '' } = tag;
+            const {
+              title,
+              desc,
+              vaStatus = 'success',
+              errMsg = '',
+              desStatus = 'success',
+              desMsg = '',
+              text = '',
+            } = tag;
             const len = tagList.length;
             return (
               <li key={ind}>
@@ -124,22 +135,28 @@ export default function TagsEdit(props) {
                         ref={titInp}
                         style={{ width: '100%' }}
                         value={title}
+                        maxLength={6}
                         onBlur={e => tagsTexBlur(e, tag)}
                         onChange={e => tagsTexChange(e, tag)}
                         placeholder="请输入主标题"
                       />
                     </Item>
+
+                    <Item validateStatus={desStatus} help={desMsg}>
+                      <Input
+                        value={desc}
+                        maxLength={14}
+                        onBlur={e => discTexBlur(e, tag)}
+                        onChange={e => discTexChange(e, tag)}
+                        placeholder="请输入副文本"
+                      />
+                    </Item>
                   </Form>
-                  <Input
-                    value={desc}
-                    onBlur={e => discTexBlur(e, tag)}
-                    onChange={e => discTexChange(e, tag)}
-                    placeholder="请输入副文本"
-                  />
                   <Input
                     value={text}
                     placeholder="请设置跳转链接"
                     onClick={() => toChooseLink(ind)}
+                    suffix={<Icon type="right" className={styles.inpSuffix} />}
                   />
                 </div>
               </li>

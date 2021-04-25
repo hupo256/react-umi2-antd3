@@ -8,7 +8,6 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import router from 'umi/router';
 import { ctx } from '../common/context';
-import { Button } from 'antd';
 import { urlParamHash } from '../tools';
 import { baseRouteKey } from '../tools/data';
 import HoverMd from './components/hoverMd';
@@ -57,9 +56,15 @@ export default function Preview(props) {
   const contentBox = useRef();
 
   useEffect(() => {
-    touchThemes();
     touchPageData();
   }, []);
+
+  useEffect(
+    () => {
+      touchThemes();
+    },
+    [templateCode]
+  );
 
   useEffect(() => {
     contentBox.current.addEventListener('scroll', conScroll);
@@ -92,7 +97,7 @@ export default function Preview(props) {
   }
 
   return (
-    <>
+    <div className={pageStyle.phoneOut}>
       <div className={`${pageStyle.phoneBox} ${pageStyle[curTheme]} ${from ? pageStyle.min : ''} `}>
         <div className={pageStyle.headerBox}>
           <div className={pageStyle.ptit}>
@@ -156,16 +161,18 @@ export default function Preview(props) {
             </svg>
           </span>
         </div>
-      </div>
 
-      {from && (
-        <div className={pageStyle.btnbox}>
-          <Button onClick={() => gotoRoute(`edit?templateCode=${curTheme}`)} type="primary">
-            继续编辑
-          </Button>
-          <Button onClick={() => gotoRoute(`templates?tochange=1`)}>更换模板</Button>
-        </div>
-      )}
-    </>
+        {from && (
+          <div className={pageStyle.btnbox}>
+            <a onClick={() => gotoRoute(`edit?templateCode=${curTheme}`)} type="primary">
+              继续编辑
+            </a>
+            <a onClick={() => gotoRoute(`templates?tochange=1`)} type="primary" ghost>
+              更换模板
+            </a>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }

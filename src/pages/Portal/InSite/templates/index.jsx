@@ -70,31 +70,30 @@ function Templates(props) {
     <PageHeaderWrapper>
       <TitleGuid title="选择一个模板开始" disc={true} />
       <ul className={styles.tembox}>
-        {tepList.length > 0 &&
-          tepList.map((tem, ind) => {
-            const { isDefault, name, showPicUrl, code, moreTag } = tem;
-            return (
-              <li key={ind}>
-                <div className={styles.itemBox}>
-                  {isDefault &&
-                    !isChange && (
-                      <img className={styles.defaultTag} src={`${imgBaseUrl}img_tag.png`} alt="" />
-                    )}
-                  <div className={styles.imgbox}>
-                    <img src={showPicUrl} alt="" />
-                    {!moreTag && (
-                      <span>
-                        <button onClick={() => routerOut(code, name)}>
-                          {isChange ? '换成它' : '开始编辑'}
-                        </button>
-                      </span>
-                    )}
-                  </div>
+        {tepList?.map((tem, ind) => {
+          const { isDefault, name, showPicUrl, code, moreTag } = tem;
+          return (
+            <li key={ind}>
+              <div className={styles.itemBox}>
+                {isDefault &&
+                  !isChange && (
+                    <img className={styles.defaultTag} src={`${imgBaseUrl}img_tag.png`} alt="" />
+                  )}
+                <div className={styles.imgbox}>
+                  <img src={showPicUrl} alt="" />
+                  {!moreTag && (
+                    <span>
+                      <button onClick={() => routerOut(code, name)}>
+                        {isChange ? '换成它' : '开始编辑'}
+                      </button>
+                    </span>
+                  )}
                 </div>
-                <p>{name}</p>
-              </li>
-            );
-          })}
+              </div>
+              <p>{name}</p>
+            </li>
+          );
+        })}
       </ul>
     </PageHeaderWrapper>
   );

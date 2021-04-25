@@ -21,6 +21,7 @@ export default function DrawRec(props) {
   const [goodsList, setgoodsList] = useState([]);
   const [recTotal, setrecTotal] = useState(0);
   const [actCode, setactCode] = useState('');
+  const [phoneNum, setphoneNum] = useState('');
 
   useEffect(() => {
     const { mobile, activityCode, prizeName } = urlParamHash(location.href);
@@ -32,7 +33,7 @@ export default function DrawRec(props) {
   // 获取获奖记录
   function touchRecds(config = {}) {
     const params = {
-      mobile: '',
+      mobile: phoneNum,
       activityCode: actCode,
       pageNum: 1,
       pageSize: 100,
@@ -59,7 +60,7 @@ export default function DrawRec(props) {
       console.log(res);
       if (!res?.data) return;
       const { data } = res;
-      const { list, recordTotal } = data;
+      const { list } = data;
       const arr = calcNumInArr(list);
       setgoodsList(arr);
     });
@@ -70,7 +71,18 @@ export default function DrawRec(props) {
   }
 
   function toSearch(tex) {
-    touchRecds({ mobile: tex });
+    const str = tex.substr(0, 30);
+    setphoneNum(str);
+    touchRecds({ mobile: str });
+  }
+
+  function pageChange(num, size) {
+    console.log(num, size);
+    const conf = {
+      pageNum: num,
+      pageSize: size,
+    };
+    touchRecds(conf);
   }
 
   return (
@@ -89,7 +101,8 @@ export default function DrawRec(props) {
               size="middle"
               dataSource={recList}
               columns={recColumns}
-              pagination={{ total: recTotal, defaultPageSize: 100 }}
+              // pagination={{ total: recTotal, defaultPageSize: 100 }}
+              pagination={{ total: recTotal, defaultPageSize: 100, onChange: pageChange }}
               rowKey={(r, i) => i}
             />
           </TabPane>

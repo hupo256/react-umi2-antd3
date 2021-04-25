@@ -7,9 +7,9 @@
  */
 import React, { useState, useEffect, useContext } from 'react';
 import { ctx } from '../context';
-import { LinkType, apiMap } from '../../tools/data';
-import mktApi from '@/services/mktActivity';
-import { Form, Modal, Select, AutoComplete } from 'antd';
+import { LinkType } from '../../tools/data';
+import { queryHomePageData } from '@/services/miniProgram';
+import { Form, Modal, Select } from 'antd';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -29,39 +29,38 @@ function LinkChoose(props) {
   const [curKey, setcurKey] = useState('');
   const [total, settotal] = useState(0);
 
+  useEffect(
+    () => {
+      if (dList?.[curInd]) {
+        const { title = '', text = '', type = '', uid = '' } = dList[curInd];
+        const pName = curFlag === 'highlights' ? text : title;
+        setcurKey(type);
+        setitemList([{ name: pName, value: uid }]);
+        setFieldsValue({ type, uid: `${pName}_${uid}` });
+      }
+    },
+    [linkEdtor]
+  );
+
   function typeSelect(val) {
-    const key = apiMap[val];
-    setcurKey(key);
-    touchItems(key);
+    setcurKey(val);
+    touchItems(val);
+    setFieldsValue({ uid: '' });
   }
 
   function touchItems(key, config) {
     const param = {
       pageNum: 1,
       pageSize: 10,
-      status: 1,
-      specialStatus: 1,
-      gongdiStatus: 0,
+      type: key,
     };
-    mktApi[key]({ ...param, ...config }).then(res => {
+    queryHomePageData({ ...param, ...config }).then(res => {
       console.log(res);
       if (!res?.data) return;
       const { data } = res;
       const arr = data?.list?.map(item => {
-        const {
-          specialTitle,
-          specialUid,
-          gongdiTitle,
-          gongdiUid,
-          title,
-          uid,
-          name,
-          activityTitle,
-        } = item;
-        return {
-          name: specialTitle || gongdiTitle || title || name || activityTitle,
-          value: specialUid || gongdiUid || uid,
-        };
+        const { homePageUid, homePageTitle } = item;
+        return { name: homePageTitle, value: homePageUid };
       });
       setitemList(arr);
       settotal(data.recordTotal);
@@ -92,7 +91,12 @@ function LinkChoose(props) {
   }
 
   function getMoreList(open) {
-    open && touchItems(curKey, { pageSize: total });
+    open && autoChange();
+  }
+
+  function autoChange() {
+    const param = total ? { pageSize: total } : {};
+    touchItems(curKey, param);
   }
 
   return (
@@ -129,11 +133,14 @@ function LinkChoose(props) {
           {getFieldDecorator('uid', {
             rules: [{ required: true, message: '请添加具体页面' }],
           })(
-            <AutoComplete
+            <Select
+              showSearch
               style={{ width: 200 }}
               filterOption={(val, opt) => opt?.props?.children.includes(val)}
               placeholder="可输入关键字进行检索"
               onDropdownVisibleChange={getMoreList}
+              onChange={autoChange}
+              onFocus={autoChange}
               getPopupContainer={n => n.parentNode}
             >
               {itemList?.map(item => {
@@ -144,7 +151,7 @@ function LinkChoose(props) {
                   </Option>
                 );
               })}
-            </AutoComplete>
+            </Select>
           )}
         </Item>
       </Form>

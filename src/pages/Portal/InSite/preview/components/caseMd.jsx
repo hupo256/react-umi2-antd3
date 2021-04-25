@@ -6,6 +6,7 @@
  * 精选案例
  */
 import React, { useState, useEffect } from 'react';
+import { Icon } from 'antd';
 import MdTitle from './common/mdTitle';
 import EmptyMd from './common/emptyMd';
 import pageStyle from '../preview.less';
@@ -40,7 +41,10 @@ export default function CaseMd(props) {
                 </li>
               ))}
             </ul>
-            <u>免费设计</u>
+            <u>
+              <Icon type="edit" theme="filled" />
+              {` 免费设计`}
+            </u>
           </div>
         </div>
       ) : (

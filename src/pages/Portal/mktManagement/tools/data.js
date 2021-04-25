@@ -35,6 +35,7 @@ export const recColumns = [
   {
     title: '抽奖时间',
     dataIndex: 'createTime',
+    render: (text, record, index) => text.slice(0, 16),
   },
   {
     title: '抽奖用户手机号码',

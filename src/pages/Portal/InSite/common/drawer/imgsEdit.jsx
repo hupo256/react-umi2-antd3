@@ -85,13 +85,14 @@ export default function TagsEdit(props) {
   function radioChage(e) {
     const { value } = e.target;
     const newObj = { ...pageData };
-    if (value === 1) newObj.jsonData[0].height = 176;
+    if (value === 1) newObj.maps[curFlag].height = 176;
     setimgHeightType(value);
+    setpageData(newObj);
   }
 
   function widthChange(e) {
     const newObj = { ...pageData };
-    newObj.jsonData[0].height = +e;
+    newObj.maps[curFlag].height = +e;
     setpageData(newObj);
   }
 
@@ -143,6 +144,7 @@ export default function TagsEdit(props) {
                     placeholder="请设置跳转链接"
                     value={title}
                     onClick={() => toChooseLink(ind)}
+                    suffix={<Icon type="right" className={styles.inpSuffix} />}
                   />
                 </div>
 
