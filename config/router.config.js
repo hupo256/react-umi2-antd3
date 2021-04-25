@@ -65,7 +65,6 @@ export default [
         path: '/portal/insite',
         name: 'insite',
         icon: 'dribbble',
-        // icon: 'web',
         routes: [
           {
             path: '/portal/insite/decorate', // 定义左侧菜单栏 与 CN文件相匹配
@@ -87,7 +86,7 @@ export default [
               },
               {
                 path: '/portal/insite/decorate/edit',
-                PageHeaderName: '编辑模板',
+                PageHeaderName: '继续编辑',
                 component: './Portal/InSite/edit',
               },
             ],

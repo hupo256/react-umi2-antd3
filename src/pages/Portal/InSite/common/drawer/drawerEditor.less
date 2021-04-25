@@ -41,12 +41,25 @@
     padding: 0 16px;
   }
 
+  .titBox {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    > span:nth-child(1) {
+      width: 35%;
+    }
+    > span:nth-child(2) {
+      width: 38%;
+    }
+  }
+
   .tbOpration {
     text-align: right;
     padding-bottom: 5px;
     white-space: nowrap;
     a {
-      padding-right: 5px;
+      padding-left: 5px;
       cursor: pointer;
       color: rgba(153, 153, 153, 1);
 
@@ -153,7 +166,11 @@
       }
 
       .inpBox {
-        input:nth-child(1) {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: space-between;
+        input {
           width: 95%;
           margin-right: 0;
         }

@@ -140,8 +140,9 @@ export default function TagsEdit(props) {
                   <img src={imgUrl || `${defaultImg}ic_Image.png`} alt="" />
                 </div>
                 <div className={styles.inpBox}>
+                  <span>关联页面</span>
                   <Input
-                    placeholder="请设置跳转链接"
+                    placeholder="请选择关联页面"
                     value={title}
                     onClick={() => toChooseLink(ind)}
                     suffix={<Icon type="right" className={styles.inpSuffix} />}

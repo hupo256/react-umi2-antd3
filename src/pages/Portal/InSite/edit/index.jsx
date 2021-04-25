@@ -22,7 +22,7 @@ function TempEdit(props) {
 
   return (
     <PageHeaderWrapper>
-      <TitleGuid title="编辑小程序" isEdit={true} />
+      <TitleGuid title="首页装修" isEdit={true} />
       <div className={`${styles.currTepBox} ${showRight ? styles.rightPlaceHolder : ''}`}>
         <Preview />
 

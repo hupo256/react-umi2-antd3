@@ -82,11 +82,10 @@ export default function Activityer(props) {
               <>
                 <span>{linkUrl} </span>
                 <Input id={activityCode} className={styles.inpHidden} value={linkUrl} />
-                <p>
-                  <a onClick={() => copyLink(activityCode)} className={styles.tocopy}>
-                    <Icon type="copy" /> 复制链接
-                  </a>
-                </p>
+                <br />
+                <a onClick={() => copyLink(activityCode)} className={styles.tocopy}>
+                  <Icon type="copy" /> 复制链接
+                </a>
               </>
             )}
           </>
@@ -100,7 +99,8 @@ export default function Activityer(props) {
         return (
           <>
             <span>{createTime} </span>
-            <p>{creater}</p>
+            <br />
+            <span>{creater}</span>
           </>
         );
       },
@@ -111,7 +111,7 @@ export default function Activityer(props) {
       width: 130,
       render: (text, record, index) => (
         <p className={styles.actions}>
-          <a onClick={() => toEdit(record.uid)}>编辑</a>|{' '}
+          <a onClick={() => toEdit(record.uid)}>编辑</a>
           <a onClick={() => toRecod(record.activityCode)}>抽奖记录</a>
         </p>
       ),
@@ -207,6 +207,7 @@ export default function Activityer(props) {
 
       <Card bordered={false}>
         <Button className={styles.addBtn} onClick={addNew} type="primary">
+          <Icon type="plus" />
           创建小游戏
         </Button>
 
