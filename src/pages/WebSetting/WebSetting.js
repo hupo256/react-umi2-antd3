@@ -22,13 +22,13 @@ class WebSetting extends Component {
             <HostBind {...this.props} />
           </TabPane>
           <TabPane tab="基本信息" key="2">
-           <BasicMessage/>
+           <BasicMessage {...this.props} />
           </TabPane>
           <TabPane tab="企业信息" key="3">
-           <EnterpriseMessage/>
+           <EnterpriseMessage {...this.props}/>
           </TabPane>
           <TabPane tab="自定义代码" key="4">
-            <CustomCode/>
+            <CustomCode {...this.props}/>
           </TabPane>
         </Tabs>
       </div>

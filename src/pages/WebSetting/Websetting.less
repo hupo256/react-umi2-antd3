@@ -2,23 +2,23 @@
   .Websetting_ContentTabs {
     background-color: #fff; //设置颜色
     height: 100%;
-    .ant-tabs-nav-animated{
-        margin-top: 40px;
-        width: 200px !important;
-        .ant-tabs-ink-bar{
-            background-color: #1890ff;
+    .ant-tabs-nav-animated {
+      margin-top: 40px;
+      width: 200px !important;
+      .ant-tabs-ink-bar {
+        background-color: #1890ff;
+      }
+      .ant-tabs-tab {
+        text-align: left;
+        font-size: 16px;
+        &:hover {
+          color: rgba(78, 143, 247, 100);
         }
-        .ant-tabs-tab{
-            text-align: left;
-            font-size: 16px;
-            &:hover{
-                color: rgba(78, 143, 247, 100);
-            }
-        }
-        .ant-tabs-tab-active{
-            background-color: rgba(233, 247, 252, 100);
-            color: rgba(78, 143, 247, 100);
-        }
+      }
+      .ant-tabs-tab-active {
+        background-color: rgba(233, 247, 252, 100);
+        color: rgba(78, 143, 247, 100);
+      }
     }
     .ant-tabs-left-content {
       padding: 31px 30px 0;
@@ -103,7 +103,7 @@
       margin: 0 10px 10px 0;
     }
     .defaultHostCopyDiv {
-    //   width: 48px;
+      //   width: 48px;
       height: 18px;
       text-align: left;
       margin-bottom: 20px;
@@ -125,6 +125,98 @@
       color: rgba(255, 255, 255, 100);
       font-size: 16px;
       text-align: center;
+    }
+    .basicMessageFrom {
+      .ant-form-item {
+        margin-bottom: 19px;
+      }
+      .ant-form-item:not(:first-child){
+        margin-bottom: 0;
+      }
+      .ant-form-item-with-help {
+        margin-bottom: 0;
+      }
+      .coverImg {
+        .basicIconImg {
+          width: 100px;
+          height: 100px;
+          padding-top: 20px;
+          p{
+            margin-top: 0;
+          }
+          .uploadHint {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+          }
+        }
+        .basicLogoImg {
+          width: 300px;
+          height: 100px;
+          padding-top: 20px;
+          p{
+            margin-top: 0;
+          }
+          .uploadHint {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+          }
+        }
+      }
+    }
+    .cystomCodeTabs{
+      .ant-tabs-tab-active{
+        background-color:transparent;
+      }
+    }
+    .enterpriseMessageFrom{
+      .ant-form-item{
+        margin-bottom: 10px;
+      }
+      .ant-form-item-label{
+        line-height: 20px;
+        margin-bottom: 10px;
+        color: rgba(102, 102, 102, 100);
+        font-size: 14px;
+      }
+      .coverImg {
+        line-height: 20px;
+        .basicIconImg {
+          width: 100px;
+          height: 100px;
+          padding-top: 20px;
+          margin: 0;
+          p{
+            margin-top: 0;
+          }
+          .uploadHint {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+          }
+        }
+        .storeCoverImg {
+          width: 237px;
+          height: 100px;
+          padding-top: 20px;
+          margin: 0;
+          p{
+            margin-top: 0;
+          }
+          .uploadHint {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+          }
+        }
+      }
+      .enterpriseButton{
+        margin-top: 42px;
+        .defaultHostButton{
+          border: 0
+        }
+      }
     }
   }
 }

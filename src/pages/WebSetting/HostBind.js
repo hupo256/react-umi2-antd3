@@ -9,33 +9,36 @@ class HostBind extends Component {
     super(props);
     this.state = {
       tabsValue: 2,
+      hostSuffix: '',
       custonHostValue: '',
       defaultHostValue: '',
     };
   }
-  async componentWillMount() {
-    console.log('hostcomponentWillMount', this.props);
+  componentWillMount() {
+    // console.log('hostcomponentWillMount', this.props);
     const { dispatch } = this.props;
     let customDomain = '',
       defaultDomain = '';
-    const res = await dispatch({ type: 'WebSettingStroe/hostSettingModel' });
-    if (res.code == 200) {
-      if (res.data.domain == '') {
-        defaultDomain = Math.random()
-          .toString(36)
-          .slice(-6);
-        customDomain = defaultDomain + '.ingongdi.com';
-      } else {
-        const resIndex = res.data.domain.indexOf('.');
-        defaultDomain = res.data.domain.slice(0, resIndex);
-        customDomain = res.data.domain;
+    dispatch({ type: 'WebSettingStroe/hostSettingModel' }).then(res => {
+      if (res && res.code === 200) {
+        if (res.data.domain == '') {
+          defaultDomain = Math.random()
+            .toString(36)
+            .slice(-6);
+          customDomain = defaultDomain + res.data.suffix;
+        } else {
+          const resIndex = res.data.domain.indexOf('.');
+          defaultDomain = res.data.domain.slice(0, resIndex);
+          customDomain = res.data.domain;
+        }
+        this.setState({
+          tabsValue: res.data.type,
+          hostSuffix: res.data.suffix,
+          custonHostValue: customDomain,
+          defaultHostValue: defaultDomain,
+        });
       }
-      await this.setState({
-        tabsValue: res.data.type,
-        custonHostValue: customDomain,
-        defaultHostValue: defaultDomain,
-      });
-    }
+    });
   }
   onTabsChange(e) {
     this.setState({
@@ -57,7 +60,7 @@ class HostBind extends Component {
   }
   async onHostBind() {
     const { dispatch } = this.props;
-    const { tabsValue, custonHostValue, defaultHostValue } = this.state;
+    const { tabsValue, hostSuffix, custonHostValue, defaultHostValue } = this.state;
     const ifCustomHost = regExpConfig.customHostType.test(custonHostValue);
     const ifDefaultHost = regExpConfig.defalutHostType.test(defaultHostValue);
     let payload;
@@ -66,38 +69,38 @@ class HostBind extends Component {
         message.error('请正确填写二级域名');
         return;
       }
-      payload={
-        domain: defaultHostValue+'.ingongdi.com',
-        type: 0
-      }
+      payload = {
+        domain: defaultHostValue + hostSuffix,
+        type: 0,
+      };
     } else if (tabsValue == 1) {
       if (custonHostValue.length < 4 || !ifCustomHost) {
         message.error('请正确填写域名');
         return;
       }
-      payload={
+      payload = {
         domain: custonHostValue,
-        type: 1
-      }
+        type: 1,
+      };
     }
-    const res = await dispatch({ type: 'WebSettingStroe/hostSettingBind', payload: payload, });
-    switch(res.code) {
-        case 200:
-           message.success('保存成功')
-           break;
-        case 210001:
-            message.error(res.message)
-           break;
-        case 210002:
-            message.error(res.message)
-           break;
-        default:
-            message.error('绑定失败，请检查输入后再试')
-   } 
+    const res = await dispatch({ type: 'WebSettingStroe/hostSettingBind', payload: payload });
+    switch (res.code) {
+      case 200:
+        message.success('保存成功');
+        break;
+      case 210001:
+        message.error(res.message);
+        break;
+      case 210002:
+        message.error(res.message);
+        break;
+      default:
+        message.error('绑定失败，请检查输入后再试');
+    }
     console.log('1', res);
   }
   render() {
-    const { tabsValue, custonHostValue, defaultHostValue } = this.state;
+    const { tabsValue, hostSuffix, custonHostValue, defaultHostValue } = this.state;
     const {
       form: { getFieldDecorator },
     } = this.props;
@@ -138,7 +141,7 @@ class HostBind extends Component {
                 )}
               </FormItem>
             </Form>
-            <div style={{ marginTop: '49px' }}>.ingongdi.com</div>
+            <div style={{ marginTop: '49px' }}>{hostSuffix}</div>
           </div>
           <CopyToClipboard
             text={defaultHostValue + '.ingongdi.com'}
