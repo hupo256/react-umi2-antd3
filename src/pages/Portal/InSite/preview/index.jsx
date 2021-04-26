@@ -25,7 +25,7 @@ const permissionsBtn = getauth().permissions || [];
 
 const componentMap = {
   banner: {
-    tips: '轮播',
+    tips: '图片广告',
     creatCom: e => <SwiperBar {...e} />,
   },
   highlights: {
@@ -45,7 +45,7 @@ const componentMap = {
     creatCom: e => <DesignMd {...e} />,
   },
   advertising: {
-    tips: '轮播',
+    tips: '图片广告',
     creatCom: e => <AdMd {...e} />,
   },
 };

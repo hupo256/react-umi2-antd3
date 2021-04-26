@@ -205,7 +205,7 @@ export default function Activityer(props) {
       </Card>
 
       <Card bordered={false}>
-        {permissionsBtn.includes('BTN210326000033') && (
+        {permissionsBtn.includes('BTN210422000001') && (
           <Button className={styles.addBtn} onClick={addNew} type="primary">
             <Icon type="plus" />
             创建小游戏
