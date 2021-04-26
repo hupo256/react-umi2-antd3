@@ -33,16 +33,24 @@ function AddNewGoods(props) {
     form: { validateFields, getFieldDecorator, setFieldsValue, getFieldsValue },
     isEdit,
   } = props;
-  const { setstepNum, setnewAct, newAct, curActDate, setactivityTitle } = useContext(ctx);
+  const { setstepNum, setnewAct, newAct, stepNum, curActDate, setactivityTitle } = useContext(ctx);
   const [typeOpts, settypeOpts] = useState([]);
   const [curType, setcurType] = useState(1);
   const [formDatas, setformDatas] = useState({});
   const [initSubTit, setinitSubTit] = useState('');
   const [btnLoading, setbtnLoading] = useState(false);
 
-  useEffect(() => {
-    newAct && setFieldsValue(newAct);
-  }, []);
+  useEffect(
+    () => {
+      if (newAct) {
+        const { activityRule, actvityConvertRule } = newAct;
+        newAct.activityRule = htmlToStr(activityRule);
+        newAct.actvityConvertRule = htmlToStr(actvityConvertRule);
+        setFieldsValue(newAct);
+      }
+    },
+    [stepNum]
+  );
 
   useEffect(
     () => {

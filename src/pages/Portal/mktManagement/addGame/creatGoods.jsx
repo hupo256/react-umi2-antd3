@@ -134,6 +134,7 @@ export default function CreatGoods(props) {
     return [
       {
         title: '奖项图片',
+        width: '120px',
         dataIndex: 'prizeImage',
         render: (text, record, ind) => (
           <div className={styles.minImgBox} onClick={() => toChooseImg(ind)}>
