@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-23 19:21:00
+ * @Last Modified time: 2021-04-26 12:24:03
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -154,7 +154,7 @@ class ProjectLibrary extends PureComponent {
                 }}
               >
                 <div className={styles.icowrap}>
-                  <img src={ite.elementIcon} style={{ width: 38, height: 38 }} />
+                  <img src={ite.elementIcon} style={{ width: 20, height: 20 }} />
                 </div>
                 <div className={styles.icotext}>{ite.elementName}</div>
               </div>
@@ -220,6 +220,7 @@ class ProjectLibrary extends PureComponent {
               <FootComponent
                 data={item}
                 index={index}
+                handleWidth={data => this.handleWidth(data)}
                 handleCheck={data => this.handleCheck(data)}
                 companyPhone={companyPhone}
                 handleColor={(data, index, code) => this.handleColor(data, index, code)}
@@ -235,6 +236,7 @@ class ProjectLibrary extends PureComponent {
           key={index}
           data={item.data}
           index={item.idx}
+          handleWidth={data => this.handleWidth(data)}
           handleCheck={data => this.handleCheck(data)}
           handleColor={(data, index, code) => this.handleColor(data, index, code)}
           fnDown={(e, indx) => {
@@ -284,7 +286,7 @@ class ProjectLibrary extends PureComponent {
               ''
             )}
           </div>
-          <div className={styles.fixedWrap}>
+          {/*<div className={styles.fixedWrap}>
             {permissionsBtn.permissions.includes('BTN210326000048') ? (
               <Button
                 type="primary"
@@ -309,7 +311,7 @@ class ProjectLibrary extends PureComponent {
                 </span>
               </div>
             ) : null}
-          </div>
+                </div>*/}
         </div>
         <div className={styles.confcont}>
           <div className={styles.thead}>
