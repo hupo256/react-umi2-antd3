@@ -21,8 +21,10 @@ export default function TagsEdit(props) {
 
   function addNewImgs() {
     if (tagList.length === maxLen) return message.warning(`最多可添加${maxLen}个亮点`);
-    const rec = {};
-    settagList([...tagList, rec].slice());
+    const newObj = { ...pageData };
+    newObj.maps[curFlag].list = [...tagList, {}];
+    settagList([...tagList, {}]);
+    setpageData(newObj);
     setTimeout(() => {
       titInp.current.focus();
     });
