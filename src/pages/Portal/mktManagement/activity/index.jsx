@@ -171,6 +171,13 @@ export default function Activityer(props) {
     touchActList({ activityTitle: str });
   }
 
+  function searchChange(e) {
+    const val = e.target.value;
+    console.log(val);
+    setsearchTex(val);
+    val === '' && touchActList({ activityTitle: '' });
+  }
+
   function pageChange(num, size) {
     console.log(num, size);
     const conf = {
@@ -186,6 +193,7 @@ export default function Activityer(props) {
         <Search
           placeholder="可通过游戏标题进行搜索"
           onSearch={val => toSearch(val)}
+          onChange={e => searchChange(e)}
           style={{ width: 400 }}
         />
 
