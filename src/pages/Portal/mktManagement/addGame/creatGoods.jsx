@@ -114,19 +114,8 @@ export default function CreatGoods(props) {
   }
 
   function mergeCols(len) {
-    const cols = [
-      {
-        title: '当前已抽数据',
-        dataIndex: 'prizeBeNum',
-      },
-      {
-        title: '当前剩余数量',
-        dataIndex: 'prizeSuNum',
-      },
-    ];
-
     let defaultCol = creatGoodsCol(len);
-    if (isEdit) defaultCol.splice(4, 0, cols[0], cols[1]);
+    if (!isEdit) defaultCol.splice(4, 2);
 
     return defaultCol;
   }
@@ -136,7 +125,7 @@ export default function CreatGoods(props) {
     return [
       {
         title: '奖项图片',
-        width: '120px',
+        // width: '120px',
         dataIndex: 'prizeImage',
         render: (text, record, ind) => (
           <div className={styles.minImgBox} onClick={() => toChooseImg(ind)}>
@@ -151,7 +140,7 @@ export default function CreatGoods(props) {
           </>
         ),
         dataIndex: 'prizeName',
-        width: '160px',
+        // width: '160px',
         render: (text, record, ind) => {
           const { prizeNameStatus = 'success', prizeNameErrMsg = '', prizeName } = record;
           return (
@@ -174,7 +163,7 @@ export default function CreatGoods(props) {
           </>
         ),
         dataIndex: 'prizeNum',
-        width: 100,
+        // width: 100,
         render: (text, record, ind) => {
           const { prizeNumStatus = 'success', prizeNumErrMsg = '', prizeNum } = record;
           return (
@@ -197,6 +186,14 @@ export default function CreatGoods(props) {
       {
         title: '抽中概率(%)',
         dataIndex: 'probability',
+      },
+      {
+        title: '当前已抽数据',
+        dataIndex: 'prizeBeNum',
+      },
+      {
+        title: '当前剩余数量',
+        dataIndex: 'prizeSuNum',
       },
       {
         title: () => {
