@@ -65,6 +65,7 @@ export default [
         path: '/portal/insite',
         name: 'insite',
         icon: 'dribbble',
+        code: 'MU900000011002',
         routes: [
           {
             path: '/portal/insite', // 入口文件，要用redirect作标记，这样路由刷新时才能正确匹配模块下的子路由们
@@ -200,15 +201,18 @@ export default [
         path: '/portal/activity',
         name: 'activity',
         icon: 'smile',
+        code: 'MU90000004',
         routes: [
           {
             path: '/portal/activity', // 入口文件，要用redirect作标记，这样路由刷新时才能正确匹配模块下的子路由们
             redirect: '/portal/activity',
+            code: 'MU900000040001',
           },
           {
             path: '/portal/activity/mktGame', // 接下来，path,name/PageHeaderName, component三要素常规配置
             name: 'mktGame',
             component: './Portal/mktManagement/activity',
+            code: 'MU900000040001',
           },
           {
             path: '/portal/activity/mktGame/games', // 接下来，path,name/PageHeaderName, component三要素常规配置
