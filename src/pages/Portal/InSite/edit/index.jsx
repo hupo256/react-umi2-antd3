@@ -29,7 +29,7 @@ function TempEdit(props) {
         <div className={styles.tipsOut}>
           <div className={styles.tipsBox}>
             <Tooltip placement="topLeft" title={tipsText}>
-              <Icon type="message" style={{ fontSize: '16px' }} />
+              <Icon type="bulb" style={{ fontSize: '16px' }} />
               <b>温馨提示</b>
             </Tooltip>
           </div>

@@ -56,7 +56,6 @@ export default function CreatGoods(props) {
     const dArr = [];
     const len = newAct?.activityType === 3 ? 8 : 6;
     const goods = newAct?.activityType === 3 ? girdGoods : defaultGoods;
-    let imgNum = 0;
     for (let i = 0; i < len; i++) {
       let isPrize = 1;
       let prizeNum = 100;
@@ -64,16 +63,8 @@ export default function CreatGoods(props) {
         isPrize = 0;
         prizeNum = 1000;
       }
-      if (len === 8 && i > 4) {
-        imgNum = i + 2;
-      } else {
-        imgNum = i + 1;
-      }
-      if (i === 7) {
-        imgNum = 6;
-      }
       dArr.push({
-        prizeImage: `${prizeImg}${imgNum}@2x.png`,
+        prizeImage: `${prizeImg}${i + 1}@2x.png`,
         prizeName: goods[i],
         prizeBeNum: 0,
         probability: 0,

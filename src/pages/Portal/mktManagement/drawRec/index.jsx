@@ -76,6 +76,11 @@ export default function DrawRec(props) {
     touchRecds({ mobile: str });
   }
 
+  function searchChange(e) {
+    const val = e.target.value;
+    val === '' && touchActList({ mobile: '' });
+  }
+
   function pageChange(num, size) {
     console.log(num, size);
     const conf = {
@@ -94,6 +99,7 @@ export default function DrawRec(props) {
               <Search
                 placeholder="可通过抽奖用户手机号进行搜索"
                 onSearch={val => toSearch(val)}
+                onChange={e => searchChange(e)}
                 style={{ width: 400 }}
               />
             </div>
