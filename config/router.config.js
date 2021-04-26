@@ -65,7 +65,7 @@ export default [
         path: '/portal/insite',
         name: 'insite',
         icon: 'dribbble',
-        code: 'MU900000011002',
+        code: 'MU90000001',
         routes: [
           {
             path: '/portal/insite', // 入口文件，要用redirect作标记，这样路由刷新时才能正确匹配模块下的子路由们
@@ -74,6 +74,7 @@ export default [
           {
             path: '/portal/insite/decorate', // 定义左侧菜单栏 与 CN文件相匹配
             name: 'decorate',
+            code: 'MU900000011002',
             component: './Portal/InSite/home',
           },
           {
@@ -100,7 +101,7 @@ export default [
         path: '/portal',
         redirect: '/portal/contentmanagement',
         icon: 'dashboard',
-        code: 'MU90000001',
+        code: 'MU900000010001',
       },
       {
         path: '/portal/contentmanagement',
