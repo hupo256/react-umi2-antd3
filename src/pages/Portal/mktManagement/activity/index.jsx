@@ -79,28 +79,15 @@ export default function Activityer(props) {
         return (
           <>
             {linkUrl && (
-              <>
+              <div style={{ width: '200px' }}>
                 <span>{linkUrl} </span>
                 <Input id={activityCode} className={styles.inpHidden} value={linkUrl} />
                 <br />
                 <a onClick={() => copyLink(activityCode)} className={styles.tocopy}>
                   <Icon type="copy" /> 复制链接
                 </a>
-              </>
+              </div>
             )}
-          </>
-        );
-      },
-    };
-    actColumns[4] = {
-      ...col4,
-      render: (text, record, index) => {
-        const { createTime, creater = '' } = record;
-        return (
-          <>
-            <span>{createTime} </span>
-            <br />
-            <span>{creater}</span>
           </>
         );
       },
@@ -173,7 +160,6 @@ export default function Activityer(props) {
 
   function searchChange(e) {
     const val = e.target.value;
-    console.log(val);
     setsearchTex(val);
     val === '' && touchActList({ activityTitle: '' });
   }

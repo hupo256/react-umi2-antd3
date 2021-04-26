@@ -126,7 +126,7 @@ function AddNewGoods(props) {
     if (!str) return;
     str = str.replace(/<br\/>/g, '\r\n'); //IE9、FF、chrome
     str = str.replace(/<br\/>/g, '\n'); //IE9
-    str = str.replace(/&nbsp;/g, 's'); //空格处理
+    str = str.replace(/&nbsp;/g, ' '); //空格处理
     return str;
   }
 
@@ -201,10 +201,13 @@ function AddNewGoods(props) {
             rules: [{ required: true, message: '请选择游戏形式' }],
           })(
             <Group onChange={onRadioChange}>
-              {typeOpts?.map(opt => {
+              {typeOpts?.map((opt, ind) => {
                 const { name, code, imgUrl } = opt;
                 return (
-                  <div key={code} className={styles.typeOpt}>
+                  <div
+                    key={code}
+                    className={`${styles.typeOpt} ${curType === ind + 1 ? styles.on : ''}`}
+                  >
                     <Radio value={code}>
                       <img src={imgUrl} />
                       <p>{name}</p>
@@ -270,7 +273,7 @@ function AddNewGoods(props) {
         <Item label="规则说明">
           {getFieldDecorator('activityRule', {
             rules: [{ max: 2000, message: '最多输入2000个字符' }],
-          })(<TextArea placeholder="请输入规则说明" />)}
+          })(<TextArea autoSize={true} placeholder="请输入规则说明" />)}
         </Item>
         <Item label="兑换说明">
           {getFieldDecorator('actvityConvertRule', {
@@ -278,7 +281,7 @@ function AddNewGoods(props) {
               { required: true, message: '请填写兑换说明' },
               { max: 2000, message: '最多输入2000个字符' },
             ],
-          })(<TextArea placeholder="请输入兑换说明" />)}
+          })(<TextArea autoSize={true} placeholder="请输入兑换说明" />)}
         </Item>
 
         <Item {...formTailLayout}>

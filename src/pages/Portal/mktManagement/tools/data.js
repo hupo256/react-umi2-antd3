@@ -6,8 +6,8 @@ export const btnInterval = 1000;
 export const actColumns = [
   {
     title: '游戏标题',
-    width: 100,
     dataIndex: 'activityTitle',
+    render: (text, record, index) => <div style={{ width: '170px' }}>{text}</div>,
   },
   {
     title: '状态',
@@ -19,11 +19,22 @@ export const actColumns = [
   },
   {
     title: '小游戏链接',
+    textWrap: 'word-break',
     dataIndex: 'linkUrl',
   },
   {
     title: '创建时间',
     dataIndex: 'createTime',
+    render: (text, record, index) => {
+      const { createTime, creater = '' } = record;
+      return (
+        <div style={{ width: '140px' }}>
+          <span>{createTime} </span>
+          <br />
+          <span>{creater}</span>
+        </div>
+      );
+    },
   },
 ];
 

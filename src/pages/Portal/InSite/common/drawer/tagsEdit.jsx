@@ -53,26 +53,6 @@ export default function TagsEdit(props) {
     forUpdatePageData();
   }
 
-  function tagsTexBlur(e, rec) {
-    const val = e?.target?.value;
-    if (!val) {
-      rec.vaStatus = 'error';
-      rec.errMsg = '请先输入主标题';
-    } else {
-      rec.vaStatus = 'success';
-      rec.errMsg = '';
-    }
-    settagList(tagList.slice());
-  }
-
-  function discTexBlur(e, rec) {
-    const val = e?.target?.value;
-    if (val?.length <= 14) {
-      rec.desStatus = 'success';
-      rec.desMsg = '';
-    }
-  }
-
   function tagsTexChange(e, rec) {
     let val = e.target.value;
     if (val?.length > 6) {
@@ -139,7 +119,7 @@ export default function TagsEdit(props) {
                         style={{ width: '100%' }}
                         value={title}
                         maxLength={6}
-                        onBlur={e => tagsTexBlur(e, tag)}
+                        onBlur={e => tagsTexChange(e, tag)}
                         onChange={e => tagsTexChange(e, tag)}
                         placeholder="请输入主标题"
                       />
@@ -149,7 +129,7 @@ export default function TagsEdit(props) {
                       <Input
                         value={desc}
                         maxLength={14}
-                        onBlur={e => discTexBlur(e, tag)}
+                        onBlur={e => discTexChange(e, tag)}
                         onChange={e => discTexChange(e, tag)}
                         placeholder="请输入副标题"
                       />
