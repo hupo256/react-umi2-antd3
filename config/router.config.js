@@ -67,41 +67,34 @@ export default [
         icon: 'dribbble',
         routes: [
           {
+            path: '/portal/insite', // 入口文件，要用redirect作标记，这样路由刷新时才能正确匹配模块下的子路由们
+            redirect: '/portal/insite/decorate',
+          },
+          {
             path: '/portal/insite/decorate', // 定义左侧菜单栏 与 CN文件相匹配
             name: 'decorate',
-            routes: [
-              {
-                path: '/portal/insite/decorate', // 入口文件，要用redirect作标记，这样路由刷新时才能正确匹配模块下的子路由们
-                redirect: '/portal/insite/decorate/home',
-              },
-              {
-                path: '/portal/insite/decorate/home', // 接下来，path,name/PageHeaderName, component三要素常规配置
-                // PageHeaderName: '当前模板',
-                component: './Portal/InSite/home',
-              },
-              {
-                path: '/portal/insite/decorate/templates',
-                PageHeaderName: '选择模板',
-                component: './Portal/InSite/templates',
-              },
-              {
-                path: '/portal/insite/decorate/edit',
-                PageHeaderName: '继续编辑',
-                component: './Portal/InSite/edit',
-              },
-            ],
+            component: './Portal/InSite/home',
+          },
+          {
+            path: '/portal/insite/decorate/home', // 接下来，path,name/PageHeaderName, component三要素常规配置
+            // PageHeaderName: '当前模板',
+            component: './Portal/InSite/home',
+          },
+          {
+            path: '/portal/insite/decorate/templates',
+            PageHeaderName: '选择模板',
+            component: './Portal/InSite/templates',
+          },
+          {
+            path: '/portal/insite/decorate/edit',
+            PageHeaderName: '继续编辑',
+            component: './Portal/InSite/edit',
           },
         ],
       },
 
       // v2.0
       // 门户
-      // {
-      //   path: '/portal',
-      //   name: 'portal',
-      //   icon: 'dashboard',
-      //   code: 'MU90000001',
-      //   routes: [
       {
         path: '/portal',
         redirect: '/portal/contentmanagement',
@@ -209,34 +202,33 @@ export default [
         icon: 'smile',
         routes: [
           {
-            path: '/portal/activity/mktGame', // 定义左侧菜单栏 与 CN文件相匹配
+            path: '/portal/activity', // 入口文件，要用redirect作标记，这样路由刷新时才能正确匹配模块下的子路由们
+            redirect: '/portal/activity',
+          },
+          {
+            path: '/portal/activity/mktGame', // 接下来，path,name/PageHeaderName, component三要素常规配置
             name: 'mktGame',
-            routes: [
-              {
-                path: '/portal/activity/mktGame', // 入口文件，要用redirect作标记，这样路由刷新时才能正确匹配模块下的子路由们
-                redirect: '/portal/activity/mktGame/games',
-              },
-              {
-                path: '/portal/activity/mktGame/games', // 接下来，path,name/PageHeaderName, component三要素常规配置
-                // PageHeaderName: '营销小游戏',
-                component: './Portal/mktManagement/activity',
-              },
-              {
-                path: '/portal/activity/mktGame/editGame',
-                PageHeaderName: '编辑游戏',
-                component: './Portal/mktManagement/activity/activityEdit',
-              },
-              {
-                path: '/portal/activity/mktGame/addGame',
-                PageHeaderName: '创建小游戏',
-                component: './Portal/mktManagement/addGame',
-              },
-              {
-                path: '/portal/activity/mktGame/drawRec',
-                PageHeaderName: '抽奖记录',
-                component: './Portal/mktManagement/drawRec',
-              },
-            ],
+            component: './Portal/mktManagement/activity',
+          },
+          {
+            path: '/portal/activity/mktGame/games', // 接下来，path,name/PageHeaderName, component三要素常规配置
+            // PageHeaderName: '营销小游戏',
+            component: './Portal/mktManagement/activity',
+          },
+          {
+            path: '/portal/activity/mktGame/editGame',
+            PageHeaderName: '编辑游戏',
+            component: './Portal/mktManagement/activity/activityEdit',
+          },
+          {
+            path: '/portal/activity/mktGame/addGame',
+            PageHeaderName: '创建小游戏',
+            component: './Portal/mktManagement/addGame',
+          },
+          {
+            path: '/portal/activity/mktGame/drawRec',
+            PageHeaderName: '抽奖记录',
+            component: './Portal/mktManagement/drawRec',
           },
         ],
       },

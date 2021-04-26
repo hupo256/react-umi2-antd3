@@ -167,7 +167,7 @@ export default function Preview(props) {
             <a onClick={() => gotoRoute(`edit?templateCode=${curTheme}`)} type="primary">
               继续编辑
             </a>
-            <a onClick={() => gotoRoute(`templates?tochange=1`)} type="primary" ghost>
+            <a onClick={() => gotoRoute(`templates?tochange=1`)} type="primary">
               更换模板
             </a>
           </div>
