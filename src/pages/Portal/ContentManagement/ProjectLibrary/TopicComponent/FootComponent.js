@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-26 11:41:47
+ * @Last Modified time: 2021-04-26 14:28:20
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -81,7 +81,11 @@ class FootComponent extends PureComponent {
           <div className="clearfix">
             <div className={styles.phoneWrap}>
               <div>
-                <Icon type="phone" />
+                <img
+                  src="https://img.inbase.in-deco.com/crm_saas/release/20210426/7f28e9b033204fc2bd628d0f82fbdfc8/ic_call.png"
+                  width="25"
+                  height="25"
+                />
               </div>
               <div>{companyPhone}</div>
             </div>
