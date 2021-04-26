@@ -116,6 +116,7 @@ export default function CreatGoods(props) {
     } else {
       const arr = calcNumInArr(curGoods);
       setcurGoods(arr.slice());
+      setisthrough(true);
     }
   }
 
