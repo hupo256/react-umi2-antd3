@@ -46,7 +46,7 @@ export default function Activityer(props) {
   }
 
   function creatColumn() {
-    const [, col1, col2, col3, col4] = actColumns;
+    const [, col1, col2, col3] = actColumns;
     actColumns[1] = {
       ...col1,
       render: (text, record, index) => {
@@ -63,17 +63,6 @@ export default function Activityer(props) {
         );
       },
     };
-    actColumns[2] = {
-      ...col2,
-      render: (text, record, index) => {
-        const [st, et] = text.split('_');
-        return (
-          <div className={styles.timeBox}>
-            {st} 至 <br /> {et}
-          </div>
-        );
-      },
-    };
     actColumns[3] = {
       ...col3,
       render: (text, record, index) => {
@@ -81,14 +70,14 @@ export default function Activityer(props) {
         return (
           <>
             {linkUrl && (
-              <div style={{ width: '200px' }}>
+              <>
                 <span>{linkUrl} </span>
                 <Input id={activityCode} className={styles.inpHidden} value={linkUrl} />
                 <br />
                 <a onClick={() => copyLink(activityCode)} className={styles.tocopy}>
                   <Icon type="copy" /> 复制链接
                 </a>
-              </div>
+              </>
             )}
           </>
         );
