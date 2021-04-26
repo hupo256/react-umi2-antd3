@@ -30,10 +30,10 @@ const formTailLayout = {
 
 function AddNewGoods(props) {
   const {
-    form: { validateFields, getFieldDecorator, setFieldsValue, getFieldsValue, resetFields },
+    form: { validateFields, getFieldDecorator, setFieldsValue, getFieldsValue },
     isEdit,
   } = props;
-  const { setstepNum, setnewAct, newAct, curActDate } = useContext(ctx);
+  const { setstepNum, setnewAct, newAct, curActDate, setactivityTitle } = useContext(ctx);
   const [typeOpts, settypeOpts] = useState([]);
   const [curType, setcurType] = useState(1);
   const [formDatas, setformDatas] = useState({});
@@ -143,7 +143,7 @@ function AddNewGoods(props) {
       console.log(values);
       if (err) return;
       const { uid } = urlParamHash(location.href);
-      const { activityTime, actvityConvertRule, activityRule } = values;
+      const { activityTime, actvityConvertRule, activityRule, activityTitle } = values;
       const [st, et] = activityTime;
       const newAct = {
         ...values,
@@ -155,6 +155,7 @@ function AddNewGoods(props) {
       };
 
       setnewAct(newAct); // 刷新一下以便下步使用
+      setactivityTitle(activityTitle);
       if (!isEdit) {
         setstepNum(1);
       } else {

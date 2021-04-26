@@ -34,7 +34,7 @@ export function calcNumInArr(arr) {
     !!prizeBeNum || (gs['prizeBeNum'] = 0); // 新增时重置为0
     gs['originNum'] = +prizeNum; // 暂存一下总数
     gs['prizeSuNum'] = +prizeNum - +prizeBeNum; // 剩余数
-    gs['probability'] = ((+prizeNum * 100) / totals).toFixed(2); // 抽中概率
+    gs['probability'] = parseFloat(((+prizeNum * 100) / totals).toFixed(2)); // 抽中概率
   });
   return arr;
 }
