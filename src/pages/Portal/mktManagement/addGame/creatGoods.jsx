@@ -38,7 +38,7 @@ export default function CreatGoods(props) {
   const [isthrough, setisthrough] = useState(true);
   const [btnLoading, setbtnLoading] = useState(false);
   const actType = newAct?.activityType || curActDate?.activityType || 1;
-  const gsColumns = creatGoodsCol(curGoods?.length) || [];
+  const gsColumns = mergeCols(curGoods?.length) || [];
 
   useEffect(() => {
     !isEdit && newAct?.activityType && touchgsList();
@@ -120,6 +120,24 @@ export default function CreatGoods(props) {
     }
   }
 
+  function mergeCols(len) {
+    const cols = [
+      {
+        title: '当前已抽数据',
+        dataIndex: 'prizeBeNum',
+      },
+      {
+        title: '当前剩余数量',
+        dataIndex: 'prizeSuNum',
+      },
+    ];
+
+    let defaultCol = creatGoodsCol(len);
+    if (isEdit) defaultCol.splice(4, 0, cols[0], cols[1]);
+
+    return defaultCol;
+  }
+
   // 创建奖品columns
   function creatGoodsCol(len) {
     return [
@@ -185,14 +203,6 @@ export default function CreatGoods(props) {
       {
         title: '抽中概率(%)',
         dataIndex: 'probability',
-      },
-      {
-        title: '当前已抽数据',
-        dataIndex: 'prizeBeNum',
-      },
-      {
-        title: '当前剩余数量',
-        dataIndex: 'prizeSuNum',
       },
       {
         title: () => {
