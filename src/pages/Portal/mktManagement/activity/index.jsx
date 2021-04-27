@@ -160,6 +160,7 @@ export default function Activityer(props) {
 
   function searchChange(e) {
     const val = e.target.value;
+    setsearchTex(val);
     val === '' && touchActList({ activityTitle: '' });
   }
 

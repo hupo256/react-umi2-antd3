@@ -80,6 +80,7 @@ export default function DrawRec(props) {
 
   function searchChange(e) {
     const val = e.target.value;
+    setsearchTex(val);
     val === '' && touchActList({ mobile: '' });
   }
 
