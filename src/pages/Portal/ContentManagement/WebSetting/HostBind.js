@@ -16,6 +16,7 @@ class HostBind extends Component {
   }
   componentWillMount() {
     // console.log('hostcomponentWillMount', this.props);
+    //ceshi
     const { dispatch } = this.props;
     let customDomain = '',
       defaultDomain = '';
