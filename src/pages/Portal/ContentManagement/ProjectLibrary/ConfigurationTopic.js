@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-27 19:09:29
+ * @Last Modified time: 2021-04-27 19:44:45
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -189,6 +189,7 @@ class ProjectLibrary extends PureComponent {
                 <ImgComponent
                   data={item}
                   index={index}
+                  handleWidth={data => this.handleWidth(data)}
                   handleCheck={data => this.handleCheck(data)}
                   handleImg={(data, index) => this.handleImg(data, index)}
                   handleDeletePic={data => this.handleDeletePic(data)}

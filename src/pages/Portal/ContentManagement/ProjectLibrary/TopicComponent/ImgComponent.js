@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-27 17:00:27
+ * @Last Modified time: 2021-04-27 19:45:15
  * 创建工地
  */
 import React, { PureComponent } from 'react';
@@ -94,10 +94,12 @@ class ImgComponent extends PureComponent {
   changePic() {
     const { index } = this.props;
     this.props.handleCheck(index);
+    this.props.handleWidth(-80);
   }
   deletePic() {
     const { index } = this.props;
     this.props.handleDeletePic(index);
+    this.props.handleWidth(-80);
   }
   changePicStaus() {
     this.setState({
