@@ -8,6 +8,7 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import { ctx } from '../context';
 import { Input, Icon, message, Form } from 'antd';
+import { highlightsBgImgs } from '../../tools/data';
 import LinkChoose from './linkChoose';
 import styles from './drawerEditor.less';
 
@@ -19,11 +20,13 @@ export default function TagsEdit(props) {
   const [tagList = [], settagList] = useState(() => pageData?.maps?.[curFlag]?.list);
   const titInp = useRef();
 
-  function addNewImgs() {
-    if (tagList.length === maxLen) return message.warning(`最多可添加${maxLen}个亮点`);
+  function addNewTag() {
+    const len = tagList.length;
+    if (len === maxLen) return message.warning(`最多可添加${maxLen}个亮点`);
     const newObj = { ...pageData };
-    newObj.maps[curFlag].list = [...tagList, {}];
-    settagList([...tagList, {}]);
+    const newTag = { imgUrl: highlightsBgImgs[len] };
+    newObj.maps[curFlag].list = [...tagList, newTag];
+    settagList([...tagList, newTag]);
     setpageData(newObj);
     setTimeout(() => {
       titInp.current.focus();
@@ -149,7 +152,7 @@ export default function TagsEdit(props) {
           })}
       </ul>
 
-      <p className={styles.addImg} onClick={addNewImgs}>
+      <p className={styles.addImg} onClick={addNewTag}>
         <span>+</span>
         <span>添加亮点</span>
       </p>
