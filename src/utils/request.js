@@ -131,7 +131,8 @@ export default function request(
   if (
     newOptions.method === 'POST' ||
     newOptions.method === 'PUT' ||
-    newOptions.method === 'DELETE'
+    newOptions.method === 'DELETE' ||
+    newOptions.method === 'GET'
   ) {
     newOptions.headers = {
       token: localStorage.getItem('crmtoken'),
