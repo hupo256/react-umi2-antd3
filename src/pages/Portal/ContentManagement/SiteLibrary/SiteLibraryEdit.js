@@ -2,13 +2,27 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-19 16:45:05
+ * @Last Modified time: 2021-04-27 15:41:06
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
-import { Card, Form, Button, Input, message, Select, Row, Col, InputNumber, Icon } from 'antd';
+import {
+  Tooltip,
+  Tag,
+  Card,
+  Form,
+  Button,
+  Input,
+  message,
+  Select,
+  Row,
+  Col,
+  InputNumber,
+  Icon,
+} from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
+import TagGroup from '@/components/TagSelect/TagGroup';
 import { getQueryUrlVal, getUrl } from '@/utils/utils';
 import Upload from '@/components/Upload/Upload';
 import styles from './SiteLibrary.less';
@@ -99,6 +113,7 @@ class SiteLibraryAdd extends PureComponent {
         <PageHeaderWrapper>
           <Card bordered={false}>
             <Form {...formItemLayout} onSubmit={this.handleSubmit}>
+              <h4 className={styles.title}>基本信息</h4>
               <Form.Item label="工地标题">
                 {getFieldDecorator('gongdiTitle', {
                   initialValue: siteDetail.gongdiTitle,
@@ -192,13 +207,13 @@ class SiteLibraryAdd extends PureComponent {
                     },
                   ],
                 })(
-                    <InputNumber
-                      formatter={limitDecimals}
-                      parser={limitDecimals}
-                      style={{ width: 400 }}
-                      placeholder="请输入装修造价" 
-                      className="depFormInputAfter"
-                    />
+                  <InputNumber
+                    formatter={limitDecimals}
+                    parser={limitDecimals}
+                    style={{ width: 400 }}
+                    placeholder="请输入装修造价"
+                    className="depFormInputAfter"
+                  />
                 )}
               </Form.Item>
               <Form.Item label="选择风格">
@@ -277,13 +292,23 @@ class SiteLibraryAdd extends PureComponent {
                   </div>
                 )}
               </Form.Item>
+              <h4 className={styles.title}>TDK设置（用于搜索引擎收录）</h4>
+              <Form.Item label="关键词">
+                {getFieldDecorator('buildingName', {
+                  initialValue: siteDetail.buildingName,
+                  rules: [],
+                })(<TagGroup />)}
+              </Form.Item>
+
               <Form.Item label="工地说明">
                 {getFieldDecorator('gongdiDescription', {
                   initialValue: siteDetail.gongdiDescription,
-                  rules: [ {
-                    max: 200,
-                    message: '限制0-200字符长度',
-                  }],
+                  rules: [
+                    {
+                      max: 200,
+                      message: '限制0-200字符长度',
+                    },
+                  ],
                 })(<TextArea rows={4} style={{ width: 400 }} placeholder="请输入工地说明" />)}
               </Form.Item>
               <Row>
