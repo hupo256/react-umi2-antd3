@@ -16,17 +16,6 @@ export default function DrawerEditor(props) {
   const { curFlag, setcurFlag } = useContext(ctx);
   const isShow = canEditTags.includes(curFlag);
 
-  // useEffect(() => {
-  //   window.addEventListener('beforeunload', toUnload);
-  //   return () => {
-  //     window.removeEventListener('beforeunload', toUnload);
-  //   };
-  // }, []);
-
-  function toUnload(e) {
-    e.returnValue = '我在这写点东西...';
-  }
-
   function blockPropagation(e) {
     e.stopPropagation();
     // 阻止与原生事件的冒泡
@@ -39,7 +28,7 @@ export default function DrawerEditor(props) {
       onClick={() => setcurFlag('editing')}
     >
       <div className={styles.drawerBox} onClick={blockPropagation}>
-        <h3>{`编辑${curFlag === 'highlights' ? '亮点' : '轮播'}`}</h3>
+        <h3>{`编辑${curFlag === 'highlights' ? '亮点' : '图片广告'}`}</h3>
         {curFlag === 'banner' && <ImgsEdit />}
         {curFlag === 'highlights' && <TagsEdit />}
         {curFlag === 'advertising' && <ImgsEdit />}

@@ -24,14 +24,13 @@ function Home(props) {
     const code = localStorage.getItem('auth');
     const saasSellerCode = JSON.parse(code).companyCode;
     getAuthInfo({ saasSellerCode }).then(res => {
-      const { data } = res;
-      if (!data) return;
-      const userInfor = data;
+      if (!res?.data) return;
+      const userInfor = res.data;
 
       // 之前有发布过吗
       getHomePagePublishState().then(res => {
+        if (!res?.data) return;
         const { data } = res;
-        if (!data) return;
         if (!data.isPublished) {
           return router.push(`${baseRouteKey}templates`);
         }

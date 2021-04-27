@@ -5,7 +5,7 @@
  * @Last Modified time: 2021-03-23 13:49:12 
  * 营销活动管理 活动列表
  */
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import mktApi from '@/services/mktActivity';
 import router from 'umi/router';
 import { baseRouteKey } from '../tools/data';
@@ -24,6 +24,7 @@ export default function Activityer(props) {
   const [searchInd, setsearchInd] = useState(0);
   const [searchTex, setsearchTex] = useState('');
   const [total, settotal] = useState(0);
+  const [curPage, setcurPage] = useState(1);
 
   useEffect(() => {
     // 获取第一页的活动列表
@@ -46,7 +47,7 @@ export default function Activityer(props) {
   }
 
   function creatColumn() {
-    const [, col1, col2, col3, col4] = actColumns;
+    const [, col1, col2, col3] = actColumns;
     actColumns[1] = {
       ...col1,
       render: (text, record, index) => {
@@ -63,17 +64,6 @@ export default function Activityer(props) {
         );
       },
     };
-    actColumns[2] = {
-      ...col2,
-      render: (text, record, index) => {
-        const [st, et] = text.split('_');
-        return (
-          <div className={styles.timeBox}>
-            {st} 至 <br /> {et}
-          </div>
-        );
-      },
-    };
     actColumns[3] = {
       ...col3,
       render: (text, record, index) => {
@@ -84,25 +74,12 @@ export default function Activityer(props) {
               <>
                 <span>{linkUrl} </span>
                 <Input id={activityCode} className={styles.inpHidden} value={linkUrl} />
-                <p>
-                  <a onClick={() => copyLink(activityCode)} className={styles.tocopy}>
-                    <Icon type="copy" /> 复制链接
-                  </a>
-                </p>
+                <br />
+                <a onClick={() => copyLink(activityCode)} className={styles.tocopy}>
+                  <Icon type="copy" /> 复制链接
+                </a>
               </>
             )}
-          </>
-        );
-      },
-    };
-    actColumns[4] = {
-      ...col4,
-      render: (text, record, index) => {
-        const { createTime, creater = '' } = record;
-        return (
-          <>
-            <span>{createTime} </span>
-            <p>{creater}</p>
           </>
         );
       },
@@ -114,8 +91,11 @@ export default function Activityer(props) {
       render: (text, record, index) => (
         <p className={styles.actions}>
           {permissionsBtn.includes('BTN210422000002') && (
-            <a onClick={() => toEdit(record.uid)}>编辑</a>
-          )}{' '}
+            <>
+              <a onClick={() => toEdit(record.uid)}>编辑</a>
+              <span>|</span>
+            </>
+          )}
           {permissionsBtn.includes('BTN210422000003') && (
             <a onClick={() => toRecod(record.activityCode)}>抽奖记录</a>
           )}
@@ -174,7 +154,14 @@ export default function Activityer(props) {
   function toSearch(tex) {
     const str = tex.substr(0, 30);
     setsearchTex(str);
+    setcurPage(1);
     touchActList({ activityTitle: str });
+  }
+
+  function searchChange(e) {
+    const val = e.target.value;
+    setsearchTex(val);
+    val === '' && touchActList({ activityTitle: '' });
   }
 
   function pageChange(num, size) {
@@ -183,6 +170,7 @@ export default function Activityer(props) {
       pageNum: num,
       pageSize: size,
     };
+    setcurPage(num);
     touchActList(conf);
   }
 
@@ -192,6 +180,7 @@ export default function Activityer(props) {
         <Search
           placeholder="可通过游戏标题进行搜索"
           onSearch={val => toSearch(val)}
+          onChange={e => searchChange(e)}
           style={{ width: 400 }}
         />
 
@@ -212,8 +201,9 @@ export default function Activityer(props) {
       </Card>
 
       <Card bordered={false}>
-        {permissionsBtn.includes('BTN210326000033') && (
+        {permissionsBtn.includes('BTN210422000001') && (
           <Button className={styles.addBtn} onClick={addNew} type="primary">
+            <Icon type="plus" />
             创建小游戏
           </Button>
         )}
@@ -222,7 +212,7 @@ export default function Activityer(props) {
           size="middle"
           dataSource={actList}
           columns={tbColumns}
-          pagination={{ total, onChange: pageChange }}
+          pagination={{ total, current: curPage, onChange: pageChange }}
           rowKey={(r, i) => i}
         />
       </Card>

@@ -7,7 +7,7 @@
  */
 import React, { useState, useEffect, useContext } from 'react';
 import { ctx } from '../common/context';
-import { defaultGoods, girdGoods, prizeImg, tipsTable, defaultImg } from '../tools/data';
+import { defaultGoods, girdGoods, prizeImg, tipsTable, btnInterval } from '../tools/data';
 import { calcNumInArr, urlParamHash } from '../tools';
 import Upload from '@/components/Upload/Upload';
 import mktApi from '@/services/mktActivity';
@@ -35,8 +35,10 @@ export default function CreatGoods(props) {
   );
   const [imgEdtor, setimgEdtor] = useState(false);
   const [curInd, setcurInd] = useState(-1);
+  const [isthrough, setisthrough] = useState(true);
+  const [btnLoading, setbtnLoading] = useState(false);
   const actType = newAct?.activityType || curActDate?.activityType || 1;
-  const gsColumns = creatGoodsCol(curGoods?.length) || [];
+  const gsColumns = mergeCols(curGoods?.length) || [];
 
   useEffect(() => {
     !isEdit && newAct?.activityType && touchgsList();
@@ -54,30 +56,23 @@ export default function CreatGoods(props) {
     const dArr = [];
     const len = newAct?.activityType === 3 ? 8 : 6;
     const goods = newAct?.activityType === 3 ? girdGoods : defaultGoods;
-    let imgNum = 0;
     for (let i = 0; i < len; i++) {
       let isPrize = 1;
       let prizeNum = 100;
+      let prizeImage = `${prizeImg}${i + 1}@2x.png`;
       if (i === len - 1) {
         isPrize = 0;
         prizeNum = 1000;
       }
-      if (len === 8 && i > 4) {
-        imgNum = i + 2;
-      } else {
-        imgNum = i + 1;
-      }
-      if (i === 7) {
-        imgNum = 6;
-      }
+      i === 7 && (prizeImage = `${prizeImg}${i + 1}@2x2.png`);
       dArr.push({
-        prizeImage: `${prizeImg}${imgNum}@2x.png`,
         prizeName: goods[i],
         prizeBeNum: 0,
         probability: 0,
         prizeSuNum: 100,
         prizeNum,
         isPrize,
+        prizeImage,
       });
     }
     const arr = calcNumInArr(dArr);
@@ -110,10 +105,19 @@ export default function CreatGoods(props) {
       target.focus();
       rec.prizeNum = originNum; //赋原值
       setcurGoods(curGoods.slice());
+      setisthrough(false); // 校验没通过
     } else {
       const arr = calcNumInArr(curGoods);
       setcurGoods(arr.slice());
+      setisthrough(true);
     }
+  }
+
+  function mergeCols(len) {
+    let defaultCol = creatGoodsCol(len);
+    if (!isEdit) defaultCol.splice(4, 2);
+
+    return defaultCol;
   }
 
   // 创建奖品columns
@@ -121,10 +125,11 @@ export default function CreatGoods(props) {
     return [
       {
         title: '奖项图片',
+        // width: '120px',
         dataIndex: 'prizeImage',
         render: (text, record, ind) => (
           <div className={styles.minImgBox} onClick={() => toChooseImg(ind)}>
-            <img src={record.prizeImage || `${prizeImg}1@2x.png`} alt="" />
+            <img src={record.prizeImage} alt="" />
           </div>
         ),
       },
@@ -135,7 +140,7 @@ export default function CreatGoods(props) {
           </>
         ),
         dataIndex: 'prizeName',
-        width: 160,
+        // width: '160px',
         render: (text, record, ind) => {
           const { prizeNameStatus = 'success', prizeNameErrMsg = '', prizeName } = record;
           return (
@@ -158,7 +163,7 @@ export default function CreatGoods(props) {
           </>
         ),
         dataIndex: 'prizeNum',
-        width: 100,
+        // width: 100,
         render: (text, record, ind) => {
           const { prizeNumStatus = 'success', prizeNumErrMsg = '', prizeNum } = record;
           return (
@@ -166,12 +171,12 @@ export default function CreatGoods(props) {
               <Item validateStatus={prizeNumStatus} help={prizeNumErrMsg}>
                 <InputNumber
                   precision={0}
-                  max={99999}
+                  max={9999}
                   min={1}
                   value={prizeNum}
                   onBlur={e => inpNumBlur(e, record)}
                   onChange={e => inpChange(e, 'prizeNum', record)}
-                  style={{ width: 110 }}
+                  // style={{ width: 110 }}
                 />
               </Item>
             </Form>
@@ -226,10 +231,8 @@ export default function CreatGoods(props) {
 
   // 点击复选
   function checkboxChange(e, ind) {
-    console.log(e);
     const { target } = e;
     curGoods[ind].isPrize = +target.checked;
-    console.log(curGoods);
     setcurGoods(curGoods.slice());
   }
 
@@ -323,23 +326,23 @@ export default function CreatGoods(props) {
       return gs;
     });
     setcurGoods(arr.slice());
-    // console.log
     return isEmpty.length > 0;
   }
 
   // 提交奖项
   function submitGoods() {
-    // 非空校验
-    if (isValEmpty()) return;
+    if (isValEmpty()) return; // 非空校验
+    if (!isthrough) return; // 数量没过过
 
+    setbtnLoading(true);
     // 数字合格校验
     if (isEdit) {
       const { uid } = urlParamHash(location.href);
       mktApi.getActivity({ uid }).then(res => {
         console.log(res);
-        if (!res?.data) return message.error(res.message);
+        if (!res?.data) return message.error(res.message); // 请求出错退出
         const errArr = updateCurArr(res.data?.prizeList);
-        if (errArr.length > 0) return showError(errArr);
+        if (errArr.length > 0) return showError(errArr); //列出改变的项
 
         // 校验通过后再提交
         const params = {
@@ -367,11 +370,15 @@ export default function CreatGoods(props) {
         setstepNum(2);
       });
     }
+    setTimeout(() => setbtnLoading(false), btnInterval);
   }
 
   function addNewImgs() {
-    if (curGoods.length >= maxLen) return message.error(`最多可添加${maxLen}个奖项哦`);
-    setcurGoods([...curGoods, { prizeImage: `${prizeImg}6@2x.png` }]);
+    const len = curGoods.length;
+    if (len >= maxLen) return message.error(`最多可添加${maxLen}个奖项哦`);
+    const prefix = len < 7 ? '@2x.png' : '@2x2.png';
+    console.log(`${prizeImg}${len + 1}${prefix}`);
+    setcurGoods([...curGoods, { prizeImage: `${prizeImg}${len + 1}${prefix}` }]);
   }
 
   return (
@@ -390,7 +397,7 @@ export default function CreatGoods(props) {
         </p>
       )}
       <div className={styles.btnBox}>
-        <Button type="primary" onClick={submitGoods}>
+        <Button type="primary" loading={btnLoading} onClick={submitGoods}>
           {isEdit ? '保存' : '提交'}
         </Button>
         {!isEdit && <Button onClick={() => setstepNum(0)}>上一步</Button>}

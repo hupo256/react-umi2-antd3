@@ -60,7 +60,7 @@ function Templates(props) {
     };
     updateHomePageEditData(parmas).then(res => {
       if (res.code === 200) {
-        const key = (isChange ? 'home' : 'edit') + `?templateCode=${code}`;
+        const key = `edit?templateCode=${code}`;
         router.push(`${baseRouteKey}${key}`);
       }
     });

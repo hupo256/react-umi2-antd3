@@ -2,10 +2,11 @@ export const baseRouteKey = '/portal/activity/mktGame/';
 export const prizeImg = 'http://img.inbase.in-deco.com/crm-saas/img/games/prize/';
 export const defaultImg = 'http://img.inbase.in-deco.com/crm-saas/img/games/default/';
 export const tipsTable = '勾选为奖品，即为中奖';
+export const btnInterval = 1000;
 export const actColumns = [
   {
     title: '游戏标题',
-    width: 100,
+    width: '130px',
     dataIndex: 'activityTitle',
   },
   {
@@ -15,14 +16,36 @@ export const actColumns = [
   {
     title: '起止时间',
     dataIndex: 'time',
+    width: '150px',
+    render: (text, record, index) => {
+      const [st, et] = text.split('_');
+      return (
+        <span>
+          {st} 至 <br /> {et}
+        </span>
+      );
+    },
   },
   {
     title: '小游戏链接',
+    textWrap: 'word-break',
+    // width: '270px',
     dataIndex: 'linkUrl',
   },
   {
     title: '创建时间',
     dataIndex: 'createTime',
+    width: '160px',
+    render: (text, record, index) => {
+      const { createTime, creater = '' } = record;
+      return (
+        <>
+          <span>{createTime} </span>
+          <br />
+          <span>{creater}</span>
+        </>
+      );
+    },
   },
 ];
 
@@ -38,7 +61,7 @@ export const recColumns = [
     render: (text, record, index) => text.slice(0, 16),
   },
   {
-    title: '抽奖用户手机号码',
+    title: '抽奖用户手机号',
     dataIndex: 'userPhone',
   },
   {

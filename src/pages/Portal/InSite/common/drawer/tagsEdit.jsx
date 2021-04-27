@@ -21,8 +21,10 @@ export default function TagsEdit(props) {
 
   function addNewImgs() {
     if (tagList.length === maxLen) return message.warning(`最多可添加${maxLen}个亮点`);
-    const rec = {};
-    settagList([...tagList, rec].slice());
+    const newObj = { ...pageData };
+    newObj.maps[curFlag].list = [...tagList, {}];
+    settagList([...tagList, {}]);
+    setpageData(newObj);
     setTimeout(() => {
       titInp.current.focus();
     });
@@ -51,33 +53,11 @@ export default function TagsEdit(props) {
     forUpdatePageData();
   }
 
-  function tagsTexBlur(e, rec) {
-    const val = e?.target?.value;
-    if (!val) {
-      rec.vaStatus = 'error';
-      rec.errMsg = '请先输入主标题';
-    } else {
-      rec.vaStatus = 'success';
-      rec.errMsg = '';
-    }
-    settagList(tagList.slice());
-  }
-
-  function discTexBlur(e, rec) {
-    const val = e?.target?.value;
-    if (val?.length <= 14) {
-      rec.desStatus = 'success';
-      rec.desMsg = '';
-    }
-  }
-
   function tagsTexChange(e, rec) {
     let val = e.target.value;
     if (val?.length > 6) {
       rec.vaStatus = 'error';
       rec.errMsg = '最多6个字符';
-      // return;
-      // val = val.substr(0, 6);
     } else {
       rec.vaStatus = 'success';
       rec.errMsg = '';
@@ -91,7 +71,6 @@ export default function TagsEdit(props) {
     if (val?.length > 14) {
       rec.desStatus = 'error';
       rec.desMsg = '最多14个字符';
-      // val = val.substr(0, 14);
     } else {
       rec.desStatus = 'success';
       rec.desMsg = '';
@@ -117,16 +96,20 @@ export default function TagsEdit(props) {
             const len = tagList.length;
             return (
               <li key={ind}>
-                <div className={styles.tbOpration}>
-                  <a disabled={ind === 0} onClick={() => toMove(ind, -1)}>
-                    <Icon type="arrow-up" />
-                  </a>
-                  <a disabled={ind === len - 1} onClick={() => toMove(ind, 1)}>
-                    <Icon type="arrow-down" />
-                  </a>
-                  <a disabled={len === 1} onClick={() => delImg(ind)}>
-                    <Icon type="delete" />
-                  </a>
+                <div className={styles.titBox}>
+                  <span>主标题</span>
+                  <span>副标题</span>
+                  <div className={styles.tbOpration}>
+                    <a disabled={ind === 0} onClick={() => toMove(ind, -1)}>
+                      <Icon type="arrow-up" />
+                    </a>
+                    <a disabled={ind === len - 1} onClick={() => toMove(ind, 1)}>
+                      <Icon type="arrow-down" />
+                    </a>
+                    <a disabled={len === 1} onClick={() => delImg(ind)}>
+                      <Icon type="delete" />
+                    </a>
+                  </div>
                 </div>
                 <div className={styles.taginpBox}>
                   <Form layout="inline">
@@ -136,7 +119,7 @@ export default function TagsEdit(props) {
                         style={{ width: '100%' }}
                         value={title}
                         maxLength={6}
-                        onBlur={e => tagsTexBlur(e, tag)}
+                        onBlur={e => tagsTexChange(e, tag)}
                         onChange={e => tagsTexChange(e, tag)}
                         placeholder="请输入主标题"
                       />
@@ -146,15 +129,17 @@ export default function TagsEdit(props) {
                       <Input
                         value={desc}
                         maxLength={14}
-                        onBlur={e => discTexBlur(e, tag)}
+                        onBlur={e => discTexChange(e, tag)}
                         onChange={e => discTexChange(e, tag)}
-                        placeholder="请输入副文本"
+                        placeholder="请输入副标题"
                       />
                     </Item>
                   </Form>
+
+                  <p>关联页面</p>
                   <Input
                     value={text}
-                    placeholder="请设置跳转链接"
+                    placeholder="请选择关联页面"
                     onClick={() => toChooseLink(ind)}
                     suffix={<Icon type="right" className={styles.inpSuffix} />}
                   />

@@ -25,7 +25,7 @@ const permissionsBtn = getauth().permissions || [];
 
 const componentMap = {
   banner: {
-    tips: '轮播',
+    tips: '图片广告',
     creatCom: e => <SwiperBar {...e} />,
   },
   highlights: {
@@ -45,7 +45,7 @@ const componentMap = {
     creatCom: e => <DesignMd {...e} />,
   },
   advertising: {
-    tips: '轮播',
+    tips: '图片广告',
     creatCom: e => <AdMd {...e} />,
   },
 };
@@ -167,14 +167,10 @@ export default function Preview(props) {
         {from && (
           <div className={pageStyle.btnbox}>
             {permissionsBtn.includes('BTN210422000004') && (
-              <a onClick={() => gotoRoute(`edit?templateCode=${curTheme}`)} type="primary">
-                继续编辑
-              </a>
+              <a onClick={() => gotoRoute(`edit?templateCode=${curTheme}`)}>继续编辑</a>
             )}
             {permissionsBtn.includes('BTN210422000005') && (
-              <a onClick={() => gotoRoute(`templates?tochange=1`)} type="primary" ghost>
-                更换模板
-              </a>
+              <a onClick={() => gotoRoute(`templates?tochange=1`)}>更换模板</a>
             )}
           </div>
         )}

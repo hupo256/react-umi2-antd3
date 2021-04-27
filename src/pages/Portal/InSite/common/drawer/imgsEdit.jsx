@@ -50,8 +50,10 @@ export default function TagsEdit(props) {
       message.warning(`最多可添加${maxLen}张图片`);
       return;
     }
-    const rec = {};
-    settagList([...tagList, rec].slice());
+    const newObj = { ...pageData };
+    newObj.maps[curFlag].list = [...tagList, {}];
+    settagList([...tagList, {}]);
+    setpageData(newObj);
   }
 
   function toChooseImg(num) {
@@ -129,7 +131,7 @@ export default function TagsEdit(props) {
       <ul className={styles.imgEditBox}>
         {tagList.length > 0 &&
           tagList.map((tag, ind) => {
-            const { title, imgUrl } = tag;
+            const { title, imgUrl = '' } = tag;
             const len = tagList.length;
             return (
               <li key={ind}>
@@ -140,8 +142,9 @@ export default function TagsEdit(props) {
                   <img src={imgUrl || `${defaultImg}ic_Image.png`} alt="" />
                 </div>
                 <div className={styles.inpBox}>
+                  <span>关联页面</span>
                   <Input
-                    placeholder="请设置跳转链接"
+                    placeholder="请选择关联页面"
                     value={title}
                     onClick={() => toChooseLink(ind)}
                     suffix={<Icon type="right" className={styles.inpSuffix} />}
