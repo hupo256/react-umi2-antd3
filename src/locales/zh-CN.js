@@ -4,7 +4,7 @@ export default {
   'navbar.lang': '中文',
   menu: '个人菜单',
   'menu.index': '数据',
-  'menu.home': '首页',
+  // 'menu.home': '首页',
   'menu.maintain': '工单',
   'menu.ContractManagement': '合同管理',
   'menu.message': '消息',
