@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-24 17:37:17
+ * @Last Modified time: 2021-04-27 16:55:48
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -72,7 +72,7 @@ class CreateStepOne extends PureComponent {
       ProjectLibrary: { collocationDetail },
     } = this.props;
     const { specialCoverImg, istrue } = this.state;
-    const activeKey = getQueryUrlVal('uid');
+    const activeKey = getQueryUrlVal('type');
     return (
       <div style={{ paddingTop: 20 }}>
         <Form {...formItemLayout} onSubmit={this.handleSubmit}>
@@ -142,7 +142,7 @@ class CreateStepOne extends PureComponent {
             <Col span={8} />
             <Col span={16}>
               <Button type="primary" htmlType="submit">
-                {activeKey ? '保存' : '下一步'}
+                {activeKey ? '下一步' : '保存'}
               </Button>
             </Col>
           </Row>
@@ -199,11 +199,14 @@ class CreateStepOne extends PureComponent {
           },
         }).then(res => {
           if (res && res.code === 200) {
-            if (getQueryUrlVal('uid')) {
+            if (getQueryUrlVal('type')) {
+              this.props.handleOk();
+              router.push(
+                `/portal/contentmanagement/ProjectLibrary/add?uid=${values.specialUid}&type=1`
+              );
+            } else {
               router.push('/portal/contentmanagement/ProjectLibrary');
               message.success('保存成功');
-            } else {
-              this.props.handleOk();
             }
           }
         });
@@ -223,6 +226,9 @@ class CreateStepOne extends PureComponent {
                 value: res.data.specialUid,
               },
             });
+            router.push(
+              `/portal/contentmanagement/ProjectLibrary/add?uid=${values.specialUid}&type=1`
+            );
           }
         });
       }
