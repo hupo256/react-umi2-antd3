@@ -1,3 +1,5 @@
+import { lazy } from "react";
+
 export default [
   { path: '/disabled', component: './User/AccountDisabled' },
   { path: '/overdue', component: './User/AccountOverdue' },
@@ -67,12 +69,36 @@ export default [
       //   icon: 'dashboard',
       //   code: 'MU90000001',
       //   routes: [
+      {
+        path: '/portal',
+        redirect: '/portal/contentmanagement',
+        icon: 'dashboard',
+        code: 'MU90000001',
+      },
+      {
+        path: '/site',
+        name: 'site',
+        routes: [
           {
-            path: '/portal',
-            redirect: '/portal/contentmanagement',
-            icon: 'dashboard',
-            code: 'MU90000001',
+            name: 'channelmanage',
+            path: '/site/channelmanage',
+            component: './ChannelManage'
           },
+          {
+            path: '/site/websetting',
+            name:'websetting',
+            // code: 'MU9000000100010008',
+            component: './WebSetting/index',
+          },
+        ]
+      },
+      
+      {
+        path: '/portal/contentmanagement',
+        name: 'contentmanagement',
+        icon: 'home',
+        code: 'MU900000010001',
+        routes: [
           {
             path: '/portal/contentmanagement',
             name: 'contentmanagement',
@@ -164,14 +190,58 @@ export default [
                 code: 'MU9000000100010005',
                 component: './Portal/ContentManagement/FormLibrary/FormLibrary',
               },
-              {
-                path: '/portal/contentmanagement/websetting',
-                name:'websetting',
-                // code: 'MU9000000100010008',
-                component: './Portal/ContentManagement/WebSetting/index',
-              },
             ],
           },
+          {
+            path: '/portal/contentmanagement/sitelibrary/dynamic',
+            PageHeaderName: '工地动态',
+            component: './Portal/ContentManagement/SiteLibrary/DynamicList',
+          },
+          {
+            path: '/portal/contentmanagement/designerlibrary',
+            name: 'designerlibrary',
+            code: 'MU9000000100010003',
+            component: './Portal/ContentManagement/DesignerLibrary/DesignerLibrary',
+          },
+          {
+            path: '/portal/contentmanagement/designerlibrary/add',
+            PageHeaderName: '创建设计师',
+            component: './Portal/ContentManagement/DesignerLibrary/DesignerLibraryAdd',
+          },
+          {
+            path: '/portal/contentmanagement/designerlibrary/edit',
+            PageHeaderName: '编辑设计师',
+            component: './Portal/ContentManagement/DesignerLibrary/DesignerLibraryEdit',
+          },
+          // {
+          //   path: '/portal/contentmanagement/articlelibrary',
+          //   name: 'articlelibrary',
+          //   component: './Portal/ContentManagement/ArticleLibrary/ArticleLibrary',
+          // },
+          {
+            path: '/portal/contentmanagement/projectlibrary',
+            name: 'projectlibrary',
+            code: 'MU9000000100010004',
+            component: './Portal/ContentManagement/ProjectLibrary/ProjectLibrary',
+          },
+          {
+            path: '/portal/contentmanagement/ProjectLibrary/add',
+            PageHeaderName: '创建专题',
+            component: './Portal/ContentManagement/ProjectLibrary/ProjectLibraryAdd',
+          },
+          {
+            path: '/portal/contentmanagement/ProjectLibrary/edit',
+            PageHeaderName: '编辑专题',
+            component: './Portal/ContentManagement/ProjectLibrary/ProjectLibraryEdit',
+          },
+          {
+            path: '/portal/contentmanagement/FormLibrary',
+            name: 'formLibrary',
+            code: 'MU9000000100010005',
+            component: './Portal/ContentManagement/FormLibrary/FormLibrary',
+          },
+        ],
+      },
           // {
           //   path: '/portal/mysite',
           //   name: 'mysite',
