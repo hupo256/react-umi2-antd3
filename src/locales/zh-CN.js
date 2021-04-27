@@ -24,6 +24,7 @@ export default {
   'menu.contentmanagement.articlelibrary': '文章库',
   'menu.contentmanagement.projectlibrary': '专题库',
   'menu.contentmanagement.formLibrary': '表单配置',
+  'menu.contentmanagement.websetting': '网站配置',
   'menu.mysite': '我的网站',
   'menu.mysite.sitepanel': '网站面板',
 
