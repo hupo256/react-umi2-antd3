@@ -84,6 +84,12 @@ export default [
             path: '/site/channelmanage',
             component: './ChannelManage'
           },
+          {
+            path: '/site/websetting',
+            name:'websetting',
+            // code: 'MU9000000100010008',
+            component: './WebSetting/index',
+          },
         ]
       },
       
@@ -183,12 +189,6 @@ export default [
                 name: 'formLibrary',
                 code: 'MU9000000100010005',
                 component: './Portal/ContentManagement/FormLibrary/FormLibrary',
-              },
-              {
-                path: '/portal/contentmanagement/websetting',
-                name:'websetting',
-                // code: 'MU9000000100010008',
-                component: './Portal/ContentManagement/WebSetting/index',
               },
             ],
           },
