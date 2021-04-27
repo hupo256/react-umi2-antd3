@@ -16,6 +16,7 @@ export const actColumns = [
   {
     title: '起止时间',
     dataIndex: 'time',
+    width: '150px',
     render: (text, record, index) => {
       const [st, et] = text.split('_');
       return (
