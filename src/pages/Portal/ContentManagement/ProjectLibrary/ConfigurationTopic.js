@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-27 16:43:20
+ * @Last Modified time: 2021-04-27 19:44:45
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -34,7 +34,7 @@ class ProjectLibrary extends PureComponent {
       compentList: [],
       tags: [],
       title: '',
-      Left: -160,
+      Left: -80,
     };
     /*定义两个值用来存放鼠标按下的地方距离元素上侧和左侧边界的值*/
     this.disX = 0;
@@ -189,6 +189,7 @@ class ProjectLibrary extends PureComponent {
                 <ImgComponent
                   data={item}
                   index={index}
+                  handleWidth={data => this.handleWidth(data)}
                   handleCheck={data => this.handleCheck(data)}
                   handleImg={(data, index) => this.handleImg(data, index)}
                   handleDeletePic={data => this.handleDeletePic(data)}
@@ -777,7 +778,7 @@ class ProjectLibrary extends PureComponent {
       },
     });
     this.setState({
-      Left: -160,
+      Left: -80,
     });
   }
 }
