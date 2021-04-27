@@ -1,5 +1,4 @@
 import { lazy } from 'react';
-
 export default [
   { path: '/disabled', component: './User/AccountDisabled' },
   { path: '/overdue', component: './User/AccountOverdue' },
@@ -61,7 +60,6 @@ export default [
           },
         ],
       },
-
       // 站点 - 首页装修
       {
         path: '/portal/insite',
@@ -99,9 +97,14 @@ export default [
             path: '/portal/insite/channelmanage',
             component: './ChannelManage',
           },
+          {
+            path: '/portal/insite/websetting',
+            name: 'websetting',
+            // code: 'MU9000000100010008',
+            component: './Portal/ContentManagement/WebSetting/index',
+          },
         ],
       },
-
       // v2.0
       // 门户
       // {
@@ -215,7 +218,6 @@ export default [
           },
         ],
       },
-
       // 活动 - 营销小游戏
       {
         path: '/portal/activity',

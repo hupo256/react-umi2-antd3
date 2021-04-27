@@ -24,13 +24,13 @@ export default {
   'menu.contentmanagement.articlelibrary': '文章库',
   'menu.contentmanagement.projectlibrary': '专题库',
   'menu.contentmanagement.formLibrary': '表单配置',
-  'menu.contentmanagement.websetting': '网站配置',
   'menu.mysite': '我的网站',
   'menu.mysite.sitepanel': '网站面板',
 
   'menu.insite': '站点',
   'menu.insite.decorate': '首页装修',
   'menu.insite.channelmanage': '频道管理',
+  'menu.insite.websetting': '网站配置',
 
   'menu.activity': '活动',
   'menu.activity.mktGame': '营销小游戏',
