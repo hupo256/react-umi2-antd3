@@ -28,7 +28,7 @@ export const actColumns = [
   {
     title: '小游戏链接',
     textWrap: 'word-break',
-    width: '270px',
+    // width: '270px',
     dataIndex: 'linkUrl',
   },
   {
