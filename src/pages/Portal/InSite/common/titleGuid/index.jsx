@@ -19,7 +19,7 @@ export default function TitleGuid(props) {
   const { title = '标题', disc, isEdit } = props;
   const { pageData, setcurFlag, templateCode, templateName } = useContext(ctx);
 
-  function toPublich() {
+  function toPublish() {
     console.log(pageData);
     let { jsonData, themeData } = pageData;
     const { customerService } = JSON.parse(localStorage.getItem('auth'));
@@ -60,7 +60,11 @@ export default function TitleGuid(props) {
         {isEdit && (
           <div className={styles.btnBox}>
             <Button onClick={showConfirm}>放弃更改</Button>
-            <Button onClick={toPublich} type="primary">
+            <Button onClick={toPublish} type="primary">
+              <img
+                src="https://test.img.inbase.in-deco.com/crm_saas/dev/20210427/4baa9248ecf944b0a13f5fea5453f859/ic_send.png"
+                alt=""
+              />
               发布
             </Button>
           </div>

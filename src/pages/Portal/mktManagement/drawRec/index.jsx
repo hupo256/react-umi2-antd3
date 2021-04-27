@@ -22,6 +22,7 @@ export default function DrawRec(props) {
   const [recTotal, setrecTotal] = useState(0);
   const [actCode, setactCode] = useState('');
   const [phoneNum, setphoneNum] = useState('');
+  const [curPage, setcurPage] = useState(1);
 
   useEffect(() => {
     const { mobile, activityCode, prizeName } = urlParamHash(location.href);
@@ -73,6 +74,7 @@ export default function DrawRec(props) {
   function toSearch(tex) {
     const str = tex.substr(0, 30);
     setphoneNum(str);
+    setcurPage(1);
     touchRecds({ mobile: str });
   }
 
@@ -87,6 +89,7 @@ export default function DrawRec(props) {
       pageNum: num,
       pageSize: size,
     };
+    setcurPage(num);
     touchRecds(conf);
   }
 
@@ -107,8 +110,12 @@ export default function DrawRec(props) {
               size="middle"
               dataSource={recList}
               columns={recColumns}
-              // pagination={{ total: recTotal, defaultPageSize: 100 }}
-              pagination={{ total: recTotal, defaultPageSize: 100, onChange: pageChange }}
+              pagination={{
+                total: recTotal,
+                defaultPageSize: 100,
+                current: curPage,
+                onChange: pageChange,
+              }}
               rowKey={(r, i) => i}
             />
           </TabPane>

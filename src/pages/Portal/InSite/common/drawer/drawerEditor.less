@@ -128,6 +128,15 @@
   .widthBox {
     text-align: left;
     padding: 16px;
+    line-height: 20px;
+    height: 48px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+
+    input {
+      line-height: 20px;
+    }
   }
 
   .imgEditBox {
@@ -141,7 +150,7 @@
         width: 76px;
         height: 51px;
         border-radius: 2px;
-        margin-right: 5px;
+        margin-right: 8px;
         background: #ccc;
         overflow: hidden;
         cursor: pointer;
@@ -168,8 +177,13 @@
       .inpBox {
         display: flex;
         flex-direction: column;
-        align-items: flex-start;
         justify-content: space-between;
+        line-height: 20px;
+
+        > span:nth-child(1) {
+          transform: translateY(-2px);
+        }
+
         input {
           width: 95%;
           margin-right: 0;
