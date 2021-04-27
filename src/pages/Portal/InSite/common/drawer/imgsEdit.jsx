@@ -179,7 +179,7 @@ export default function TagsEdit(props) {
 
       <p className={styles.addImg} onClick={addNewImgs}>
         <span>+</span>
-        <span>添加轮播图</span>
+        <span>添加图片广告</span>
       </p>
 
       <Upload
