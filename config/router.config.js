@@ -94,6 +94,11 @@ export default [
             PageHeaderName: '继续编辑',
             component: './Portal/InSite/edit',
           },
+          {
+            name: 'channelmanage',
+            path: '/portal/insite/channelmanage',
+            component: './ChannelManage',
+          },
         ],
       },
 
@@ -210,17 +215,7 @@ export default [
           },
         ],
       },
-      {
-        path: '/site',
-        name: 'site',
-        routes: [
-          {
-            name: 'channelmanage',
-            path: '/site/channelmanage',
-            component: './ChannelManage',
-          },
-        ],
-      },
+
       // 活动 - 营销小游戏
       {
         path: '/portal/activity',
