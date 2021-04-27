@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-27 16:57:24
+ * @Last Modified time: 2021-04-27 18:46:16
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -202,7 +202,7 @@ class CreateStepTwo extends PureComponent {
             visible={visibles}
             maskClosable={false}
             footer={null}
-            width={720}
+            width={800}
             onCancel={() => {
               this.handleModelCancels();
             }}
