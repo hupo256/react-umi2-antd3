@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Input, Icon, Button, Form, message, Row, Col, Popover } from 'antd';
+import { Input, Icon, Button, Form, message, Row, Col, Popover, Select } from 'antd';
 import RcViewer from 'rc-viewer';
 import Upload from '@/components/Upload/Upload';
 const { TextArea } = Input;
@@ -23,29 +23,16 @@ class BasicMessage extends Component {
     const { dispatch } = this.props;
     const res = await dispatch({ type: 'WebSettingStroe/basicMessageModel' }).then(res => {
       if (res.code == 200) {
-        let keyWords = '';
-        if (res.data.keywords != '') {
-          const newKeyWords = JSON.parse(res.data.keywords);
-          newKeyWords.forEach((n, i) => {
-            if (i == newKeyWords.length - 1) {
-              keyWords = keyWords + n;
-            } else {
-              keyWords = keyWords + n + ',';
-            }
-          });
-        }
-  
         this.setState({
-          basicKeyWords: keyWords,
           basicIcon: res.data.icon,
           basicLogo: res.data.logo,
           basicTitle: res.data.title,
           basicContent: res.data.content,
+          basicKeyWords: JSON.parse(res.data.keywords),
         });
       }
-    });;
+    });
     // console.log('basic', JSON.parse(res.data.keywords));
-    
   }
   onBasicForm = e => {
     e.preventDefault();
@@ -55,25 +42,13 @@ class BasicMessage extends Component {
       }
       const { basicIcon, basicLogo } = this.state;
       const { dispatch } = this.props;
-      let newKeyWords = [],
-        newBaiscIcon = '',
+      let newBaiscIcon = '',
         newBasicLogo = '';
-      console.log('请正确填写网站标题', values.basicIcon);
+      console.log('请正确填写网站标题', values);
       if (values.basicTitle.length < 0 || values.basicTitle.length > 30) {
         message.error('请正确填写网站标题');
         return false;
       } else {
-        if (values.basicKeyWords != '') {
-          if (values.basicKeyWords.indexOf(',') != -1) {
-            newKeyWords = values.basicKeyWords.split(',');
-          } else if (values.basicKeyWords.indexOf('，') != -1) {
-            newKeyWords = values.basicKeyWords.split('，');
-          } else {
-            newKeyWords.push(values.basicKeyWords);
-          }
-        } else {
-          newKeyWords = '';
-        }
         if (values.basicIcon && basicIcon) {
           newBaiscIcon = values.basicIcon;
         } else if (basicIcon && !values.basicIco) {
@@ -95,7 +70,7 @@ class BasicMessage extends Component {
             logo: newBasicLogo,
             title: values.basicTitle,
             content: values.basicContent,
-            keywords: JSON.stringify(newKeyWords),
+            keywords: JSON.stringify(values.basicKeyWords),
           },
         }).then(res => {
           if (res && res.code === 200) {
@@ -105,13 +80,16 @@ class BasicMessage extends Component {
               basicLogo: newBasicLogo,
               basicTitle: values.basicTitle,
               basicContent: values.basicContent,
-              basicKeyWords: newKeyWords,
+              basicKeyWords: values.basicKeyWords,
             });
           }
         });
       }
     });
   };
+  changeKeyWords(value){
+    console.log('zhixing', value)
+  }
   render() {
     const {
       form: { getFieldDecorator },
@@ -178,20 +156,16 @@ class BasicMessage extends Component {
               initialValue: basicKeyWords,
               rules: [
                 {
-                  pattern: '',
-                  message: '请正确填写二级域名',
-                },
-                {
-                  max: 10,
-                  message: '限制10个关键词',
+                  required: false,
+                  message: '请正确输入关键词',
                 },
               ],
             })(
-              <Input
-                type="text"
-                style={{ width: 400 }}
-                autoComplete="off"
+              <Select
+                mode="tags"
+                style={{ width: '400px' }}
                 placeholder="请输入网站关键词"
+                onChange={(value)=>this.changeKeyWords(value)}
               />
             )}
           </FormItem>
@@ -295,7 +269,12 @@ class BasicMessage extends Component {
           </FormItem>
           <Row>
             <Col span={16}>
-              <Button type="primary" htmlType="submit" className='defaultHostButton' style={{border: 0}}>
+              <Button
+                type="primary"
+                htmlType="submit"
+                className="defaultHostButton"
+                style={{ border: 0 }}
+              >
                 提交
               </Button>
             </Col>
