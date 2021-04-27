@@ -59,12 +59,6 @@ export default [
           },
         ],
       },
-      {
-        path: '/Websetting',
-        icon: 'dashboard',
-            // code: 'MU90000001',
-        component: './WebSetting/index'
-      },
       // v2.0
       // 门户
       // {
@@ -169,6 +163,12 @@ export default [
                 name: 'formLibrary',
                 code: 'MU9000000100010005',
                 component: './Portal/ContentManagement/FormLibrary/FormLibrary',
+              },
+              {
+                path: '/portal/contentmanagement/websetting',
+                name:'websetting',
+                // code: 'MU9000000100010008',
+                component: './Portal/ContentManagement/WebSetting/index',
               },
             ],
           },
