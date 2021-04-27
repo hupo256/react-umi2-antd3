@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-27 16:55:48
+ * @Last Modified time: 2021-04-27 17:07:22
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -227,7 +227,7 @@ class CreateStepOne extends PureComponent {
               },
             });
             router.push(
-              `/portal/contentmanagement/ProjectLibrary/add?uid=${values.specialUid}&type=1`
+              `/portal/contentmanagement/ProjectLibrary/add?uid=${res.data.specialUid}&type=1`
             );
           }
         });
