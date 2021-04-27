@@ -29,7 +29,7 @@ class HostBind extends Component {
         } else {
           const resIndex = res.data.domain.indexOf('.');
           defaultDomain = res.data.domain.slice(0, resIndex);
-          customDomain = res.data.domain + res.data.suffix;
+          customDomain = res.data.domain;
         }
         this.setState({
           tabsValue: res.data.type,
