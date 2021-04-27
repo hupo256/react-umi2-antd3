@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-27 17:02:32
+ * @Last Modified time: 2021-04-27 19:10:13
  * 创建工地
  */
 import React, { PureComponent } from 'react';
@@ -352,7 +352,7 @@ class TextComponent extends PureComponent {
   changePic() {
     const { index } = this.props;
     this.props.handleCheck(index);
-    this.props.handleWidth(-360);
+    this.props.handleWidth(-250);
     this.setState({
       visible: true,
       isTrue: 0,
@@ -361,7 +361,7 @@ class TextComponent extends PureComponent {
   deletePic() {
     const { index } = this.props;
     this.props.handleDeletePic(index);
-    this.props.handleWidth(-160);
+    this.props.handleWidth(-80);
   }
   changePicStaus() {
     this.setState({
@@ -400,7 +400,7 @@ class TextComponent extends PureComponent {
     this.setState({
       visible: false,
     });
-    this.props.handleWidth(-160);
+    this.props.handleWidth(-80);
   };
   showColor() {
     this.setState({

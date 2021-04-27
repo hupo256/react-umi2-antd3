@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-27 16:58:21
+ * @Last Modified time: 2021-04-27 19:10:07
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -281,7 +281,7 @@ class FootComponent extends PureComponent {
   deleteFoot() {
     const { index } = this.props;
     this.props.handleDeleteFoot(index);
-    this.props.handleWidth(-160);
+    this.props.handleWidth(-190);
   }
   closeColor() {
     this.setState({
@@ -312,7 +312,7 @@ class FootComponent extends PureComponent {
       index,
     } = this.props;
     if (e === '') {
-      this.props.handleWidth(-160);
+      this.props.handleWidth(-80);
       this.setState(
         {
           visible: true,
@@ -406,7 +406,7 @@ class FootComponent extends PureComponent {
     this.setState({
       visibleDrawer: false,
     });
-    this.props.handleWidth(-160);
+    this.props.handleWidth(-80);
   };
 }
 
