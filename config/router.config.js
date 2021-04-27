@@ -1,3 +1,5 @@
+import { lazy } from "react";
+
 export default [
   { path: '/disabled', component: './User/AccountDisabled' },
   { path: '/overdue', component: './User/AccountOverdue' },
@@ -68,105 +70,117 @@ export default [
       //   icon: 'dashboard',
       //   code: 'MU90000001',
       //   routes: [
+      {
+        path: '/portal',
+        redirect: '/portal/contentmanagement',
+        icon: 'dashboard',
+        code: 'MU90000001',
+      },
+      {
+        path: '/site',
+        name: 'site',
+        routes: [
           {
-            path: '/portal',
-            redirect: '/portal/contentmanagement',
-            icon: 'dashboard',
-            code: 'MU90000001',
+            name: 'channelmanage',
+            path: '/site/channelmanage',
+            component: './ChannelManage'
           },
+        ]
+      },
+      
+      {
+        path: '/portal/contentmanagement',
+        name: 'contentmanagement',
+        icon: 'home',
+        code: 'MU900000010001',
+        routes: [
           {
             path: '/portal/contentmanagement',
-            name: 'contentmanagement',
-            icon: 'home',
-            code: 'MU900000010001',
-            routes: [
-              {
-                path: '/portal/contentmanagement',
-                redirect: '/portal/contentmanagement/caselibrary',
-                code: 'MU9000000100010001',
-              },
-              {
-                path: '/portal/contentmanagement/caselibrary',
-                name: 'caselibrary',
-                code: 'MU9000000100010001',
-                component: './Portal/ContentManagement/CaseLibrary/CaseLibrary',
-              },
-              {
-                path: '/portal/contentmanagement/caselibrary/add',
-                PageHeaderName: '创建案例',
-                component: './Portal/ContentManagement/CaseLibrary/CaseLibraryAdd',
-              },
-              {
-                path: '/portal/contentmanagement/caselibrary/edit',
-                PageHeaderName: '编辑案例',
-                component: './Portal/ContentManagement/CaseLibrary/CaseLibraryEdit',
-              },
-              {
-                path: '/portal/contentmanagement/sitelibrary',
-                name: 'sitelibrary',
-                component: './Portal/ContentManagement/SiteLibrary/SiteLibrary',
-                code: 'MU9000000100010002',
-              },
-              {
-                path: '/portal/contentmanagement/sitelibrary/add',
-                PageHeaderName: '创建工地',
-                component: './Portal/ContentManagement/SiteLibrary/SiteLibraryAdd',
-              },
-              {
-                path: '/portal/contentmanagement/sitelibrary/edit',
-                PageHeaderName: '编辑工地',
-                component: './Portal/ContentManagement/SiteLibrary/SiteLibraryEdit',
-              },
-              {
-                path: '/portal/contentmanagement/sitelibrary/dynamic',
-                PageHeaderName: '工地动态',
-                component: './Portal/ContentManagement/SiteLibrary/DynamicList',
-              },
-              {
-                path: '/portal/contentmanagement/designerlibrary',
-                name: 'designerlibrary',
-                code: 'MU9000000100010003',
-                component: './Portal/ContentManagement/DesignerLibrary/DesignerLibrary',
-              },
-              {
-                path: '/portal/contentmanagement/designerlibrary/add',
-                PageHeaderName: '创建设计师',
-                component: './Portal/ContentManagement/DesignerLibrary/DesignerLibraryAdd',
-              },
-              {
-                path: '/portal/contentmanagement/designerlibrary/edit',
-                PageHeaderName: '编辑设计师',
-                component: './Portal/ContentManagement/DesignerLibrary/DesignerLibraryEdit',
-              },
-              // {
-              //   path: '/portal/contentmanagement/articlelibrary',
-              //   name: 'articlelibrary',
-              //   component: './Portal/ContentManagement/ArticleLibrary/ArticleLibrary',
-              // },
-              {
-                path: '/portal/contentmanagement/projectlibrary',
-                name: 'projectlibrary',
-                code: 'MU9000000100010004',
-                component: './Portal/ContentManagement/ProjectLibrary/ProjectLibrary',
-              },
-              {
-                path: '/portal/contentmanagement/ProjectLibrary/add',
-                PageHeaderName: '创建专题',
-                component: './Portal/ContentManagement/ProjectLibrary/ProjectLibraryAdd',
-              },
-              {
-                path: '/portal/contentmanagement/ProjectLibrary/edit',
-                PageHeaderName: '编辑专题',
-                component: './Portal/ContentManagement/ProjectLibrary/ProjectLibraryEdit',
-              },
-              {
-                path: '/portal/contentmanagement/FormLibrary',
-                name: 'formLibrary',
-                code: 'MU9000000100010005',
-                component: './Portal/ContentManagement/FormLibrary/FormLibrary',
-              },
-            ],
+            redirect: '/portal/contentmanagement/caselibrary',
+            code: 'MU9000000100010001',
           },
+          {
+            path: '/portal/contentmanagement/caselibrary',
+            name: 'caselibrary',
+            code: 'MU9000000100010001',
+            component: './Portal/ContentManagement/CaseLibrary/CaseLibrary',
+          },
+          {
+            path: '/portal/contentmanagement/caselibrary/add',
+            PageHeaderName: '创建案例',
+            component: './Portal/ContentManagement/CaseLibrary/CaseLibraryAdd',
+          },
+          {
+            path: '/portal/contentmanagement/caselibrary/edit',
+            PageHeaderName: '编辑案例',
+            component: './Portal/ContentManagement/CaseLibrary/CaseLibraryEdit',
+          },
+          {
+            path: '/portal/contentmanagement/sitelibrary',
+            name: 'sitelibrary',
+            component: './Portal/ContentManagement/SiteLibrary/SiteLibrary',
+            code: 'MU9000000100010002',
+          },
+          {
+            path: '/portal/contentmanagement/sitelibrary/add',
+            PageHeaderName: '创建工地',
+            component: './Portal/ContentManagement/SiteLibrary/SiteLibraryAdd',
+          },
+          {
+            path: '/portal/contentmanagement/sitelibrary/edit',
+            PageHeaderName: '编辑工地',
+            component: './Portal/ContentManagement/SiteLibrary/SiteLibraryEdit',
+          },
+          {
+            path: '/portal/contentmanagement/sitelibrary/dynamic',
+            PageHeaderName: '工地动态',
+            component: './Portal/ContentManagement/SiteLibrary/DynamicList',
+          },
+          {
+            path: '/portal/contentmanagement/designerlibrary',
+            name: 'designerlibrary',
+            code: 'MU9000000100010003',
+            component: './Portal/ContentManagement/DesignerLibrary/DesignerLibrary',
+          },
+          {
+            path: '/portal/contentmanagement/designerlibrary/add',
+            PageHeaderName: '创建设计师',
+            component: './Portal/ContentManagement/DesignerLibrary/DesignerLibraryAdd',
+          },
+          {
+            path: '/portal/contentmanagement/designerlibrary/edit',
+            PageHeaderName: '编辑设计师',
+            component: './Portal/ContentManagement/DesignerLibrary/DesignerLibraryEdit',
+          },
+          // {
+          //   path: '/portal/contentmanagement/articlelibrary',
+          //   name: 'articlelibrary',
+          //   component: './Portal/ContentManagement/ArticleLibrary/ArticleLibrary',
+          // },
+          {
+            path: '/portal/contentmanagement/projectlibrary',
+            name: 'projectlibrary',
+            code: 'MU9000000100010004',
+            component: './Portal/ContentManagement/ProjectLibrary/ProjectLibrary',
+          },
+          {
+            path: '/portal/contentmanagement/ProjectLibrary/add',
+            PageHeaderName: '创建专题',
+            component: './Portal/ContentManagement/ProjectLibrary/ProjectLibraryAdd',
+          },
+          {
+            path: '/portal/contentmanagement/ProjectLibrary/edit',
+            PageHeaderName: '编辑专题',
+            component: './Portal/ContentManagement/ProjectLibrary/ProjectLibraryEdit',
+          },
+          {
+            path: '/portal/contentmanagement/FormLibrary',
+            name: 'formLibrary',
+            code: 'MU9000000100010005',
+            component: './Portal/ContentManagement/FormLibrary/FormLibrary',
+          },
+        ],
+      },
           // {
           //   path: '/portal/mysite',
           //   name: 'mysite',
