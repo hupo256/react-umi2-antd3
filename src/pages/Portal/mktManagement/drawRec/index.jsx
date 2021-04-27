@@ -80,8 +80,8 @@ export default function DrawRec(props) {
 
   function searchChange(e) {
     const val = e.target.value;
-    setsearchTex(val);
-    val === '' && touchActList({ mobile: '' });
+    setphoneNum(val);
+    val === '' && touchRecds({ mobile: '' });
   }
 
   function pageChange(num, size) {
