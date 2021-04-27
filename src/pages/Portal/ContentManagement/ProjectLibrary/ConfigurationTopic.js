@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-26 12:24:03
+ * @Last Modified time: 2021-04-27 16:43:20
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -319,7 +319,7 @@ class ProjectLibrary extends PureComponent {
             <div className={styles.bth}>
               {permissionsBtn.permissions.includes('BTN210326000048') ? (
                 <Button
-                  style={{ height: 38, marginRight: 10 }}
+                  style={{ borderRadius: 2, marginRight: 10, width: 80 }}
                   onClick={() => {
                     this.logoutSave();
                   }}
@@ -330,16 +330,29 @@ class ProjectLibrary extends PureComponent {
               {permissionsBtn.permissions.includes('BTN210326000048') ? (
                 <Button
                   type="primary"
-                  style={{ height: 38 }}
+                  style={{ borderRadius: 2, width: 112 }}
                   onClick={() => {
                     this.addConfiguration();
                   }}
                 >
+                  <span style={{ marginRight: 8 }}>
+                    <img
+                      src="https://img.inbase.in-deco.com/crm_saas/release/20210427/0af8994714174d92894ac4f57dc0ee73/ic_send@2x.png"
+                      width="12"
+                      height="12"
+                    />
+                  </span>
                   发布
                 </Button>
               ) : null}
             </div>
           </div>
+          <div
+            className={styles.agyr}
+            onClick={() => {
+              this.handleCanle();
+            }}
+          />
           <div className={styles.phone} style={{ marginLeft: Left }}>
             <div className={styles.phoneHead}>{title}</div>
             <div className={styles.phoneCont}>
@@ -379,6 +392,7 @@ class ProjectLibrary extends PureComponent {
     const { tags } = this.state;
     let iscroll = document.getElementById('phoneCont').scrollTop + 285;
     textTop = iscroll;
+    let iscroll2 = document.getElementById('phoneCont').scrollTop + 250;
     compentList &&
       compentList.map((item, index) => {
         if (item.elementType === 'MODAL' && ite.elementType === 'MODAL') {
@@ -400,7 +414,7 @@ class ProjectLibrary extends PureComponent {
       });
     if (ishow === 0) {
       ite.isEdit = false;
-      ite.elementStyle = JSON.stringify({ top: top, left: left });
+      ite.elementStyle = JSON.stringify({ top: iscroll2, left: left });
       if (ite.elementType === 'FORM') {
         ite.elementButtonColor = '#fe6a30';
         ite.elementButtonTextColor = '#fff';
@@ -745,6 +759,25 @@ class ProjectLibrary extends PureComponent {
   handleWidth(data) {
     this.setState({
       Left: data,
+    });
+  }
+  handleCanle() {
+    const {
+      dispatch,
+      ProjectLibrary: { compentList },
+    } = this.props;
+    compentList.map((item, idx) => {
+      compentList[idx].checked = 0;
+    });
+    dispatch({
+      type: 'ProjectLibrary/saveDataModel',
+      payload: {
+        key: 'compentList',
+        value: [...compentList],
+      },
+    });
+    this.setState({
+      Left: -160,
     });
   }
 }
