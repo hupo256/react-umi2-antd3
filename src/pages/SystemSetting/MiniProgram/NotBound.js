@@ -41,14 +41,17 @@ class NotBound extends PureComponent {
     );
   }
   handleUrl = () => {
-    const { dispatch } = this.props;
+    const { dispatch, jumpUrl = '' } = this.props;
     const code = localStorage.getItem('auth');
     const saasSellerCode = JSON.parse(code).companyCode;
-    dispatch({ type: 'MiniProgram/getAuthUrlModel', payload: { saasSellerCode } }).then(res => {
-      if (res && res.code === 200) {
-        window.location.href = res.data.url;
+    dispatch({ type: 'MiniProgram/getAuthUrlModel', payload: { saasSellerCode, jumpUrl } }).then(
+      res => {
+        console.log(res);
+        if (res && res.code === 200) {
+          window.location.href = res.data.url;
+        }
       }
-    });
+    );
   };
 }
 

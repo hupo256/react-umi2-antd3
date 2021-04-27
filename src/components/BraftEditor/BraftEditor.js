@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2020-04-15 13:37:41 
  * @Last Modified by: zqm
- * @Last Modified time: 2020-09-22 14:55:40
+ * @Last Modified time: 2021-04-15 16:07:20
  */
 import React from 'react';
 // 引入编辑器组件
@@ -25,10 +25,11 @@ export default class EditorDemo extends React.Component {
     hodt: '',
     picData: {},
     previewVisible: false, //预览
+    previewphoneVisible: false,
   };
 
   render() {
-    const { editorState, previewVisible, picData } = this.state;
+    const { editorState, previewVisible, picData, previewphoneVisible } = this.state;
     const extendControls = [
       {
         key: 'custom-button',
@@ -38,6 +39,14 @@ export default class EditorDemo extends React.Component {
           this.preview();
         },
       },
+      // {
+      //   key: 'custom-button2',
+      //   type: 'button',
+      //   text: '预览移动端',
+      //   onClick: () => {
+      //     this.preview2();
+      //   },
+      // },
       {
         key: 'antd-uploader',
         type: 'component',
@@ -101,6 +110,27 @@ export default class EditorDemo extends React.Component {
             />
           </Modal>
         )}
+        {previewphoneVisible && (
+          <Modal
+            title="预览"
+            visible={previewphoneVisible}
+            onCancel={this.handleCancel2}
+            width={400}
+            footer={[
+              <Button key="submit" type="primary" onClick={this.handleCancel2}>
+                关闭
+              </Button>,
+            ]}
+            className={styles.preview}
+          >
+            <div
+              className={styles.previewCont}
+              dangerouslySetInnerHTML={{
+                __html: this.state.editorState.toHTML(),
+              }}
+            />
+          </Modal>
+        )}
       </div>
     );
   }
@@ -108,7 +138,13 @@ export default class EditorDemo extends React.Component {
   preview = () => {
     this.setState({ previewVisible: true });
   };
-
+  preview2 = () => {
+    this.setState({ previewphoneVisible: true });
+  };
+  // 关闭预览
+  handleCancel2 = () => {
+    this.setState({ previewphoneVisible: false });
+  };
   handleEditorChange = editorState => {
     this.setState({ editorState }, () => {
       const previewContent = editorState.toHTML();
@@ -118,6 +154,9 @@ export default class EditorDemo extends React.Component {
   };
 
   watchFile = info => {
+    console.log('====================================');
+    console.log(info);
+    console.log('====================================');
     let res = info.file.response;
     console.log(res);
     if (res && res.code === 200) {
@@ -125,7 +164,7 @@ export default class EditorDemo extends React.Component {
         editorState: ContentUtils.insertMedias(this.state.editorState, [
           {
             type: 'IMAGE',
-            url: res.data.displayAddr,
+            url: res.data.addr,
           },
         ]),
       });
@@ -158,35 +197,53 @@ export default class EditorDemo extends React.Component {
       let fiename = filenames.substring(index1 + 1, index2);
       dispatch({
         type: 'base/photoxImg',
-        payload: 90090001,
+        payload: '',
       }).then(data => {
         if (data && data.code === 200) {
-          if (data.data.success_action_status === '200') {
-            self.setState(
-              {
-                host: data.data.host,
-                picData: {
-                  OSSAccessKeyId: data.data.accessid,
-                  callback: data.data.callback,
-                  policy: data.data.policy,
-                  signature: data.data.signature,
-                  host: data.data.host,
-                  key: `${data.data.dir}${filenames}`,
-                  success_action_status: data.data.success_action_status,
-                  'x:type': 9009,
-                  'x:subType': 90090001,
-                  'x:bsId': '',
-                  'x:f': 's', //视频传v
-                  'x:token': localStorage.getItem('crmtoken'),
-                },
-              },
-              () => {
-                resolve(true);
-              }
-            );
-          } else {
-            return reject();
+          if (data.data.fileName !== '') {
+            filenames = `${data.data.fileName}.${fiename}`;
           }
+
+          self.setState(
+            {
+              host: data.data.host,
+              picData: {
+                OSSAccessKeyId: data.data.accessKeyId,
+                callback: data.data.callBack,
+                dir: data.data.dir,
+                expire: data.data.expire,
+                key: `${data.data.dir}${filenames}.${fiename}`,
+                name: filenames,
+                host: data.data.host,
+                policy: data.data.policy,
+                signature: data.data.signature,
+                // success_action_status: data.data.success_action_status,
+              },
+            },
+            () => {
+              resolve(true);
+            }
+          );
+          // dispatch({
+          //   type: 'base/picData',
+          //   payload: {
+          //     OSSAccessKeyId: data.data.accessKeyId,
+          //     callback: data.data.callBack,
+          //     policy: data.data.policy,
+          //     signature: data.data.signature,
+          //     host: data.data.host,
+          //     key: `${data.data.dir}${filenames}`,
+          //     success_action_status: data.data.successActionStatus,
+          //     'x:subType': subType,
+          //     'x:type': type,
+          //     'x:bsId': bsId,
+          //     'x:f': f, //视频传v
+          //     'x:token': localStorage.getItem('crmtoken'),
+          //   },
+          // }).then(() => {
+          //   resolve(true);
+          // });
+          // }
         } else {
           message.error(data.message);
           return reject();

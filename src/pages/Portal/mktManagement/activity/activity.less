@@ -1,0 +1,80 @@
+.searchTags {
+  border-top: 1px solid #eee;
+  margin-top: 1em;
+  padding-top: 1em;
+  display: flex;
+  align-items: center;
+
+  .tagbox {
+    padding-left: 2.5em;
+    display: flex;
+    align-items: center;
+
+    span {
+      padding: 0 1em;
+      margin: 0 0.5em;
+      cursor: pointer;
+
+      &.on {
+        background: #fe6a30;
+        color: #fff;
+        border-radius: 3px;
+      }
+    }
+  }
+}
+.addBtn {
+  margin: 0 0 1em;
+}
+.actions {
+  margin: 0;
+  vertical-align: middle;
+  line-height: 1;
+
+  span {
+    margin: 0 7px;
+    color: #e9e9e9;
+  }
+}
+
+.stateBox {
+  width: 60px;
+
+  u {
+    background: rgb(245, 121, 5);
+    width: 6px;
+    height: 6px;
+    border-radius: 3px;
+    margin-right: 10px;
+    display: inline-block;
+    vertical-align: middle;
+
+    &.cls1 {
+      background: rgb(6, 168, 0);
+    }
+    &.cls2 {
+      background: rgb(119, 119, 119);
+    }
+  }
+}
+
+.timeBox {
+  width: 160px;
+}
+
+.tocopy {
+  cursor: pointer;
+  font-size: 12px;
+  padding-right: 0.5em;
+}
+.inpHidden {
+  border: none;
+  position: absolute;
+  z-index: -2;
+}
+
+:global {
+  .ant-btn {
+    margin-right: 10px;
+  }
+}
