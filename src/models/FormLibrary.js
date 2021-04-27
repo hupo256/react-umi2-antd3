@@ -28,6 +28,12 @@ export default {
   },
 
   effects: {
+    *resetSearchModel({ payload }, { call, put }) {
+      yield put({
+        type: 'upData',
+        payload: { fromData: { ...payload } },
+      });
+    },
     // 表单列表
     *pageListModel({ payload }, { call, put }) {
       const response = yield call(formList, {

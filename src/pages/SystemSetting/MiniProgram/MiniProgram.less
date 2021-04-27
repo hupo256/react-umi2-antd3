@@ -1,66 +1,67 @@
-.miniprogramWrap{
-  .content{
-    display:flex;
-    padding-top:50px;
-    img{
-      width:200px;
-      margin-left:30%;
-      margin-right:50px;
+.miniprogramWrap {
+  .content {
+    display: flex;
+    padding-top: 50px;
+    img {
+      width: 200px;
+      margin-left: 30%;
+      margin-right: 50px;
     }
-    .title{
-      flex:1;
-      p:nth-child(2){
-        font-size:20px;
+    .title {
+      flex: 1;
+      p:nth-child(2) {
+        font-size: 20px;
         color: rgb(132, 133, 135);
-        margin-bottom:10px;
+        margin-bottom: 10px;
       }
-      p:nth-child(3){
-        font-size:20px;    
+      p:nth-child(3) {
+        font-size: 20px;
         color: rgb(132, 133, 135);
-        margin:0;
+        margin: 0;
       }
-      p:nth-child(1){
+      p:nth-child(1) {
         font-size: 70px;
         color: rgb(67, 79, 89);
-        margin:0;
+        margin: 0;
+        opacity: 0;
       }
     }
   }
-  .mark{
-    width:40%;
-    margin-left:30%;
-    background:#fafafa;
-    margin-top:40px;
-    padding:16px 20px;
-    p{
+  .mark {
+    width: 40%;
+    margin-left: 30%;
+    background: #fafafa;
+    margin-top: 40px;
+    padding: 16px 20px;
+    p {
       font-size: 14px;
       color: rgb(95, 95, 95);
-      margin:5px;
+      margin: 5px;
     }
-    p:nth-child(1){
+    p:nth-child(1) {
       font-weight: 700;
       font-size: 16px;
       color: rgb(40, 40, 40);
-      margin:5px;
+      margin: 5px;
     }
   }
 }
 
-.dictWrap{
+.dictWrap {
   padding: 0;
-  display:flex;
-  .dictLeft{
-    padding-top:20px;
-    width:165px;
-    .dictTabs{
-      width:100%;
+  display: flex;
+  .dictLeft {
+    padding-top: 20px;
+    width: 165px;
+    .dictTabs {
+      width: 100%;
     }
     :global {
-      .ant-tabs  .ant-tabs-left-bar {
+      .ant-tabs .ant-tabs-left-bar {
         width: 100%;
       }
       .ant-tabs .ant-tabs-left-bar .ant-tabs-tab {
-          text-align: left;
+        text-align: left;
       }
       .ant-tabs .ant-tabs-left-bar .ant-tabs-tab {
         padding: 8px 4px 8px 24px;
@@ -71,77 +72,77 @@
       }
     }
   }
-  .dictRight{
-    flex:1;
-    padding:20px  20px 0 20px;
-    border-left:1px solid #e8e8e8;
-    margin-left:-1px;
-    
-    .dictRightTitle{
-      font-size:24px;
+  .dictRight {
+    flex: 1;
+    padding: 20px 20px 0 20px;
+    border-left: 1px solid #e8e8e8;
+    margin-left: -1px;
+
+    .dictRightTitle {
+      font-size: 24px;
     }
-    .dictRightName{
-      font-size:36px;
+    .dictRightName {
+      font-size: 36px;
       margin-bottom: 0;
     }
-    .dictImg{
-      font-size:14px;
-      .dictImgLeft{
-        display:inline-block;
-        margin-right:20px;
-        width:120px;
-        text-align:center;
-        >p{
-          padding:10px 0;
+    .dictImg {
+      font-size: 14px;
+      .dictImgLeft {
+        display: inline-block;
+        margin-right: 20px;
+        width: 120px;
+        text-align: center;
+        > p {
+          padding: 10px 0;
         }
       }
-      .dictImgRight{
-        display:inline-block;
-        width:120px;
-        text-align:center;
-        >p{
-          padding:10px 0;
+      .dictImgRight {
+        display: inline-block;
+        width: 120px;
+        text-align: center;
+        > p {
+          padding: 10px 0;
         }
       }
     }
-    .dictCompanyname{
-      font-size:20px;
+    .dictCompanyname {
+      font-size: 20px;
     }
   }
 }
 
-.formBinding{
-  .formBindingTitle{
-    font-size:24px;
-    font-weight:600;
+.formBinding {
+  .formBindingTitle {
+    font-size: 24px;
+    font-weight: 600;
   }
-  .formBindingItem{
-    border-bottom:1px solid #eee;
+  .formBindingItem {
+    border-bottom: 1px solid #eee;
     margin-bottom: 20px;
-    display:flex;
-    .formBindingItemLeft{
-      flex:3;
-      >p:nth-child(1){
-        font-size:16px;
-        color:#333;
+    display: flex;
+    .formBindingItemLeft {
+      flex: 3;
+      > p:nth-child(1) {
+        font-size: 16px;
+        color: #333;
       }
-      >p:nth-child(2){
-        font-size:12px;
-        color:#666;
+      > p:nth-child(2) {
+        font-size: 12px;
+        color: #666;
       }
     }
-    .formBindingItemRight{
-      flex:1;
-      text-align:right;
-      >p:nth-child(1){
-        color:#fe6a30;
-        cursor:pointer;
-        
-        text-align:right;
+    .formBindingItemRight {
+      flex: 1;
+      text-align: right;
+      > p:nth-child(1) {
+        color: #fe6a30;
+        cursor: pointer;
+
+        text-align: right;
       }
-      >p:nth-child(2){
-        >span{
-          font-weight:600;
+      > p:nth-child(2) {
+        > span {
+          font-weight: 600;
         }
       }
     }

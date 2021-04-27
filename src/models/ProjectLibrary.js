@@ -10,6 +10,8 @@ import {
   elementTree, //组件
   formList, //表单列表
   formBind,
+  pageLists, //公有专题列表
+  getCollocations, //获取公有专题配置
 } from '@/services/ProjectLibrary';
 
 export default {
@@ -18,6 +20,8 @@ export default {
   state: {
     siteList: {},
     siteListQuery: {},
+    siteLists: {},
+    siteListQuerys: {},
     siteDetail: {},
     collocationDetail: {},
     elementTree: [],
@@ -37,6 +41,12 @@ export default {
   },
 
   effects: {
+    *resetSearchModel({ payload }, { call, put }) {
+      yield put({
+        type: 'upData',
+        payload: { fromData: { ...payload } },
+      });
+    },
     // 专题列表
     *pageListModel({ payload }, { call, put }) {
       const response = yield call(pageList, {
@@ -45,6 +55,19 @@ export default {
       yield put({
         type: 'upData',
         payload: { siteList: (response && response.data) || {}, siteListQuery: { ...payload } },
+      });
+      return response;
+    },
+    *pageListModels({ payload }, { call, put }) {
+      const response = yield call(pageLists, {
+        ...payload,
+      });
+      yield put({
+        type: 'upData',
+        payload: {
+          siteLists: (response && response.data) || {},
+          siteListQuerys: { ...payload },
+        },
       });
       return response;
     },
@@ -97,6 +120,14 @@ export default {
     // 获取专题配置
     *getCollocationModel({ payload }, { call, put }) {
       const response = yield call(getCollocation, {
+        ...payload,
+      });
+
+      return response;
+    },
+    // 获取公有专题配置
+    *getCollocationModels({ payload }, { call, put }) {
+      const response = yield call(getCollocations, {
         ...payload,
       });
 

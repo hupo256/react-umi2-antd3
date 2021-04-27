@@ -74,7 +74,7 @@ class LoginPage extends Component {
                     } else {
                       if (res && res.message) {
                         message.warning(res.message);
-                        this.ReplacementVerificationCode();
+                        //this.ReplacementVerificationCode();
                       }
                     }
                   });
@@ -123,7 +123,7 @@ class LoginPage extends Component {
               } else {
                 if (res && res.message) {
                   message.warning(res.message);
-                  this.ReplacementVerificationCode();
+                  //this.ReplacementVerificationCode();
                 }
               }
             });
@@ -201,7 +201,9 @@ class LoginPage extends Component {
               <a onClick={this.ReplacementVerificationCode.bind(this)}>换一张</a>
             </div>
           )*/}
-          <Submit loading={submitting || dispatchLoading}>登录</Submit>
+          <Submit loading={submitting || dispatchLoading} style={{ marginTop: 24 }}>
+            登录
+          </Submit>
         </Login>
       </div>
     );

@@ -7,11 +7,10 @@ switch (APP_ENVIRONMENT) {
   case 'pre': // 灰度
     console.log = function() {};
     url = 'https://pregw.ingongdi.com';
-    //url = 'http://pre.gateway.ingongdi.com:1980';
     break;
   case 'test': // 测试
     console.log = function() {};
-    url = 'http://test.gateway.ingongdi.com';
+    url = 'http://testgw.ingongdi.com';
     break;
   case 'dev': // 开发环境
     console.warn = function() {};
@@ -20,15 +19,8 @@ switch (APP_ENVIRONMENT) {
   case 'local': // 本地开发
     console.warn = function() {};
     url = 'http://devgw.ingongdi.com';
+    // url = 'http://testgw.ingongdi.com';
     //url = 'http://pre.gateway.ingongdi.com';
-    break;
-  case 'auto': // 自动化
-    console.warn = function() {};
-    url = 'http://auto.api.platform.in-deco.com:1980';
-    break;
-  case 'rc': // fix
-    console.warn = function() {};
-    url = 'http://rc.api.platform.in-deco.com:1980';
     break;
   default:
     console.log('环境配置出错，请检查！！==', APP_ENVIRONMENT);

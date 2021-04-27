@@ -2,13 +2,13 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-12 20:09:33
+ * @Last Modified time: 2021-04-26 14:28:20
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
 import router from 'umi/router';
-import { Button, Icon, Input, Select } from 'antd';
+import { Button, Icon, Input, Select, Drawer } from 'antd';
 import { SketchPicker } from 'react-color';
 import FormAdd from '../../FormLibrary/FormComponent/FormAdd';
 import FormConfiguration from '../../FormLibrary/FormComponent/FormConfiguration';
@@ -28,6 +28,7 @@ class FootComponent extends PureComponent {
     title: '',
     visibleForm: false,
     formUid: '',
+    visibleDrawer: false,
   };
 
   componentDidMount() {
@@ -46,7 +47,16 @@ class FootComponent extends PureComponent {
 
   render() {
     const { data, companyPhone } = this.props;
-    const { show, showFont, formList, visible, title, visibleForm, formUid } = this.state;
+    const {
+      show,
+      showFont,
+      formList,
+      visible,
+      title,
+      visibleForm,
+      formUid,
+      visibleDrawer,
+    } = this.state;
     let formCont = [];
 
     formList.forEach(function(item, index) {
@@ -71,7 +81,11 @@ class FootComponent extends PureComponent {
           <div className="clearfix">
             <div className={styles.phoneWrap}>
               <div>
-                <Icon type="phone" />
+                <img
+                  src="https://img.inbase.in-deco.com/crm_saas/release/20210426/7f28e9b033204fc2bd628d0f82fbdfc8/ic_call.png"
+                  width="25"
+                  height="25"
+                />
               </div>
               <div>{companyPhone}</div>
             </div>
@@ -112,116 +126,115 @@ class FootComponent extends PureComponent {
           )}
         </div>
         {data.checked === 1 ? (
-          <div className={styles.FormWrap} style={{ top: 585 }}>
-            <div className="clearfix">
-              <div className={styles.isList} style={{ width: '100%' }}>
-                表单设置
-              </div>
-            </div>
-            <div className={styles.Forv}>
-              <div className={styles.btnChanges}>
-                <div className="clearfix" style={{ marginBottom: 15 }}>
-                  <div className={styles.btnlabel}>按钮文字</div>
-                  <div className={styles.inputWrap}>
-                    <Input
-                      placeholder="请输入按钮文字"
-                      style={{ width: 144 }}
-                      maxLength={8}
-                      value={data.elementButtonText}
-                      onChange={this.handleInputChange}
-                    />
+          <Drawer
+            width="375"
+            title="表单设置"
+            placement="right"
+            onClose={this.onClose}
+            visible={visibleDrawer}
+            mask={false}
+            headerStyle={{ position: 'relative', marginTop: 65 }}
+            bodyStyle={{ padding: 0 }}
+          >
+            <div className={styles.FormWrap}>
+              <div className={styles.Forv}>
+                <div className={styles.btnChanges}>
+                  <div className="clearfix" style={{ marginBottom: 15 }}>
+                    <div className={styles.btnlabel}>按钮文字</div>
+                    <div className={styles.inputWrap}>
+                      <Input
+                        placeholder="请输入按钮文字"
+                        maxLength={8}
+                        className={styles.FormInput}
+                        value={data.elementButtonText}
+                        onChange={this.handleInputChange}
+                      />
+                    </div>
                   </div>
-                </div>
-                <div className="clearfix" style={{ marginBottom: 15 }}>
-                  <div className={styles.btnlabel}>跳转表单</div>
-                  <div className={styles.inputWrap}>
-                    <Select
-                      placeholder="请选择"
-                      style={{ width: 144 }}
-                      value={data.formUid}
-                      onChange={e => {
-                        this.handleForm(e);
-                      }}
-                    >
-                      {formCont}
-                    </Select>
+                  <div className="clearfix" style={{ marginBottom: 15 }}>
+                    <div className={styles.btnlabel}>跳转表单</div>
+                    <div className={styles.inputWrap}>
+                      <Select
+                        placeholder="请选择"
+                        style={{ width: '100%' }}
+                        className={styles.FormInput}
+                        value={data.formUid}
+                        onChange={e => {
+                          this.handleForm(e);
+                        }}
+                      >
+                        {formCont}
+                      </Select>
+                    </div>
                   </div>
-                </div>
-                <div className="clearfix" style={{ marginBottom: 15 }}>
-                  <div className={styles.btnlabel}>颜色</div>
-                  <div className={styles.inputWrap}>
-                    <div className="clearfix">
-                      <div className={styles.btnColorWrap}>
-                        <div
-                          className={styles.btnColor}
-                          style={{ background: data.elementButtonColor }}
-                          onClick={() => {
-                            this.showColor();
-                          }}
-                        />
-                        按钮
-                      </div>
-                      <div className={styles.btnColorWrap}>
-                        <div
-                          className={styles.btnColor}
-                          style={{ background: data.elementButtonTextColor }}
-                          onClick={() => {
-                            this.showFontColor();
-                          }}
-                        />
-                        文字
+                  <div className="clearfix" style={{ marginBottom: 15 }}>
+                    <div className={styles.btnlabel}>颜色</div>
+                    <div className={styles.inputWrap}>
+                      <div className="clearfix">
+                        <div className={styles.btnColorWrap}>
+                          <div
+                            className={styles.btnColor}
+                            style={{ background: data.elementButtonColor }}
+                            onClick={() => {
+                              this.showColor();
+                            }}
+                          />
+                          按钮
+                        </div>
+                        <div className={styles.btnColorWrap}>
+                          <div
+                            className={styles.btnColor}
+                            style={{ background: data.elementButtonTextColor }}
+                            onClick={() => {
+                              this.showFontColor();
+                            }}
+                          />
+                          文字
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
 
-                {show ? (
-                  <div className={styles.SketchWrap}>
-                    <SketchPicker
-                      color={data.elementButtonColor}
-                      onChange={this.handleColorChange}
-                    />
+                  {show ? (
+                    <div className={styles.SketchWrap}>
+                      <SketchPicker
+                        color={data.elementButtonColor}
+                        onChange={this.handleColorChange}
+                      />
+                    </div>
+                  ) : (
+                    ''
+                  )}
+                  {show ? (
                     <span
-                      className={styles.closeColor}
+                      className={styles.closePicG}
                       onClick={() => {
                         this.closeColor();
                       }}
-                    >
-                      <img
-                        src="https://test.img.inbase.in-deco.com/crm_saas/dev/20210409/3b91901276824e0da6ff9fc49fe729fb/ic_delete.png"
-                        width="20"
-                        height="20"
-                      />
-                    </span>
-                  </div>
-                ) : (
-                  ''
-                )}
-                {showFont ? (
-                  <div className={styles.SketchWrap}>
-                    <SketchPicker
-                      color={data.elementButtonTextColor}
-                      onChange={this.handleFontColorChange}
                     />
+                  ) : null}
+                  {showFont ? (
+                    <div className={styles.SketchWrap}>
+                      <SketchPicker
+                        color={data.elementButtonTextColor}
+                        onChange={this.handleFontColorChange}
+                      />
+                    </div>
+                  ) : (
+                    ''
+                  )}
+                  {showFont ? (
                     <span
-                      className={styles.closeColor}
+                      className={styles.closePicG}
                       onClick={() => {
                         this.closeFontColor();
                       }}
-                    >
-                      <img
-                        src="https://test.img.inbase.in-deco.com/crm_saas/dev/20210409/3b91901276824e0da6ff9fc49fe729fb/ic_delete.png"
-                        width="20"
-                        height="20"
-                      />
-                    </span>
-                  </div>
-                ) : (
-                  ''
-                )}
+                    />
+                  ) : null}
+                </div>
               </div>
             </div>
-          </div>
+          </Drawer>
         ) : (
           ''
         )}
@@ -251,6 +264,10 @@ class FootComponent extends PureComponent {
   handleCheck() {
     const { index } = this.props;
     this.props.handleCheck(index);
+    this.props.handleWidth(-250);
+    this.setState({
+      visibleDrawer: true,
+    });
   }
   handleColorChange = value => {
     const { index } = this.props;
@@ -264,6 +281,7 @@ class FootComponent extends PureComponent {
   deleteFoot() {
     const { index } = this.props;
     this.props.handleDeleteFoot(index);
+    this.props.handleWidth(-160);
   }
   closeColor() {
     this.setState({
@@ -294,6 +312,7 @@ class FootComponent extends PureComponent {
       index,
     } = this.props;
     if (e === '') {
+      this.props.handleWidth(-160);
       this.setState(
         {
           visible: true,
@@ -382,6 +401,12 @@ class FootComponent extends PureComponent {
         });
       }
     });
+  };
+  onClose = () => {
+    this.setState({
+      visibleDrawer: false,
+    });
+    this.props.handleWidth(-160);
   };
 }
 

@@ -40,3 +40,59 @@ export async function getAuthUrl(params) {
     body: params,
   });
 }
+
+// 查询模版
+export async function queryTemplate(params) {
+  return request(baseurl + '/api/v1/wechat/homePage/queryTemplate', {
+    method: 'POST',
+    body: params,
+  });
+}
+
+// 查询小程序首页编辑数据
+export async function getHomePageEditData(params) {
+  return request(baseurl + '/api/v1/wechat/homePage/getHomePageEditData', {
+    method: 'POST',
+    body: params,
+  });
+}
+
+// 查询小程序首页已发布数据「小程序调用」
+export async function getHomePagePublishedData(params) {
+  return request(baseurl + '/api/v1/wechat/homePage/getHomePagePublishedData', {
+    method: 'POST',
+    body: params,
+  });
+}
+
+// 查询小程序首页是否已发布过
+export async function getHomePagePublishState(params) {
+  return request(baseurl + '/api/v1/wechat/homePage/getHomePagePublishState', {
+    method: 'POST',
+    body: params,
+  });
+}
+
+// 更新小程序首页编辑数据
+export async function updateHomePageEditData(params) {
+  return request(baseurl + '/api/v1/wechat/homePage/updateHomePageEditData', {
+    method: 'POST',
+    body: params,
+  });
+}
+
+// 发布小程序首页
+export async function publishEditData(params) {
+  return request(baseurl + '/api/v1/wechat/homePage/publishEditData', {
+    method: 'POST',
+    body: params,
+  });
+}
+
+// 分级查询
+export async function queryHomePageData(params) {
+  return request(baseurl + '/api/v1/wechat/homePage/queryHomePageData', {
+    method: 'POST',
+    body: params,
+  });
+}
