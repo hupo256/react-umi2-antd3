@@ -34,7 +34,7 @@ export default function TagsEdit(props) {
   useEffect(
     () => {
       const hgt = pageData?.maps?.[curFlag]?.height;
-      if (hgt === 176) {
+      if (hgt === 176 || hgt === 85) {
         setimgHeightType(1);
       } else {
         setimgHeightType(2);
@@ -43,6 +43,14 @@ export default function TagsEdit(props) {
       settagList(pageData?.maps?.[curFlag]?.list);
     },
     [curFlag]
+  );
+
+  useEffect(
+    () => {
+      const hgt = curFlag === 'banner' ? 176 : 85;
+      setHeight(hgt);
+    },
+    [imgHeightType]
   );
 
   function addNewImgs() {
@@ -87,7 +95,9 @@ export default function TagsEdit(props) {
   function radioChage(e) {
     const { value } = e.target;
     const newObj = { ...pageData };
-    if (value === 1) newObj.maps[curFlag].height = 176;
+    console.log(curFlag);
+    const defaultHei = curFlag === 'banner' ? 176 : 85;
+    newObj.maps[curFlag].height = defaultHei;
     setimgHeightType(value);
     setpageData(newObj);
   }
@@ -169,7 +179,7 @@ export default function TagsEdit(props) {
 
       <p className={styles.addImg} onClick={addNewImgs}>
         <span>+</span>
-        <span>添加轮播图</span>
+        <span>添加图片广告</span>
       </p>
 
       <Upload
