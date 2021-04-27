@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-04-27 16:13:18
+ * @Last Modified time: 2021-04-27 18:15:52
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -241,7 +241,7 @@ class SiteLibraryAdd extends PureComponent {
               </Form.Item>
               <h4 className={styles.title}>TDK设置（用于搜索引擎收录）</h4>
               <Form.Item label="关键词">
-                {getFieldDecorator('buildingName', {
+                {getFieldDecorator('headKeywords', {
                   initialValue: null,
                   rules: [],
                 })(<TagGroup tags={tags} handleSave={tags => this.handleTagSave(tags)} />)}
@@ -313,7 +313,7 @@ class SiteLibraryAdd extends PureComponent {
             ...values,
             // coverImg: (coverImg && coverImg[0].response.data.addr) || '',
             houseType: { bedroom, parlor, kitchen, toilet },
-            keywords: tags,
+            headKeywords: tags,
           },
         }).then(res => {
           if (res && res.code === 200) {
