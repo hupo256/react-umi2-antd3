@@ -4,7 +4,7 @@ export default {
   'navbar.lang': '中文',
   menu: '个人菜单',
   'menu.index': '数据',
-  'menu.home': '首页',
+  // 'menu.home': '首页',
   'menu.maintain': '工单',
   'menu.ContractManagement': '合同管理',
   'menu.message': '消息',
@@ -29,6 +29,8 @@ export default {
 
   'menu.insite': '站点',
   'menu.insite.decorate': '首页装修',
+  'menu.insite.channelmanage': '频道管理',
+  'menu.insite.websetting': '网站配置',
 
   'menu.activity': '活动',
   'menu.activity.mktGame': '营销小游戏',

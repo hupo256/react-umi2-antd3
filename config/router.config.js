@@ -1,3 +1,4 @@
+import { lazy } from 'react';
 export default [
   { path: '/disabled', component: './User/AccountDisabled' },
   { path: '/overdue', component: './User/AccountOverdue' },
@@ -59,7 +60,6 @@ export default [
           },
         ],
       },
-
       // 站点 - 首页装修
       {
         path: '/portal/insite',
@@ -92,16 +92,32 @@ export default [
             PageHeaderName: '继续编辑',
             component: './Portal/InSite/edit',
           },
+          {
+            name: 'channelmanage',
+            path: '/portal/insite/channelmanage',
+            component: './ChannelManage',
+          },
+          {
+            path: '/portal/insite/websetting',
+            name: 'websetting',
+            // code: 'MU9000000100010008',
+            component: './Portal/ContentManagement/WebSetting/index',
+          },
         ],
       },
-
       // v2.0
       // 门户
+      // {
+      //   path: '/portal',
+      //   name: 'portal',
+      //   icon: 'dashboard',
+      //   code: 'MU90000001',
+      //   routes: [
       {
         path: '/portal',
         redirect: '/portal/contentmanagement',
         icon: 'dashboard',
-        code: 'MU900000010001',
+        code: 'MU90000001',
       },
       {
         path: '/portal/contentmanagement',
@@ -194,9 +210,14 @@ export default [
             code: 'MU9000000100010005',
             component: './Portal/ContentManagement/FormLibrary/FormLibrary',
           },
+          {
+            path: '/portal/contentmanagement/websetting',
+            name: 'websetting',
+            // code: 'MU9000000100010008',
+            component: './Portal/ContentManagement/WebSetting/index',
+          },
         ],
       },
-
       // 活动 - 营销小游戏
       {
         path: '/portal/activity',
@@ -237,7 +258,6 @@ export default [
           },
         ],
       },
-
       // {
       //   path: '/portal/mysite',
       //   name: 'mysite',
