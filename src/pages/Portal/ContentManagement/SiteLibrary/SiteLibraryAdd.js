@@ -2,13 +2,26 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-19 16:52:02
+ * @Last Modified time: 2021-04-28 10:38:31
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
-import { Card, Form, Button, Input, message, Select, Row, Col, InputNumber, Icon } from 'antd';
+import {
+  Card,
+  Form,
+  Button,
+  Input,
+  message,
+  Select,
+  Row,
+  Col,
+  InputNumber,
+  Icon,
+  Tooltip,
+} from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
+import TagGroup from '@/components/TagSelect/TagGroup';
 import Upload from '@/components/Upload/Upload';
 import styles from './SiteLibrary.less';
 import RcViewer from 'rc-viewer';
@@ -31,6 +44,7 @@ class SiteLibraryAdd extends PureComponent {
       toilet: 0,
       uploadVisible: false,
       coverImg: null,
+      tags: [],
     };
   }
 
@@ -44,7 +58,7 @@ class SiteLibraryAdd extends PureComponent {
   }
 
   render() {
-    const { status, uploadVisible, coverImg } = this.state;
+    const { status, uploadVisible, coverImg, tags } = this.state;
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
@@ -74,6 +88,7 @@ class SiteLibraryAdd extends PureComponent {
         <PageHeaderWrapper>
           <Card bordered={false}>
             <Form {...formItemLayout} onSubmit={this.handleSubmit}>
+              <h4 className={styles.title}>基本信息</h4>
               <Form.Item label="工地标题">
                 {getFieldDecorator('gongdiTitle', {
                   rules: [
@@ -236,12 +251,49 @@ class SiteLibraryAdd extends PureComponent {
                   </div>
                 )}
               </Form.Item>
-              <Form.Item label="工地说明">
+              <h4 className={styles.title}>TDK设置（用于搜索引擎收录）</h4>
+              <Form.Item
+                label={
+                  <span>
+                    关键词
+                    {'  '}
+                    <Tooltip
+                      placement="right"
+                      title="业主有可能通过您输入的关键词，搜索到您的网站哦！"
+                    >
+                      <Icon type="question-circle" />
+                    </Tooltip>
+                    {'  '}
+                  </span>
+                }
+              >
+                {getFieldDecorator('headKeywords', {
+                  initialValue: null,
+                  rules: [],
+                })(<TagGroup tags={tags} handleSave={tags => this.handleTagSave(tags)} />)}
+              </Form.Item>
+              <Form.Item
+                label={
+                  <span>
+                    工地说明
+                    {'  '}
+                    <Tooltip
+                      placement="right"
+                      title="业主有可能通过您输入的关键词，搜索到您的网站哦！"
+                    >
+                      <Icon type="question-circle" />
+                    </Tooltip>
+                    {'  '}
+                  </span>
+                }
+              >
                 {getFieldDecorator('gongdiDescription', {
-                  rules: [ {
-                    max: 200,
-                    message: '限制0-200字符长度',
-                  }],
+                  rules: [
+                    {
+                      max: 200,
+                      message: '限制0-200字符长度',
+                    },
+                  ],
                 })(<TextArea rows={4} style={{ width: 400 }} placeholder="请输入工地说明" />)}
               </Form.Item>
               <Row>
@@ -283,7 +335,7 @@ class SiteLibraryAdd extends PureComponent {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (err) throw err;
       console.log(values);
-      const { coverImg, bedroom, parlor, kitchen, toilet } = this.state;
+      const { coverImg, bedroom, parlor, kitchen, toilet, tags } = this.state;
       const { dispatch } = this.props;
       if (parseFloat(values.buildingArea) < 0.01 || parseFloat(values.buildingArea) > 99999.99) {
         message.error('面积限制输入0.01-99999.99范围内的数字');
@@ -301,6 +353,7 @@ class SiteLibraryAdd extends PureComponent {
             ...values,
             // coverImg: (coverImg && coverImg[0].response.data.addr) || '',
             houseType: { bedroom, parlor, kitchen, toilet },
+            headKeywords: tags,
           },
         }).then(res => {
           if (res && res.code === 200) {
@@ -318,7 +371,6 @@ class SiteLibraryAdd extends PureComponent {
       }
     });
   };
-
   // 图片选择cance
   handleUploadCancel = () => {
     this.setState({ uploadVisible: false, record: null });
@@ -331,6 +383,11 @@ class SiteLibraryAdd extends PureComponent {
       coverImg: data[0].path,
     });
     this.handleUploadCancel();
+  };
+
+  // 关键词
+  handleTagSave = tags => {
+    this.setState({ tags });
   };
 }
 
