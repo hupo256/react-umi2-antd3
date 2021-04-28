@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-03-31 14:15:17
+ * @Last Modified time: 2021-04-26 12:24:03
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -17,6 +17,7 @@ import { getauth } from '@/utils/authority';
 import ImgComponent from './TopicComponent/ImgComponent';
 import FootComponent from './TopicComponent/FootComponent';
 import ViewFormComponent from './TopicComponent/ViewFormComponent';
+import TextComponent from './TopicComponent/TextComponent';
 import styles from './index.less';
 import logo from '../../../../assets/whiteLog.png';
 import logoImg from '../../../../assets/logoImg.png';
@@ -33,6 +34,7 @@ class ProjectLibrary extends PureComponent {
       compentList: [],
       tags: [],
       title: '',
+      Left: -160,
     };
     /*定义两个值用来存放鼠标按下的地方距离元素上侧和左侧边界的值*/
     this.disX = 0;
@@ -40,35 +42,65 @@ class ProjectLibrary extends PureComponent {
   }
 
   componentDidMount() {
-    const activeKey = getQueryUrlVal('uid');
+    let activeKey;
     const { dispatch } = this.props;
+    if (getQueryUrlVal('copy')) {
+      activeKey = getQueryUrlVal('copy');
+      dispatch({
+        type: 'ProjectLibrary/getCollocationModels',
+        payload: {
+          specialUid: activeKey,
+        },
+      }).then(res => {
+        if (res && res.code === 200) {
+          res.data &&
+            res.data.elementList &&
+            res.data.elementList.map((item, index) => {
+              item.isEdit = true;
+            });
+          dispatch({
+            type: 'ProjectLibrary/saveDataModel',
+            payload: {
+              key: 'compentList',
+              value: res.data.elementList || [],
+            },
+          });
+          this.setState({
+            title: res.data.specialTitle,
+          });
+        }
+      });
+    } else {
+      activeKey = getQueryUrlVal('uid');
+      dispatch({
+        type: 'ProjectLibrary/getCollocationModel',
+        payload: {
+          specialUid: activeKey,
+        },
+      }).then(res => {
+        if (res && res.code === 200) {
+          res.data &&
+            res.data.elementList &&
+            res.data.elementList.map((item, index) => {
+              item.isEdit = true;
+            });
+          dispatch({
+            type: 'ProjectLibrary/saveDataModel',
+            payload: {
+              key: 'compentList',
+              value: res.data.elementList || [],
+            },
+          });
+          this.setState({
+            title: res.data.specialTitle,
+          });
+        }
+      });
+    }
+
     dispatch({
       type: 'login/setAuthModel',
       payload: {},
-    });
-    dispatch({
-      type: 'ProjectLibrary/getCollocationModel',
-      payload: {
-        specialUid: activeKey,
-      },
-    }).then(res => {
-      if (res && res.code === 200) {
-        res.data &&
-          res.data.elementList &&
-          res.data.elementList.map((item, index) => {
-            item.isEdit = true;
-          });
-        dispatch({
-          type: 'ProjectLibrary/saveDataModel',
-          payload: {
-            key: 'compentList',
-            value: res.data.elementList || [],
-          },
-        });
-        this.setState({
-          title: res.data.specialTitle,
-        });
-      }
     });
     dispatch({
       type: 'ProjectLibrary/elementTreeModel',
@@ -98,7 +130,7 @@ class ProjectLibrary extends PureComponent {
     const {
       ProjectLibrary: { elementTree, compentList },
     } = this.props;
-    const { collapsed, istrue, title } = this.state;
+    const { collapsed, istrue, title, Left } = this.state;
     const auth = JSON.parse(localStorage.getItem('auth'));
     const bigLogo = (auth && auth.companyLogoBig) || logo;
     const smallLogo = (auth && auth.companyLogoSmall) || logoImg;
@@ -122,7 +154,7 @@ class ProjectLibrary extends PureComponent {
                 }}
               >
                 <div className={styles.icowrap}>
-                  <img src={ite.elementIcon} style={{ width: 38, height: 38 }} />
+                  <img src={ite.elementIcon} style={{ width: 20, height: 20 }} />
                 </div>
                 <div className={styles.icotext}>{ite.elementName}</div>
               </div>
@@ -146,6 +178,7 @@ class ProjectLibrary extends PureComponent {
     let tags = [];
     let foot = '';
     let ViewForm = [];
+    let text = [];
     compentList &&
       compentList.map((item, index) => {
         switch (item.elementType) {
@@ -163,14 +196,31 @@ class ProjectLibrary extends PureComponent {
               ),
             });
             break;
+          // case 'TEXT':
+          //   tags.push({
+          //     id: index,
+          //     content: (
+          //       <TextComponent
+          //         data={item}
+          //         index={index}
+          //         handleCheck={data => this.handleCheck(data)}
+          //         handleDeletePic={data => this.handleDeletePic(data)}
+          //       />
+          //     ),
+          //   });
+          //   break;
           case 'FORM':
             ViewForm.push({ data: item, idx: index });
+            break;
+          case 'MODAL_TEXT':
+            text.push({ data: item, idx: index });
             break;
           case 'MODAL':
             foot = (
               <FootComponent
                 data={item}
                 index={index}
+                handleWidth={data => this.handleWidth(data)}
                 handleCheck={data => this.handleCheck(data)}
                 companyPhone={companyPhone}
                 handleColor={(data, index, code) => this.handleColor(data, index, code)}
@@ -186,11 +236,28 @@ class ProjectLibrary extends PureComponent {
           key={index}
           data={item.data}
           index={item.idx}
+          handleWidth={data => this.handleWidth(data)}
           handleCheck={data => this.handleCheck(data)}
           handleColor={(data, index, code) => this.handleColor(data, index, code)}
           fnDown={(e, indx) => {
             this.fnDown(e, indx);
           }}
+          handleDeletePic={data => this.handleDeletePic(data)}
+        />
+      );
+    });
+    let textCont = text.map((item, index) => {
+      return (
+        <TextComponent
+          key={index}
+          data={item.data}
+          index={item.idx}
+          handleWidth={data => this.handleWidth(data)}
+          handleCheck={data => this.handleCheck(data)}
+          handleColor={(data, index, code) => this.handleColor(data, index, code)}
+          // fnDown={(e, indx) => {
+          //   this.fnDown(e, indx);
+          // }}
           handleDeletePic={data => this.handleDeletePic(data)}
         />
       );
@@ -219,7 +286,7 @@ class ProjectLibrary extends PureComponent {
               ''
             )}
           </div>
-          <div className={styles.fixedWrap}>
+          {/*<div className={styles.fixedWrap}>
             {permissionsBtn.permissions.includes('BTN210326000048') ? (
               <Button
                 type="primary"
@@ -244,15 +311,42 @@ class ProjectLibrary extends PureComponent {
                 </span>
               </div>
             ) : null}
-          </div>
+                </div>*/}
         </div>
         <div className={styles.confcont}>
-          <div className={styles.phone}>
+          <div className={styles.thead}>
+            <span className={styles.fontHead}>编辑专题</span>
+            <div className={styles.bth}>
+              {permissionsBtn.permissions.includes('BTN210326000048') ? (
+                <Button
+                  style={{ height: 38, marginRight: 10 }}
+                  onClick={() => {
+                    this.logoutSave();
+                  }}
+                >
+                  退出
+                </Button>
+              ) : null}
+              {permissionsBtn.permissions.includes('BTN210326000048') ? (
+                <Button
+                  type="primary"
+                  style={{ height: 38 }}
+                  onClick={() => {
+                    this.addConfiguration();
+                  }}
+                >
+                  发布
+                </Button>
+              ) : null}
+            </div>
+          </div>
+          <div className={styles.phone} style={{ marginLeft: Left }}>
             <div className={styles.phoneHead}>{title}</div>
             <div className={styles.phoneCont}>
               <div
                 className={styles.phoneBox}
                 ref="submitf"
+                id="phoneCont"
                 onMouseMove={() => {
                   this.get_canvas(event);
                 }}
@@ -261,9 +355,10 @@ class ProjectLibrary extends PureComponent {
                   isList
                   tags={tags}
                   render={({ tag, index }) => <div className={styles.tag}>{tag.content}</div>}
-                  onChange={index => console.log(index)}
+                  onChange={index => this.handleDragg(index)}
                 />
                 <div className={styles.vieT}>{vie}</div>
+                <div className={styles.txCont}>{textCont}</div>
                 {foot}
               </div>
             </div>
@@ -280,6 +375,10 @@ class ProjectLibrary extends PureComponent {
     let ishow = 0;
     let left = 0;
     let top = 0;
+    let textTop = 0;
+    const { tags } = this.state;
+    let iscroll = document.getElementById('phoneCont').scrollTop + 285;
+    textTop = iscroll;
     compentList &&
       compentList.map((item, index) => {
         if (item.elementType === 'MODAL' && ite.elementType === 'MODAL') {
@@ -289,9 +388,15 @@ class ProjectLibrary extends PureComponent {
           if (item.elementStyle) {
             let aStyle = JSON.parse(item.elementStyle);
             left = aStyle.left;
-            top = aStyle.top + 220;
+            top = aStyle.top + 360;
           }
         }
+        // if (item.elementType === 'MODAL_TEXT') {
+        //   if (item.elementStyle) {
+        //     let aStyle = JSON.parse(item.elementStyle);
+        //     textTop = aStyle.top + 43;
+        //   }
+        // }
       });
     if (ishow === 0) {
       ite.isEdit = false;
@@ -304,7 +409,25 @@ class ProjectLibrary extends PureComponent {
         ite.elementButtonColor = '#fe6a30';
         ite.elementButtonTextColor = '#fff';
         ite.elementButtonText = '立即预约';
+      } else if (ite.elementType === 'MODAL_TEXT') {
+        ite.elementStyle = JSON.stringify({
+          top: textTop,
+          left: 113,
+          fontSize: 14,
+          color: '#000',
+          lineHeight: 1.5,
+          letterSpacing: 1,
+          textAlign: 'center',
+          fontWeight: 'normal',
+          fontStyle: 'normal',
+          textDecorationLine: 'none',
+          width: 150,
+          height: 43,
+        });
       }
+      // if (ite.elementType === 'IMG' || ite.elementType === 'TEXT') {
+      //   tags.push(_.cloneDeep(ite));
+      // }
       compentList.push(_.cloneDeep(ite));
     }
     dispatch({
@@ -313,6 +436,9 @@ class ProjectLibrary extends PureComponent {
         key: 'compentList',
         value: [...compentList],
       },
+    });
+    this.setState({
+      tags,
     });
   }
   handleImg(data, index) {
@@ -398,7 +524,6 @@ class ProjectLibrary extends PureComponent {
     } = this.props;
     let height = this.refs.submitf.scrollHeight;
     let aStyle = JSON.parse(compentList[indx].elementStyle);
-
     if (event.clientY - this.disY < 0) {
       aStyle = 0;
     } else if (event.clientY - this.disY > height) {
@@ -406,6 +531,23 @@ class ProjectLibrary extends PureComponent {
     } else {
       aStyle.top = event.clientY - this.disY;
     }
+    // if (compentList[indx].elementType === 'MODAL_TEXT') {
+    //   compentList[indx].elementStyle = JSON.stringify({
+    //     top: aStyle.top,
+    //     left: aStyle.left,
+    //     fontSize: aStyle.fontSize,
+    //     color: aStyle.color,
+    //     lineHeight: aStyle.lineHeight,
+    //     letterSpacing: aStyle.letterSpacing,
+    //     textAlign: aStyle.textAlign,
+    //     fontStyle: aStyle.fontStyle,
+    //     textDecorationLine: aStyle.textDecorationLine,
+    //     width: 150,
+    //     height: 43,
+    //   });
+    // } else {
+    //   compentList[indx].elementStyle = JSON.stringify({ top: aStyle.top, left: aStyle.left });
+    // }
     compentList[indx].elementStyle = JSON.stringify({ top: aStyle.top, left: aStyle.left });
     dispatch({
       type: 'ProjectLibrary/saveDataModel',
@@ -454,11 +596,14 @@ class ProjectLibrary extends PureComponent {
       let isTrueM = 0;
       let isTrueF = 0;
       let formUid = '';
+      let isg = 0;
+      let arrPic = [];
+      let isImg = 0;
       compentList.map((item, index) => {
         if (item.elementType === 'IMG') {
           isTrue = 1;
+          arrPic.push(item.paramList[0].defaultValue);
         }
-
         if (item.elementType === 'MODAL') {
           if (item.formUid) {
             isTrueF = 1;
@@ -467,24 +612,43 @@ class ProjectLibrary extends PureComponent {
           isTrueM = 1;
         }
       });
+      arrPic.map((item, index) => {
+        if (
+          item !==
+          'https://test.img.inbase.in-deco.com/crm_saas/dev/20210408/22925eb86fff44e5b5ed47aa9dbd575e/imgdefault2x.png'
+        ) {
+          isImg = 1;
+        }
+      });
       if (isTrue === 0) {
         return message.error('请添加图片广告组件');
       }
-      if (isTrueM === 0) {
-        return message.error('请添加常驻底部组件');
+      if (isImg === 0) {
+        return message.error('专题中存在未设置图片的图片广告');
       }
-      if (isTrueF === 0) {
-        return message.error('请绑定浮窗表单');
+      // if (isTrueM === 0) {
+      //   return message.error("请添加常驻底部组件");
+      // }
+      if (isTrueM === 1 && isTrueF === 0) {
+        return message.error('请在常驻底部中关联悬浮表单哦');
       }
-      if (isTrue === 1 && isTrueM === 1 && isTrueF === 1) {
-        dispatch({
-          type: 'ProjectLibrary/formBindModel',
-          payload: {
-            directType: 4,
-            directUid: getQueryUrlVal('uid'),
-            formUid: formUid,
-          },
-        });
+      if (isTrueM === 1 && isTrueF === 1) {
+        isg = 1;
+      }
+      if (isTrueM === 0 && isTrueF === 0) {
+        isg = 1;
+      }
+      if (isTrue === 1 && isg === 1 && isImg === 1) {
+        if (formUid !== '') {
+          dispatch({
+            type: 'ProjectLibrary/formBindModel',
+            payload: {
+              directType: 4,
+              directUid: getQueryUrlVal('uid'),
+              formUid: formUid,
+            },
+          });
+        }
         dispatch({
           type: 'ProjectLibrary/specialCollocateModel',
           payload: {
@@ -551,6 +715,36 @@ class ProjectLibrary extends PureComponent {
         message.success('保存成功');
         router.push('/portal/contentmanagement/ProjectLibrary');
       }
+    });
+  }
+  handleDragg(index) {
+    const {
+      dispatch,
+      ProjectLibrary: { compentList },
+    } = this.props;
+    let arr = [];
+    let other = [];
+    index &&
+      index.map((item, index) => {
+        arr.push(item.content.props.data);
+      });
+    compentList &&
+      compentList.map((item, index) => {
+        if (item.elementType !== 'IMG' && item.elementType !== 'TEXT') {
+          other.push(item);
+        }
+      });
+    dispatch({
+      type: 'ProjectLibrary/saveDataModel',
+      payload: {
+        key: 'compentList',
+        value: [...arr, ...other],
+      },
+    });
+  }
+  handleWidth(data) {
+    this.setState({
+      Left: data,
     });
   }
 }

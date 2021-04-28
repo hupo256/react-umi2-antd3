@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-08 15:05:51
+ * @Last Modified time: 2021-04-24 15:37:59
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -95,8 +95,11 @@ class ProjectLibrary extends PureComponent {
     const {
       FormLibrary: { fromData },
     } = this.props;
-    let value = [];
-    value.push(fromData.formStatus);
+    let value = [''];
+    if (fromData.formStatus && fromData.formStatus !== '') {
+      value = [fromData.formStatus];
+    }
+
     return (
       <div className={styles.wrap}>
         <Search
