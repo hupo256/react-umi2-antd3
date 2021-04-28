@@ -24,7 +24,7 @@ class EnterpriseMessage extends Component {
   componentWillMount() {
     const { dispatch } = this.props;
     dispatch({ type: 'WebSettingStroe/enterpriseMessageModel' }).then(res => {
-      if (res.code == 200) {
+      if (res && res.code == 200) {
         this.setState({
           icp: res.data.icp,
           copyright: res.data.copyright,
@@ -124,11 +124,14 @@ class EnterpriseMessage extends Component {
                   required: false,
                   message: '请正确填写公众号',
                 },
+                {
+                  max: 30,
+                  message: '限制0-30字符长度',
+                },
               ],
             })(
               <Input
                 type="text"
-                max={30}
                 style={{ width: 400 }}
                 autoComplete="off"
                 placeholder="请输入公众号名称"
@@ -192,11 +195,14 @@ class EnterpriseMessage extends Component {
                   required: false,
                   message: '请正确填写网站描述',
                 },
+                {
+                  max: 30,
+                  message: '限制0-30字符长度',
+                },
               ],
             })(
               <Input
                 type="text"
-                max={30}
                 style={{ width: 400 }}
                 autoComplete="off"
                 placeholder="请输入微信号"
@@ -211,11 +217,14 @@ class EnterpriseMessage extends Component {
                   pattern: '',
                   message: '请正确填写二级域名',
                 },
+                {
+                  max: 50,
+                  message: '限制0-50字符长度',
+                },
               ],
             })(
               <Input
                 type="text"
-                max={50}
                 style={{ width: 400 }}
                 autoComplete="off"
                 placeholder="请输入门店地址"
@@ -275,11 +284,14 @@ class EnterpriseMessage extends Component {
                   required: false,
                   message: '请正确填写免费声明',
                 },
+                {
+                  max: 200,
+                  message: '限制0-200字符长度',
+                },
               ],
             })(
               <Input
                 type="text"
-                max={200}
                 style={{ width: 400 }}
                 autoComplete="off"
                 placeholder="本网站部分内容由用户自行上传，如权利人发现存在误传其作品情形，请及时与本站联系。"
@@ -294,11 +306,14 @@ class EnterpriseMessage extends Component {
                   required: false,
                   message: '请正确填写版权信息',
                 },
+                {
+                  max: 200,
+                  message: '限制0-200字符长度',
+                },
               ],
             })(
               <Input
                 type="text"
-                max={200}
                 style={{ width: 400 }}
                 autoComplete="off"
                 placeholder="请输入版权信息，如：@2016 XXX设计装饰有限公司版权所有"
@@ -313,11 +328,14 @@ class EnterpriseMessage extends Component {
                   required: false,
                   message: '请正确填写ICP备案号',
                 },
+                {
+                  max: 50,
+                  message: '限制0-50字符长度',
+                },
               ],
             })(
               <Input
                 type="text"
-                max={50}
                 style={{ width: 400 }}
                 autoComplete="off"
                 placeholder="请输入ICP备案号，如：京ICP备102342219号"

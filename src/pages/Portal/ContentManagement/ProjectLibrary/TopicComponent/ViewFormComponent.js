@@ -2,13 +2,13 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-12 21:24:41
+ * @Last Modified time: 2021-04-26 12:22:57
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
 import router from 'umi/router';
-import { Form, Input, Button, Icon, Radio, Modal } from 'antd';
+import { Form, Input, Button, Icon, Checkbox, Modal, Drawer } from 'antd';
 import { errorIcon } from '@/utils/utils';
 import { SketchPicker } from 'react-color';
 import styles from './index.less';
@@ -36,11 +36,11 @@ class ViewFormComponent extends PureComponent {
           defaultValue: null,
           defaultValueUpdate: 1,
           paramField: 'trackName',
-          paramName: '业主姓名',
-          paramExtName: '业主姓名',
+          paramName: '您的姓名',
+          paramExtName: '您的姓名',
           paramRequired: 1,
           paramType: 'String',
-          paramTips: '请输入业主姓名',
+          paramTips: '请输入姓名',
           paramUid: 'c834a6d6735411eb999e00505694ddf5',
           paramValid: null,
         },
@@ -69,6 +69,7 @@ class ViewFormComponent extends PureComponent {
           paramValid: null,
         },
       ],
+      visible: false,
     };
   }
   componentDidMount() {
@@ -119,74 +120,107 @@ class ViewFormComponent extends PureComponent {
 
   render() {
     const { data, index } = this.props;
-    const { showFont, show, checkList, checkSelectData, showSelect, checkTable } = this.state;
+    const {
+      showFont,
+      show,
+      checkList,
+      checkSelectData,
+      showSelect,
+      checkTable,
+      visible,
+    } = this.state;
     let topSize = JSON.parse(data.elementStyle);
     let formDa =
       checkList &&
       checkList.map((item, index) => {
         return (
-          <div style={{ marginBottom: 15 }} className={styles.formWrapT} key={index}>
+          <div className={styles.formWrapT} key={index}>
             <div className="clearfix">
-              <div className={styles.dragWrap}>
+              {/*<div className={styles.dragWrap}>
                 <Icon type="align-left" />
-              </div>
+        </div>*/}
               <div className={styles.dragCenWrap}>
-                <div className="clearfix" style={{ marginBottom: 15 }}>
-                  <div className={styles.tit}>字段</div>
-                  <div className="clearfix" style={{ width: 144, float: 'left' }}>
-                    <div className={styles.FormCont}>{item.paramName}</div>
-                    <div className={styles.dragWraps}>
-                      {index != 0 ? (
-                        <span
-                          className={styles.dSpan}
-                          onClick={() => {
-                            this.changeOrderUp(index);
-                          }}
-                        >
-                          <Icon type="arrow-up" />
-                        </span>
-                      ) : null}
-                      {index != checkList.length - 1 ? (
-                        <span
-                          className={styles.dSpan}
-                          onClick={() => {
-                            this.changeOrderDown(index);
-                          }}
-                        >
-                          <Icon type="arrow-down" />
-                        </span>
-                      ) : null}
-                      {item.paramField !== 'trackPhone' ? (
-                        <span
-                          className={styles.dSpan}
-                          onClick={() => {
-                            this.onDeleteFrom(item, index);
-                          }}
-                        >
-                          <Icon type="delete" />
-                        </span>
-                      ) : null}
+                <div className="clearfix">
+                  <div className={styles.FormContg}>
+                    <Checkbox
+                      checked={item.paramRequired}
+                      disabled={item.paramField === 'trackPhone'}
+                      onChange={e => this.onChangeCheck(e, item, index)}
+                    >
+                      设为必填
+                    </Checkbox>
+                  </div>
+                  <div className={styles.dragWraps}>
+                    {index != 0 ? (
+                      <span
+                        className={styles.dSpan}
+                        onClick={() => {
+                          this.changeOrderUp(index);
+                        }}
+                      >
+                        <Icon type="arrow-up" />
+                      </span>
+                    ) : (
+                      <span className={styles.dSpanv}>
+                        <Icon type="arrow-up" />
+                      </span>
+                    )}
+                    {index != checkList.length - 1 ? (
+                      <span
+                        className={styles.dSpan}
+                        onClick={() => {
+                          this.changeOrderDown(index);
+                        }}
+                      >
+                        <Icon type="arrow-down" />
+                      </span>
+                    ) : (
+                      <span className={styles.dSpanv}>
+                        <Icon type="arrow-down" />
+                      </span>
+                    )}
+                    {item.paramField !== 'trackPhone' ? (
+                      <span
+                        className={styles.dSpan}
+                        onClick={() => {
+                          this.onDeleteFrom(item, index);
+                        }}
+                      >
+                        <Icon type="delete" />
+                      </span>
+                    ) : (
+                      <span className={styles.dSpanv}>
+                        <Icon type="delete" />
+                      </span>
+                    )}
+                  </div>
+                </div>
+                <div className="clearfix">
+                  <div className={styles.tleftv}>
+                    <div className={styles.tits}>字段</div>
+                    <div className={styles.tit}>
+                      {item.paramName}{' '}
+                      <span className={styles.trig}>
+                        <Icon type="right" />
+                      </span>
                     </div>
-                    <div />
+                  </div>
+                  <div className={styles.tleft}>
+                    <div className={styles.tits}>字段别名</div>
+                    <div className={styles.FormCont}>
+                      <Input
+                        maxLength={10}
+                        className={styles.FormInput}
+                        value={item.paramExtName}
+                        onChange={e => this.handleListChange(e, 'paramExtName', index)}
+                      />
+                    </div>
                   </div>
                 </div>
-                <div className="clearfix" style={{ marginBottom: 15 }}>
-                  <div className={styles.tit}>字段别名</div>
-                  <div className={styles.FormCont}>
+                <div className="clearfix">
+                  <div className={styles.tits}>提示语</div>
+                  <div className={styles.FormContv}>
                     <Input
-                      style={{ width: 144 }}
-                      maxLength={10}
-                      className={styles.FormInput}
-                      value={item.paramExtName}
-                      onChange={e => this.handleListChange(e, 'paramExtName', index)}
-                    />
-                  </div>
-                </div>
-                <div className="clearfix" style={{ marginBottom: 15 }}>
-                  <div className={styles.tit}>提示语</div>
-                  <div className={styles.FormCont}>
-                    <Input
-                      style={{ width: 144 }}
                       className={styles.FormInput}
                       maxLength={16}
                       value={item.paramTips}
@@ -194,22 +228,6 @@ class ViewFormComponent extends PureComponent {
                     />
                   </div>
                 </div>
-                {item.paramField !== 'trackPhone' ? (
-                  <div className="clearfix">
-                    <div className={styles.tit}>是否必填</div>
-                    <div className={styles.FormCont}>
-                      <Radio.Group
-                        onChange={e => this.onChangeCheck(e, item, index)}
-                        value={item.paramRequired}
-                      >
-                        <Radio value={1}>是</Radio>
-                        <Radio value={0}>否</Radio>
-                      </Radio.Group>
-                    </div>
-                  </div>
-                ) : (
-                  ''
-                )}
               </div>
             </div>
           </div>
@@ -234,6 +252,9 @@ class ViewFormComponent extends PureComponent {
       checkList.map((item, index) => {
         return (
           <div className={styles.ViewDiv} key={index}>
+            <div style={{ color: data.elementButtonColor }} className={styles.chediv}>
+              {item.paramExtName}
+            </div>
             <Input
               style={{ width: 260, borderColor: data.elementButtonColor }}
               maxLength={16}
@@ -299,141 +320,176 @@ class ViewFormComponent extends PureComponent {
         </div>
 
         {data.checked === 1 ? (
-          <div className={styles.FormWrap} style={{ top: topSize.top > 426 ? 426 : topSize.top }}>
-            <div className="clearfix">
-              <div
-                className={checkTable === 1 ? styles.isList : styles.isLists}
-                onClick={() => {
-                  this.checkTable(1);
-                }}
-              >
-                字段设置
-              </div>
-              <div
-                className={checkTable === 2 ? styles.isList : styles.isLists}
-                onClick={() => {
-                  this.checkTable(2);
-                }}
-              >
-                表单设置
-              </div>
-            </div>
-            {checkTable === 1 ? (
-              <div className={styles.FormWraw}>{formDa}</div>
-            ) : (
-              <div className={styles.Forv}>
-                <div className={styles.btnChanges}>
-                  <div className="clearfix" style={{ marginBottom: 15 }}>
-                    <div className={styles.btnlabel}>按钮文字</div>
-                    <div className={styles.inputWrap}>
-                      <Input
-                        placeholder="请输入按钮文字"
-                        style={{ width: 144 }}
-                        maxLength={8}
-                        value={data.elementButtonText}
-                        onChange={this.handleInputChange}
-                      />
-                    </div>
+          <Drawer
+            width="375"
+            placement="right"
+            onClose={this.onClose}
+            visible={visible}
+            mask={false}
+            headerStyle={{ position: 'relative', marginTop: 65 }}
+            bodyStyle={{ padding: 0 }}
+          >
+            <div className={styles.FormWrap}>
+              <div className={styles.tabwrap}>
+                <div className="clearfix">
+                  <div
+                    className={checkTable === 1 ? styles.isList : styles.isLists}
+                    onClick={() => {
+                      this.checkTable(1);
+                    }}
+                  >
+                    字段设置
                   </div>
-                  <div className="clearfix" style={{ marginBottom: 15 }}>
-                    <div className={styles.btnlabel}>颜色</div>
-                    <div className={styles.inputWrap}>
-                      <div className="clearfix">
-                        <div className={styles.btnColorWrap}>
-                          <div
-                            className={styles.btnColor}
-                            style={{ background: data.elementButtonColor }}
-                            onClick={() => {
-                              this.showColor();
-                            }}
-                          />
-                          按钮
-                        </div>
-                        <div className={styles.btnColorWrap}>
-                          <div
-                            className={styles.btnColor}
-                            style={{ background: data.elementButtonTextColor }}
-                            onClick={() => {
-                              this.showFontColor();
-                            }}
-                          />
-                          文字
+                  <div
+                    className={checkTable === 2 ? styles.isList : styles.isLists}
+                    onClick={() => {
+                      this.checkTable(2);
+                    }}
+                  >
+                    表单设置
+                  </div>
+                </div>
+              </div>
+              {checkTable === 1 ? (
+                <div className={styles.FormWraw}>{formDa}</div>
+              ) : (
+                <div className={styles.Forv}>
+                  <div className={styles.btnChanges}>
+                    <div className="clearfix">
+                      <div className={styles.btnlabel}>按钮文字</div>
+                      <div className={styles.inputWrap}>
+                        <Input
+                          placeholder="请输入按钮文字"
+                          style={{ width: '100%' }}
+                          maxLength={8}
+                          className={styles.FormInput}
+                          value={data.elementButtonText}
+                          onChange={this.handleInputChange}
+                        />
+                      </div>
+                    </div>
+                    <div className="clearfix">
+                      <div className={styles.btnlabel}>颜色</div>
+                      <div className={styles.inputWrap}>
+                        <div className="clearfix">
+                          <div className={styles.btnColorWrap}>
+                            <div
+                              className={styles.btnColor}
+                              style={{ background: data.elementButtonColor }}
+                              onClick={() => {
+                                this.showColor();
+                              }}
+                            />
+                            按钮
+                          </div>
+                          <div className={styles.btnColorWrap}>
+                            <div
+                              className={styles.btnColor}
+                              style={{
+                                background: data.elementButtonTextColor,
+                              }}
+                              onClick={() => {
+                                this.showFontColor();
+                              }}
+                            />
+                            文字
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
 
-                  {show ? (
-                    <div className={styles.SketchWrap}>
-                      <SketchPicker
-                        color={data.elementButtonColor}
-                        onChange={this.handleColorChange}
-                      />
+                    {show ? (
+                      <div className={styles.SketchWrap}>
+                        <SketchPicker
+                          color={data.elementButtonColor}
+                          onChange={this.handleColorChange}
+                        />
+                        {/*<span
+                          className={styles.closeColor}
+                          onClick={() => {
+                            this.closeColor();
+                          }}
+                        >
+                          <img
+                            src="https://test.img.inbase.in-deco.com/crm_saas/dev/20210409/3b91901276824e0da6ff9fc49fe729fb/ic_delete.png"
+                            width="20"
+                            height="20"
+                          />
+                        </span>*/}
+                      </div>
+                    ) : (
+                      ''
+                    )}
+                    {show ? (
                       <span
-                        className={styles.closeColor}
+                        className={styles.closePicG}
                         onClick={() => {
                           this.closeColor();
                         }}
-                      >
-                        <img
-                          src="https://test.img.inbase.in-deco.com/crm_saas/dev/20210409/3b91901276824e0da6ff9fc49fe729fb/ic_delete.png"
-                          width="20"
-                          height="20"
-                        />
-                      </span>
-                    </div>
-                  ) : (
-                    ''
-                  )}
-                  {showFont ? (
-                    <div className={styles.SketchWrap}>
-                      <SketchPicker
-                        color={data.elementButtonTextColor}
-                        onChange={this.handleFontColorChange}
                       />
+                    ) : null}
+                    {showFont ? (
+                      <div className={styles.SketchWrap}>
+                        <SketchPicker
+                          color={data.elementButtonTextColor}
+                          onChange={this.handleFontColorChange}
+                        />
+                        {/*<span
+                          className={styles.closeColor}
+                          onClick={() => {
+                            this.closeFontColor();
+                          }}
+                        >
+                          <img
+                            src="https://test.img.inbase.in-deco.com/crm_saas/dev/20210409/3b91901276824e0da6ff9fc49fe729fb/ic_delete.png"
+                            width="20"
+                            height="20"
+                          />
+                        </span>*/}
+                      </div>
+                    ) : (
+                      ''
+                    )}
+                    {showFont ? (
                       <span
-                        className={styles.closeColor}
+                        className={styles.closePicG}
                         onClick={() => {
                           this.closeFontColor();
                         }}
-                      >
-                        <img
-                          src="https://test.img.inbase.in-deco.com/crm_saas/dev/20210409/3b91901276824e0da6ff9fc49fe729fb/ic_delete.png"
-                          width="20"
-                          height="20"
-                        />
+                      />
+                    ) : null}
+                  </div>
+                </div>
+              )}
+              {checkTable === 1 ? (
+                <div className={styles.addForm}>
+                  <div className={styles.btw}>
+                    <Button
+                      type="dashed"
+                      onClick={() => {
+                        this.addChangeFrom();
+                      }}
+                      style={{ width: '100%', height: 48 }}
+                    >
+                      <Icon type="plus" />
+                      <span style={{ marginLeft: 10 }}>
+                        添加表单字段（
+                        {checkList.length}
+                        /4）
                       </span>
-                    </div>
+                    </Button>
+                  </div>
+                  {showSelect && checkSelectData.length > 0 ? (
+                    <div className={styles.addSelect}>{selectData}</div>
                   ) : (
                     ''
                   )}
                 </div>
-              </div>
-            )}
-            {checkTable === 1 ? (
-              <div className={styles.addForm}>
-                <div
-                  onClick={() => {
-                    this.addChangeFrom();
-                  }}
-                >
-                  <Icon type="plus-circle" />
-                  <span style={{ marginLeft: 10 }}>
-                    添加表单字段（
-                    {checkList.length}
-                    /4）
-                  </span>
-                </div>
-                {showSelect && checkSelectData.length > 0 ? (
-                  <div className={styles.addSelect}>{selectData}</div>
-                ) : (
-                  ''
-                )}
-              </div>
-            ) : (
-              ''
-            )}
-          </div>
+              ) : (
+                ''
+              )}
+            </div>
+          </Drawer>
         ) : (
           ''
         )}
@@ -443,10 +499,15 @@ class ViewFormComponent extends PureComponent {
   changePic() {
     const { index } = this.props;
     this.props.handleCheck(index);
+    this.props.handleWidth(-250);
+    this.setState({
+      visible: true,
+    });
   }
   deletePic() {
     const { index } = this.props;
     this.props.handleDeletePic(index);
+    this.props.handleWidth(-160);
   }
   changePrefix = value => {
     this.setState({
@@ -518,7 +579,7 @@ class ViewFormComponent extends PureComponent {
   }
   onChangeCheck(e, item, index) {
     const { checkList } = this.state;
-    checkList[index].paramRequired = e.target.value;
+    checkList[index].paramRequired = e.target.checked ? 1 : 0;
     this.setState(
       {
         checkList: [...checkList],
@@ -652,6 +713,12 @@ class ViewFormComponent extends PureComponent {
       }
     );
   }
+  onClose = () => {
+    this.setState({
+      visible: false,
+    });
+    this.props.handleWidth(-160);
+  };
 }
 
 export default ViewFormComponent;

@@ -17,17 +17,26 @@
 }
 .closePic{
   position: absolute;
-  right: 5px;
-  top:5px;
-  font-size: 20px;
-  color: #fff;
+  right: 10px;
+  top:10px;
+  width: 20px;
+  height: 20px;
+  color: #FE6A30;
+  cursor: pointer;
+}
+.closePic img{
+  vertical-align: top;
 }
 .closePics{
   position: absolute;
-  right: 0;
-  top:5px;
-  font-size: 20px;
+  right: 10px;
+  top:10px;
+  width: 20px;
+  height: 20px;
   color: #fff;
+}
+.closePics img{
+  vertical-align: top;
 }
 // .roundLeftTop{
 //   position: absolute;
@@ -79,14 +88,14 @@
   left: 0;
   bottom: 0;
   width: 375px;
-  background: rgba(0, 0, 0,0.5 );
+  background: #fff;
   z-index: 100;
   padding: 10px 0;
   cursor: pointer;
 }
 .phoneWrap{
   float: left;
-  color: #fff;
+  color: #222;
   width: 170px;
 }
 .btnWrap{
@@ -118,6 +127,7 @@
   height: 32px;
   border-radius: 4px;
   background: #fe6a30;
+  border:1px solid #ccc;
 }
 .SketchWrap{
   position: absolute;
@@ -140,7 +150,7 @@
 width: 100%;
 position: absolute;
 cursor: move;
-height: 280px;
+height: 360px;
 z-index: 100;
 border:1px solid #fe6a30;
 }
@@ -153,6 +163,7 @@ border:1px solid #fe6a30;
 }
 .ViewForms{
   padding: 10px;
+  // height: 220px;
   height: 280px;
 }
 .ViewDiv{
@@ -167,16 +178,16 @@ border:1px solid #fe6a30;
   margin: 0 auto;
 }
 .btnChanges{
-  padding: 20px 30px;
+  padding: 0 16px;
 }
 .FormWrap{
-  position:fixed;
-  right: -320px;
-  top:0;
-  background:rgb(49,47,46);
-  color: #C1C1C1;
-  width: 300px;
-  border-radius: 5px;
+  // position:fixed;
+  // right: -320px;
+  // top:0;
+  //background:rgb(49,47,46);
+  color: #222222;
+  // width: 300px;
+  // border-radius: 5px;
   text-align: left;
   cursor: pointer;
 }
@@ -192,17 +203,53 @@ border:1px solid #fe6a30;
   font-size: 20px;
 }
 .tit{
-  float: left;
-  width: 80px;
-  line-height: 32px;
+  width: 94px;
+  line-height: 30px;
   text-align: left;
-  padding: 0 10px;
-  margin-left: 10px;
+  border:1px solid #DEDEDE;
+  padding: 0 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  position: relative;
+}
+.trig{
+  position: absolute;
+  right: 8px;
+  top:0;
+  font-size: 12px;
+  color: #DEDEDE;
+}
+.tits{
+  font-size: 12px;
+  color: #666;
+  line-height: 18px;
+  padding: 4px 0;
+  margin-top:8px ;
+}
+.tleft{
+  float: left;
+}
+.tleftv{
+  float: left;
+  margin-right: 7px;
 }
 .FormCont{
-  float: left;
-  margin-right: 10px;
   line-height: 32px;
+  width: 242px;
+  :global {
+    .ant-radio-wrapper{
+     color: #C1C1C1;
+    }
+  }
+}
+.FormContg{
+  float: left;
+  margin-top: 5px;
+}
+.FormContv{
+  float: left;
+  line-height: 32px;
+  width: 343px;
   :global {
     .ant-radio-wrapper{
      color: #C1C1C1;
@@ -210,7 +257,7 @@ border:1px solid #fe6a30;
   }
 }
 .dragCenWrap{
-  float:left;
+  //float:left;
 }
 .checkwraps{
   padding-left: 10px;
@@ -234,9 +281,10 @@ border:1px solid #fe6a30;
 .addSelect{
   position: absolute;
   background: #4C4948;
-  left: 90px;
-  top:60px;
+  left: 50%;
+  top:110px;
   color: #fff;
+  margin-left: -50px;
   width: 100px;
   padding: 10px;
   text-align: center;
@@ -253,38 +301,42 @@ border:1px solid #fe6a30;
   border:1px solid #fe6a30;
 }
 .FormInput{
-  background:#413E3D ;
-  border-color: #413E3D;
-  color: #fff;
+  // background:#413E3D ;
+  // border-color: #413E3D;
+  // color: #fff;
+  font-size: 12px;
+  color: #222;
 }
 .FormWraw{
-  max-height: 500px;
-  overflow-y: auto;
+  // max-height: 500px;
+  // overflow-y: auto;
 }
 .isList{
   float: left;
-  width: 50%;
+  //width: 50%;
   line-height: 48px;
-  color: #999;
+  //color: #999;
   text-align: center;
-  border-bottom: 1px solid rgb(59, 59, 59);
+  //border-bottom: 1px solid rgb(59, 59, 59);
   cursor: pointer;
-  color: #fff;
-  background: #413E3D;
+  color: #FF6700;
+  //color: #fff;
+  //background: #413E3D;
+  margin-right: 32px;
+  border-bottom: 2px solid #FF6700;
 }
 .isLists{
   float: left;
-  width: 50%;
+  //width: 50%;
   line-height: 48px;
-  color: #999;
+  //color: #999;
   text-align: center;
-  border-bottom: 1px solid rgb(59, 59, 59);
+  //border-bottom: 1px solid rgb(59, 59, 59);
   cursor: pointer;
-  background: #353332;
+  color: #222;
+  margin-right: 32px;
+  //background: #353332;
 
-}
-.btnChanges{
-  padding: 20px 30px;
 }
 .btnColor{
   width: 40px;
@@ -294,14 +346,20 @@ border:1px solid #fe6a30;
 .inputWrap{
   float: left;
   cursor: pointer;
+  width: 343px;
 }
 .btnlabel{
-  float: left;
-  width: 80px;
-  line-height: 32px;
+  font-size: 12px;
+  color: rgb(102, 102, 102);
+  line-height: 18px;
+  padding: 4px 0px;
+  margin-top: 8px;
 }
 .SketchWrap{
  position: relative;
+ z-index: 22;
+ width: 2;
+ width: 240px;
 }
 .closeColor{
   position:absolute;
@@ -323,8 +381,8 @@ border:1px solid #fe6a30;
   font-size: 16px;
 }
 .formWrapT{
-  padding: 10px;
-  border-bottom: 1px solid rgb(59, 59, 59);
+  padding: 10px 16px;
+  border-bottom: 1px solid #DEDEDE;
 }
 .footerBorder{
   border:1px solid #fe6a30;
@@ -332,11 +390,113 @@ border:1px solid #fe6a30;
   left: 0;
   bottom: 0;
   width: 375px;
-  background: rgba(0, 0, 0,0.5 );
+  background: #fff;
   z-index: 100;
   padding: 10px 0;
   cursor: pointer;
 }
+.element{
+  cursor: default;
+  user-select: auto;
+  writing-mode: horizontal-tb;
+  outline: none;
+  text-align: center;
+  padding: 5px;
+}
+.ViewFormsg{
+  //background:rgba(0, 0, 0,0.5 );
+  width: 100%;
+  height: 100%;
+  //position: absolute;
+  z-index: 100;
+  border:1px solid #fe6a30;
+  min-height: 40px;
+}
+.ViewFormborders{
+  width: 100%;
+  //position: absolute;
+  z-index: 100;
+  height: 100%;
+}
+.vif{
+  position: absolute;
+  left: 0;
+  top:0;
+  width: 100%;
+  height: 100%;
+}
+.arwrap{
+  height: 100%;
+
+}
+.arwrap article{
+  min-height: 40px;
+  height: 100%;
+  overflow: auto;
+  outline: none;
+}
+.arwrap article::-webkit-scrollbar {
+  display: none;
+}
+
+.fontC{
+  margin-right: 10px;
+  float: left;
+  font-size: 20px;
+}
+.textSet{
+  padding: 20px 0;
+}
+.textSet em{
+  margin-right: 15px;
+  cursor: pointer;
+  font-size: 20px;
+  padding: 10px;
+}
+.fontw{
+  font-size: 16px;
+}
+.acticve{
+  // background: #fe6a30;
+  // color: #fff;
+  // border-radius: 5px;
+  color: #FF6700;
+}
 .dSpan{
+  margin-left: 5px;
+  color: #999;
+}
+.SketchWraps{
+  position:absolute;
+  left: 140px;
+  top:170px;
+  width: 240px;
+  z-index: 222;
+}
+.closePicG{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top:0;
+}
+.chediv{
+  text-align: left;
+  font-size: 14px;
+}
+.tabwrap{
+  border-bottom: 1px solid #DEDEDE;
+  padding-left: 16px;
+}
+.btw{
+  padding: 37px 17px;
+}
+:global {
+  .ant-drawer-wrapper-body::-webkit-scrollbar {
+    display: none; /* Chrome Safari */
+  }
+}
+.dSpanv{
+  color: #DEDEDE;
   margin-left: 5px;
 }

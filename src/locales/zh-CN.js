@@ -27,6 +27,14 @@ export default {
   'menu.mysite': '我的网站',
   'menu.mysite.sitepanel': '网站面板',
 
+  'menu.insite': '站点',
+  'menu.insite.decorate': '首页装修',
+  'menu.insite.channelmanage': '频道管理',
+  'menu.insite.websetting': '网站配置',
+
+  'menu.activity': '活动',
+  'menu.activity.mktGame': '营销小游戏',
+
   'menu.home': '首页',
   'menu.list': '列表页',
   'menu.profile': '详情页',

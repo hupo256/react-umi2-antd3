@@ -29,7 +29,11 @@ class HostBind extends Component {
           customDomain = defaultDomain + res.data.suffix;
         } else {
           const resIndex = res.data.domain.indexOf('.');
-          defaultDomain = res.data.domain.slice(0, resIndex);
+          if(resIndex != -1){
+            defaultDomain = res.data.domain.slice(0, resIndex);
+          }else{
+            defaultDomain = res.data.domain
+          }
           customDomain = res.data.domain;
         }
         this.setState({
@@ -66,8 +70,8 @@ class HostBind extends Component {
     const ifDefaultHost = regExpConfig.defalutHostType.test(defaultHostValue);
     let payload;
     if (tabsValue == 0) {
-      if (defaultHostValue.length < 4 || !ifDefaultHost) {
-        message.error('请正确填写二级域名');
+      if (defaultHostValue.length < 4 || defaultHostValue.length > 20 || !ifDefaultHost) {
+        message.error('请正确填写三级域名');
         return;
       }
       payload = {
@@ -75,7 +79,7 @@ class HostBind extends Component {
         type: 0,
       };
     } else if (tabsValue == 1) {
-      if (custonHostValue.length < 4 || !ifCustomHost) {
+      if (custonHostValue.length < 4 || custonHostValue.length > 100 || !ifCustomHost) {
         message.error('请正确填写域名');
         return;
       }
@@ -84,21 +88,11 @@ class HostBind extends Component {
         type: 1,
       };
     }
-    const res = await dispatch({ type: 'WebSettingStroe/hostSettingBind', payload: payload });
-    switch (res.code) {
-      case 200:
+    await dispatch({ type: 'WebSettingStroe/hostSettingBind', payload: payload }).then(res=>{
+      if(res && res.code == 200){
         message.success('保存成功');
-        break;
-      case 210001:
-        message.error(res.message);
-        break;
-      case 210002:
-        message.error(res.message);
-        break;
-      default:
-        message.error('绑定失败，请检查输入后再试');
-    }
-    console.log('1', res);
+      }
+    });
   }
   render() {
     const { tabsValue, hostSuffix, custonHostValue, defaultHostValue } = this.state;
@@ -119,19 +113,22 @@ class HostBind extends Component {
         <div style={{ display: tabsValue == 0 ? 'block' : 'none' }}>
           <div style={{ display: 'flex' }}>
             <Form>
-              <FormItem label="默认域名（二级域名）">
+              <FormItem label="默认域名（三级域名）">
                 {getFieldDecorator('defaultHost', {
                   initialValue: defaultHostValue,
                   rules: [
                     {
                       pattern: regExpConfig.defalutHostType,
-                      message: '请正确填写二级域名',
+                      message: '请正确填写三级域名',
+                    },
+                    {
+                      max: 20,
+                      message: '限制1-20字符长度',
                     },
                   ],
                 })(
                   <Input
                     type="text"
-                    maxLength={20}
                     autoComplete="off"
                     placeholder="请输入域名"
                     className="defaultHostInput"
@@ -167,6 +164,10 @@ class HostBind extends Component {
                     {
                       pattern: regExpConfig.customHostType,
                       message: '请正确填写域名',
+                    },
+                    {
+                      max: 100,
+                      message: '限制1-100字符长度',
                     },
                   ],
                 })(

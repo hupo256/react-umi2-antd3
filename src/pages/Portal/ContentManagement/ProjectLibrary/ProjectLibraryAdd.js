@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-09 17:53:52
+ * @Last Modified time: 2021-04-24 17:34:43
  * 专题库
  */
 import React, { PureComponent } from 'react';
@@ -13,6 +13,7 @@ import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import CreateStepOne from './CreateCase/CreateStepOne';
 import CreateStepTwo from './CreateCase/CreateStepTwo';
 import CreateStepThree from './CreateCase/CreateStepThree';
+import styles from './index.less';
 const { Step } = Steps;
 
 @connect(({ ProjectLibrary, loading }) => ({
@@ -26,6 +27,16 @@ class ProjectLibrary extends PureComponent {
   }
 
   componentDidMount() {}
+  componentWillUnmount() {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'ProjectLibrary/saveDataModel',
+      payload: {
+        key: 'specialUid',
+        value: '',
+      },
+    });
+  }
   render() {
     const {
       ProjectLibrary: { status },
@@ -33,15 +44,24 @@ class ProjectLibrary extends PureComponent {
     let setp = Number(status);
     return (
       <div>
+        <div
+          className={styles.caseTab}
+          style={{
+            paddingLeft: sessionStorage.collapsed == 'false' ? '256px' : '110px',
+          }}
+        >
+          <div className={styles.cht}>创建专题</div>
+          <div className={styles.chp}>创建专题一共分两步，填写基本信息，配置专题界面</div>
+        </div>
         <PageHeaderWrapper>
-          <Card bordered={false}>
+          <Card bordered={false} style={{ marginTop: 80 }}>
             <Steps current={setp}>
               <Step title="填写基本信息" />
-              <Step title="上传专题图片" />
+              <Step title="配置专题界面" />
               <Step title="完成" />
             </Steps>
             {setp == 0 && <CreateStepOne handleOk={() => this.handleOk(1)} />}
-            {setp == 1 && <CreateStepTwo />}
+            {setp == 1 && <CreateStepTwo handleOk={() => this.handleOk(0)} />}
             {setp == 2 && <CreateStepThree />}
           </Card>
         </PageHeaderWrapper>

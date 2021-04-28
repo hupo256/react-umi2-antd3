@@ -48,6 +48,10 @@ class ResetPassword extends Component {
     });
   }
 
+  backHandle = () => {
+    router.go(-1);
+  };
+
   render() {
     const { text, show } = this.state;
     return (
@@ -123,9 +127,15 @@ class ResetPassword extends Component {
               <Button
                 onClick={() => this.saveToServer()}
                 type="primary"
-                style={{ marginLeft: 200, transform: 'translateX(-50%)' }}
+                style={{ marginLeft: 140, transform: 'translateX(-50%)' }}
               >
                 保存
+              </Button>
+              <Button
+                onClick={() => this.backHandle()}
+                style={{ marginLeft: 50, transform: 'translateX(-50%)' }}
+              >
+                返回
               </Button>
             </div>
           </Card>
