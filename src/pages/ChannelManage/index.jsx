@@ -315,6 +315,7 @@ export default class ChannelManage extends Component {
                                     id={styles.componentsTableSorting}
                                     dataSource={list}
                                     components={components}
+                                    rowKey={record => record.uid}
                                     onRow={(record, index) => ({
                                         index,
                                         moveRow: this.moveRow

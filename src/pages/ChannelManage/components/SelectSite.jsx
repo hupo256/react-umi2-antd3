@@ -233,6 +233,18 @@ export default class SelectSite extends Component {
             pageSize: pageSize
         })
     }
+
+    // 选择行
+    rowClickHandle = (e, r) => {
+        const { dispatch, currentDetailType, selectDetailData  } = this.props;
+        const idStringArr = ['', 'gongdiUid', 'uid', 'uid', 'articleUid'];
+        dispatch({
+            type: 'channelManage/save',
+            payload: {
+                selectDetailData: [r[idStringArr[currentDetailType]]]
+            }
+        })
+    }
     
 
     render() {
@@ -253,16 +265,14 @@ export default class SelectSite extends Component {
                     key: 'gongdiDescription',
                     dataIndex: 'gongdiDescription',
                     width: 200,
-                    render: text => <div>
+                    render: (text, r) => <div>
                         <div style={{width: 180, display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 2}}>{text}</div>
                         {
                             <div>
-                                <Tag color="magenta" style={{marginTop: 8}}>magenta</Tag>
-                                <Tag color="red"  style={{marginTop: 8}}>red</Tag>
-                                <Tag color="volcano"  style={{marginTop: 8}}>volcano</Tag>
-                                <Tag color="magenta"  style={{marginTop: 8}}>magenta</Tag>
-                                <Tag color="red"  style={{marginTop: 8}}>red</Tag>
-                                <Tag color="volcano" style={{marginTop: 8}}>volcano</Tag>
+                                {r.houseType.bedroom && <Tag color="blue" style={{marginTop: 8}}>{`${r.houseType.bedroom}居室 `}</Tag>}
+                                <Tag color="green"  style={{marginTop: 8}}>{r.buildingArea}</Tag>
+                                <Tag color="volcano"  style={{marginTop: 8}}>{r.renovationCosts}万</Tag>
+                                <Tag color="magenta"  style={{marginTop: 8}}>{r.houseStyleName}</Tag>
                             </div>
                             
                         }
@@ -328,12 +338,24 @@ export default class SelectSite extends Component {
             columns_3: [
                 {
                     title: '案例',
-                    key: 'title',
-                    dataIndex: 'title'
+                    key: 'titlestr',
+                    dataIndex: 'title',
+                    render: (text, r) => <div>
+                        <div style={{width: 180, display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 2}}>{text}</div>
+                        {
+                            <div>
+                                {+r.bedroom != 0 && <Tag color="blue" style={{marginTop: 8}}>{`${r.bedroom}居室 `}</Tag>}
+                                <Tag color="green"  style={{marginTop: 8}}>{r.acreage}m²</Tag>
+                                <Tag color="volcano"  style={{marginTop: 8}}>{r.decorationCost}万</Tag>
+                                <Tag color="magenta"  style={{marginTop: 8}}>{r.styleDic.name}</Tag>
+                            </div>
+                            
+                        }
+                    </div>
                 },
                 {
                     title: '案例信息',
-                    key: 'title',
+                    key: 'titleInfo',
                     dataIndex: 'title'
                 },
                 {
@@ -377,7 +399,7 @@ export default class SelectSite extends Component {
                         <Radio.Group onChange={this.articleTypeChange} value={articleType}>
                              <Radio.Button value="">全部</Radio.Button>
                             {
-                                articleDicOpts.map(item => <Radio.Button value={item.uid}>{item.name}</Radio.Button>)
+                                articleDicOpts.map(item => <Radio.Button key={item.uid} value={item.uid}>{item.name}</Radio.Button>)
                             }
 
                         </Radio.Group>
@@ -401,6 +423,12 @@ export default class SelectSite extends Component {
                         type: 'radio',
                         onChange: this.selectChange,
                         selectedRowKeys: selectDetailData
+                    }}
+                    onRow={record => {
+                        return {
+                            onClick: e =>  this.rowClickHandle(e, record)
+                        }
+                        
                     }}
                     style={{
                         paddingTop: 16
