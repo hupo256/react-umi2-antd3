@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-04-27 15:41:06
+ * @Last Modified time: 2021-04-28 11:28:54
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -48,6 +48,8 @@ class SiteLibraryAdd extends PureComponent {
       uploadVisible: false,
       coverImg: null,
       disabled: [],
+      tags: [],
+      show: false,
     };
   }
 
@@ -81,7 +83,7 @@ class SiteLibraryAdd extends PureComponent {
   }
 
   render() {
-    const { status, uploadVisible, coverImg, disabled } = this.state;
+    const { uploadVisible, coverImg, disabled, show, tags } = this.state;
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
@@ -293,14 +295,43 @@ class SiteLibraryAdd extends PureComponent {
                 )}
               </Form.Item>
               <h4 className={styles.title}>TDK设置（用于搜索引擎收录）</h4>
-              <Form.Item label="关键词">
-                {getFieldDecorator('buildingName', {
-                  initialValue: siteDetail.buildingName,
-                  rules: [],
-                })(<TagGroup />)}
+              <Form.Item
+                label={
+                  <span>
+                    关键词
+                    {'  '}
+                    <Tooltip
+                      placement="right"
+                      title="业主有可能通过您输入的关键词，搜索到您的网站哦！"
+                    >
+                      <Icon type="question-circle" />
+                    </Tooltip>
+                    {'  '}
+                  </span>
+                }
+              >
+                {getFieldDecorator('headKeywords', {})(
+                  <div>
+                    {show && <TagGroup tags={tags} handleSave={tags => this.handleTagSave(tags)} />}
+                  </div>
+                )}
               </Form.Item>
 
-              <Form.Item label="工地说明">
+              <Form.Item
+                label={
+                  <span>
+                    工地说明
+                    {'  '}
+                    <Tooltip
+                      placement="right"
+                      title="业主有可能通过您输入的关键词，搜索到您的网站哦！"
+                    >
+                      <Icon type="question-circle" />
+                    </Tooltip>
+                    {'  '}
+                  </span>
+                }
+              >
                 {getFieldDecorator('gongdiDescription', {
                   initialValue: siteDetail.gongdiDescription,
                   rules: [
@@ -350,7 +381,7 @@ class SiteLibraryAdd extends PureComponent {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (err) throw err;
       console.log(values);
-      const { coverImg, bedroom, parlor, kitchen, toilet } = this.state;
+      const { coverImg, bedroom, parlor, kitchen, toilet, tags } = this.state;
       const { dispatch } = this.props;
       if (parseFloat(values.buildingArea) < 0.01 || parseFloat(values.buildingArea) > 99999.99) {
         message.error('面积限制输入0.01-99999.99范围内的数字');
@@ -373,6 +404,7 @@ class SiteLibraryAdd extends PureComponent {
             houseType: { bedroom, parlor, kitchen, toilet },
             gongdiUid: getQueryUrlVal('uid') === 'null' ? null : getQueryUrlVal('uid'),
             ...obj,
+            headKeywords: tags,
           },
         }).then(res => {
           if (res && res.code === 200) {
@@ -406,13 +438,24 @@ class SiteLibraryAdd extends PureComponent {
   };
 
   init = data => {
-    this.setState({
-      bedroom: (data.houseType && data.houseType.bedroom) || 0,
-      parlor: (data.houseType && data.houseType.parlor) || 0,
-      kitchen: (data.houseType && data.houseType.kitchen) || 0,
-      toilet: (data.houseType && data.houseType.toilet) || 0,
-      coverImg: data.coverImg,
-    });
+    this.setState(
+      {
+        bedroom: data.houseType?.bedroom || 0,
+        parlor: data.houseType?.parlor || 0,
+        kitchen: data.houseType?.kitchen || 0,
+        toilet: data.houseType?.toilet || 0,
+        coverImg: data.coverImg,
+        tags: data.headKeywords || [],
+      },
+      () => {
+        this.setState({ show: true });
+      }
+    );
+  };
+
+  // 关键词
+  handleTagSave = tags => {
+    this.setState({ tags });
   };
 }
 

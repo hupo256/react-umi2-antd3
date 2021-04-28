@@ -10,7 +10,7 @@ class TagGroup extends Component {
 
   componentDidMount() {
     const { tags } = this.props;
-    this.setState({ tags });
+    this.setState({ tags: tags || [] });
   }
 
   handleClose = removedTag => {
@@ -53,6 +53,9 @@ class TagGroup extends Component {
   saveInputRef = input => (this.input = input);
   render() {
     const { tags, inputVisible, inputValue } = this.state;
+    console.log('====================================');
+    console.log(tags);
+    console.log('====================================');
     return (
       <div>
         {tags.map((tag, index) => {
@@ -82,12 +85,13 @@ class TagGroup extends Component {
             onPressEnter={this.handleInputConfirm}
           />
         )}
-        {!inputVisible && (
-          <Tag onClick={this.showInput} style={{ background: '#fff', borderStyle: 'dashed' }}>
-            <Icon type="plus" />
-            添加关键词
-          </Tag>
-        )}
+        {!inputVisible &&
+          tags.length < 10 && (
+            <Tag onClick={this.showInput} style={{ background: '#fff', borderStyle: 'dashed' }}>
+              <Icon type="plus" />
+              添加关键词
+            </Tag>
+          )}
       </div>
     );
   }

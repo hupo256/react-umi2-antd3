@@ -2,12 +2,24 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-04-27 18:15:52
+ * @Last Modified time: 2021-04-28 10:38:31
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
-import { Card, Form, Button, Input, message, Select, Row, Col, InputNumber, Icon } from 'antd';
+import {
+  Card,
+  Form,
+  Button,
+  Input,
+  message,
+  Select,
+  Row,
+  Col,
+  InputNumber,
+  Icon,
+  Tooltip,
+} from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import TagGroup from '@/components/TagSelect/TagGroup';
 import Upload from '@/components/Upload/Upload';
@@ -240,13 +252,41 @@ class SiteLibraryAdd extends PureComponent {
                 )}
               </Form.Item>
               <h4 className={styles.title}>TDK设置（用于搜索引擎收录）</h4>
-              <Form.Item label="关键词">
+              <Form.Item
+                label={
+                  <span>
+                    关键词
+                    {'  '}
+                    <Tooltip
+                      placement="right"
+                      title="业主有可能通过您输入的关键词，搜索到您的网站哦！"
+                    >
+                      <Icon type="question-circle" />
+                    </Tooltip>
+                    {'  '}
+                  </span>
+                }
+              >
                 {getFieldDecorator('headKeywords', {
                   initialValue: null,
                   rules: [],
                 })(<TagGroup tags={tags} handleSave={tags => this.handleTagSave(tags)} />)}
               </Form.Item>
-              <Form.Item label="工地说明">
+              <Form.Item
+                label={
+                  <span>
+                    工地说明
+                    {'  '}
+                    <Tooltip
+                      placement="right"
+                      title="业主有可能通过您输入的关键词，搜索到您的网站哦！"
+                    >
+                      <Icon type="question-circle" />
+                    </Tooltip>
+                    {'  '}
+                  </span>
+                }
+              >
                 {getFieldDecorator('gongdiDescription', {
                   rules: [
                     {
