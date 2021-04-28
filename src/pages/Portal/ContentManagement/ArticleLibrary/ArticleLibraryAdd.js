@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-03-18 11:21:43 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-04-15 19:24:46
+ * @Last Modified time: 2021-04-28 10:58:55
  * 创建文章
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -22,11 +22,10 @@ import {
   Select,
   Row,
   Col,
-  Checkbox,
 } from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { paginations, getUrl } from '@/utils/utils';
-import ImgUploads from '@/components/Upload/ImgUploads';
+import TagGroup from '@/components/TagSelect/TagGroup';
 import { regExpConfig } from '../../../../utils/regular.config';
 import BraftEditor from '@/components/BraftEditor/BraftEditor';
 import styles from './ArticleLibrary.less';
@@ -49,6 +48,7 @@ class ArticleLibraryAdd extends PureComponent {
       uploadVisible: false,
       dictionaries: [],
       editorContent: null,
+      tags: [],
     };
   }
 
@@ -68,7 +68,7 @@ class ArticleLibraryAdd extends PureComponent {
   }
 
   render() {
-    const { status, coverImg, uploadVisible, dictionaries, editorContent } = this.state;
+    const { status, coverImg, uploadVisible, dictionaries, editorContent, tags } = this.state;
     const { getFieldDecorator } = this.props.form;
     const {
       DictConfig: { dicData },
@@ -89,6 +89,7 @@ class ArticleLibraryAdd extends PureComponent {
         <PageHeaderWrapper>
           <Card bordered={false}>
             <Form {...formItemLayout} onSubmit={this.handleSubmit}>
+              <h4 className={styles.title}>基本信息</h4>
               <Form.Item label="文章标题">
                 {getFieldDecorator('articleTitle', {
                   rules: [
@@ -184,18 +185,43 @@ class ArticleLibraryAdd extends PureComponent {
                   />
                 )}
               </Form.Item>
-              <Form.Item label="关键词">
-                {getFieldDecorator('articleTag', {
-                  rules: [
-                    {
-                      max: 10,
-                      message: '限制1-10字符长度',
-                    },
-                  ],
-                })(<Input style={{ width: 400 }} placeholder="请输入关键词" />)}
+
+              <h4 className={styles.title}>TDK设置（用于搜索引擎收录）</h4>
+              <Form.Item
+                label={
+                  <span>
+                    关键词
+                    {'  '}
+                    <Tooltip
+                      placement="right"
+                      title="业主有可能通过您输入的关键词，搜索到您的网站哦！"
+                    >
+                      <Icon type="question-circle" />
+                    </Tooltip>
+                    {'  '}
+                  </span>
+                }
+              >
+                {getFieldDecorator('articleTag', {})(
+                  <TagGroup tags={tags} handleSave={tags => this.handleTagSave(tags)} />
+                )}
               </Form.Item>
 
-              <Form.Item label="文章说明">
+              <Form.Item
+                label={
+                  <span>
+                    文章说明
+                    {'  '}
+                    <Tooltip
+                      placement="right"
+                      title="业主有可能通过您输入的关键词，搜索到您的网站哦！"
+                    >
+                      <Icon type="question-circle" />
+                    </Tooltip>
+                    {'  '}
+                  </span>
+                }
+              >
                 {getFieldDecorator('articleDescription', {
                   rules: [
                     {
@@ -248,7 +274,7 @@ class ArticleLibraryAdd extends PureComponent {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (err) throw err;
       console.log(values);
-      const { editorContent } = this.state;
+      const { editorContent, tags } = this.state;
       if (!editorContent) {
         message.error('请输入文章正文');
         return false;
@@ -263,6 +289,7 @@ class ArticleLibraryAdd extends PureComponent {
         payload: {
           ...values,
           articleContent: editorContent,
+          articleTag: tags,
         },
       }).then(res => {
         if (res && res.code === 200) {
@@ -285,6 +312,11 @@ class ArticleLibraryAdd extends PureComponent {
       articleCoverImg: data[0].path,
     });
     this.handleUploadCancel();
+  };
+
+  // 关键词
+  handleTagSave = tags => {
+    this.setState({ tags });
   };
 }
 

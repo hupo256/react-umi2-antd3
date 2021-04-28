@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-18 16:39:42 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-04-07 16:47:18
+ * @Last Modified time: 2021-04-28 16:41:04
  * 创建设计师
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -26,7 +26,7 @@ import {
 } from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { paginations, getQueryUrlVal } from '@/utils/utils';
-import ImgUploads from '@/components/Upload/ImgUploads';
+import TagGroup from '@/components/TagSelect/TagGroup';
 import { regExpConfig } from '../../../../utils/regular.config';
 import styles from './DesignerLibrary.less';
 const { TextArea } = Input;
@@ -47,6 +47,8 @@ class DesignerLibraryEdit extends PureComponent {
       coverImg: null,
       uploadVisible: false,
       disabled: [],
+      tags: [],
+      show: false,
     };
   }
 
@@ -67,13 +69,21 @@ class DesignerLibraryEdit extends PureComponent {
       payload: { uid: getQueryUrlVal('uid') },
     }).then(res => {
       if (res && res.code === 200) {
-        this.setState({ coverImg: res.data.headPicUrl });
+        this.setState(
+          {
+            coverImg: res.data.headPicUrl,
+            tags: res?.data?.keywords ? JSON.parse(res.data.keywords) : [],
+          },
+          () => {
+            this.setState({ show: true });
+          }
+        );
       }
     });
   }
 
   render() {
-    const { status, coverImg, uploadVisible, disabled } = this.state;
+    const { status, coverImg, uploadVisible, disabled, show, tags } = this.state;
     const { getFieldDecorator } = this.props.form;
     const {
       DictConfig: { dicData },
@@ -283,6 +293,35 @@ class DesignerLibraryEdit extends PureComponent {
                   ],
                 })(<TextArea rows={4} style={{ width: 400 }} placeholder="请输入设计理念" />)}
               </Form.Item>
+
+              <h4 className={styles.title}>TDK设置（用于搜索引擎收录）</h4>
+              <Form.Item label={this.title('设计师标题')}>
+                {getFieldDecorator('title', {
+                  rules: [
+                    {
+                      max: 10,
+                      message: '限制1-30字符长度',
+                    },
+                  ],
+                })(<Input style={{ width: 400 }} placeholder="请输入设计师标题" />)}
+              </Form.Item>
+              <Form.Item label={this.title('关键词')}>
+                {getFieldDecorator('keywords', {})(
+                  <div>
+                    {show && <TagGroup tags={tags} handleSave={tags => this.handleTagSave(tags)} />}
+                  </div>
+                )}
+              </Form.Item>
+              <Form.Item label={this.title('设计师说明')}>
+                {getFieldDecorator('description', {
+                  rules: [
+                    {
+                      max: 200,
+                      message: '限制0-200字符长度',
+                    },
+                  ],
+                })(<TextArea rows={4} style={{ width: 400 }} placeholder="请输入设计师说明" />)}
+              </Form.Item>
               <Row>
                 <Col span={8} />
                 <Col span={16}>
@@ -335,7 +374,7 @@ class DesignerLibraryEdit extends PureComponent {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (err) throw err;
       console.log(values);
-      const { headPicUrl } = this.state;
+      const { tags } = this.state;
       const { dispatch } = this.props;
       // createDesignerModel
       if (values.styleDicCodes.length > 3) {
@@ -347,6 +386,7 @@ class DesignerLibraryEdit extends PureComponent {
         payload: {
           ...values,
           uid: getQueryUrlVal('uid'),
+          keywords: tags,
         },
       }).then(res => {
         message.success('编辑成功');
@@ -367,6 +407,23 @@ class DesignerLibraryEdit extends PureComponent {
       headPicUrl: data[0].path,
     });
     this.handleUploadCancel();
+  };
+
+  // 关键词
+  handleTagSave = tags => {
+    this.setState({ tags });
+  };
+  title = title => {
+    return (
+      <span>
+        {title}
+        {'  '}
+        <Tooltip placement="right" title="业主有可能通过您输入的关键词，搜索到您的网站哦！">
+          <Icon type="question-circle" />
+        </Tooltip>
+        {'  '}
+      </span>
+    );
   };
 }
 
