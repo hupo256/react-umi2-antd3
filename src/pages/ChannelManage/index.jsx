@@ -5,6 +5,7 @@ import { DndProvider, DragSource, DropTarget } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import update from 'immutability-helper';
 import styles from './index.less'
+import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import CreateEdit from './components/CreateEdit'
 import SelectSite from './components/SelectSite'
 import { getList, sortApi, toggleStatusApi } from '@/services/channelManage'
@@ -172,8 +173,8 @@ export default class ChannelManage extends Component {
      */
     showConfirmHandle = (record) => {
         confirm({
-            title: `确认要${record.status === 2 ? '启' : '停'}用吗?`,
-            // content: 'Some descriptions',
+            title: `确定要${record.status === 2 ? '启' : '停'}用当前频道吗?`,
+            content: record.status === 2 ? '启用后，将可以在装企小程序和网站中显示' : '停用后，在装企小程序和网站中均不会显示当前频道',
             onOk: async () => {
                 try {
                     const res = await toggleStatusApi({
@@ -252,7 +253,7 @@ export default class ChannelManage extends Component {
                 title: '链接',
                 key: 'linkDisplayName',   
                 dataIndex: 'linkDisplayName',
-                render: (text, record) => <a href={record.linkUrl}>{text}</a>
+                render: (text, record) => text
             },
             {
                 title: '状态',
@@ -303,50 +304,53 @@ export default class ChannelManage extends Component {
         };
         
         return (
-            <div>
-                <Card>
-                    <Button type='primary' icon="plus" onClick={() => {this.toggleShow('createEdit')}}>创建频道</Button>
-                    <div style={{marginTop: 16}}>
-                        <DndProvider backend={HTML5Backend}>
-                            <Table
-                                columns={columns}
-                                id={styles.componentsTableSorting}
-                                dataSource={list}
-                                components={components}
-                                onRow={(record, index) => ({
-                                    index,
-                                    moveRow: this.moveRow
-                                })}
-                                pagination={{
-                                    current: pageNum,
-                                    total: recordTotal,
-                                    defaultPageSize: 100
-                                }}
-                            />
-                        </DndProvider>
-                    </div>
-                    
-                </Card>
-                <Modal
-                    title={`${isCreate? '创建' : '编辑'}频道`}
-                    width='750px'
-                    footer={null}
-                    visible={ showCreateEdit }
-                    onCancel={() => {this.toggleShow('createEdit')}}
-                >
-                    <CreateEdit />
-                </Modal>
-                <Modal
-                    title={`选择${DETAIL_TYPE_MAP[currentDetailType]}`}
-                    width='800px'
-                    footer={null}
-                    visible={ currentDetailType !== 0 }
-                    onOk={this.handleOk}
-                    onCancel={() => {this.toggleShow('selectSite')}}
-                >
-                    <SelectSite />
-                </Modal>
-            </div>
+            <PageHeaderWrapper>
+                <div>
+                    <Card>
+                        <Button type='primary' icon="plus" onClick={() => {this.toggleShow('createEdit')}}>创建频道</Button>
+                        <div style={{marginTop: 16}}>
+                            <DndProvider backend={HTML5Backend}>
+                                <Table
+                                    columns={columns}
+                                    id={styles.componentsTableSorting}
+                                    dataSource={list}
+                                    components={components}
+                                    onRow={(record, index) => ({
+                                        index,
+                                        moveRow: this.moveRow
+                                    })}
+                                    pagination={{
+                                        current: pageNum,
+                                        total: recordTotal,
+                                        defaultPageSize: 100,
+                                        hideOnSinglePage: true
+                                    }}
+                                />
+                            </DndProvider>
+                        </div>
+                        
+                    </Card>
+                    <Modal
+                        title={`${isCreate? '创建' : '编辑'}频道`}
+                        width='750px'
+                        footer={null}
+                        visible={ showCreateEdit }
+                        onCancel={() => {this.toggleShow('createEdit')}}
+                    >
+                        <CreateEdit />
+                    </Modal>
+                    <Modal
+                        title={`选择${DETAIL_TYPE_MAP[currentDetailType]}`}
+                        width='800px'
+                        footer={null}
+                        visible={ currentDetailType !== 0 }
+                        onOk={this.handleOk}
+                        onCancel={() => {this.toggleShow('selectSite')}}
+                    >
+                        <SelectSite />
+                    </Modal>
+                </div>
+            </PageHeaderWrapper>          
         )
     }
 }
