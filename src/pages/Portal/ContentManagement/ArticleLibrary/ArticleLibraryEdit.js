@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-03-18 11:22:23 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-04-15 19:51:25
+ * @Last Modified time: 2021-04-29 17:14:23
  * 编辑文章
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -26,8 +26,7 @@ import {
 } from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { paginations, getQueryUrlVal } from '@/utils/utils';
-import ImgUploads from '@/components/Upload/ImgUploads';
-import { regExpConfig } from '../../../../utils/regular.config';
+import TagGroup from '@/components/TagSelect/TagGroup';
 import BraftEditor from '@/components/BraftEditor/BraftEditor';
 import styles from './ArticleLibrary.less';
 const { Search } = Input;
@@ -50,6 +49,8 @@ class ArticleLibraryEdit extends PureComponent {
       dictionaries: [],
       editorContent: null,
       disabled: [],
+      tags: [],
+      show: false,
     };
   }
 
@@ -66,6 +67,7 @@ class ArticleLibraryEdit extends PureComponent {
     }).then(res => {
       if (res && res.code === 200) {
         this.init(res.data);
+        this.setState({ show: true });
       }
     });
     dispatch({
@@ -80,7 +82,16 @@ class ArticleLibraryEdit extends PureComponent {
     });
   }
   render() {
-    const { status, coverImg, uploadVisible, dictionaries, editorContent, disabled } = this.state;
+    const {
+      status,
+      coverImg,
+      uploadVisible,
+      dictionaries,
+      editorContent,
+      disabled,
+      show,
+      tags,
+    } = this.state;
     const { getFieldDecorator } = this.props.form;
     const {
       ArticleLibrary: { ArticleDetail },
@@ -100,6 +111,7 @@ class ArticleLibraryEdit extends PureComponent {
         <PageHeaderWrapper>
           <Card bordered={false}>
             <Form {...formItemLayout} onSubmit={this.handleSubmit}>
+              <h4 className={styles.title}>基本信息</h4>
               <Form.Item label="文章标题">
                 {getFieldDecorator('articleTitle', {
                   initialValue: ArticleDetail.articleTitle || '',
@@ -214,19 +226,19 @@ class ArticleLibraryEdit extends PureComponent {
                   )}
                 </Form.Item>
               )}
-              <Form.Item label="关键词">
+              <h4 className={styles.title}>TDK设置（用于搜索引擎收录）</h4>
+              <Form.Item label={this.title('关键词')}>
                 {getFieldDecorator('articleTag', {
-                  initialValue: ArticleDetail.articleTag || '',
-                  rules: [
-                    {
-                      max: 10,
-                      message: '限制1-10字符长度',
-                    },
-                  ],
-                })(<Input style={{ width: 400 }} placeholder="请输入关键词" />)}
+                  initialValue: null,
+                  rules: [],
+                })(
+                  <div>
+                    {show && <TagGroup tags={tags} handleSave={tags => this.handleTagSave(tags)} />}
+                  </div>
+                )}
               </Form.Item>
 
-              <Form.Item label="文章说明">
+              <Form.Item label={this.title('文章说明')}>
                 {getFieldDecorator('articleDescription', {
                   initialValue: ArticleDetail.articleDescription || '',
                   rules: [
@@ -280,7 +292,7 @@ class ArticleLibraryEdit extends PureComponent {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (err) throw err;
       console.log(values);
-      const { editorContent } = this.state;
+      const { editorContent, tags } = this.state;
       if (editorContent === '<p></p>') {
         message.error('请输入文章正文');
         return false;
@@ -295,6 +307,8 @@ class ArticleLibraryEdit extends PureComponent {
           ...values,
           articleContent: editorContent,
           articleUid: ArticleDetail.articleUid,
+          headKeywords: tags,
+          articleTag: tags,
         },
       }).then(res => {
         if (res && res.code === 200) {
@@ -322,7 +336,28 @@ class ArticleLibraryEdit extends PureComponent {
     this.props.form.setFieldsValue({
       articleCoverImg: detail.articleCoverImg,
     });
-    this.setState({ editorContent: detail.articleContent, coverImg: detail.articleCoverImg });
+    this.setState({
+      editorContent: detail.articleContent,
+      coverImg: detail.articleCoverImg,
+      tags: detail.articleTag || [],
+    });
+  };
+
+  // 关键词
+  handleTagSave = tags => {
+    this.setState({ tags });
+  };
+  title = title => {
+    return (
+      <span>
+        {title}
+        {'  '}
+        <Tooltip placement="right" title="业主有可能通过您输入的关键词，搜索到您的网站哦！">
+          <Icon type="question-circle" />
+        </Tooltip>
+        {'  '}
+      </span>
+    );
   };
 }
 
