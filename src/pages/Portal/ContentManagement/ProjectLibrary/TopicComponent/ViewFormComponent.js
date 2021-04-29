@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-26 12:22:57
+ * @Last Modified time: 2021-04-27 19:10:26
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -198,12 +198,7 @@ class ViewFormComponent extends PureComponent {
                 <div className="clearfix">
                   <div className={styles.tleftv}>
                     <div className={styles.tits}>字段</div>
-                    <div className={styles.tit}>
-                      {item.paramName}{' '}
-                      <span className={styles.trig}>
-                        <Icon type="right" />
-                      </span>
-                    </div>
+                    <div className={styles.tit}>{item.paramName}</div>
                   </div>
                   <div className={styles.tleft}>
                     <div className={styles.tits}>字段别名</div>
@@ -309,7 +304,7 @@ class ViewFormComponent extends PureComponent {
               }}
             >
               <img
-                src="https://test.img.inbase.in-deco.com/crm_saas/dev/20210409/3b91901276824e0da6ff9fc49fe729fb/ic_delete.png"
+                src="https://img.inbase.in-deco.com/crm_saas/release/20210427/afc4f2302adc439192da2af49ff8a3b5/ic_delete.png"
                 width="20"
                 height="20"
               />
@@ -507,7 +502,7 @@ class ViewFormComponent extends PureComponent {
   deletePic() {
     const { index } = this.props;
     this.props.handleDeletePic(index);
-    this.props.handleWidth(-160);
+    this.props.handleWidth(-80);
   }
   changePrefix = value => {
     this.setState({
@@ -717,7 +712,7 @@ class ViewFormComponent extends PureComponent {
     this.setState({
       visible: false,
     });
-    this.props.handleWidth(-160);
+    this.props.handleWidth(-80);
   };
 }
 

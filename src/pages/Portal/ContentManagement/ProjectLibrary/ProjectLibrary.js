@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-24 15:37:23
+ * @Last Modified time: 2021-04-27 16:50:39
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -60,7 +60,7 @@ class ProjectLibrary extends PureComponent {
                       value: {},
                     },
                   });
-                  router.push('/portal/contentmanagement/ProjectLibrary/add');
+                  router.push('/portal/contentmanagement/ProjectLibrary/add?type=1');
                 }}
               >
                 创建专题

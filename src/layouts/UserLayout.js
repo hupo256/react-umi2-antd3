@@ -26,7 +26,14 @@ const links = [
 
 const copyright = (
   <Fragment>
-    Copyright <Icon type="copyright" /> 2021 成都我的工滴科技有限公司 出品
+    Copyright <Icon type="copyright" /> 2021 厦门奇心筑力科技有限公司 出品
+    <a
+      target="_blank"
+      href="https://beian.miit.gov.cn/#/Integrated/index"
+      style={{ color: 'rgba(0, 0, 0, 0.45)', marginLeft: 5 }}
+    >
+      闽ICP备2021005880号
+    </a>
   </Fragment>
 );
 @connect(({ login }) => ({
@@ -79,7 +86,7 @@ class UserLayout extends React.PureComponent {
               <img src={banner} />
             </div>
             <div className={styles.contentRight}>
-              <img  src={logo} className={styles.logo}/>
+              <img src={logo} className={styles.logo} />
               {children}
             </div>
           </div>
