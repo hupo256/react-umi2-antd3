@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-18 16:39:42 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-04-28 16:41:04
+ * @Last Modified time: 2021-04-29 09:46:52
  * 创建设计师
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -99,12 +99,12 @@ class DesignerLibraryEdit extends PureComponent {
         sm: { span: 16 },
       },
     };
-
     return (
       <div>
         <PageHeaderWrapper>
           <Card bordered={false}>
             <Form {...formItemLayout} onSubmit={this.handleSubmit}>
+              <h4 className={styles.title}>基本信息</h4>
               <Form.Item label="设计师姓名">
                 {getFieldDecorator('name', {
                   initialValue: DesignerDetail.name,
@@ -297,6 +297,7 @@ class DesignerLibraryEdit extends PureComponent {
               <h4 className={styles.title}>TDK设置（用于搜索引擎收录）</h4>
               <Form.Item label={this.title('设计师标题')}>
                 {getFieldDecorator('title', {
+                  initialValue: DesignerDetail.title,
                   rules: [
                     {
                       max: 10,
@@ -308,12 +309,18 @@ class DesignerLibraryEdit extends PureComponent {
               <Form.Item label={this.title('关键词')}>
                 {getFieldDecorator('keywords', {})(
                   <div>
-                    {show && <TagGroup tags={tags} handleSave={tags => this.handleTagSave(tags)} />}
+                    {show && (
+                      <TagGroup
+                        tags={Array.isArray(tags) ? tags : []}
+                        handleSave={tags => this.handleTagSave(tags)}
+                      />
+                    )}
                   </div>
                 )}
               </Form.Item>
               <Form.Item label={this.title('设计师说明')}>
                 {getFieldDecorator('description', {
+                  initialValue: DesignerDetail.description,
                   rules: [
                     {
                       max: 200,
@@ -386,7 +393,7 @@ class DesignerLibraryEdit extends PureComponent {
         payload: {
           ...values,
           uid: getQueryUrlVal('uid'),
-          keywords: tags,
+          keywords: JSON.stringify(tags || []),
         },
       }).then(res => {
         message.success('编辑成功');

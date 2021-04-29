@@ -4,16 +4,19 @@
 }
 .changePic{
   position: absolute;
-  left: 50%;
   top:50%;
+  left: 50%;
+  width: 88px;
+  height: 32px;
   background: rgba(0, 0, 0, 0.7);
-  border-radius: 5px;
-  line-height: 30px;
+  margin-left: -44px;
   color: #fff;
-  width: 80px;
-  margin-left: -40px;
-  margin-top: -15px;
   text-align: center;
+  border-radius: 2px;
+  line-height: 32px;
+  cursor: pointer;
+  font-size: 12px;
+  margin-top: -16px;
 }
 .closePic{
   position: absolute;
@@ -92,15 +95,19 @@
   z-index: 100;
   padding: 10px 0;
   cursor: pointer;
+  border:1px solid #fff;
+}
+.footerWrap:hover{
+  border:1px solid #fe6a30;
 }
 .phoneWrap{
   float: left;
   color: #222;
-  width: 170px;
+  width: 150px;
 }
 .btnWrap{
   float: left;
-  width: 190px;
+  width: 210px;
 }
 .btnChange{
   position:absolute;
@@ -150,21 +157,25 @@
 width: 100%;
 position: absolute;
 cursor: move;
-height: 360px;
+//height: 360px;
 z-index: 100;
 border:1px solid #fe6a30;
+}
+.ViewFormborder:hover{
+  border:1px solid #fe6a30;
 }
 .ViewFormborder{
   width: 100%;
   position: absolute;
   cursor: move;
-  height: 220px;
+  //height: 220px;
   z-index: 100;
+  border:1px solid rgba(255, 255, 255, 0);
 }
 .ViewForms{
   padding: 10px;
   // height: 220px;
-  height: 280px;
+  //height: 280px;
 }
 .ViewDiv{
   margin-bottom: 22px;
@@ -212,6 +223,9 @@ border:1px solid #fe6a30;
   font-size: 12px;
   position: relative;
 }
+.tit:hover{
+  cursor: not-allowed;
+}
 .trig{
   position: absolute;
   right: 8px;
@@ -224,7 +238,7 @@ border:1px solid #fe6a30;
   color: #666;
   line-height: 18px;
   padding: 4px 0;
-  margin-top:8px ;
+  margin-top:4px ;
 }
 .tleft{
   float: left;
@@ -280,24 +294,39 @@ border:1px solid #fe6a30;
 }
 .addSelect{
   position: absolute;
-  background: #4C4948;
+  background: #fff;
   left: 50%;
   top:110px;
-  color: #fff;
+  color: #222;
   margin-left: -50px;
   width: 100px;
   padding: 10px;
   text-align: center;
   line-height: 32px;
-  border-radius: 5px;
+  border-radius: 2px;
+  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.12);
 }
 .addSelect a{
-  color: #fff;
+  color: #222;
 }
 .addSelect a:hover{
   color: #fe6a30
 }
 .imgWrap{
+  border:1px solid #fe6a30;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  //background: #000;
+}
+.imgWrapt{
+  border:1px solid rgba(255, 255, 255, 0);
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  //background: #000;
+}
+.imgWrapt:hover{
   border:1px solid #fe6a30;
 }
 .FormInput{
@@ -339,9 +368,11 @@ border:1px solid #fe6a30;
 
 }
 .btnColor{
-  width: 40px;
+  width: 57px;
   height: 32px;
-  border-radius: 4px;
+  border-radius: 2px;
+  position: relative;
+  z-index: 100;
 }
 .inputWrap{
   float: left;
@@ -373,6 +404,9 @@ border:1px solid #fe6a30;
   float: left;
   margin-right: 10px;
   text-align: center;
+  font-size: 12px;
+  line-height: 17px;
+  color: #999;
 }
 .dragWraps{
   float: right;
@@ -381,7 +415,7 @@ border:1px solid #fe6a30;
   font-size: 16px;
 }
 .formWrapT{
-  padding: 10px 16px;
+  padding: 10px 16px 20px 16px;
   border-bottom: 1px solid #DEDEDE;
 }
 .footerBorder{
@@ -415,8 +449,12 @@ border:1px solid #fe6a30;
 .ViewFormborders{
   width: 100%;
   //position: absolute;
+  border:1px solid rgba(255, 255, 255, 0);
   z-index: 100;
   height: 100%;
+}
+.ViewFormborders:hover{
+  border:1px solid #fe6a30;
 }
 .vif{
   position: absolute;
@@ -489,7 +527,7 @@ border:1px solid #fe6a30;
   padding-left: 16px;
 }
 .btw{
-  padding: 37px 17px;
+  padding: 20px 17px;
 }
 :global {
   .ant-drawer-wrapper-body::-webkit-scrollbar {
@@ -499,4 +537,9 @@ border:1px solid #fe6a30;
 .dSpanv{
   color: #DEDEDE;
   margin-left: 5px;
+}
+.amgr{
+  position: fixed;
+  width: 100%;
+  height: 100%;
 }
