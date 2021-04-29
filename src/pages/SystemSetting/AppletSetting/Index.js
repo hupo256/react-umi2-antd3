@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-04-28 17:05:47 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-04-28 19:24:02
+ * @Last Modified time: 2021-04-29 10:38:25
  * 小程序设置
  */
 
@@ -11,7 +11,7 @@ import { connect } from 'dva';
 import router from 'umi/router';
 import { Card, Button, Icon, Menu, Table, Input, message, Modal } from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
-import { paginations, getUrl, successIcon, waringInfo } from '@/utils/utils';
+import { MyIcon } from '@/utils/utils';
 import styles from './index.less';
 import { getauth } from '@/utils/authority';
 const { SubMenu } = Menu;
@@ -92,7 +92,7 @@ class Index extends PureComponent {
       },
     ];
     return (
-      <div>
+      <div className={styles.appleCard}>
         <PageHeaderWrapper title={title}>
           <Card bordered={false}>
             <div className={styles.appletWrap}>
@@ -104,16 +104,26 @@ class Index extends PureComponent {
                   defaultOpenKeys={['sub1']}
                   mode="inline"
                 >
-                  <Menu.Item key="1">Option 1</Menu.Item>
-                  <Menu.Item key="2">Option 2</Menu.Item>
-                  <Menu.Item key="3">Option 3</Menu.Item>
+                  <Menu.Item key="1">
+                    <p
+                      style={{
+                        paddingLeft: 24,
+                      }}
+                    >
+                      关联页面设置
+                    </p>
+                  </Menu.Item>
                 </Menu>
               </div>
               <div className={styles.appleRight}>
-                <p style={{ fontWeight: 400, fontSize: 12, color: '#666' }}>
+                <p style={{ fontWeight: 400, fontSize: 13, color: '#666' }}>
+                  <MyIcon
+                    type="icon-tips"
+                    style={{ color: '#ccebfa', fontSize: 18, marginRight: 6 }}
+                  />
                   关联后，在小程序的对应模块内点击按钮，会跳转至关联的页面
                 </p>
-                <Table columns={columns} dataSource={data} />
+                <Table columns={columns} dataSource={data} pagination={false} />
               </div>
             </div>
           </Card>
