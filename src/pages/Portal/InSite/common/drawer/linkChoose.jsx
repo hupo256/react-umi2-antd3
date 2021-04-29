@@ -135,6 +135,7 @@ function LinkChoose(props) {
           })(
             <Select
               showSearch
+              disabled={!curKey}
               style={{ width: 200 }}
               filterOption={(val, opt) => opt?.props?.children.includes(val)}
               placeholder="可输入关键字进行检索"
