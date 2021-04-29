@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-04-29 17:47:52 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-04-29 17:57:28
+ * @Last Modified time: 2021-04-29 18:07:31
  * 公有文章库列表
  */
 import React, { Component } from 'react';
@@ -34,19 +34,21 @@ class ArticleListModel extends Component {
 
     const columns = [
       {
-        title: '姓名',
+        title: '文章标题',
         dataIndex: 'name',
         key: 'name',
       },
       {
-        title: '年龄',
+        title: '更新时间',
         dataIndex: 'age',
         key: 'age',
       },
       {
-        title: '住址',
+        title: '操作',
         dataIndex: 'address',
-        key: 'address',
+        render: (t, r) => {
+          return <span style={{ color: '#fe6a30', cursor: 'pointer' }}>预览</span>;
+        },
       },
     ];
     return (
