@@ -92,6 +92,11 @@ export default [
             PageHeaderName: '继续编辑',
             component: './Portal/InSite/edit',
           },
+          {
+            path: '/portal/insite/appletsetting',
+            name: 'applet',
+            component: './SystemSetting/AppletSetting/Index.js',
+          },
         ],
       },
 
