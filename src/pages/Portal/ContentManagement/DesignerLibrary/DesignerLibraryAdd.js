@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-18 16:39:42 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-04-28 15:40:29
+ * @Last Modified time: 2021-04-29 09:39:52
  * 创建设计师
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -335,7 +335,7 @@ class DesignerLibraryAdd extends PureComponent {
         type: 'DesignerLibrary/createDesignerModel',
         payload: {
           ...values,
-          keywords: tags,
+          keywords: JSON.stringify(tags || []),
         },
       }).then(res => {
         if (res && res.code === 200) {
