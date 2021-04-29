@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-27 18:46:16
+ * @Last Modified time: 2021-04-29 18:05:33
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -77,7 +77,7 @@ class CreateStepTwo extends PureComponent {
                   className={styles.abtng}
                   onClick={() => {
                     router.push(
-                      `/portal/contentmanagement/ProjectLibrary/ConfigurationTopic?uid=${specialUid}&copy=${
+                      `/portal/contentmanagement/ProjectLibrary/ConfigurationTopic?uid=${activeKey}&copy=${
                         item.specialUid
                       }`
                     );
@@ -231,7 +231,7 @@ class CreateStepTwo extends PureComponent {
                   }}
                   onClick={() => {
                     router.push(
-                      `/portal/contentmanagement/ProjectLibrary/ConfigurationTopic?uid=${specialUid}&copy=${dataPre &&
+                      `/portal/contentmanagement/ProjectLibrary/ConfigurationTopic?uid=${activeKey}&copy=${dataPre &&
                         dataPre.specialUid}`
                     );
                   }}
