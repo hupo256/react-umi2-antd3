@@ -2,11 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
-<<<<<<< HEAD
- * @Last Modified time: 2021-03-30 17:55:10
-=======
- * @Last Modified time: 2021-04-09 18:03:16
->>>>>>> 0e94d725a0c0d4eb489ade8a88e7c1ba1fbbe3f8
+ * @Last Modified time: 2021-04-27 19:45:15
  * 创建工地
  */
 import React, { PureComponent } from 'react';
@@ -31,8 +27,9 @@ class ImgComponent extends PureComponent {
           onClick={() => {
             this.changePic();
           }}
-          className={data.checked === 1 ? styles.imgWrap : ''}
+          //className={data.checked === 1 ? styles.imgWrap : ''}
         >
+          <div className={data.checked === 1 ? styles.imgWrap : styles.imgWrapt} />
           <img
             src={data.paramList[0].defaultValue}
             draggable="false"
@@ -51,7 +48,7 @@ class ImgComponent extends PureComponent {
               this.changePicStaus();
             }}
           >
-            <Icon type="sync" />
+            <Icon type="sync" style={{ marginRight: 8 }} />
             更换图片
           </span>
         ) : (
@@ -65,7 +62,7 @@ class ImgComponent extends PureComponent {
             }}
           >
             <img
-              src="https://test.img.inbase.in-deco.com/crm_saas/dev/20210409/3b91901276824e0da6ff9fc49fe729fb/ic_delete.png"
+              src="https://img.inbase.in-deco.com/crm_saas/release/20210427/afc4f2302adc439192da2af49ff8a3b5/ic_delete.png"
               width="20"
               height="20"
             />
@@ -97,10 +94,12 @@ class ImgComponent extends PureComponent {
   changePic() {
     const { index } = this.props;
     this.props.handleCheck(index);
+    this.props.handleWidth(-80);
   }
   deletePic() {
     const { index } = this.props;
     this.props.handleDeletePic(index);
+    this.props.handleWidth(-80);
   }
   changePicStaus() {
     this.setState({

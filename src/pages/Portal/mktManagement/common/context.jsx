@@ -17,6 +17,9 @@ export function Provider({ children }) {
   const [curActDate, setcurActDate] = useState(null); // 当前游戏数据
   const [curGoods, setcurGoods] = useState([]); // 当前奖项数据
 
+  const [curType, setcurType] = useState(1); // 当前游戏的类型
+  const [formDatas, setformDatas] = useState({}); // 缓存三个游戏的form数据
+
   const value = {
     activityCode,
     setactivityCode,
@@ -32,6 +35,10 @@ export function Provider({ children }) {
     setcurActDate,
     curGoods,
     setcurGoods,
+    curType,
+    setcurType,
+    formDatas,
+    setformDatas,
   };
 
   return <ctx.Provider value={value}>{children}</ctx.Provider>;

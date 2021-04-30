@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
-import { Table, Select, Input, Button, Col, Row, Radio    } from 'antd';
-import { siteListApi, designerListApi, caseListApi, articleListApi } from '@/services/channelManage'
+import { Table, Select, Input, Button, Col, Row, Radio, Tag    } from 'antd';
+import { siteListApi, designerListApi, caseListApi, articleListApi, articleDicApi } from '@/services/channelManage'
 import _ from 'lodash'
 
 const { Option } = Select;
@@ -15,7 +15,8 @@ const { Search } = Input;
 export default class SelectSite extends Component {
     constructor(props) {
         super(props)
-        this.state = {          
+        this.state = {  
+            articleDicOpts: [],
             data_1: {
                 list: [],
                 searchText: undefined,
@@ -37,26 +38,57 @@ export default class SelectSite extends Component {
                 pageNum: 1,
                 pageSize: 10,
             },                           //文章数据
-            searchText: ''
+            searchText: '',
+            articleType: '',
+            pageNum: 1,
+            pageSize: 10,
+            recordTotal: 0
         }
     }
     async componentDidMount () {
-        this.initData()
+        this.getData();
+        this.getArticleDic();
     }
 
     async componentDidUpdate (prevProps) {
         if (prevProps.currentDetailType !== this.props.currentDetailType) {
-            this.initData()
+            this.getData();
+            this.getArticleDic();
         }
+    }
+
+    // 查询文章栏目选项
+    getArticleDic = async () => {
+        const { currentDetailType } = this.props;
+        if (currentDetailType === 4) {
+            const res = await articleDicApi({dicModuleCodes: 'DM006'});
+            if (res?.data?.DM006) {
+                this.setState({
+                    articleDicOpts: res.data.DM006
+                })
+            }
+        }
+        
     }
     
 
-    initData = () => {
+    getData = (params = {}) => {
         const { currentDetailType } = this.props;
-        currentDetailType === 1 && this.getSiteList();
-        currentDetailType === 2 && this.getdesignerList();
-        currentDetailType === 3 && this.getCaseList();
-        currentDetailType === 4 && this.getArticleList();
+        currentDetailType === 1 && this.getSiteList(params);
+        currentDetailType === 2 && this.getdesignerList(params);
+        currentDetailType === 3 && this.getCaseList(params);
+        currentDetailType === 4 && this.getArticleList(params);
+    }
+
+    resetStatus = () => {
+        const { dispatch } = this.props;
+        this.setState({
+            searchText: '',
+            pageNum: 1,
+            pageSize: 10,
+            recordTotal: 0,
+            articleType: 'a'
+        })
     }
 
     /**
@@ -74,7 +106,8 @@ export default class SelectSite extends Component {
         this.setState( prevState => ({
             data_1: {
                 ...prevState.data_1,
-                list: res?.data?.list
+                list: res?.data?.list,
+                recordTotal: res?.data?.recordTotal
             }
         }))
     }
@@ -90,7 +123,8 @@ export default class SelectSite extends Component {
         this.setState(prevState => ({
             data_2: {
                 ...prevState.data_2,
-                list: res?.data?.list
+                list: res?.data?.list,
+                recordTotal: res?.data?.recordTotal
             }
         }))
     }
@@ -106,7 +140,8 @@ export default class SelectSite extends Component {
         this.setState(prevState => ({
             data_3: {
                 ...prevState.data_3,
-                list: res?.data?.list
+                list: res?.data?.list,
+                recordTotal: res?.data?.recordTotal
             }
         }))
     }
@@ -124,9 +159,9 @@ export default class SelectSite extends Component {
         this.setState(prevState => ({
             data_4: {
                 ...prevState.data_4,
-                list: res?.data?.article
-            }
-            
+                list: res?.data?.article,
+                recordTotal: res?.data?.recordTotal
+            }       
         }))
     }
     
@@ -137,10 +172,8 @@ export default class SelectSite extends Component {
      */    
      handleChange = _.debounce( value => {
         const { currentDetailType } = this.props;
-        currentDetailType === 1 && this.getSiteList({searchText: value})
-        currentDetailType === 2 && this.getdesignerList({searchText: value})
-        currentDetailType === 3 && this.getCaseList({searchText: value})
-        currentDetailType === 4 && this.getArticleList({searchText: value})
+        const {  pageNum, articleType } = this.state
+        this.getData({searchText: value, pageNum, articleDicCode: articleType })
     }, 300)
      
 
@@ -154,10 +187,7 @@ export default class SelectSite extends Component {
                 selectDetailData: []
             }
         })
-        this.setState({
-            searchText: ''
-        })
-
+        this.resetStatus();
     }
 
     // 确定选择
@@ -167,12 +197,9 @@ export default class SelectSite extends Component {
             type: 'channelManage/save',
             payload: {
                 currentDetailType: 0,
-
             }
         })
-        this.setState({
-            searchText: ''
-        })
+        this.resetStatus();
     }
 
     selectChange = (key, row) => {
@@ -186,14 +213,43 @@ export default class SelectSite extends Component {
     } 
 
     // 文章类型选择
-    articleTypeChange = (e) => {
-        console.log({e: e.target.value})
+    articleTypeChange = e => {
+        const { pageNum, searchText} = this.state
+        this.setState({
+            articleType: e.target.value
+        }, () => {
+            this.getData({pageNum, searchText, articleType: e.target.value})
+        });
+        
     } 
+
+    // 页数变化
+    pageChange = (pageNum, pageSize) => {
+
+        const { searchText, articleType } = this.state
+        this.getData({pageNum, searchText, articleType })
+        this.setState({
+            pageNum: pageNum,
+            pageSize: pageSize
+        })
+    }
+
+    // 选择行
+    rowClickHandle = (e, r) => {
+        const { dispatch, currentDetailType, selectDetailData  } = this.props;
+        const idStringArr = ['', 'gongdiUid', 'uid', 'uid', 'articleUid'];
+        dispatch({
+            type: 'channelManage/save',
+            payload: {
+                selectDetailData: [r[idStringArr[currentDetailType]]]
+            }
+        })
+    }
     
 
     render() {
         const { currentDetailType, selectDetailData  } = this.props;
-        const {  searchText  } = this.state;
+        const {  searchText, recordTotal, pageNum, pageSize, articleType, articleDicOpts  } = this.state;
 
         const ColumnsObj = {
             // 工地详情页表头
@@ -202,12 +258,25 @@ export default class SelectSite extends Component {
                     title: '工地',
                     key: 'gongdiTitle',
                     dataIndex: 'gongdiTitle',
+                    render: text => <div style={{width: 180, display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 2}}>{text}</div>
                 },
                 {
-                    title: '阶段',
+                    title: '工地信息',
                     key: 'gongdiDescription',
                     dataIndex: 'gongdiDescription',
-                    render: text => <div style={{width: 180, display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 2}}>{text}</div>
+                    width: 200,
+                    render: (text, r) => <div>
+                        <div style={{width: 180, display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 2}}>{text}</div>
+                        {
+                            <div>
+                                {r.houseType.bedroom && <Tag color="blue" style={{marginTop: 8}}>{`${r.houseType.bedroom}居室 `}</Tag>}
+                                <Tag color="green"  style={{marginTop: 8}}>{r.buildingArea}</Tag>
+                                <Tag color="volcano"  style={{marginTop: 8}}>{r.renovationCosts}万</Tag>
+                                <Tag color="magenta"  style={{marginTop: 8}}>{r.houseStyleName}</Tag>
+                            </div>
+                            
+                        }
+                    </div>
                 },
                 {
                     title: '状态',
@@ -227,7 +296,11 @@ export default class SelectSite extends Component {
                     title: '设计师',
                     key: 'name',
                     dataIndex: 'name',
-                    render: text => text
+                    // align: 'left',
+                    render: (text, record) => <div style={{display: 'flex', alignItems: 'center'}}>
+                        <img src={record?.headPicUrl} alt="" srcset="" style={{ width: 30, height: 30, borderRadius: '100%'}}/>
+                        <span style={{marginLeft: 8}}>{text}</span>
+                    </div>
                 },
                 {
                     title: '职级',
@@ -238,12 +311,16 @@ export default class SelectSite extends Component {
                     title: '擅长风格',
                     key: 'styles',
                     dataIndex: 'styles',
-                    render: text => text.toString()
+                    render: text => {
+                        const str = text.map(item => item.name)
+                        return str.join('，')
+                    }
                 },
                 {
                     title: '从业年限',
                     key: 'workingTime',
-                    dataIndex: 'workingTime'
+                    dataIndex: 'workingTime',
+                    render: text => text + '年'
                 },
                 {
                     title: '案例数',
@@ -261,12 +338,24 @@ export default class SelectSite extends Component {
             columns_3: [
                 {
                     title: '案例',
-                    key: 'title',
-                    dataIndex: 'title'
+                    key: 'titlestr',
+                    dataIndex: 'title',
+                    render: (text, r) => <div>
+                        <div style={{width: 180, display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 2}}>{text}</div>
+                        {
+                            <div>
+                                {+r.bedroom != 0 && <Tag color="blue" style={{marginTop: 8}}>{`${r.bedroom}居室 `}</Tag>}
+                                <Tag color="green"  style={{marginTop: 8}}>{r.acreage}m²</Tag>
+                                <Tag color="volcano"  style={{marginTop: 8}}>{r.decorationCost}万</Tag>
+                                <Tag color="magenta"  style={{marginTop: 8}}>{r.styleDic.name}</Tag>
+                            </div>
+                            
+                        }
+                    </div>
                 },
                 {
                     title: '案例信息',
-                    key: 'title',
+                    key: 'titleInfo',
                     dataIndex: 'title'
                 },
                 {
@@ -307,12 +396,12 @@ export default class SelectSite extends Component {
                     {
                         // 文章类型选择器
                         currentDetailType === 4 && 
-                        <Radio.Group onChange={this.articleTypeChange} defaultValue="a">
-                            <Radio.Button value="a">装修前</Radio.Button>
-                            <Radio.Button value="b">施工中</Radio.Button>
-                            <Radio.Button value="c">装修后</Radio.Button>
-                            <Radio.Button value="d">媒体报道</Radio.Button>
-                            <Radio.Button value="e">企业动态</Radio.Button>
+                        <Radio.Group onChange={this.articleTypeChange} value={articleType}>
+                             <Radio.Button value="">全部</Radio.Button>
+                            {
+                                articleDicOpts.map(item => <Radio.Button key={item.uid} value={item.uid}>{item.name}</Radio.Button>)
+                            }
+
                         </Radio.Group>
                     }
                     <Search
@@ -320,7 +409,6 @@ export default class SelectSite extends Component {
                         placeholder='可通过工地标题进行搜索'
                         style={{width: 284}}
                         onChange={  e => { const value = e.target.value; this.setState({searchText: value}); this.handleChange(value) }}
-                        // onSearch={e => { console.log(e)}}
                     />
                 </div>
                
@@ -336,8 +424,20 @@ export default class SelectSite extends Component {
                         onChange: this.selectChange,
                         selectedRowKeys: selectDetailData
                     }}
+                    onRow={record => {
+                        return {
+                            onClick: e =>  this.rowClickHandle(e, record)
+                        }
+                        
+                    }}
                     style={{
                         paddingTop: 16
+                    }}
+                    pagination={{
+                        current: pageNum,
+                        pageSize,
+                        total: recordTotal,
+                        onChange: this.pageChange
                     }}
                 />
                 <Row style={{marginTop: 32}}>

@@ -33,20 +33,33 @@ function AddNewGoods(props) {
     form: { validateFields, getFieldDecorator, setFieldsValue, getFieldsValue },
     isEdit,
   } = props;
-  const { setstepNum, setnewAct, newAct, stepNum, curActDate, setactivityTitle } = useContext(ctx);
+  const {
+    setstepNum,
+    setnewAct,
+    newAct,
+    stepNum,
+    curActDate,
+    setactivityTitle,
+    curType,
+    setcurType,
+    formDatas,
+    setformDatas,
+  } = useContext(ctx);
   const [typeOpts, settypeOpts] = useState([]);
-  const [curType, setcurType] = useState(1);
-  const [formDatas, setformDatas] = useState({});
-  const [initSubTit, setinitSubTit] = useState('');
   const [btnLoading, setbtnLoading] = useState(false);
 
   useEffect(
     () => {
-      if (newAct) {
-        const { activityRule, actvityConvertRule } = newAct;
-        newAct.activityRule = htmlToStr(activityRule);
-        newAct.actvityConvertRule = htmlToStr(actvityConvertRule);
-        setFieldsValue(newAct);
+      console.log(curType);
+      console.log(formDatas);
+      console.log(formDatas[curType]);
+      if (formDatas[curType]) {
+        const curFormDt = formDatas[curType];
+        console.log(curFormDt);
+        const { activityRule = '', actvityConvertRule = '' } = curFormDt;
+        curFormDt.activityRule = htmlToStr(activityRule);
+        curFormDt.actvityConvertRule = htmlToStr(actvityConvertRule);
+        setFieldsValue(curFormDt);
       }
     },
     [stepNum]
@@ -64,16 +77,6 @@ function AddNewGoods(props) {
       }
     },
     [curActDate]
-  );
-
-  useEffect(
-    () => {
-      let tit = '幸运大转盘';
-      curType === 2 && (tit = '幸运砸金蛋');
-      curType === 3 && (tit = '幸运跑马灯');
-      setinitSubTit(tit);
-    },
-    [curType]
   );
 
   function fillForm() {
@@ -108,26 +111,6 @@ function AddNewGoods(props) {
       result.push(i);
     }
     return result;
-  }
-
-  function disabledDate(current) {
-    // Can not select days before today and today
-    return current && current < moment().endOf('day');
-  }
-
-  function disabledRangeTime(_, type) {
-    if (type === 'start') {
-      return {
-        disabledHours: () => range(0, 60).splice(4, 20),
-        disabledMinutes: () => range(30, 60),
-        disabledSeconds: () => [55, 56],
-      };
-    }
-    return {
-      disabledHours: () => range(0, 60).splice(20, 4),
-      disabledMinutes: () => range(0, 31),
-      disabledSeconds: () => [55, 56],
-    };
   }
 
   function htmlToStr(str = '') {
@@ -165,6 +148,7 @@ function AddNewGoods(props) {
       setnewAct(newAct); // 刷新一下以便下步使用
       setactivityTitle(activityTitle);
       if (!isEdit) {
+        setformDatas({ ...formDatas, [curType]: getFieldsValue() }); //切换前先存一下
         setstepNum(1);
       } else {
         setbtnLoading(true);
@@ -229,7 +213,7 @@ function AddNewGoods(props) {
         </Item>
         <Item label="游戏标题">
           {getFieldDecorator('activityTitle', {
-            initialValue: initSubTit,
+            initialValue: '幸运大转盘',
             rules: [
               { required: true, message: '请填写游戏标题' },
               { max: 8, message: '最多输入8个字符' },

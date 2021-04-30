@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-26 11:30:32
+ * @Last Modified time: 2021-04-27 16:37:39
  * 专题库
  */
 import React, { PureComponent } from 'react';
@@ -248,7 +248,7 @@ class FormConfiguration extends PureComponent {
                     this.changePicStaus();
                   }}
                 >
-                  <Icon type="sync" /> 更换图片
+                  <Icon type="sync" style={{ marginRight: 8 }} /> 更换图片
                 </span>
               ) : (
                 ''
