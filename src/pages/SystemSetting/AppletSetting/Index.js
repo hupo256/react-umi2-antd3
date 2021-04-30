@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-04-28 17:05:47 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-04-30 11:43:57
+ * @Last Modified time: 2021-04-30 17:18:22
  * 小程序设置
  */
 
@@ -93,6 +93,7 @@ class Index extends PureComponent {
         tags: '立即咨询',
       },
     ];
+    const { visible } = this.state;
     return (
       <div className={styles.appleCard}>
         <PageHeaderWrapper title={title}>
@@ -130,7 +131,7 @@ class Index extends PureComponent {
             </div>
           </Card>
         </PageHeaderWrapper>
-        <LinkPage visible={this.state.visible} handleCancel={() => this.handleCancel()} />
+        {visible && <LinkPage visible={visible} handleCancel={() => this.handleCancel()} />}
       </div>
     );
   }
