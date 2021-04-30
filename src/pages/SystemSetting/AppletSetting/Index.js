@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-04-28 17:05:47 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-04-29 10:38:25
+ * @Last Modified time: 2021-04-30 11:43:57
  * 小程序设置
  */
 
@@ -14,13 +14,16 @@ import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { MyIcon } from '@/utils/utils';
 import styles from './index.less';
 import { getauth } from '@/utils/authority';
+import LinkPage from './LinkPage';
 const { SubMenu } = Menu;
 
 @connect(({}) => ({}))
 class Index extends PureComponent {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      visible: true,
+    };
   }
 
   componentDidMount() {}
@@ -55,12 +58,11 @@ class Index extends PureComponent {
         key: 'action',
         render: (text, record) => (
           <span>
-            <a>编辑</a>
+            <a onClick={() => this.setState({ visible: true })}>编辑</a>
           </span>
         ),
       },
     ];
-
     const data = [
       {
         key: '1',
@@ -128,9 +130,18 @@ class Index extends PureComponent {
             </div>
           </Card>
         </PageHeaderWrapper>
+        <LinkPage visible={this.state.visible} handleCancel={() => this.handleCancel()} />
       </div>
     );
   }
+  handleOk = () => {
+    console.log('====================================');
+    console.log(保存);
+    console.log('====================================');
+  };
+  handleCancel = () => {
+    this.setState({ visible: false });
+  };
 }
 
 export default Index;
