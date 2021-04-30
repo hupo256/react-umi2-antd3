@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-04-30 13:39:59 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-04-30 18:17:02
+ * @Last Modified time: 2021-04-30 18:34:03
  * 关联页面
  */
 import React, { Component } from 'react';
@@ -40,9 +40,6 @@ class Select extends Component {
       Loading,
       AppletSetting: { formList },
     } = this.props;
-    console.log('====================================');
-    console.log(formList);
-    console.log('====================================');
     const dataSource = [
       { name: '立即预约', age: '2021-01-30' },
       { name: '立即预约', age: '2021-01-30' },

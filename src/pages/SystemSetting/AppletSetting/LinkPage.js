@@ -2,11 +2,11 @@
  * @Author: zqm 
  * @Date: 2021-04-30 11:36:34 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-04-30 18:22:46
+ * @Last Modified time: 2021-04-30 18:39:42
  * 关联设置
  */
 import React, { Component } from 'react';
-import { Modal, Input, Icon } from 'antd';
+import { Modal, Input, Icon, message } from 'antd';
 import Select from './Select';
 import styles from './index.less';
 
@@ -16,6 +16,7 @@ class LinkPage extends Component {
     this.state = {
       btnName: null,
       isEdit: false,
+      saveValue: null,
     };
   }
 
@@ -31,7 +32,7 @@ class LinkPage extends Component {
         onCancel={() => this.props.handleCancel()}
         maskClosable={false}
       >
-        <div style={{ minHeight: 350 }}>
+        <div style={{ minHeight: 86 }}>
           <div className={styles.linkpage}>
             <span className="beforeStar">关联页面：</span>
             <Select handleSelect={value => this.handleSelect(value)} />
@@ -51,10 +52,8 @@ class LinkPage extends Component {
     );
   }
   handleSelect = value => {
-    console.log('====================================');
-    console.log(value);
-    console.log('====================================');
     const { btnName, isEdit } = this.state;
+    this.setState({ saveValue: value });
     if (value.type == 1) {
       this.setState({ btnName: '立即咨询' });
     } else if (value.type == 3 && !isEdit) {
@@ -63,6 +62,19 @@ class LinkPage extends Component {
       if (!btnName) {
         this.setState({ btnName: value.record.formTitle });
       }
+    }
+  };
+  handleOk = () => {
+    const { saveValue } = this.state;
+    console.log('====================================');
+    console.log(saveValue);
+    console.log('====================================');
+    if (!saveValue) {
+      message.error('请选择关联页面');
+      return false;
+    } else if (saveValue.type == 3) {
+      message.error('请选择关联页面');
+      return false;
     }
   };
 }
