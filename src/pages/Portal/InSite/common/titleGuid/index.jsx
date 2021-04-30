@@ -45,7 +45,11 @@ export default function TitleGuid(props) {
       title: '确认要放弃更改吗？',
       content: '放弃更改后，将不保留当前编辑的内容',
       onOk() {
-        router.go(-1);
+        console.log('ok');
+        setcurFlag(''); // 置空
+        setTimeout(() => {
+          router.go(-1);
+        });
       },
       onCancel() {
         console.log('onCancel');

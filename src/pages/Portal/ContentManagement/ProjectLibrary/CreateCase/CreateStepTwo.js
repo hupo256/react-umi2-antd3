@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-24 17:38:06
+ * @Last Modified time: 2021-04-27 18:46:16
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -37,6 +37,7 @@ class CreateStepTwo extends PureComponent {
       ProjectLibrary: { specialUid, siteLists },
       loading,
     } = this.props;
+    const activeKey = getQueryUrlVal('uid') || specialUid;
     const { visible, visibles, dataPre } = this.state;
     let arr =
       siteLists &&
@@ -130,7 +131,7 @@ class CreateStepTwo extends PureComponent {
                   }}
                   onClick={() => {
                     router.push(
-                      `/portal/contentmanagement/ProjectLibrary/ConfigurationTopic?&uid=${specialUid}`
+                      `/portal/contentmanagement/ProjectLibrary/ConfigurationTopic?&uid=${activeKey}`
                     );
                   }}
                 >
@@ -201,7 +202,7 @@ class CreateStepTwo extends PureComponent {
             visible={visibles}
             maskClosable={false}
             footer={null}
-            width={720}
+            width={800}
             onCancel={() => {
               this.handleModelCancels();
             }}
@@ -221,7 +222,13 @@ class CreateStepTwo extends PureComponent {
                 <p>请使用微信扫一扫查看</p>
                 <Button
                   type="primary"
-                  style={{ width: 150 }}
+                  style={{
+                    width: 150,
+                    height: 48,
+                    lineHeight: '48px',
+                    marginTop: 18,
+                    fontSize: 18,
+                  }}
                   onClick={() => {
                     router.push(
                       `/portal/contentmanagement/ProjectLibrary/ConfigurationTopic?uid=${specialUid}&copy=${dataPre &&

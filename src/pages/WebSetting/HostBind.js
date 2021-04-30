@@ -10,6 +10,7 @@ class HostBind extends Component {
     this.state = {
       tabsValue: 2,
       hostSuffix: '',
+      randomDomain: '',
       custonHostValue: '',
       defaultHostValue: '',
     };
@@ -19,25 +20,36 @@ class HostBind extends Component {
     //ceshi
     const { dispatch } = this.props;
     let customDomain = '',
-      defaultDomain = '';
+      defaultDomain = '',
+      randomDomains = '';
     dispatch({ type: 'WebSettingStroe/hostSettingModel' }).then(res => {
       if (res && res.code === 200) {
-        if (res.data.domain == '') {
-          defaultDomain = Math.random()
-            .toString(36)
-            .slice(-6);
-          customDomain = defaultDomain + res.data.suffix;
-        } else {
-          const resIndex = res.data.domain.indexOf('.');
-          if(resIndex != -1){
-            defaultDomain = res.data.domain.slice(0, resIndex);
-          }else{
-            defaultDomain = res.data.domain
+        const { isBind, type, domain, randomDomain, suffix } = res.data;
+        if (isBind && type == 0) {
+          const resIndex = domain.indexOf(suffix);
+          if (resIndex == -1) {
+            defaultDomain = domain;
+          } else {
+            defaultDomain = domain.slice(0, resIndex);
           }
-          customDomain = res.data.domain;
+          customDomain = domain;
+          const resIndexs = randomDomain.indexOf('.');
+          randomDomains = randomDomain.slice(0, resIndexs);
+        } else if (isBind && type == 1) {
+          const resIndex = randomDomain.indexOf('.');
+          defaultDomain = randomDomain.slice(0, resIndex);
+          customDomain = domain;
+          randomDomains =defaultDomain;
+        } else {
+          const resIndex = randomDomain.indexOf('.');
+          defaultDomain = randomDomain.slice(0, resIndex);
+          customDomain = randomDomain;
+          randomDomains =defaultDomain;
         }
+        console.log(customDomain, defaultDomain)
         this.setState({
           tabsValue: res.data.type,
+          randomDomain: randomDomains,
           hostSuffix: res.data.suffix,
           custonHostValue: customDomain,
           defaultHostValue: defaultDomain,
@@ -88,9 +100,15 @@ class HostBind extends Component {
         type: 1,
       };
     }
-    await dispatch({ type: 'WebSettingStroe/hostSettingBind', payload: payload }).then(res=>{
-      if(res && res.code == 200){
-        message.success('保存成功');
+    await dispatch({ type: 'WebSettingStroe/hostSettingBind', payload: payload }).then(res => {
+      if (res && res.code == 200) {
+        console.log(payload.type);
+        message.success('绑定成功');
+        if(payload.type == 1){
+          this.setState({
+            defaultHostValue: this.state.randomDomain,
+          })
+        }
       }
     });
   }

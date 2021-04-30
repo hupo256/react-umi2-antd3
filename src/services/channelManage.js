@@ -1,7 +1,7 @@
 /*
  * @Author: ql
  * @Date: 2021-04-22 10:55:31
- * @LastEditTime: 2021-04-25 19:06:24
+ * @LastEditTime: 2021-04-27 18:07:29
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-wechat-saas\src\services\channelManage.js
@@ -70,6 +70,12 @@ export const caseListApi = body => request(`${baseurl}/api/v1/wechat/case/queryC
 
 // 文章列表接口
 export const articleListApi = body => request(`${baseurl}/api/v1/wechat/article/pageList`, {
+    method: 'POST',
+    body
+})
+
+// 文章栏目列表信息接口
+export const articleDicApi = body => request(`${baseurl}/api/v1/wechat/dic/queryDicForForm`, {
     method: 'POST',
     body
 })
