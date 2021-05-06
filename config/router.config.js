@@ -178,6 +178,16 @@ export default [
             component: './Portal/ContentManagement/ArticleLibrary/ArticleLibrary',
           },
           {
+            path: '/portal/contentmanagement/articlelibrary/add',
+            PageHeaderName: '创建文章',
+            component: './Portal/ContentManagement/ArticleLibrary/ArticleLibraryAdd',
+          },
+          {
+            path: '/portal/contentmanagement/articlelibrary/edit',
+            PageHeaderName: '编辑文章',
+            component: './Portal/ContentManagement/ArticleLibrary/ArticleLibraryEdit',
+          },
+          {
             path: '/portal/contentmanagement/projectlibrary',
             name: 'projectlibrary',
             code: 'MU9000000100010004',
