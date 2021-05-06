@@ -92,6 +92,11 @@ export default [
             PageHeaderName: '继续编辑',
             component: './Portal/InSite/edit',
           },
+          {
+            path: '/portal/insite/appletsetting',
+            name: 'applet',
+            component: './SystemSetting/AppletSetting/Index.js',
+          },
         ],
       },
 
@@ -174,7 +179,7 @@ export default [
           },
           {
             path: '/portal/contentmanagement/articlelibrary/add',
-            PageHeaderName: '新建文章',
+            PageHeaderName: '创建文章',
             component: './Portal/ContentManagement/ArticleLibrary/ArticleLibraryAdd',
           },
           {

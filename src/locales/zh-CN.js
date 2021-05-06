@@ -29,6 +29,7 @@ export default {
 
   'menu.insite': '站点',
   'menu.insite.decorate': '首页装修',
+  'menu.insite.applet': '小程序设置',
 
   'menu.activity': '活动',
   'menu.activity.mktGame': '营销小游戏',
