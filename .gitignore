@@ -36,3 +36,5 @@ functions/mock
 
 # screenshot
 screenshot
+/node_modules/
+/node_cache/
