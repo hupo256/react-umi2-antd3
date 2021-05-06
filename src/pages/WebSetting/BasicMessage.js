@@ -22,7 +22,7 @@ class BasicMessage extends Component {
     // console.log('basic', this.props);
     const { dispatch } = this.props;
     const res = await dispatch({ type: 'WebSettingStroe/basicMessageModel' }).then(res => {
-      if (res.code == 200) {
+      if (res && res.code == 200) {
         this.setState({
           basicIcon: res.data.icon,
           basicLogo: res.data.logo,
@@ -34,6 +34,12 @@ class BasicMessage extends Component {
     });
     // console.log('basic', JSON.parse(res.data.keywords));
   }
+  componentDidMount(){
+    const keyWordsInput = document.getElementsByClassName('ant-select-search__field')
+    console.log('keyWordsInput',keyWordsInput[0].style)
+    keyWordsInput[0].maxLength = 10;
+
+  }
   onBasicForm = e => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
@@ -44,11 +50,14 @@ class BasicMessage extends Component {
       const { dispatch } = this.props;
       let newBaiscIcon = '',
         newBasicLogo = '';
-      console.log('请正确填写网站标题', values);
+      console.log('请正确填写网站标题', values.basicKeyWords);
       if (values.basicTitle.length < 0 || values.basicTitle.length > 30) {
         message.error('请正确填写网站标题');
         return false;
-      } else {
+      } else if (values.basicKeyWords.length >10){
+        message.error('关键词不能超过10个');
+        return false;
+      }else {
         if (values.basicIcon && basicIcon) {
           newBaiscIcon = values.basicIcon;
         } else if (basicIcon && !values.basicIco) {
@@ -87,9 +96,9 @@ class BasicMessage extends Component {
       }
     });
   };
-  changeKeyWords(value){
-    console.log('zhixing', value)
-  }
+  // changeKeyWords(value){
+  //   console.log('zhixing', value)
+  // }
   render() {
     const {
       form: { getFieldDecorator },
@@ -165,7 +174,6 @@ class BasicMessage extends Component {
                 mode="tags"
                 style={{ width: '400px' }}
                 placeholder="请输入网站关键词"
-                onChange={(value)=>this.changeKeyWords(value)}
               />
             )}
           </FormItem>

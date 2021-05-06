@@ -101,7 +101,7 @@ export default [
             path: '/portal/insite/websetting',
             name: 'websetting',
             // code: 'MU9000000100010008',
-            component: './Portal/ContentManagement/WebSetting/index',
+            component: './WebSetting/index',
           },
         ],
       },
