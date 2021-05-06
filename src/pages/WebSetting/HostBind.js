@@ -36,10 +36,15 @@ class HostBind extends Component {
           const resIndexs = randomDomain.indexOf('.');
           randomDomains = randomDomain.slice(0, resIndexs);
         } else if (isBind && type == 1) {
-          const resIndex = randomDomain.indexOf('.');
-          defaultDomain = randomDomain.slice(0, resIndex);
+          const resIndex = domain.indexOf(suffix);
+          const resIndexS = randomDomain.indexOf('.');
+          if (resIndex == -1) {
+            defaultDomain = domain;
+          } else {
+            defaultDomain = domain.slice(0, resIndex);
+          }
           customDomain = domain;
-          randomDomains =defaultDomain;
+          randomDomains =randomDomain.slice(0, resIndexS);;
         } else {
           const resIndex = randomDomain.indexOf('.');
           defaultDomain = randomDomain.slice(0, resIndex);
@@ -77,7 +82,7 @@ class HostBind extends Component {
   }
   async onHostBind() {
     const { dispatch } = this.props;
-    const { tabsValue, hostSuffix, custonHostValue, defaultHostValue } = this.state;
+    const { tabsValue, hostSuffix, custonHostValue, defaultHostValue, randomDomain } = this.state;
     const ifCustomHost = regExpConfig.customHostType.test(custonHostValue);
     const ifDefaultHost = regExpConfig.defalutHostType.test(defaultHostValue);
     let payload;
@@ -106,7 +111,11 @@ class HostBind extends Component {
         message.success('绑定成功');
         if(payload.type == 1){
           this.setState({
-            defaultHostValue: this.state.randomDomain,
+            defaultHostValue: randomDomain,
+          })
+        }else{
+          this.setState({
+            custonHostValue: defaultHostValue + hostSuffix,
           })
         }
       }
