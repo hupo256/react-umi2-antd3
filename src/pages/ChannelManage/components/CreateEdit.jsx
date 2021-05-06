@@ -219,7 +219,7 @@ export default class CreateEdit extends Component {
                     <Form.Item label="频道说明">
                         {getFieldDecorator('description', {
                             rules: [
-                                { max: 200, message: '限制0-30字符长度' }
+                                { max: 200, message: '限制0-200字符长度' }
                             ],
                         })(<TextArea placeholder='请输入频道说明' autoSize={{minRows: 4}} />)}
                     </Form.Item>
