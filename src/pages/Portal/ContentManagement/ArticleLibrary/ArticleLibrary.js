@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:50:21 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-04-29 17:55:02
+ * @Last Modified time: 2021-05-06 18:15:59
  * 文章库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -11,7 +11,7 @@ import router from 'umi/router';
 import { Card, Button, Icon, Divider, Table, Input, message, Modal, Tabs } from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import ArticleListModel from './ArticleListModel';
-import { paginations, fixedTitle, successIcon, waringInfo } from '@/utils/utils';
+import { paginations, fixedTitle, successIcon, waringInfo, MyIcon } from '@/utils/utils';
 import styles from './ArticleLibrary.less';
 const { confirm } = Modal;
 const { Search } = Input;
@@ -219,7 +219,12 @@ class ArticleLibrary extends PureComponent {
             <div onClick={() => this.setState({ ArticleListVisible: true })}>
               <div className={styles.createImg} />
               <p>公有文章库</p>
-              <p>海量文章库，选完直接用</p>
+              <p>
+                海量文章库，选完直接用
+                {'  '}
+                <MyIcon type="icon-jiayouaoligei" />
+              </p>
+              <span className={styles.recommend}>推荐</span>
             </div>
             <div
               onClick={() => {
@@ -228,8 +233,12 @@ class ArticleLibrary extends PureComponent {
               }}
             >
               <div className={styles.createImg} />
-              <p>公有文章库</p>
-              <p>海量文章库，选完直接用</p>
+              <p>去原创文章</p>
+              <p>
+                喜欢自己原创，满满干活
+                {'  '}
+                <MyIcon type="icon-xiaolian" style={{ color: '#f4b058' }} />
+              </p>
             </div>
           </div>
         </Modal>
