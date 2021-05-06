@@ -1,7 +1,7 @@
 /*
  * @Author: ql
  * @Date: 2021-04-22 10:55:31
- * @LastEditTime: 2021-04-27 18:07:29
+ * @LastEditTime: 2021-04-29 18:06:50
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-wechat-saas\src\services\channelManage.js
@@ -29,7 +29,7 @@ export const editChannelApi = body => request(`${baseurl}/api/v1/wechat/menu/upd
 })
 
 // 获取关联页面候选项
-export const getRelatedPage = () => request(`${baseurl}/api/v1/wechat/menu/relatedPage`, {
+export const getRelatedPage = body => request(`${baseurl}/api/v1/wechat/menu/relatedPage?${stringify(body)}`, {
     method: 'GET'
 })
 
