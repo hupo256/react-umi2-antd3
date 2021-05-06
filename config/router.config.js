@@ -172,11 +172,11 @@ export default [
             PageHeaderName: '编辑设计师',
             component: './Portal/ContentManagement/DesignerLibrary/DesignerLibraryEdit',
           },
-          // {
-          //   path: '/portal/contentmanagement/articlelibrary',
-          //   name: 'articlelibrary',
-          //   component: './Portal/ContentManagement/ArticleLibrary/ArticleLibrary',
-          // },
+          {
+            path: '/portal/contentmanagement/articlelibrary',
+            name: 'articlelibrary',
+            component: './Portal/ContentManagement/ArticleLibrary/ArticleLibrary',
+          },
           {
             path: '/portal/contentmanagement/projectlibrary',
             name: 'projectlibrary',
