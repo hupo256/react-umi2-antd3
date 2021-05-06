@@ -19,41 +19,39 @@ export default class SelectSite extends Component {
             articleDicOpts: [],
             data_1: {
                 list: [],
-                searchText: undefined,
-                pageNum: 1,
-                pageSize: 10,
+                placeholder: '可通过工地标题进行搜索',
             },                          //工地数据
             data_2: {
-                list: [],       
-                pageNum: 1,
-                pageSize: 10,
+                list: [],
+                placeholder: '可通过设计师姓名进行搜索',
             },                          //设计师数据
             data_3: {
                 list: [],
-                pageNum: 1,
-                pageSize: 10,
+                placeholder: '可通过案例标题进行搜索',
             },                          //案例数据
             data_4: {
                 list: [],
-                pageNum: 1,
-                pageSize: 10,
+                placeholder: '可通过文章标题进行搜索',
             },                           //文章数据
             searchText: '',
-            articleType: '',
+            articleDicCode: '',
             pageNum: 1,
             pageSize: 10,
             recordTotal: 0
         }
     }
     async componentDidMount () {
-        this.getData();
-        this.getArticleDic();
+        await this.getArticleDic();
+        await this.getData();
+        
     }
 
     async componentDidUpdate (prevProps) {
         if (prevProps.currentDetailType !== this.props.currentDetailType) {
+            await this.resetStatus()
+            await this.getArticleDic();
             this.getData();
-            this.getArticleDic();
+            
         }
     }
 
@@ -64,7 +62,8 @@ export default class SelectSite extends Component {
             const res = await articleDicApi({dicModuleCodes: 'DM006'});
             if (res?.data?.DM006) {
                 this.setState({
-                    articleDicOpts: res.data.DM006
+                    articleDicOpts: res.data.DM006,
+                    articleDicCode: res.data.DM006[0].code
                 })
             }
         }
@@ -72,12 +71,13 @@ export default class SelectSite extends Component {
     }
     
 
-    getData = (params = {}) => {
+    getData = (params) => {
         const { currentDetailType } = this.props;
+        const { articleDicCode } = this.state
         currentDetailType === 1 && this.getSiteList(params);
         currentDetailType === 2 && this.getdesignerList(params);
         currentDetailType === 3 && this.getCaseList(params);
-        currentDetailType === 4 && this.getArticleList(params);
+        currentDetailType === 4 && this.getArticleList({articleDicCode, ...params});
     }
 
     resetStatus = () => {
@@ -85,9 +85,8 @@ export default class SelectSite extends Component {
         this.setState({
             searchText: '',
             pageNum: 1,
-            pageSize: 10,
             recordTotal: 0,
-            articleType: 'a'
+            articleDicCode: ''
         })
     }
 
@@ -107,8 +106,8 @@ export default class SelectSite extends Component {
             data_1: {
                 ...prevState.data_1,
                 list: res?.data?.list,
-                recordTotal: res?.data?.recordTotal
-            }
+            },
+            recordTotal: res?.data?.recordTotal
         }))
     }
 
@@ -124,8 +123,8 @@ export default class SelectSite extends Component {
             data_2: {
                 ...prevState.data_2,
                 list: res?.data?.list,
-                recordTotal: res?.data?.recordTotal
-            }
+            },
+            recordTotal: res?.data?.recordTotal
         }))
     }
 
@@ -141,16 +140,16 @@ export default class SelectSite extends Component {
             data_3: {
                 ...prevState.data_3,
                 list: res?.data?.list,
-                recordTotal: res?.data?.recordTotal
-            }
+            },
+            recordTotal: res?.data?.recordTotal
         }))
     }
 
 
     // 查询文章列表数据
-    getArticleList = async ({ articleStatus = '1', searchText='', pageNum = 1, pageSize = 10, articleDicCode='' } = {} ) => {
-        const res = articleListApi({
-            articleStatus,
+    getArticleList = async ({ articleStatus = null, searchText='', pageNum = 1, pageSize = 10, articleDicCode='' } = {} ) => {
+        const res = await articleListApi({
+            // articleStatus,
             searchText,
             articleDicCode,
             pageNum,
@@ -159,9 +158,9 @@ export default class SelectSite extends Component {
         this.setState(prevState => ({
             data_4: {
                 ...prevState.data_4,
-                list: res?.data?.article,
-                recordTotal: res?.data?.recordTotal
-            }       
+                list: res?.data?.list,
+            },    
+            recordTotal: res?.data?.recordTotal
         }))
     }
     
@@ -171,9 +170,8 @@ export default class SelectSite extends Component {
      * @return {*}
      */    
      handleChange = _.debounce( value => {
-        const { currentDetailType } = this.props;
-        const {  pageNum, articleType } = this.state
-        this.getData({searchText: value, pageNum, articleDicCode: articleType })
+        const searchText = value.length > 30 ? value.substring(0, 30) : value
+        this.getData({searchText })
     }, 300)
      
 
@@ -213,24 +211,25 @@ export default class SelectSite extends Component {
     } 
 
     // 文章类型选择
-    articleTypeChange = e => {
-        const { pageNum, searchText} = this.state
+    articleDicCodeChange = e => {
+        const { pageNum, searchText, pageSize} = this.state
         this.setState({
-            articleType: e.target.value
+            articleDicCode: e.target.value,
+            pageNum: 1,
+            searchText: ''
         }, () => {
-            this.getData({pageNum, searchText, articleType: e.target.value})
+            this.getData({ articleDicCode: e.target.value, pageSize})
         });
         
     } 
 
     // 页数变化
-    pageChange = (pageNum, pageSize) => {
+    pageChange = (pageNum) => {
 
-        const { searchText, articleType } = this.state
-        this.getData({pageNum, searchText, articleType })
+        const { searchText, articleDicCode, pageSize } = this.state
+        this.getData({pageNum, searchText, articleDicCode, pageSize })
         this.setState({
-            pageNum: pageNum,
-            pageSize: pageSize
+            pageNum,
         })
     }
 
@@ -249,7 +248,7 @@ export default class SelectSite extends Component {
 
     render() {
         const { currentDetailType, selectDetailData  } = this.props;
-        const {  searchText, recordTotal, pageNum, pageSize, articleType, articleDicOpts  } = this.state;
+        const {  searchText, recordTotal, pageNum, pageSize, articleDicCode, articleDicOpts  } = this.state;
 
         const ColumnsObj = {
             // 工地详情页表头
@@ -396,19 +395,18 @@ export default class SelectSite extends Component {
                     {
                         // 文章类型选择器
                         currentDetailType === 4 && 
-                        <Radio.Group onChange={this.articleTypeChange} value={articleType}>
-                             <Radio.Button value="">全部</Radio.Button>
+                        <Radio.Group onChange={this.articleDicCodeChange} value={articleDicCode}>
                             {
-                                articleDicOpts.map(item => <Radio.Button key={item.uid} value={item.uid}>{item.name}</Radio.Button>)
+                                articleDicOpts.map(item => <Radio.Button key={item.code} value={item.code}>{item.name}</Radio.Button>)
                             }
 
                         </Radio.Group>
                     }
                     <Search
                         value={searchText}
-                        placeholder='可通过工地标题进行搜索'
+                        placeholder={this?.state['data_' + currentDetailType ]?.placeholder}
                         style={{width: 284}}
-                        onChange={  e => { const value = e.target.value; this.setState({searchText: value}); this.handleChange(value) }}
+                        onChange={  e => { const value = e.target.value; this.setState({searchText: value, pageNum: 1}); this.handleChange(value) }}
                     />
                 </div>
                
@@ -434,6 +432,7 @@ export default class SelectSite extends Component {
                         paddingTop: 16
                     }}
                     pagination={{
+                        hideOnSinglePage: true,
                         current: pageNum,
                         pageSize,
                         total: recordTotal,

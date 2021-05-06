@@ -24,7 +24,7 @@ export default class CreateEdit extends Component {
         if (!isCreate) {
             this.getDetail(currentEditUid)
         }
-        const res = await getRelatedPage();
+        const res = await getRelatedPage({sceneType: 1});
         this.setState({
             relatedPageOption: this.format(res?.data) 
         })
@@ -178,19 +178,23 @@ export default class CreateEdit extends Component {
                         {getFieldDecorator('appletsName', {
                             rules: [
                                 { required: true, message: '请输入正确的小程序频道名称!' },
-                                // { max: 4, message: '小程序名称长度在4个字符以内!' }
+                                { max: 4, message: '限制1-4字符长度' }
                             ],
-                        })(<Input maxLength={4} placeholder='请输入小程序频道名称' />)}
+                        })(<Input placeholder='请输入小程序频道名称' />)}
                     </Form.Item>
                     <Form.Item label="网站频道名称">
                         {getFieldDecorator('websiteName', {
-                            // rules: [{ required: true, message: '请输入正确的网站频道名称!' }],
-                        })(<Input maxLength={6 }  placeholder='请输入网站频道名称' />)}
+                            rules: [
+                                { max: 6, message: '限制0-6字符长度' }
+                            ],
+                        })(<Input  placeholder='请输入网站频道名称' />)}
                     </Form.Item>
                     <Form.Item label="频道介绍">
                         {getFieldDecorator('brief', {
-                            // rules: [{ required: true, message: '请输入正确的小程序频道名称!' }],
-                        })(<Input maxLength={30} placeholder='请输入频道介绍' />)}
+                            rules: [
+                                { max: 30, message: '限制0-30字符长度' }
+                            ],
+                        })(<Input  placeholder='请输入频道介绍' />)}
                     </Form.Item>
                     <Form.Item label="关联页面">
                         {getFieldDecorator('relatedPage', {
@@ -214,8 +218,10 @@ export default class CreateEdit extends Component {
                     </Form.Item>
                     <Form.Item label="频道说明">
                         {getFieldDecorator('description', {
-                            // rules: [{ required: true, message: '请输入正确的小程序频道名称!' }],
-                        })(<TextArea maxLength={200} placeholder='请输入频道说明' autoSize={{minRows: 4}} />)}
+                            rules: [
+                                { max: 200, message: '限制0-30字符长度' }
+                            ],
+                        })(<TextArea placeholder='请输入频道说明' autoSize={{minRows: 4}} />)}
                     </Form.Item>
                     <Form.Item wrapperCol={{ span:6, offset: 9 }}>
                         <Button type="primary" htmlType="submit" style={{float: 'left'}}>
