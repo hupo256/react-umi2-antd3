@@ -15,8 +15,9 @@ class TagGroup extends Component {
 
   handleClose = removedTag => {
     const tags = this.state.tags.filter(tag => tag !== removedTag);
-    console.log(tags);
-    this.setState({ tags });
+    this.setState({ tags }, () => {
+      this.props.handleSave(tags);
+    });
   };
 
   showInput = () => {
@@ -53,9 +54,6 @@ class TagGroup extends Component {
   saveInputRef = input => (this.input = input);
   render() {
     const { tags, inputVisible, inputValue } = this.state;
-    console.log('====================================');
-    console.log(tags);
-    console.log('====================================');
     return (
       <div>
         {tags.map((tag, index) => {

@@ -54,6 +54,9 @@ export default {
   'menu.account.resetpasswords': '修改密码',
   'menu.account.trigger': '触发报错',
   'menu.account.logout': '退出登录',
+  'menu.site': '站点',
+  'menu.site.channelmanage': '频道管理',
+  'menu.site.websetting': '网站配置',
   'app.home.introduce': '介绍',
 
   'app.settings.menuMap.basic': '基本设置',

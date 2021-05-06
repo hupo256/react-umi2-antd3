@@ -10,29 +10,51 @@ class HostBind extends Component {
     this.state = {
       tabsValue: 2,
       hostSuffix: '',
+      randomDomain: '',
       custonHostValue: '',
       defaultHostValue: '',
     };
   }
   componentWillMount() {
     // console.log('hostcomponentWillMount', this.props);
+    //ceshi
     const { dispatch } = this.props;
     let customDomain = '',
-      defaultDomain = '';
+      defaultDomain = '',
+      randomDomains = '';
     dispatch({ type: 'WebSettingStroe/hostSettingModel' }).then(res => {
       if (res && res.code === 200) {
-        if (res.data.domain == '') {
-          defaultDomain = Math.random()
-            .toString(36)
-            .slice(-6);
-          customDomain = defaultDomain + res.data.suffix;
+        const { isBind, type, domain, randomDomain, suffix } = res.data;
+        if (isBind && type == 0) {
+          const resIndex = domain.indexOf(suffix);
+          if (resIndex == -1) {
+            defaultDomain = domain;
+          } else {
+            defaultDomain = domain.slice(0, resIndex);
+          }
+          customDomain = domain;
+          const resIndexs = randomDomain.indexOf('.');
+          randomDomains = randomDomain.slice(0, resIndexs);
+        } else if (isBind && type == 1) {
+          const resIndex = domain.indexOf(suffix);
+          const resIndexS = randomDomain.indexOf('.');
+          if (resIndex == -1) {
+            defaultDomain = domain;
+          } else {
+            defaultDomain = domain.slice(0, resIndex);
+          }
+          customDomain = domain;
+          randomDomains =randomDomain.slice(0, resIndexS);;
         } else {
-          const resIndex = res.data.domain.indexOf('.');
-          defaultDomain = res.data.domain.slice(0, resIndex);
-          customDomain = res.data.domain;
+          const resIndex = randomDomain.indexOf('.');
+          defaultDomain = randomDomain.slice(0, resIndex);
+          customDomain = randomDomain;
+          randomDomains =defaultDomain;
         }
+        console.log(customDomain, defaultDomain)
         this.setState({
           tabsValue: res.data.type,
+          randomDomain: randomDomains,
           hostSuffix: res.data.suffix,
           custonHostValue: customDomain,
           defaultHostValue: defaultDomain,
@@ -60,13 +82,13 @@ class HostBind extends Component {
   }
   async onHostBind() {
     const { dispatch } = this.props;
-    const { tabsValue, hostSuffix, custonHostValue, defaultHostValue } = this.state;
+    const { tabsValue, hostSuffix, custonHostValue, defaultHostValue, randomDomain } = this.state;
     const ifCustomHost = regExpConfig.customHostType.test(custonHostValue);
     const ifDefaultHost = regExpConfig.defalutHostType.test(defaultHostValue);
     let payload;
     if (tabsValue == 0) {
-      if (defaultHostValue.length < 4 || !ifDefaultHost) {
-        message.error('请正确填写二级域名');
+      if (defaultHostValue.length < 4 || defaultHostValue.length > 20 || !ifDefaultHost) {
+        message.error('请正确填写三级域名');
         return;
       }
       payload = {
@@ -74,7 +96,7 @@ class HostBind extends Component {
         type: 0,
       };
     } else if (tabsValue == 1) {
-      if (custonHostValue.length < 4 || !ifCustomHost) {
+      if (custonHostValue.length < 4 || custonHostValue.length > 100 || !ifCustomHost) {
         message.error('请正确填写域名');
         return;
       }
@@ -83,21 +105,21 @@ class HostBind extends Component {
         type: 1,
       };
     }
-    const res = await dispatch({ type: 'WebSettingStroe/hostSettingBind', payload: payload });
-    switch (res.code) {
-      case 200:
-        message.success('保存成功');
-        break;
-      case 210001:
-        message.error(res.message);
-        break;
-      case 210002:
-        message.error(res.message);
-        break;
-      default:
-        message.error('绑定失败，请检查输入后再试');
-    }
-    console.log('1', res);
+    await dispatch({ type: 'WebSettingStroe/hostSettingBind', payload: payload }).then(res => {
+      if (res && res.code == 200) {
+        console.log(payload.type);
+        message.success('绑定成功');
+        if(payload.type == 1){
+          this.setState({
+            defaultHostValue: randomDomain,
+          })
+        }else{
+          this.setState({
+            custonHostValue: defaultHostValue + hostSuffix,
+          })
+        }
+      }
+    });
   }
   render() {
     const { tabsValue, hostSuffix, custonHostValue, defaultHostValue } = this.state;
@@ -118,19 +140,22 @@ class HostBind extends Component {
         <div style={{ display: tabsValue == 0 ? 'block' : 'none' }}>
           <div style={{ display: 'flex' }}>
             <Form>
-              <FormItem label="默认域名（二级域名）">
+              <FormItem label="默认域名（三级域名）">
                 {getFieldDecorator('defaultHost', {
                   initialValue: defaultHostValue,
                   rules: [
                     {
                       pattern: regExpConfig.defalutHostType,
-                      message: '请正确填写二级域名',
+                      message: '请正确填写三级域名',
+                    },
+                    {
+                      max: 20,
+                      message: '限制1-20字符长度',
                     },
                   ],
                 })(
                   <Input
                     type="text"
-                    maxLength={20}
                     autoComplete="off"
                     placeholder="请输入域名"
                     className="defaultHostInput"
@@ -166,6 +191,10 @@ class HostBind extends Component {
                     {
                       pattern: regExpConfig.customHostType,
                       message: '请正确填写域名',
+                    },
+                    {
+                      max: 100,
+                      message: '限制1-100字符长度',
                     },
                   ],
                 })(
