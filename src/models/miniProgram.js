@@ -10,7 +10,7 @@ export default {
   namespace: 'MiniProgram',
 
   state: {
-    FormDetail: null,
+    FormDetail: {},
     FormList: [],
     AuthInfo: {},
     authorizationUrl: null,
