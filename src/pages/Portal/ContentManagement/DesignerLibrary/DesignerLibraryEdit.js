@@ -300,7 +300,7 @@ class DesignerLibraryEdit extends PureComponent {
                   initialValue: DesignerDetail.title,
                   rules: [
                     {
-                      max: 10,
+                      max: 30,
                       message: '限制1-30字符长度',
                     },
                   ],
