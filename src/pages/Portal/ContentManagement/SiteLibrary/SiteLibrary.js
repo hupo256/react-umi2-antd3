@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:47:07 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-04-13 18:45:39
+ * @Last Modified time: 2021-05-08 10:15:42
  * 工地库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -343,8 +343,8 @@ class SiteLibrary extends PureComponent {
       title: status + '' === '0' ? '确认要停用当前工地吗？' : '确认要启用当前工地吗？',
       content:
         status + '' === '0'
-          ? '停用后，将无法在工地模块显示当前案例！'
-          : '启用后，将会在工地模块显示当前案例！',
+          ? '停用后，将无法在工地模块显示当前工地！'
+          : '启用后，将会在工地模块显示当前工地！',
       icon: status === '1' ? successIcon : waringInfo,
       onOk() {
         dispatch({

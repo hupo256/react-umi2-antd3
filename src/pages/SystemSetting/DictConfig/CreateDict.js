@@ -83,7 +83,7 @@ class CreateDict extends Component {
   }
   handleChange = (value, name, long) => {
     if (value.length > long) {
-      message.info(`最多输入${long}位字符`);
+      message.warning(`最多输入${long}位字符`);
     } else {
       this.setState({ [name]: value });
     }

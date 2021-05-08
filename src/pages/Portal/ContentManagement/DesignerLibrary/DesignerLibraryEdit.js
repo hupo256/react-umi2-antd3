@@ -370,7 +370,7 @@ class DesignerLibraryEdit extends PureComponent {
         styleDicCodes: value,
       });
     } else {
-      message.info('最多支持选择3个');
+      message.warning('最多支持选择3个');
       this.props.form.setFieldsValue({
         styleDicCodes: value,
       });
