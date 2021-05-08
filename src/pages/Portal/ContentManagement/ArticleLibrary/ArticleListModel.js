@@ -2,12 +2,13 @@
  * @Author: zqm 
  * @Date: 2021-04-29 17:47:52 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-08 16:14:55
+ * @Last Modified time: 2021-05-08 18:01:24
  * 公有文章库列表
  */
 import React, { Component } from 'react';
 import { Modal, Table, Input, Icon, Button } from 'antd';
 import { connect } from 'dva';
+import ArticlePreviewModel from './ArticlePreviewModel';
 const { Search } = Input;
 
 @connect(({ ArticleLibrary, loading }) => ({
@@ -19,6 +20,8 @@ class ArticleListModel extends Component {
     super(props);
     this.state = {
       searchWord: null,
+
+      previewVisible: true,
     };
   }
   componentWillMount() {}
@@ -28,20 +31,7 @@ class ArticleListModel extends Component {
   }
 
   render() {
-    const dataSource = [
-      {
-        key: '1',
-        updateTime: '胡彦斌',
-        age: 32,
-        articleTitle: '西湖区湖底公园1号',
-      },
-      {
-        key: '2',
-        updateTime: '胡彦祖',
-        age: 42,
-        articleTitle: '西湖区湖底公园1号',
-      },
-    ];
+    const { previewVisible } = this.state;
 
     const columns = [
       {
@@ -113,6 +103,12 @@ class ArticleListModel extends Component {
             scroll={{ y: 400 }}
           />
         </div>
+        {previewVisible && (
+          <ArticlePreviewModel
+            visible={previewVisible}
+            handleCancel={() => this.setState({ previewVisible: false })}
+          />
+        )}
       </Modal>
     );
   }
