@@ -97,7 +97,7 @@ class HostBind extends Component {
       };
     } else if (tabsValue == 1) {
       if (custonHostValue.length < 4 || custonHostValue.length > 100 || !ifCustomHost) {
-        message.error('请正确填写域名');
+        message.error('绑定失败，请检查输入后再试');
         return;
       }
       payload = {
@@ -108,7 +108,7 @@ class HostBind extends Component {
     await dispatch({ type: 'WebSettingStroe/hostSettingBind', payload: payload }).then(res => {
       if (res && res.code == 200) {
         console.log(payload.type);
-        message.success('绑定成功');
+        message.success('保存成功');
         if(payload.type == 1){
           this.setState({
             defaultHostValue: randomDomain,
@@ -150,7 +150,11 @@ class HostBind extends Component {
                     },
                     {
                       max: 20,
-                      message: '限制1-20字符长度',
+                      message: '限制5-min20字符长度',
+                    },
+                    {
+                      min: 5,
+                      message: '限制5-20字符长度',
                     },
                   ],
                 })(
@@ -169,12 +173,12 @@ class HostBind extends Component {
             <div style={{ marginTop: '49px' }}>{hostSuffix}</div>
           </div>
           <CopyToClipboard
-            text={defaultHostValue + '.ingongdi.com'}
+            text={defaultHostValue + hostSuffix}
             onCopy={() => message.success('复制成功')}
           >
             <div className="defaultHostCopyDiv">
               <Icon type="copy" />
-              复制连接
+              复制链接
             </div>
           </CopyToClipboard>
           <Button className="defaultHostButton" onClick={this.onHostBind.bind(this)}>

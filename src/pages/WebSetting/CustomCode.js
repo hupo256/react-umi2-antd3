@@ -77,7 +77,7 @@ class CustomCode extends Component {
           <Row>
             <Col span={16}>
               <Button type="primary" htmlType="submit" className="defaultHostButton">
-                提交
+                保存
               </Button>
             </Col>
           </Row>
