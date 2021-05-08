@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-03-18 11:21:43 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-04-29 16:41:40
+ * @Last Modified time: 2021-05-08 15:47:13
  * 创建文章
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -190,10 +190,10 @@ class ArticleLibraryAdd extends PureComponent {
 
               <h4 className={styles.title}>TDK设置（用于搜索引擎收录）</h4>
               <Form.Item label={this.title('关键词')}>
-                {getFieldDecorator('articleTag', {
+                {getFieldDecorator('headKeywords', {
                   initialValue: null,
                   rules: [],
-                })(<TagGroup tags={tags} handleSave={tags => this.handleTagSave(tags)} />)}
+                })(<TagGroup tags={tags || []} handleSave={tags => this.handleTagSave(tags)} />)}
               </Form.Item>
               <Form.Item label={this.title('文章说明')}>
                 {getFieldDecorator('articleDescription', {
@@ -264,7 +264,7 @@ class ArticleLibraryAdd extends PureComponent {
           ...values,
           articleContent: editorContent,
           headKeywords: tags,
-          articleTag: tags,
+          articleChannel: 2,
         },
       }).then(res => {
         if (res && res.code === 200) {
