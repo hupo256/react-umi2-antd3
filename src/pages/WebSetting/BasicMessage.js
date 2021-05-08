@@ -166,7 +166,7 @@ class BasicMessage extends Component {
               initialValue: null,
               rules: [],
             })(
-              <div style={{width: 400}}>
+              <div style={{ width: 400 }}>
                 <TagGroup
                   tags={basicKeyWords}
                   handleSave={basicKeyWords => this.handleTagSave(basicKeyWords)}
@@ -199,6 +199,13 @@ class BasicMessage extends Component {
                         <span onClick={() => this.setState({ basicIcon: null })}>
                           <Icon type="delete" />
                         </span>
+                        <Popover
+                          placement="right"
+                          className="uploadHint"
+                          content="浏览器标签上的全站页面图标"
+                        >
+                          <Icon type="question-circle" />
+                        </Popover>
                       </div>
                     </div>
                   </div>
@@ -248,6 +255,13 @@ class BasicMessage extends Component {
                         <span onClick={() => this.setState({ basicLogo: null })}>
                           <Icon type="delete" />
                         </span>
+                        <Popover
+                          placement="top"
+                          className="uploadHint"
+                          content="将会用于频道栏的企业LOGO显示"
+                        >
+                          <Icon type="question-circle" />
+                        </Popover>
                       </div>
                     </div>
                   </div>

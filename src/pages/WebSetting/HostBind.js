@@ -36,22 +36,21 @@ class HostBind extends Component {
           const resIndexs = randomDomain.indexOf('.');
           randomDomains = randomDomain.slice(0, resIndexs);
         } else if (isBind && type == 1) {
-          const resIndex = domain.indexOf(suffix);
-          const resIndexS = randomDomain.indexOf('.');
+          const resIndex = randomDomain.indexOf(suffix);
           if (resIndex == -1) {
-            defaultDomain = domain;
+            defaultDomain = randomDomain;
           } else {
-            defaultDomain = domain.slice(0, resIndex);
+            defaultDomain = randomDomain.slice(0, resIndex);
           }
           customDomain = domain;
-          randomDomains =randomDomain.slice(0, resIndexS);;
+          randomDomains = defaultDomain;
         } else {
           const resIndex = randomDomain.indexOf('.');
           defaultDomain = randomDomain.slice(0, resIndex);
           customDomain = randomDomain;
-          randomDomains =defaultDomain;
+          randomDomains = defaultDomain;
         }
-        console.log(customDomain, defaultDomain)
+        console.log(customDomain, defaultDomain);
         this.setState({
           tabsValue: res.data.type,
           randomDomain: randomDomains,
@@ -79,6 +78,9 @@ class HostBind extends Component {
   }
   onEnrollHost() {
     window.open('https://wanwang.aliyun.com/domain/searchresult/#/?keyword=&suffix=com');
+  }
+  onHost() {
+    window.open('https://help.aliyun.com/document_detail/31836.html');
   }
   async onHostBind() {
     const { dispatch } = this.props;
@@ -109,14 +111,14 @@ class HostBind extends Component {
       if (res && res.code == 200) {
         console.log(payload.type);
         message.success('保存成功');
-        if(payload.type == 1){
+        if (payload.type == 1) {
           this.setState({
             defaultHostValue: randomDomain,
-          })
-        }else{
+          });
+        } else {
           this.setState({
             custonHostValue: defaultHostValue + hostSuffix,
-          })
+          });
         }
       }
     });
@@ -185,7 +187,12 @@ class HostBind extends Component {
             保存
           </Button>
         </div>
-        <div style={{ display: tabsValue == 1 ? 'block' : 'none' }}>
+        <div style={{ display: tabsValue == 1 ? 'block' : 'none', position: 'relative' }}>
+          <Icon
+            type="question-circle"
+            style={{ position: 'absolute', left: 150, top: -26, cursor: 'pointer' }}
+            onClick={this.onHost.bind(this)}
+          />
           <div style={{ display: 'flex' }}>
             <Form>
               <FormItem label="自定义域名">

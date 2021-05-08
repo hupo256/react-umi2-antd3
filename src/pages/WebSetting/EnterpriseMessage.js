@@ -50,7 +50,7 @@ class EnterpriseMessage extends Component {
       const { dispatch } = this.props;
       let newWechatQrCode = '',
         newStoreCover = '';
-        console.log('newWechatQrCode', values)
+      console.log('newWechatQrCode', values);
       if (values.wechatQrCode && wechatQrCode) {
         newWechatQrCode = values.wechatQrCode;
       } else if (wechatQrCode && !values.wechatQrCode) {
@@ -58,7 +58,7 @@ class EnterpriseMessage extends Component {
       } else {
         newWechatQrCode = '';
       }
-      console.log('newWechatQrCode', newWechatQrCode)
+      console.log('newWechatQrCode', newWechatQrCode);
       if (values.storeCover && storeCover) {
         newStoreCover = values.storeCover;
       } else if (storeCover && !values.storeCover) {
@@ -115,7 +115,12 @@ class EnterpriseMessage extends Component {
     } = this.state;
     return (
       <div>
-        <div style={{ color: '#101010', fontSize: '26px', marginBottom: '20px' }}>企业信息</div>
+        <div style={{ color: '#101010', fontSize: '26px', marginBottom: '20px' }}>
+          企业信息
+          <Popover placement="right" className='titleIcon' content="暂无数据">
+            <Icon type="question-circle" />
+          </Popover>
+        </div>
         <Form className="enterpriseMessageFrom" onSubmit={this.onEnterpriseForm}>
           <FormItem label="公众号">
             {getFieldDecorator('wechatName', {
@@ -164,6 +169,13 @@ class EnterpriseMessage extends Component {
                         <span onClick={() => this.setState({ wechatQrCode: null })}>
                           <Icon type="delete" />
                         </span>
+                        <Popover
+                          placement="rightTop"
+                          className="uploadHint"
+                          content="公众号二维码，用于底部栏显示"
+                        >
+                          <Icon type="question-circle" />
+                        </Popover>
                       </div>
                     </div>
                   </div>
@@ -257,6 +269,9 @@ class EnterpriseMessage extends Component {
                         <span onClick={() => this.setState({ storeCover: null })}>
                           <Icon type="delete" />
                         </span>
+                        <Popover placement="rightTop" className="uploadHint" content="门店封面图">
+                          <Icon type="question-circle" />
+                        </Popover>
                       </div>
                     </div>
                   </div>
@@ -315,7 +330,7 @@ class EnterpriseMessage extends Component {
             })(
               <TextArea
                 type="text"
-                style={{ width: 400, height: 54}}
+                style={{ width: 400, height: 54 }}
                 autoComplete="off"
                 placeholder="请输入版权信息，如：@2016 XXX设计装饰有限公司版权所有"
               />
