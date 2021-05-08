@@ -36,22 +36,21 @@ class HostBind extends Component {
           const resIndexs = randomDomain.indexOf('.');
           randomDomains = randomDomain.slice(0, resIndexs);
         } else if (isBind && type == 1) {
-          const resIndex = domain.indexOf(suffix);
-          const resIndexS = randomDomain.indexOf('.');
+          const resIndex = randomDomain.indexOf(suffix);
           if (resIndex == -1) {
-            defaultDomain = domain;
+            defaultDomain = randomDomain;
           } else {
-            defaultDomain = domain.slice(0, resIndex);
+            defaultDomain = randomDomain.slice(0, resIndex);
           }
           customDomain = domain;
-          randomDomains =randomDomain.slice(0, resIndexS);;
+          randomDomains = defaultDomain;
         } else {
           const resIndex = randomDomain.indexOf('.');
           defaultDomain = randomDomain.slice(0, resIndex);
           customDomain = randomDomain;
-          randomDomains =defaultDomain;
+          randomDomains = defaultDomain;
         }
-        console.log(customDomain, defaultDomain)
+        console.log(customDomain, defaultDomain);
         this.setState({
           tabsValue: res.data.type,
           randomDomain: randomDomains,
@@ -80,6 +79,9 @@ class HostBind extends Component {
   onEnrollHost() {
     window.open('https://wanwang.aliyun.com/domain/searchresult/#/?keyword=&suffix=com');
   }
+  onHost() {
+    window.open('https://help.aliyun.com/document_detail/31836.html');
+  }
   async onHostBind() {
     const { dispatch } = this.props;
     const { tabsValue, hostSuffix, custonHostValue, defaultHostValue, randomDomain } = this.state;
@@ -97,7 +99,7 @@ class HostBind extends Component {
       };
     } else if (tabsValue == 1) {
       if (custonHostValue.length < 4 || custonHostValue.length > 100 || !ifCustomHost) {
-        message.error('请正确填写域名');
+        message.error('绑定失败，请检查输入后再试');
         return;
       }
       payload = {
@@ -108,15 +110,15 @@ class HostBind extends Component {
     await dispatch({ type: 'WebSettingStroe/hostSettingBind', payload: payload }).then(res => {
       if (res && res.code == 200) {
         console.log(payload.type);
-        message.success('绑定成功');
-        if(payload.type == 1){
+        message.success('保存成功');
+        if (payload.type == 1) {
           this.setState({
             defaultHostValue: randomDomain,
-          })
-        }else{
+          });
+        } else {
           this.setState({
             custonHostValue: defaultHostValue + hostSuffix,
-          })
+          });
         }
       }
     });
@@ -150,7 +152,11 @@ class HostBind extends Component {
                     },
                     {
                       max: 20,
-                      message: '限制1-20字符长度',
+                      message: '限制5-min20字符长度',
+                    },
+                    {
+                      min: 5,
+                      message: '限制5-20字符长度',
                     },
                   ],
                 })(
@@ -169,19 +175,24 @@ class HostBind extends Component {
             <div style={{ marginTop: '49px' }}>{hostSuffix}</div>
           </div>
           <CopyToClipboard
-            text={defaultHostValue + '.ingongdi.com'}
+            text={defaultHostValue + hostSuffix}
             onCopy={() => message.success('复制成功')}
           >
             <div className="defaultHostCopyDiv">
               <Icon type="copy" />
-              复制连接
+              复制链接
             </div>
           </CopyToClipboard>
           <Button className="defaultHostButton" onClick={this.onHostBind.bind(this)}>
             保存
           </Button>
         </div>
-        <div style={{ display: tabsValue == 1 ? 'block' : 'none' }}>
+        <div style={{ display: tabsValue == 1 ? 'block' : 'none', position: 'relative' }}>
+          <Icon
+            type="question-circle"
+            style={{ position: 'absolute', left: 150, top: -26, cursor: 'pointer' }}
+            onClick={this.onHost.bind(this)}
+          />
           <div style={{ display: 'flex' }}>
             <Form>
               <FormItem label="自定义域名">
