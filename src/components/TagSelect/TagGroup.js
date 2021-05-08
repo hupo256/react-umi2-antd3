@@ -15,8 +15,9 @@ class TagGroup extends Component {
 
   handleClose = removedTag => {
     const tags = this.state.tags.filter(tag => tag !== removedTag);
-    console.log(tags);
-    this.setState({ tags });
+    this.setState({ tags }, () => {
+      this.props.handleSave(tags);
+    });
   };
 
   showInput = () => {
@@ -24,16 +25,20 @@ class TagGroup extends Component {
   };
 
   handleInputChange = e => {
-    if (e.target.value.length > 10) {
-      message.info('最多输入10位字符');
-    } else {
-      this.setState({ inputValue: e.target.value });
-    }
+    // if (e.target.value.length > 10) {
+    //   message.warning('最多输入10位字符');
+    // } else {
+    this.setState({ inputValue: e.target.value });
+    // }
   };
 
   handleInputConfirm = () => {
     const { inputValue } = this.state;
     let { tags } = this.state;
+    if (inputValue && inputValue.length > 10) {
+      message.warning('最多输入10位字符');
+      return false;
+    }
     if (inputValue && tags.indexOf(inputValue) === -1) {
       tags = [...tags, inputValue];
     }
@@ -53,9 +58,6 @@ class TagGroup extends Component {
   saveInputRef = input => (this.input = input);
   render() {
     const { tags, inputVisible, inputValue } = this.state;
-    console.log('====================================');
-    console.log(tags);
-    console.log('====================================');
     return (
       <div>
         {tags.map((tag, index) => {
@@ -78,7 +80,7 @@ class TagGroup extends Component {
             ref={this.saveInputRef}
             type="text"
             size="small"
-            style={{ width: 78 }}
+            style={{ width: 156 }}
             value={inputValue}
             onChange={this.handleInputChange}
             onBlur={this.handleInputConfirm}
