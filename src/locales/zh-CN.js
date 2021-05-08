@@ -30,7 +30,7 @@ export default {
   'menu.insite': '站点',
   'menu.insite.decorate': '首页装修',
   'menu.insite.channelmanage': '频道管理',
-  'menu.insite.websetting': '网站配置',
+  'menu.insite.websetting': '网站设置',
 
   'menu.activity': '活动',
   'menu.activity.mktGame': '营销小游戏',
@@ -56,7 +56,7 @@ export default {
   'menu.account.logout': '退出登录',
   'menu.site': '站点',
   'menu.site.channelmanage': '频道管理',
-  'menu.site.websetting': '网站配置',
+  'menu.site.websetting': '网站设置',
   'app.home.introduce': '介绍',
 
   'app.settings.menuMap.basic': '基本设置',

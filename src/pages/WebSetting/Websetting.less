@@ -2,6 +2,10 @@
   .Websetting_ContentTabs {
     background-color: #fff; //设置颜色
     height: 100%;
+    .titleIcon{
+      font-size: 20px;
+      margin-left: 10px;
+    }
     .ant-tabs-nav-animated {
       margin-top: 40px;
       width: 200px !important;
@@ -103,7 +107,7 @@
       margin: 0 10px 10px 0;
     }
     .defaultHostCopyDiv {
-      //   width: 48px;
+      width: 70px;
       height: 18px;
       text-align: left;
       margin-bottom: 20px;
@@ -148,6 +152,7 @@
             position: absolute;
             top: 10px;
             right: 10px;
+            font-size: 14px;
           }
         }
         .basicLogoImg {
@@ -161,6 +166,7 @@
             position: absolute;
             top: 10px;
             right: 10px;
+            font-size: 14px;
           }
         }
       }
@@ -203,6 +209,7 @@
             position: absolute;
             top: 10px;
             right: 10px;
+            font-size: 14px;
           }
         }
         .storeCoverImg {
@@ -217,6 +224,7 @@
             position: absolute;
             top: 10px;
             right: 10px;
+            font-size: 14px;
           }
         }
       }
@@ -225,6 +233,11 @@
         .defaultHostButton{
           border: 0
         }
+      }
+    }
+    .ant-form-item-label{
+      label::after{
+        content: '';
       }
     }
   }
