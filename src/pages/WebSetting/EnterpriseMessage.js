@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Input, Button, message, Form, Icon, Row, Col, Popover } from 'antd';
 import RcViewer from 'rc-viewer';
 import Upload from '@/components/Upload/Upload';
+const { TextArea } = Input;
 const FormItem = Form.Item;
 @Form.create()
 class EnterpriseMessage extends Component {
@@ -290,9 +291,9 @@ class EnterpriseMessage extends Component {
                 },
               ],
             })(
-              <Input
+              <TextArea
                 type="text"
-                style={{ width: 400 }}
+                style={{ width: 400, height: 54 }}
                 autoComplete="off"
                 placeholder="本网站部分内容由用户自行上传，如权利人发现存在误传其作品情形，请及时与本站联系。"
               />
@@ -312,9 +313,9 @@ class EnterpriseMessage extends Component {
                 },
               ],
             })(
-              <Input
+              <TextArea
                 type="text"
-                style={{ width: 400 }}
+                style={{ width: 400, height: 54}}
                 autoComplete="off"
                 placeholder="请输入版权信息，如：@2016 XXX设计装饰有限公司版权所有"
               />
@@ -345,7 +346,7 @@ class EnterpriseMessage extends Component {
           <Row className="enterpriseButton">
             <Col span={16}>
               <Button type="primary" htmlType="submit" className="defaultHostButton">
-                提交
+                保存
               </Button>
             </Col>
           </Row>

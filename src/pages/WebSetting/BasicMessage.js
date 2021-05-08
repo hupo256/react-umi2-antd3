@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Input, Icon, Button, Form, message, Row, Col, Popover, Select } from 'antd';
 import RcViewer from 'rc-viewer';
 import Upload from '@/components/Upload/Upload';
+import TagGroup from '@/components/TagSelect/TagGroup';
 const { TextArea } = Input;
 const FormItem = Form.Item;
 @Form.create()
@@ -34,12 +35,12 @@ class BasicMessage extends Component {
     });
     // console.log('basic', JSON.parse(res.data.keywords));
   }
-  componentDidMount(){
-    const keyWordsInput = document.getElementsByClassName('ant-select-search__field')
-    console.log('keyWordsInput',keyWordsInput[0].style)
-    keyWordsInput[0].maxLength = 10;
+  // componentDidMount(){
+  //   const keyWordsInput = document.getElementsByClassName('ant-select-search__field')
+  //   console.log('keyWordsInput',keyWordsInput[0].style)
+  //   keyWordsInput[0].maxLength = 10;
 
-  }
+  // }
   onBasicForm = e => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
@@ -54,10 +55,10 @@ class BasicMessage extends Component {
       if (values.basicTitle.length < 0 || values.basicTitle.length > 30) {
         message.error('请正确填写网站标题');
         return false;
-      } else if (values.basicKeyWords.length >10){
+      } else if (values.basicKeyWords.length > 10) {
         message.error('关键词不能超过10个');
         return false;
-      }else {
+      } else {
         if (values.basicIcon && basicIcon) {
           newBaiscIcon = values.basicIcon;
         } else if (basicIcon && !values.basicIco) {
@@ -114,9 +115,9 @@ class BasicMessage extends Component {
     } = this.state;
     return (
       <div>
-        <div style={{ color: '#101010', fontSize: '26px', marginBottom: '20px' }}>基础信息</div>
+        <div style={{ color: '#101010', fontSize: '26px', marginBottom: '20px' }}>基本信息</div>
         <Form className="basicMessageFrom" onSubmit={this.onBasicForm}>
-          <FormItem label="网站标题（业主有可能通过您输入的关键词，搜索到您的网站！）">
+          <FormItem label="网站标题">
             {getFieldDecorator('basicTitle', {
               initialValue: basicTitle,
               rules: [
@@ -138,7 +139,7 @@ class BasicMessage extends Component {
               />
             )}
           </FormItem>
-          <FormItem label="网站描述（业主有可能通过您输入的关键词，搜索到您的网站！）">
+          <FormItem label="网站描述">
             {getFieldDecorator('basicContent', {
               initialValue: basicContent,
               rules: [
@@ -160,24 +161,20 @@ class BasicMessage extends Component {
               />
             )}
           </FormItem>
-          <FormItem label="关键词（业主有可能通过您输入的关键词，搜索到您的网站！）">
+          <FormItem label="关键词">
             {getFieldDecorator('basicKeyWords', {
-              initialValue: basicKeyWords,
-              rules: [
-                {
-                  required: false,
-                  message: '请正确输入关键词',
-                },
-              ],
+              initialValue: null,
+              rules: [],
             })(
-              <Select
-                mode="tags"
-                style={{ width: '400px' }}
-                placeholder="请输入网站关键词"
-              />
+              <div style={{width: 400}}>
+                <TagGroup
+                  tags={basicKeyWords}
+                  handleSave={basicKeyWords => this.handleTagSave(basicKeyWords)}
+                />
+              </div>
             )}
           </FormItem>
-          <FormItem label="网站图标（业主有可能通过您输入的关键词，搜索到您的网站！）">
+          <FormItem label="网站图标">
             {getFieldDecorator('basicIcon', {
               rules: [{ required: false, message: '请上传网站图标' }],
             })(
@@ -217,7 +214,7 @@ class BasicMessage extends Component {
                     <Popover
                       placement="right"
                       className="uploadHint"
-                      content="上传图片比例需为1:1，如比例不符合，则会居中截取，建议尺寸32*32"
+                      content="浏览器标签上的全站页面图标"
                     >
                       <Icon type="question-circle" />
                     </Popover>
@@ -266,7 +263,7 @@ class BasicMessage extends Component {
                     <Popover
                       placement="top"
                       className="uploadHint"
-                      content="上传图片比例和建议尺寸"
+                      content="将会用于频道栏的企业LOGO显示"
                     >
                       <Icon type="question-circle" />
                     </Popover>
@@ -283,7 +280,7 @@ class BasicMessage extends Component {
                 className="defaultHostButton"
                 style={{ border: 0 }}
               >
-                提交
+                保存
               </Button>
             </Col>
           </Row>
@@ -319,6 +316,9 @@ class BasicMessage extends Component {
       </div>
     );
   }
+  handleTagSave = basicKeyWords => {
+    this.setState({ basicKeyWords });
+  };
   // 图片选择cance
   handleUploadCancel = () => {
     this.setState({ iconUpload: false, logoUpload: false, record: null });
