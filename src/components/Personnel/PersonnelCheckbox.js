@@ -230,7 +230,7 @@ class PersonnelCheckbox extends Component {
     if (selectedData && selectedData.type === 'dept') {
       // 选择的组织
       if (deptData.includes(selectedData)) {
-        message.info('已选择', 1);
+        message.warning('已选择', 1);
       } else {
         let datas = [...deptData];
         datas.push(selectedData);
@@ -243,7 +243,7 @@ class PersonnelCheckbox extends Component {
     if (selectedData && selectedData.type === 'user') {
       // 选择的用户
       if (userData.includes(selectedData)) {
-        message.info('已选择', 1);
+        message.warning('已选择', 1);
       } else {
         let datas = [...userData];
         datas.push(selectedData);
@@ -388,7 +388,7 @@ class PersonnelCheckbox extends Component {
     });
     // 选择的用户
     if (userData.includes(item)) {
-      message.info('已选择', 1);
+      message.warning('已选择', 1);
     } else {
       let datas = [...userData];
       datas.push(item);

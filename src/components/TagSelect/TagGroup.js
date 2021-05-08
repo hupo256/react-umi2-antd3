@@ -26,7 +26,7 @@ class TagGroup extends Component {
 
   handleInputChange = e => {
     // if (e.target.value.length > 10) {
-    //   message.info('最多输入10位字符');
+    //   message.warning('最多输入10位字符');
     // } else {
     this.setState({ inputValue: e.target.value });
     // }
@@ -36,7 +36,7 @@ class TagGroup extends Component {
     const { inputValue } = this.state;
     let { tags } = this.state;
     if (inputValue && inputValue.length > 10) {
-      message.info('最多输入10位字符');
+      message.warning('最多输入10位字符');
       return false;
     }
     if (inputValue && tags.indexOf(inputValue) === -1) {
