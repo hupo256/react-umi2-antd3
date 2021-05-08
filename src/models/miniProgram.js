@@ -4,6 +4,8 @@ import {
   formcollocate, //配置表单
   getAuthInfo, //获取授权信息
   getAuthUrl, //获取授权链接
+  setWechatMiniGlobal, //设置小程序全局设置
+  queryWechatMiniGlobal, //获取小程序全局设置
 } from '@/services/miniProgram';
 
 export default {
@@ -17,6 +19,20 @@ export default {
   },
 
   effects: {
+    // 设置小程序全局设置
+    *setWechatMiniGlobalModel({ payload }, { call, put }) {
+      const response = yield call(setWechatMiniGlobal, {
+        ...payload,
+      });
+      return response;
+    },
+    // 获取小程序全局设置
+    *queryWechatMiniGlobalModel({ payload }, { call, put }) {
+      const response = yield call(queryWechatMiniGlobal, {
+        ...payload,
+      });
+      return response;
+    },
     // 获取授权链接
     *getAuthUrlModel({ payload }, { call, put }) {
       const response = yield call(getAuthUrl, {
