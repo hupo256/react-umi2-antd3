@@ -2,14 +2,16 @@
  * @Author: zqm 
  * @Date: 2021-04-30 11:36:34 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-04-30 18:39:42
+ * @Last Modified time: 2021-05-07 15:34:37
  * 关联设置
  */
 import React, { Component } from 'react';
+import { connect } from 'dva';
 import { Modal, Input, Icon, message } from 'antd';
 import Select from './Select';
 import styles from './index.less';
 
+@connect(({ MiniProgram }) => ({ MiniProgram }))
 class LinkPage extends Component {
   constructor(props) {
     super(props);
@@ -17,13 +19,22 @@ class LinkPage extends Component {
       btnName: null,
       isEdit: false,
       saveValue: null,
+      defvalue: null,
     };
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    const { defvalue } = this.props;
+    if (defvalue) {
+      this.setState({
+        btnName: defvalue.buttonText,
+        defvalue,
+      });
+    }
+  }
 
   render() {
-    const { btnName } = this.state;
+    const { btnName, defvalue } = this.state;
     return (
       <Modal
         title="关联页面设置"
@@ -35,7 +46,7 @@ class LinkPage extends Component {
         <div style={{ minHeight: 86 }}>
           <div className={styles.linkpage}>
             <span className="beforeStar">关联页面：</span>
-            <Select handleSelect={value => this.handleSelect(value)} />
+            <Select defvalue={defvalue} handleSelect={value => this.handleSelect(value)} />
           </div>
           <div>
             <span className="beforeStar">按钮名称：</span>
@@ -52,7 +63,7 @@ class LinkPage extends Component {
     );
   }
   handleSelect = value => {
-    const { btnName, isEdit } = this.state;
+    const { btnName, isEdit, defvalue } = this.state;
     this.setState({ saveValue: value });
     if (value.type == 1) {
       this.setState({ btnName: '立即咨询' });
@@ -60,22 +71,35 @@ class LinkPage extends Component {
       this.setState({ btnName: null });
     } else {
       if (!btnName) {
-        this.setState({ btnName: value.record.formTitle });
+        this.setState({ btnName: value.record.buttonText });
       }
     }
   };
   handleOk = () => {
-    const { saveValue } = this.state;
-    console.log('====================================');
-    console.log(saveValue);
-    console.log('====================================');
+    const { saveValue, btnName } = this.state;
+
     if (!saveValue) {
       message.error('请选择关联页面');
       return false;
     } else if (saveValue.type == 3) {
       message.error('请选择关联页面');
       return false;
+    } else if (!btnName) {
+      message.error('请输入按钮名称');
+      return false;
     }
+    const { dispatch, defvalue, directType } = this.props;
+    dispatch({
+      type: 'MiniProgram/formcollocateModel',
+      payload: {
+        bindType: saveValue.type == 1 ? 1 : 0,
+        buttonText: saveValue.type == 1 ? '立即咨询' : btnName,
+        directType,
+        formUid: saveValue.type == 1 ? null : saveValue.record.formUid,
+      },
+    }).then(res => {
+      this.props.handleOk();
+    });
   };
 }
 

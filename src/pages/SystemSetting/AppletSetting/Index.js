@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-04-28 17:05:47 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-04-30 17:18:22
+ * @Last Modified time: 2021-05-07 18:15:12
  * 小程序设置
  */
 
@@ -17,18 +17,23 @@ import { getauth } from '@/utils/authority';
 import LinkPage from './LinkPage';
 const { SubMenu } = Menu;
 
-@connect(({}) => ({}))
+@connect(({ MiniProgram }) => ({ MiniProgram }))
 class Index extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      visible: true,
+      visible: false,
+      record: null,
     };
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    const { dispatch } = this.props;
+    dispatch({ type: 'MiniProgram/formbindmapModel' });
+  }
 
   render() {
+    const { FormDetail } = this.props.MiniProgram;
     const title = (
       <div>
         <h3 style={{ marginTop: 10 }}>关联页面设置</h3>
@@ -41,59 +46,60 @@ class Index extends PureComponent {
       },
       {
         title: '模块链接',
-        dataIndex: 'age',
+        dataIndex: 'link',
+        render: (t, r) => {
+          return <span>{t} 复制</span>;
+        },
       },
       {
         title: '已关联页面',
-        dataIndex: 'address',
-        key: 'address',
+        dataIndex: 'formTitle',
       },
       {
         title: '按钮名称',
-        key: 'tags',
-        dataIndex: 'tags',
+        dataIndex: 'buttonText',
       },
       {
         title: '操作',
         key: 'action',
         render: (text, record) => (
           <span>
-            <a onClick={() => this.setState({ visible: true })}>编辑</a>
+            <a
+              onClick={() =>
+                this.setState({ record }, () => {
+                  this.setState({ visible: true });
+                })
+              }
+            >
+              编辑
+            </a>
           </span>
         ),
       },
     ];
-    const data = [
-      {
-        key: '1',
-        name: '案例',
-        age: 'page/site/site',
-        address: '一键授权',
-        tags: '立即咨询',
-      },
-      {
-        key: '2',
-        name: '工地',
-        age: 'page/Case/Case',
-        address: '一键授权',
-        tags: '立即咨询',
-      },
-      {
-        key: '3',
-        name: '设计师',
-        age: 'page/designer/designer',
-        address: '一键授权',
-        tags: '立即咨询',
-      },
-      {
-        key: '4',
-        name: '文章',
-        age: 'page/article/article',
-        address: '一键授权',
-        tags: '立即咨询',
-      },
-    ];
-    const { visible } = this.state;
+    const data = FormDetail
+      ? [
+          {
+            key: '1',
+            name: '案例',
+            link: 'page/Case/Case',
+            ...FormDetail['1'],
+          },
+          {
+            key: '2',
+            name: '工地',
+            link: 'page/Site/Site',
+            ...FormDetail['2'],
+          },
+          {
+            key: '3',
+            name: '设计师',
+            link: 'page/designer/designer',
+            ...FormDetail['3'],
+          },
+        ]
+      : [];
+    const { visible, record } = this.state;
     return (
       <div className={styles.appleCard}>
         <PageHeaderWrapper title={title}>
@@ -131,14 +137,22 @@ class Index extends PureComponent {
             </div>
           </Card>
         </PageHeaderWrapper>
-        {visible && <LinkPage visible={visible} handleCancel={() => this.handleCancel()} />}
+        {visible && (
+          <LinkPage
+            visible={visible}
+            defvalue={record}
+            directType={record.key}
+            handleCancel={() => this.handleCancel()}
+            handleOk={() => this.handleOk()}
+          />
+        )}
       </div>
     );
   }
   handleOk = () => {
-    console.log('====================================');
-    console.log(保存);
-    console.log('====================================');
+    const { dispatch } = this.props;
+    dispatch({ type: 'MiniProgram/formbindmapModel' });
+    this.handleCancel();
   };
   handleCancel = () => {
     this.setState({ visible: false });

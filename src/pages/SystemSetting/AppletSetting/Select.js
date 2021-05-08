@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-04-30 13:39:59 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-04-30 18:34:03
+ * @Last Modified time: 2021-05-07 14:37:03
  * 关联页面
  */
 import React, { Component } from 'react';
@@ -29,8 +29,26 @@ class Select extends Component {
   }
 
   componentDidMount() {
-    // formListModel
-    const { dispatch } = this.props;
+    const { dispatch, defvalue } = this.props;
+    if (defvalue) {
+      if (defvalue.bindType === 1) {
+        // 一键授权
+        this.handleClickOne();
+      } else {
+        // 表单
+        this.setState({ textOne: '表单', inputVal: '表单', step: 2 }, () => {
+          this.props.handleSelect({
+            inputVal: '表单',
+            type: 3,
+          });
+          this.handleSelect({
+            ...defvalue,
+            formTitle: defvalue.formTitle,
+            buttonText: defvalue.buttonText,
+          });
+        });
+      }
+    }
     dispatch({ type: 'AppletSetting/formListModel', payload: { pageNum: 1, formStatus: '1' } });
   }
 
@@ -40,21 +58,6 @@ class Select extends Component {
       Loading,
       AppletSetting: { formList },
     } = this.props;
-    const dataSource = [
-      { name: '立即预约', age: '2021-01-30' },
-      { name: '立即预约', age: '2021-01-30' },
-      { name: '立即预约', age: '2021-01-30' },
-      { name: '立即预约', age: '2021-01-30' },
-      { name: '立即预约', age: '2021-01-30' },
-      { name: '立即预约', age: '2021-01-30' },
-      { name: '立即预约', age: '2021-01-30' },
-      { name: '立即预约', age: '2021-01-30' },
-      { name: '立即预约', age: '2021-01-30' },
-      { name: '立即预约', age: '2021-01-30' },
-      { name: '立即预约', age: '2021-01-30' },
-      { name: '立即预约', age: '2021-01-30' },
-      { name: '立即预约', age: '2021-01-30' },
-    ];
 
     const columns = [
       { title: '表单标题', dataIndex: 'formTitle' },
@@ -122,7 +125,7 @@ class Select extends Component {
                   onRow={record => {
                     return {
                       onClick: event => {
-                        this.handleSelect(record);
+                        this.handleSelect({ ...record, bindType: 0, buttonText: record.formTitle });
                       }, // 点击行
                     };
                   }}
