@@ -300,7 +300,7 @@ class DesignerLibraryEdit extends PureComponent {
                   initialValue: DesignerDetail.title,
                   rules: [
                     {
-                      max: 10,
+                      max: 30,
                       message: '限制1-30字符长度',
                     },
                   ],
@@ -370,7 +370,7 @@ class DesignerLibraryEdit extends PureComponent {
         styleDicCodes: value,
       });
     } else {
-      message.info('最多支持选择3个');
+      message.warning('最多支持选择3个');
       this.props.form.setFieldsValue({
         styleDicCodes: value,
       });
