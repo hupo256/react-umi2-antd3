@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-04-28 17:05:47 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-07 15:26:03
+ * @Last Modified time: 2021-05-07 18:15:12
  * 小程序设置
  */
 
@@ -77,26 +77,28 @@ class Index extends PureComponent {
         ),
       },
     ];
-    const data = [
-      {
-        key: '1',
-        name: '案例',
-        link: 'page/Case/Case',
-        ...FormDetail['1'],
-      },
-      {
-        key: '2',
-        name: '工地',
-        link: 'page/Site/Site',
-        ...FormDetail['2'],
-      },
-      {
-        key: '3',
-        name: '设计师',
-        link: 'page/designer/designer',
-        ...FormDetail['3'],
-      },
-    ];
+    const data = FormDetail
+      ? [
+          {
+            key: '1',
+            name: '案例',
+            link: 'page/Case/Case',
+            ...FormDetail['1'],
+          },
+          {
+            key: '2',
+            name: '工地',
+            link: 'page/Site/Site',
+            ...FormDetail['2'],
+          },
+          {
+            key: '3',
+            name: '设计师',
+            link: 'page/designer/designer',
+            ...FormDetail['3'],
+          },
+        ]
+      : [];
     const { visible, record } = this.state;
     return (
       <div className={styles.appleCard}>
