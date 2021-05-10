@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-03-18 11:21:43 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-10 17:40:51
+ * @Last Modified time: 2021-05-10 18:23:08
  * 创建文章
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -100,10 +100,6 @@ class ArticleLibraryAdd extends PureComponent {
         sm: { span: 16 },
       },
     };
-    console.log('=1111===================================');
-    console.log(tags);
-    console.log(editorContent);
-    console.log('====================================');
     return (
       <div>
         <PageHeaderWrapper>
@@ -238,9 +234,11 @@ class ArticleLibraryAdd extends PureComponent {
                 })(
                   // <TagGroup tags={tags || []} handleSave={tags => this.handleTagSave(tags)} />
                   <div>
-                    {isCopy && show ? (
-                      <TagGroup tags={tags || []} handleSave={tags => this.handleTagSave(tags)} />
-                    ) : (
+                    {isCopy &&
+                      show && (
+                        <TagGroup tags={tags || []} handleSave={tags => this.handleTagSave(tags)} />
+                      )}
+                    {!isCopy && (
                       <TagGroup tags={[]} handleSave={tags => this.handleTagSave(tags)} />
                     )}
                   </div>
@@ -300,7 +298,7 @@ class ArticleLibraryAdd extends PureComponent {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (err) throw err;
       console.log(values);
-      const { editorContent, tags } = this.state;
+      const { editorContent, tags, isCopy } = this.state;
       if (!editorContent) {
         message.error('请输入文章正文');
         return false;
@@ -316,7 +314,7 @@ class ArticleLibraryAdd extends PureComponent {
           ...values,
           articleContent: editorContent,
           headKeywords: tags,
-          articleChannel: 2,
+          articleChannel: isCopy ? 1 : 2,
         },
       }).then(res => {
         if (res && res.code === 200) {
