@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import styles from './FooterComp.module.scss'
+import styles from './FooterComp.module.less'
 
 export default function FooterComp({ data }) {
   if (!data) return null

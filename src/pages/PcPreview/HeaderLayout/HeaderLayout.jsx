@@ -1,5 +1,5 @@
-import { Layout } from 'antd'
-import styles from './HeaderLayout.module.scss'
+import { Layout } from 'antd';
+import styles from './HeaderLayout.module.less';
 
 const HeaderLayout = ({ left, middle, right }) => (
   <Layout.Header className={styles.headerWrapper}>
@@ -7,6 +7,6 @@ const HeaderLayout = ({ left, middle, right }) => (
     <span className={styles.headerRight}>{middle}</span>
     <span className={styles.contactHeader}>{right}</span>
   </Layout.Header>
-)
+);
 
-export default HeaderLayout
+export default HeaderLayout;

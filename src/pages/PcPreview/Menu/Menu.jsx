@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import styles from './Menu.module.scss'
+import styles from './Menu.module.less'
 import { useState, useEffect } from 'react'
 
 const FAKE_ACTIVE_INDEX = 4

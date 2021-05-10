@@ -1,7 +1,7 @@
-import React, { useState, useRef } from 'react'
-import _ from 'lodash'
-import styles from './Articles.module.scss'
-import cx from 'classnames'
+import React, { useState, useRef } from 'react';
+import _ from 'lodash';
+import styles from './Articles.module.less';
+import cx from 'classnames';
 
 //todo... 根据实际数据决定如何绑定
 const Articles = () => {
@@ -59,7 +59,7 @@ const Articles = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Articles
+export default Articles;

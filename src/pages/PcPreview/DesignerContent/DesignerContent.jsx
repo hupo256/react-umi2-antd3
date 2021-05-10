@@ -1,13 +1,13 @@
-import React, { useState, useRef } from 'react'
-import ReactCardCarousel from 'react-card-carousel'
-import _ from 'lodash'
-import styles from './DesignerContent.module.css'
-import { BtnMore } from '../btn'
-import cx from 'classnames'
+import React, { useState, useRef } from 'react';
+import ReactCardCarousel from 'react-card-carousel';
+import _ from 'lodash';
+import styles from './DesignerContent.module.less';
+import { BtnMore } from '../btn';
+import cx from 'classnames';
 
 const DesignerContent = ({ data }) => {
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const Carousel = useRef()
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const Carousel = useRef();
 
   return (
     <div className={styles.carouselContainer}>
@@ -29,7 +29,7 @@ const DesignerContent = ({ data }) => {
                 <div className={styles.designerWrapper}>
                   <div className={styles.topSection}>
                     <div className={styles.userImageWrapper}>
-                      <img src={value.imgUserUrl} className={styles.userImage}></img>
+                      <img src={value.imgUserUrl} className={styles.userImage} />
                     </div>
                     <div className={styles.right}>
                       <h3 className={styles.titleWrap}>
@@ -39,7 +39,11 @@ const DesignerContent = ({ data }) => {
                       <p className={styles.content}>{value.designer.content}</p>
                     </div>
                   </div>
-                  <BtnMore text={'查看详情'} solid style={{ justifyContent: 'flex-end', marginTop: '15px' }} />
+                  <BtnMore
+                    text={'查看详情'}
+                    solid
+                    style={{ justifyContent: 'flex-end', marginTop: '15px' }}
+                  />
                 </div>
               )}
             </div>
@@ -52,11 +56,11 @@ const DesignerContent = ({ data }) => {
             key={index}
             className={cx(styles.carouselDot, { [styles.current]: index === currentIndex })}
             onClick={() => Carousel.current.goTo(index)}
-          ></div>
+          />
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default DesignerContent
+export default DesignerContent;

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 // import Head from 'next/head'
-import styles from './Home.module.scss';
+import styles from './Home.module.less';
 import _ from 'lodash';
 import CaseProjects from './Case/Case.jsx';
 import MenuList from './Menu/Menu.jsx';
@@ -14,6 +14,9 @@ import FooterComp from './FooterComp/FooterComp.jsx';
 import allData from './data/response_1619664888803.json';
 import allMenusJson from './data/getAllMenus.json';
 import footerDataJson from './data/footer.json';
+
+import WebSetting from './WebSettingOut';
+import ChannelManage from '../ChannelManage';
 
 import { Layout, Avatar, Button, Drawer } from 'antd';
 
@@ -286,10 +289,9 @@ const Home = () => {
         closable={true}
         onClose={() => setShowHeaderDrawer(false)}
         visible={showHeaderDrawer}
+        width={900}
       >
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+        <ChannelManage />
       </Drawer>
 
       <Drawer
@@ -300,18 +302,10 @@ const Home = () => {
         visible={showFooterDrawer}
         width={600}
       >
-        <iframe
-          src="http://dev-wechat.ingongdi.com/#/portal/contentmanagement/websetting"
-          // style="height:100%;width:600px"
-          height="100%"
-          width="600px"
-          frameborder="0"
-        />
+        <WebSetting />
       </Drawer>
     </div>
   );
 };
 
-const HomePage = () => <Home />;
-
-export default HomePage;
+export default Home;

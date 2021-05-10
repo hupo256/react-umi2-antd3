@@ -1,4 +1,4 @@
-import styles from './KeyPoints.module.scss'
+import styles from './KeyPoints.module.less'
 import _ from 'lodash'
 
 const KeyPoints = ({ pointsList }) => {
