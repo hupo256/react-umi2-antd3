@@ -2,14 +2,14 @@
  * @Author: zqm 
  * @Date: 2021-04-28 17:05:47 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-07 18:15:12
+ * @Last Modified time: 2021-05-10 13:44:14
  * 小程序设置
  */
 
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
 import router from 'umi/router';
-import { Card, Button, Icon, Menu, Table, Input, message, Modal } from 'antd';
+import { Card, Switch, Icon, Menu, Table, Input, message, Modal } from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { MyIcon } from '@/utils/utils';
 import styles from './index.less';
@@ -24,12 +24,22 @@ class Index extends PureComponent {
     this.state = {
       visible: false,
       record: null,
+      selectedKeys: ['1'],
+      switchChecked: false,
     };
   }
 
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({ type: 'MiniProgram/formbindmapModel' });
+    dispatch({ type: 'MiniProgram/queryWechatMiniGlobalModel' }).then(res => {
+      if (res?.code === 200) {
+        console.log('====================================');
+        console.log(res);
+        console.log('====================================');
+        this.setState({ switchChecked: res.data?.homePageOpenAuth });
+      }
+    });
   }
 
   render() {
@@ -48,7 +58,27 @@ class Index extends PureComponent {
         title: '模块链接',
         dataIndex: 'link',
         render: (t, r) => {
-          return <span>{t} 复制</span>;
+          return (
+            <div
+              className={styles.copy}
+              onClick={() => {
+                this.handleCopy(t);
+              }}
+            >
+              <p id="text" style={{ display: 'inline-block' }}>
+                {t}
+              </p>
+              <textarea id="input" className={styles.ipt} />
+              {t ? (
+                <span style={{ marginLeft: 20 }}>
+                  <Icon type="copy" />
+                  <span style={{ marginLeft: 5 }}>复制链接</span>
+                </span>
+              ) : (
+                ''
+              )}
+            </div>
+          );
         },
       },
       {
@@ -99,7 +129,7 @@ class Index extends PureComponent {
           },
         ]
       : [];
-    const { visible, record } = this.state;
+    const { visible, record, selectedKeys, switchChecked } = this.state;
     return (
       <div className={styles.appleCard}>
         <PageHeaderWrapper title={title}>
@@ -107,13 +137,22 @@ class Index extends PureComponent {
             <div className={styles.appletWrap}>
               <div className={styles.appleLeft}>
                 <Menu
-                  onClick={this.handleClick}
+                  onClick={e => this.setState({ selectedKeys: [e.key] })}
                   style={{ width: 256 }}
-                  defaultSelectedKeys={['1']}
+                  selectedKeys={selectedKeys}
                   defaultOpenKeys={['sub1']}
                   mode="inline"
                 >
                   <Menu.Item key="1">
+                    <p
+                      style={{
+                        paddingLeft: 24,
+                      }}
+                    >
+                      通用设置
+                    </p>
+                  </Menu.Item>
+                  <Menu.Item key="2">
                     <p
                       style={{
                         paddingLeft: 24,
@@ -124,16 +163,33 @@ class Index extends PureComponent {
                   </Menu.Item>
                 </Menu>
               </div>
-              <div className={styles.appleRight}>
-                <p style={{ fontWeight: 400, fontSize: 13, color: '#666' }}>
-                  <MyIcon
-                    type="icon-tips"
-                    style={{ color: '#ccebfa', fontSize: 18, marginRight: 6 }}
-                  />
-                  关联后，在小程序的对应模块内点击按钮，会跳转至关联的页面
-                </p>
-                <Table columns={columns} dataSource={data} pagination={false} />
-              </div>
+              {selectedKeys[0] === '2' && (
+                <div className={styles.appleRight}>
+                  <p style={{ fontWeight: 400, fontSize: 13, color: '#666' }}>
+                    <MyIcon
+                      type="icon-tips"
+                      style={{ color: '#ccebfa', fontSize: 18, marginRight: 6 }}
+                    />
+                    关联后，在小程序的对应模块内点击按钮，会跳转至关联的页面
+                  </p>
+                  <Table columns={columns} dataSource={data} pagination={false} />
+                </div>
+              )}
+              {selectedKeys[0] === '1' && (
+                <div className={styles.appleRight}>
+                  <p style={{ fontWeight: 500, fontSize: 22, color: '#333' }}>通用设置</p>
+                  <p>
+                    打开小程序一键授权（首次）
+                    <Switch
+                      style={{ marginLeft: 30 }}
+                      checked={switchChecked}
+                      onChange={checked => {
+                        this.handleSwitchChange(checked);
+                      }}
+                    />
+                  </p>
+                </div>
+              )}
             </div>
           </Card>
         </PageHeaderWrapper>
@@ -157,6 +213,29 @@ class Index extends PureComponent {
   handleCancel = () => {
     this.setState({ visible: false });
   };
+  // 开关
+  handleSwitchChange = checked => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'MiniProgram/setWechatMiniGlobalModel',
+      payload: { homePageOpenAuth: checked },
+    }).then(res => {
+      if (res?.code === 200002) {
+        message.warning(res.message);
+      } else if (res?.code === 200) {
+        this.setState({ switchChecked: checked }, () => {
+          message.success(checked ? '授权成功' : '取消授权成功');
+        });
+      }
+    });
+  };
+  handleCopy(t) {
+    let input = document.getElementById('input');
+    input.value = t; // 修改文本框的内容
+    input.select(); // 选中文本
+    document.execCommand('copy'); // 执行浏览器复制命令
+    message.success('复制成功');
+  }
 }
 
 export default Index;

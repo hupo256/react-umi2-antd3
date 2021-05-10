@@ -96,3 +96,19 @@ export async function queryHomePageData(params) {
     body: params,
   });
 }
+
+// 获取小程序全局设置
+export async function queryWechatMiniGlobal(params) {
+  return request(baseurl + '/api/v1/wechat/wechat-mini/setting/getWechatMiniGlobalSetting', {
+    method: 'POST',
+    body: params,
+  });
+}
+
+// 设置小程序全局设置
+export async function setWechatMiniGlobal(params) {
+  return request(baseurl + '/api/v1/wechat/wechat-mini/setting/setWechatMiniGlobalSetting', {
+    method: 'POST',
+    body: params,
+  });
+}
