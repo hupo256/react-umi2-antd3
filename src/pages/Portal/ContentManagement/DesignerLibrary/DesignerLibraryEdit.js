@@ -309,7 +309,7 @@ class DesignerLibraryEdit extends PureComponent {
               <Form.Item label={this.title('关键词')}>
                 {getFieldDecorator('keywords', {})(
                   <div>
-                    {show && (
+                    {show && ( 
                       <TagGroup
                         tags={Array.isArray(tags) ? tags : []}
                         handleSave={tags => this.handleTagSave(tags)}

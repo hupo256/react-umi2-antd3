@@ -117,7 +117,7 @@ class EnterpriseMessage extends Component {
       <div>
         <div style={{ color: '#101010', fontSize: '26px', marginBottom: '20px' }}>
           企业信息
-          <Popover placement="right" className='titleIcon' content="暂无数据">
+          <Popover placement="right" className="titleIcon" content="暂无数据">
             <Icon type="question-circle" />
           </Popover>
         </div>
@@ -308,7 +308,8 @@ class EnterpriseMessage extends Component {
             })(
               <TextArea
                 type="text"
-                style={{ width: 400, height: 54 }}
+                autoSize={true}
+                style={{ width: 400, height: 54, resize: 'none' }}
                 autoComplete="off"
                 placeholder="本网站部分内容由用户自行上传，如权利人发现存在误传其作品情形，请及时与本站联系。"
               />
@@ -330,7 +331,8 @@ class EnterpriseMessage extends Component {
             })(
               <TextArea
                 type="text"
-                style={{ width: 400, height: 54 }}
+                autoSize={true}
+                style={{ width: 400, height: 54, resize: 'none' }}
                 autoComplete="off"
                 placeholder="请输入版权信息，如：@2016 XXX设计装饰有限公司版权所有"
               />

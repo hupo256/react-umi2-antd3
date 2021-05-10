@@ -12,9 +12,10 @@ class BasicMessage extends Component {
     this.state = {
       basicIcon: '',
       basicLogo: '',
+      showtag: false,
       basicTitle: '',
       basicContent: '',
-      basicKeyWords: '',
+      basicKeyWords: [],
       iconUpload: false,
       logoUpload: false,
     };
@@ -22,40 +23,39 @@ class BasicMessage extends Component {
   async componentWillMount() {
     // console.log('basic', this.props);
     const { dispatch } = this.props;
-    const res = await dispatch({ type: 'WebSettingStroe/basicMessageModel' }).then(res => {
+    await dispatch({ type: 'WebSettingStroe/basicMessageModel' }).then(async res => {
       if (res && res.code == 200) {
-        this.setState({
-          basicIcon: res.data.icon,
-          basicLogo: res.data.logo,
-          basicTitle: res.data.title,
-          basicContent: res.data.content,
-          basicKeyWords: JSON.parse(res.data.keywords),
-        });
+        await this.setState(
+          {
+            basicIcon: res.data.icon,
+            basicLogo: res.data.logo,
+            basicTitle: res.data.title,
+            basicContent: res.data.content,
+            basicKeyWords: JSON.parse(res.data.keywords),
+          },
+          () => {
+            this.setState({ showtag: true });
+          }
+        );
       }
+      console.log('basic', JSON.parse(res.data.keywords), this.state);
     });
-    // console.log('basic', JSON.parse(res.data.keywords));
   }
-  // componentDidMount(){
-  //   const keyWordsInput = document.getElementsByClassName('ant-select-search__field')
-  //   console.log('keyWordsInput',keyWordsInput[0].style)
-  //   keyWordsInput[0].maxLength = 10;
-
-  // }
   onBasicForm = e => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (err) {
         throw err;
       }
-      const { basicIcon, basicLogo } = this.state;
+      const { basicIcon, basicLogo, basicKeyWords } = this.state;
       const { dispatch } = this.props;
       let newBaiscIcon = '',
         newBasicLogo = '';
-      console.log('请正确填写网站标题', values.basicKeyWords);
+      console.log('请正确填写网站标题', values);
       if (values.basicTitle.length < 0 || values.basicTitle.length > 30) {
         message.error('请正确填写网站标题');
         return false;
-      } else if (values.basicKeyWords.length > 10) {
+      } else if (basicKeyWords > 10) {
         message.error('关键词不能超过10个');
         return false;
       } else {
@@ -80,7 +80,7 @@ class BasicMessage extends Component {
             logo: newBasicLogo,
             title: values.basicTitle,
             content: values.basicContent,
-            keywords: JSON.stringify(values.basicKeyWords),
+            keywords: JSON.stringify(basicKeyWords),
           },
         }).then(res => {
           if (res && res.code === 200) {
@@ -90,21 +90,19 @@ class BasicMessage extends Component {
               basicLogo: newBasicLogo,
               basicTitle: values.basicTitle,
               basicContent: values.basicContent,
-              basicKeyWords: values.basicKeyWords,
+              basicKeyWords: basicKeyWords,
             });
           }
         });
       }
     });
   };
-  // changeKeyWords(value){
-  //   console.log('zhixing', value)
-  // }
   render() {
     const {
       form: { getFieldDecorator },
     } = this.props;
     const {
+      showtag,
       basicIcon,
       basicLogo,
       iconUpload,
@@ -117,7 +115,7 @@ class BasicMessage extends Component {
       <div>
         <div style={{ color: '#101010', fontSize: '26px', marginBottom: '20px' }}>基本信息</div>
         <Form className="basicMessageFrom" onSubmit={this.onBasicForm}>
-          <FormItem label="网站标题">
+          <FormItem label="网站标题（业主有可能通过您输入的关键词，搜索到您的网站哦！）">
             {getFieldDecorator('basicTitle', {
               initialValue: basicTitle,
               rules: [
@@ -139,7 +137,7 @@ class BasicMessage extends Component {
               />
             )}
           </FormItem>
-          <FormItem label="网站描述">
+          <FormItem label="网站描述（业主有可能通过您输入的关键词，搜索到您的网站哦！）">
             {getFieldDecorator('basicContent', {
               initialValue: basicContent,
               rules: [
@@ -155,22 +153,19 @@ class BasicMessage extends Component {
             })(
               <TextArea
                 type="text"
-                style={{ width: 400, height: 100 }}
+                autoSize={true}
+                style={{ width: 400, height: 100, resize: 'none' }}
                 autoComplete="off"
                 placeholder="请输入网站描述"
               />
             )}
           </FormItem>
-          <FormItem label="关键词">
-            {getFieldDecorator('basicKeyWords', {
-              initialValue: null,
-              rules: [],
-            })(
-              <div style={{ width: 400 }}>
-                <TagGroup
-                  tags={basicKeyWords}
-                  handleSave={basicKeyWords => this.handleTagSave(basicKeyWords)}
-                />
+          <FormItem label="关键词（业主有可能通过您输入的关键词，搜索到您的网站哦！）">
+            {getFieldDecorator('basicKeyWords', {})(
+              <div>
+                {showtag && (
+                  <TagGroup tags={basicKeyWords} handleSave={tags => this.handleTagSave(tags)} />
+                )}
               </div>
             )}
           </FormItem>
@@ -330,8 +325,9 @@ class BasicMessage extends Component {
       </div>
     );
   }
-  handleTagSave = basicKeyWords => {
-    this.setState({ basicKeyWords });
+  handleTagSave = tags => {
+    console.log('basicKeyWords', tags, this.state);
+    this.setState({ basicKeyWords: tags });
   };
   // 图片选择cance
   handleUploadCancel = () => {

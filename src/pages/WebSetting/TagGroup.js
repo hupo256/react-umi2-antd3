@@ -2,16 +2,16 @@ import React, { Component } from 'react';
 import { Tag, Input, Tooltip, Icon, message } from 'antd';
 
 class TagGroup extends Component {
-  state = {
-    tags: [],
-    inputVisible: false,
-    inputValue: '',
-  };
-
-  componentDidMount() {
-    const { tags } = this.props;
-    this.setState({ tags: tags || [] });
+  constructor(props){
+    super(props)
+    console.log(props)
+    this.state = {
+      tags: props.tags,
+      inputVisible: false,
+      inputValue: '',
+    };
   }
+  
 
   handleClose = removedTag => {
     const tags = this.state.tags.filter(tag => tag !== removedTag);
@@ -32,8 +32,7 @@ class TagGroup extends Component {
     // }
   };
 
-  handleInputConfirm = (e) => {
-    e.preventDefault();
+  handleInputConfirm = () => {
     const { inputValue } = this.state;
     let { tags } = this.state;
     if (inputValue && inputValue.length > 10) {
@@ -59,6 +58,7 @@ class TagGroup extends Component {
   saveInputRef = input => (this.input = input);
   render() {
     const { tags, inputVisible, inputValue } = this.state;
+    console.log('tags', tags)
     return (
       <div>
         {tags.map((tag, index) => {
