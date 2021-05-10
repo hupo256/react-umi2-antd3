@@ -224,12 +224,12 @@ export default [
             code: 'MU9000000100010005',
             component: './Portal/ContentManagement/FormLibrary/FormLibrary',
           },
-          {
-            path: '/portal/contentmanagement/websetting',
-            name: 'websetting',
-            // code: 'MU9000000100010008',
-            component: './Portal/ContentManagement/WebSetting/index',
-          },
+          // {
+          //   path: '/portal/contentmanagement/websetting',
+          //   name: 'websetting',
+          //   // code: 'MU9000000100010008',
+          //   component: './Portal/ContentManagement/WebSetting/index',
+          // },
         ],
       },
       // 活动 - 营销小游戏
