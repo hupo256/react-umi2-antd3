@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-04-29 17:47:52 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-08 18:01:24
+ * @Last Modified time: 2021-05-10 16:18:33
  * 公有文章库列表
  */
 import React, { Component } from 'react';
@@ -21,7 +21,7 @@ class ArticleListModel extends Component {
     this.state = {
       searchWord: null,
 
-      previewVisible: true,
+      previewVisible: false,
     };
   }
   componentWillMount() {}
@@ -41,12 +41,25 @@ class ArticleListModel extends Component {
       {
         title: '更新时间',
         dataIndex: 'updateTime',
+        width: 160,
       },
       {
         title: '操作',
         dataIndex: 'operate',
+        width: 80,
         render: (t, r) => {
-          return <span style={{ color: '#fe6a30', cursor: 'pointer' }}>预览</span>;
+          return (
+            <span
+              style={{ color: '#fe6a30', cursor: 'pointer' }}
+              onClick={() => {
+                this.setState({ record: r }, () => {
+                  this.setState({ previewVisible: true });
+                });
+              }}
+            >
+              预览
+            </span>
+          );
         },
       },
     ];
@@ -106,6 +119,7 @@ class ArticleListModel extends Component {
         {previewVisible && (
           <ArticlePreviewModel
             visible={previewVisible}
+            record={this.state.record}
             handleCancel={() => this.setState({ previewVisible: false })}
           />
         )}

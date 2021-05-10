@@ -3,6 +3,7 @@ import {
   createArticle, //创建文章
   editArticle, //编辑文章
   getArticleDetail, //文章详情
+  getPublicArticleDetail, //公有库文章详情
   articleStatus, //切换文章状态
   publicList, //公有库文章
   publicDetail, //公有库文章详情
@@ -75,6 +76,20 @@ export default {
       });
       return response;
     },
+    // 查询公有库文章详情
+    *getPublicArticleDetailModel({ payload }, { call, put }) {
+      const response = yield call(getPublicArticleDetail, {
+        ...payload,
+      });
+      yield put({
+        type: 'upData',
+        payload: {
+          publicListDetail: (response && response.data) || {},
+        },
+      });
+      return response;
+    },
+
     // 创建文章
     *createArticleModel({ payload }, { call, put }) {
       const response = yield call(createArticle, {

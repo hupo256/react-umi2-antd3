@@ -56,3 +56,11 @@ export async function publicDetail(params) {
     body: params,
   });
 }
+
+// 公有库文章详情
+export async function getPublicArticleDetail(params) {
+  return request(baseurl + '/api/v1/wechat/article/public/detail', {
+    method: 'POST',
+    body: params,
+  });
+}
