@@ -162,7 +162,7 @@ class BasicMessage extends Component {
           </FormItem>
           <FormItem label="关键词（业主有可能通过您输入的关键词，搜索到您的网站哦！）">
             {getFieldDecorator('basicKeyWords', {})(
-              <div>
+              <div style={{width: 400}}>
                 {showtag && (
                   <TagGroup tags={basicKeyWords} handleSave={tags => this.handleTagSave(tags)} />
                 )}
