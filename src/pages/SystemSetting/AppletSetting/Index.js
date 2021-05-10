@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-04-28 17:05:47 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-10 10:18:56
+ * @Last Modified time: 2021-05-10 13:44:14
  * 小程序设置
  */
 
@@ -223,7 +223,9 @@ class Index extends PureComponent {
       if (res?.code === 200002) {
         message.warning(res.message);
       } else if (res?.code === 200) {
-        this.setState({ switchChecked: checked });
+        this.setState({ switchChecked: checked }, () => {
+          message.success(checked ? '授权成功' : '取消授权成功');
+        });
       }
     });
   };
