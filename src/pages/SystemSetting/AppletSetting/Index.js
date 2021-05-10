@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-04-28 17:05:47 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-08 19:40:49
+ * @Last Modified time: 2021-05-10 10:18:56
  * 小程序设置
  */
 
@@ -58,7 +58,27 @@ class Index extends PureComponent {
         title: '模块链接',
         dataIndex: 'link',
         render: (t, r) => {
-          return <span>{t} 复制</span>;
+          return (
+            <div
+              className={styles.copy}
+              onClick={() => {
+                this.handleCopy(t);
+              }}
+            >
+              <p id="text" style={{ display: 'inline-block' }}>
+                {t}
+              </p>
+              <textarea id="input" className={styles.ipt} />
+              {t ? (
+                <span style={{ marginLeft: 20 }}>
+                  <Icon type="copy" />
+                  <span style={{ marginLeft: 5 }}>复制链接</span>
+                </span>
+              ) : (
+                ''
+              )}
+            </div>
+          );
         },
       },
       {
@@ -207,6 +227,13 @@ class Index extends PureComponent {
       }
     });
   };
+  handleCopy(t) {
+    let input = document.getElementById('input');
+    input.value = t; // 修改文本框的内容
+    input.select(); // 选中文本
+    document.execCommand('copy'); // 执行浏览器复制命令
+    message.success('复制成功');
+  }
 }
 
 export default Index;
