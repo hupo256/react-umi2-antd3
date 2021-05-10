@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-03-18 11:21:43 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-10 16:15:53
+ * @Last Modified time: 2021-05-10 17:40:51
  * 创建文章
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -51,6 +51,8 @@ class ArticleLibraryAdd extends PureComponent {
       editorContent: null,
       step: null,
       tags: [],
+      show: false,
+      isCopy: false,
     };
   }
 
@@ -58,6 +60,18 @@ class ArticleLibraryAdd extends PureComponent {
     // 获取字典数据 queryDicModel
     const { dispatch } = this.props;
     this.setState({ step: getQueryUrlVal('step') });
+    if (getQueryUrlVal('uid')) {
+      this.setState({ isCopy: true });
+      dispatch({
+        type: 'ArticleLibrary/getPublicDetailModel',
+        payload: { articleUid: getQueryUrlVal('uid') },
+      }).then(res => {
+        if (res && res.code === 200) {
+          this.init(res.data);
+          this.setState({ show: true });
+        }
+      });
+    }
     dispatch({
       type: 'DictConfig/queryDicModel',
       payload: { dicModuleCodes: 'DM006' },
@@ -70,10 +84,11 @@ class ArticleLibraryAdd extends PureComponent {
   }
 
   render() {
-    const { step, coverImg, uploadVisible, dictionaries, editorContent, tags } = this.state;
+    const { isCopy, show, coverImg, uploadVisible, dictionaries, editorContent, tags } = this.state;
     const { getFieldDecorator } = this.props.form;
     const {
       DictConfig: { dicData },
+      ArticleLibrary: { publicListDetail },
     } = this.props;
     const formItemLayout = {
       labelCol: {
@@ -85,6 +100,10 @@ class ArticleLibraryAdd extends PureComponent {
         sm: { span: 16 },
       },
     };
+    console.log('=1111===================================');
+    console.log(tags);
+    console.log(editorContent);
+    console.log('====================================');
     return (
       <div>
         <PageHeaderWrapper>
@@ -93,6 +112,7 @@ class ArticleLibraryAdd extends PureComponent {
               <h4 className={styles.title}>基本信息</h4>
               <Form.Item label="文章标题">
                 {getFieldDecorator('articleTitle', {
+                  initialValue: (isCopy && publicListDetail.articleTitle) || '',
                   rules: [
                     {
                       required: true,
@@ -128,6 +148,7 @@ class ArticleLibraryAdd extends PureComponent {
               </Form.Item>
               <Form.Item label="封面图">
                 {getFieldDecorator('articleCoverImg', {
+                  initialValue: (isCopy && publicListDetail.articleCoverImg) || '',
                   rules: [],
                 })(
                   <div className="coverImg">
@@ -168,35 +189,66 @@ class ArticleLibraryAdd extends PureComponent {
                   </div>
                 )}
               </Form.Item>
-
-              <Form.Item label={<span className="beforeStar">文章正文</span>}>
-                {getFieldDecorator('articleContent', {
-                  initialValue: editorContent || null,
-                  rules: [
-                    {
-                      required: false,
-                      message: '请输入文章正文',
-                    },
-                  ],
-                })(
-                  <BraftEditor
-                    defval={editorContent}
-                    editorCont={cont => {
-                      this.handleEditorCont(cont);
-                    }}
-                  />
+              {isCopy &&
+                editorContent && (
+                  <Form.Item label={<span className="beforeStar">文章正文</span>}>
+                    {getFieldDecorator('articleContent', {
+                      initialValue: (isCopy && editorContent) || null,
+                      rules: [
+                        {
+                          required: false,
+                          message: '请输入文章正文',
+                        },
+                      ],
+                    })(
+                      <BraftEditor
+                        defval={editorContent}
+                        editorCont={cont => {
+                          this.handleEditorCont(cont);
+                        }}
+                      />
+                    )}
+                  </Form.Item>
                 )}
-              </Form.Item>
-
+              {!isCopy && (
+                <Form.Item label={<span className="beforeStar">文章正文</span>}>
+                  {getFieldDecorator('articleContent', {
+                    initialValue: null,
+                    rules: [
+                      {
+                        required: false,
+                        message: '请输入文章正文',
+                      },
+                    ],
+                  })(
+                    <BraftEditor
+                      defval={null}
+                      editorCont={cont => {
+                        this.handleEditorCont(cont);
+                      }}
+                    />
+                  )}
+                </Form.Item>
+              )}
               <h4 className={styles.title}>TDK设置（用于搜索引擎收录）</h4>
               <Form.Item label={this.title('关键词')}>
                 {getFieldDecorator('headKeywords', {
                   initialValue: null,
                   rules: [],
-                })(<TagGroup tags={tags || []} handleSave={tags => this.handleTagSave(tags)} />)}
+                })(
+                  // <TagGroup tags={tags || []} handleSave={tags => this.handleTagSave(tags)} />
+                  <div>
+                    {isCopy && show ? (
+                      <TagGroup tags={tags || []} handleSave={tags => this.handleTagSave(tags)} />
+                    ) : (
+                      <TagGroup tags={[]} handleSave={tags => this.handleTagSave(tags)} />
+                    )}
+                  </div>
+                )}
               </Form.Item>
               <Form.Item label={this.title('文章说明')}>
                 {getFieldDecorator('articleDescription', {
+                  initialValue: (isCopy && publicListDetail.articleDescription) || '',
                   rules: [
                     {
                       max: 200,
@@ -304,6 +356,19 @@ class ArticleLibraryAdd extends PureComponent {
         {'  '}
       </span>
     );
+  };
+  init = detail => {
+    console.log('====================================');
+    console.log(detail);
+    console.log('====================================');
+    this.props.form.setFieldsValue({
+      articleCoverImg: detail.articleCoverImg,
+    });
+    this.setState({
+      editorContent: detail.articleContent,
+      coverImg: detail.articleCoverImg,
+      tags: detail.headKeywords || [],
+    });
   };
 }
 

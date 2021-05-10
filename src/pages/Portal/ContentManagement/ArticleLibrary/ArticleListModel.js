@@ -2,11 +2,11 @@
  * @Author: zqm 
  * @Date: 2021-04-29 17:47:52 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-10 16:18:33
+ * @Last Modified time: 2021-05-10 17:11:22
  * 公有文章库列表
  */
 import React, { Component } from 'react';
-import { Modal, Table, Input, Icon, Button } from 'antd';
+import { Modal, Table, Input, Radio, Button } from 'antd';
 import { connect } from 'dva';
 import ArticlePreviewModel from './ArticlePreviewModel';
 const { Search } = Input;
@@ -20,7 +20,7 @@ class ArticleListModel extends Component {
     super(props);
     this.state = {
       searchWord: null,
-
+      uid: null,
       previewVisible: false,
     };
   }
@@ -34,6 +34,14 @@ class ArticleListModel extends Component {
     const { previewVisible } = this.state;
 
     const columns = [
+      {
+        title: '',
+        dataIndex: 'radio',
+        width: 50,
+        render: (t, r) => {
+          return <Radio checked={r.articleUid === this.state.uid} />;
+        },
+      },
       {
         title: '文章标题',
         dataIndex: 'articleTitle',
@@ -51,7 +59,8 @@ class ArticleListModel extends Component {
           return (
             <span
               style={{ color: '#fe6a30', cursor: 'pointer' }}
-              onClick={() => {
+              onClick={e => {
+                e.stopPropagation();
                 this.setState({ record: r }, () => {
                   this.setState({ previewVisible: true });
                 });
@@ -67,9 +76,6 @@ class ArticleListModel extends Component {
       Loading,
       ArticleLibrary: { publicList },
     } = this.props;
-    console.log('====================================');
-    console.log(publicList);
-    console.log('====================================');
     return (
       <Modal
         title="公有文章库"
@@ -110,8 +116,16 @@ class ArticleListModel extends Component {
             </span>
           </p>
           <Table
+            rowKey={(r, i) => i}
             loading={Loading}
             dataSource={publicList?.list}
+            onRow={record => {
+              return {
+                onClick: event => {
+                  this.setState({ uid: record.articleUid });
+                }, // 点击行
+              };
+            }}
             columns={columns}
             scroll={{ y: 400 }}
           />
@@ -120,6 +134,7 @@ class ArticleListModel extends Component {
           <ArticlePreviewModel
             visible={previewVisible}
             record={this.state.record}
+            handleUseArticle={uid => this.setState({ uid, previewVisible: false })}
             handleCancel={() => this.setState({ previewVisible: false })}
           />
         )}
@@ -127,7 +142,12 @@ class ArticleListModel extends Component {
     );
   }
   handleOk = () => {
-    this.props.handleOk();
+    const { uid } = this.state;
+    if (!uid) {
+      message.warning('请选择公有文章');
+    } else {
+      this.props.handleOk(uid);
+    }
   };
 
   handleSrarchStatus = status => {

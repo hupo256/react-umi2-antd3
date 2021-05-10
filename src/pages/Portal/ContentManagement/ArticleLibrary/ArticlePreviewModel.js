@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-04-29 17:47:52 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-10 16:21:37
+ * @Last Modified time: 2021-05-10 17:03:51
  * 公有文章库列表
  */
 import React, { Component } from 'react';
@@ -34,6 +34,7 @@ class ArticlePreviewModel extends Component {
     const { radioval } = this.state;
     const {
       Loading,
+      record,
       ArticleLibrary: { publicListDetail },
     } = this.props;
     console.log('====================================');
@@ -72,7 +73,11 @@ class ArticlePreviewModel extends Component {
               }}
             />
           </Spin>
-          <Button type="primary" style={{ margin: '30px auto 0' }}>
+          <Button
+            type="primary"
+            style={{ margin: '30px auto 0' }}
+            onClick={() => this.props.handleUseArticle(record.articleUid)}
+          >
             使用文章
           </Button>
         </div>

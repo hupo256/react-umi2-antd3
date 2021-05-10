@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:50:21 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-06 18:15:59
+ * @Last Modified time: 2021-05-10 17:12:53
  * 文章库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -245,7 +245,7 @@ class ArticleLibrary extends PureComponent {
         {ArticleListVisible && (
           <ArticleListModel
             handleCancel={() => this.handleArticleCancel()}
-            handleOk={() => this.handleArticleOk()}
+            handleOk={uid => this.handleArticleOk(uid)}
             visible={ArticleListVisible}
           />
         )}
@@ -326,8 +326,10 @@ class ArticleLibrary extends PureComponent {
     this.setState({ CreateModeVisible: false });
   };
 
-  handleArticleOk = () => {
-    // this.setState({ CreateModeVisible: false });
+  handleArticleOk = uid => {
+    this.setState({ CreateModeVisible: false });
+    const { step } = this.state;
+    router.push(`/portal/contentmanagement/articlelibrary/add?step=${step}&uid=${uid}`);
   };
   handleArticleCancel = () => {
     this.setState({ ArticleListVisible: false });
