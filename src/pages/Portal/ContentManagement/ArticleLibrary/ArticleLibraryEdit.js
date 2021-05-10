@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-03-18 11:22:23 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-08 15:50:42
+ * @Last Modified time: 2021-05-10 16:16:04
  * 编辑文章
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -121,8 +121,8 @@ class ArticleLibraryEdit extends PureComponent {
                       message: '请输入文章标题',
                     },
                     {
-                      max: 10,
-                      message: '限制1-10字符长度',
+                      max: 30,
+                      message: '限制1-30字符长度',
                     },
                   ],
                 })(<Input style={{ width: 400 }} placeholder="请输入文章标题" />)}
