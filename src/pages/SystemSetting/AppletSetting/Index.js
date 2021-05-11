@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-04-28 17:05:47 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-10 13:44:14
+ * @Last Modified time: 2021-05-11 19:02:20
  * 小程序设置
  */
 
@@ -65,12 +65,12 @@ class Index extends PureComponent {
                 this.handleCopy(t);
               }}
             >
-              <p id="text" style={{ display: 'inline-block' }}>
+              <p id="text" style={{ display: 'block' }}>
                 {t}
               </p>
               <textarea id="input" className={styles.ipt} />
               {t ? (
-                <span style={{ marginLeft: 20 }}>
+                <span style={{ marginLeft: 0 }}>
                   <Icon type="copy" />
                   <span style={{ marginLeft: 5 }}>复制链接</span>
                 </span>
@@ -84,6 +84,9 @@ class Index extends PureComponent {
       {
         title: '已关联页面',
         dataIndex: 'formTitle',
+        render: t => {
+          return <span>{t ? t : '一键授权'}</span>;
+        },
       },
       {
         title: '按钮名称',
