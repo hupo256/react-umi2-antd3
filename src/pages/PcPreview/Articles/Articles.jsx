@@ -1,63 +1,41 @@
-import React, { useState, useRef } from 'react';
+import React from 'react';
 import _ from 'lodash';
 import styles from './Articles.module.less';
 import cx from 'classnames';
 
-//todo... 根据实际数据决定如何绑定
-const Articles = () => {
+const Articles = ({ data }) => {
+  if (_.isEmpty(data)) return null;
+
   return (
     <div className={styles.mainWrapper}>
-      <div className={styles.container}>
-        <div className={cx(styles.title, styles.before)}>装修前</div>
-        <div className={styles.wrapper}>
-          <a href="/" className={styles.articleLine}>
-            【房产】 吊灯安装方式是什么，吊灯安装的方法
-          </a>
-          <a href="/" className={styles.articleLine}>
-            【房产】 吊灯安装方式是什么，吊灯安装的方法
-          </a>
-          <a href="/" className={styles.articleLine}>
-            【房产】 吊灯安装方式是什么，吊灯安装的方法
-          </a>
-          <a href="/" className={styles.articleLine}>
-            【房产】 吊灯安装方式是什么，吊灯安装的方法
-          </a>
-        </div>
-      </div>
-      <div className={styles.container}>
-        <div className={cx(styles.title, styles.wip)}>装修中</div>
-        <div className={styles.wrapper}>
-          <a href="/" className={styles.articleLine}>
-            【房产】 吊灯安装方式是什么，吊灯安装的方法
-          </a>
-          <a href="/" className={styles.articleLine}>
-            【房产】 吊灯安装方式是什么，吊灯安装的方法
-          </a>
-          <a href="/" className={styles.articleLine}>
-            【房产】 吊灯安装方式是什么，吊灯安装的方法
-          </a>
-          <a href="/" className={styles.articleLine}>
-            【房产】 吊灯安装方式是什么，吊灯安装的方法
-          </a>
-        </div>
-      </div>
-      <div className={styles.container}>
-        <div className={cx(styles.title, styles.after)}>装修后</div>
-        <div className={styles.wrapper}>
-          <a href="/" className={styles.articleLine}>
-            【房产】 吊灯安装方式是什么，吊灯安装的方法
-          </a>
-          <a href="/" className={styles.articleLine}>
-            【房产】 吊灯安装方式是什么，吊灯安装的方法
-          </a>
-          <a href="/" className={styles.articleLine}>
-            【房产】 吊灯安装方式是什么，吊灯安装的方法
-          </a>
-          <a href="/" className={styles.articleLine}>
-            【房产】 吊灯安装方式是什么，吊灯安装的方法
-          </a>
-        </div>
-      </div>
+      {_.map(data, (item, index) => {
+        return (
+          <div className={styles.container} key={`${item.code}-${index}`}>
+            <div
+              className={cx(styles.title, {
+                [styles.before]: index === 0,
+                [styles.wip]: index === 1,
+                [styles.after]: index === 2,
+              })}
+            >
+              {item.name}
+            </div>
+            <div className={styles.wrapper}>
+              {_.map(item.articleList, article => {
+                return (
+                  <a
+                    key={article.articleDicCode}
+                    href={`posts/${article.articleDicCode}`}
+                    className={styles.articleLine}
+                  >
+                    {article.articleTitle}
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 };

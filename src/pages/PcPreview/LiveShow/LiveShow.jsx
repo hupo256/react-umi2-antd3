@@ -2,15 +2,21 @@ import { BtnMore } from '../btn';
 import _ from 'lodash';
 import styles from './LiveShow.module.less';
 
+const CHN_NUM_CHAR = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九'];
+
 const CaseProjects = ({ data }) => {
-  // 初版
   if (_.isEmpty(data)) return null;
   const len = data.length;
 
   const caseStyle = {};
   _.forEach(data, (item, index) => {
+    const { bedroom, parlor } = JSON.parse(item.houseType);
+    data[index]['text'] = `${item.buildingName} | ${item.buildingArea}m² | ${
+      CHN_NUM_CHAR[bedroom]
+    }室${CHN_NUM_CHAR[parlor]}厅 | ${item.renovationCosts / 10000}万元`;
+
     caseStyle[`image${index}`] = {
-      background: `url(${item.imgUrl}) no-repeat center center`,
+      background: `url(${item.coverImg}) no-repeat center center`,
       backgroundSize: 'cover',
       height: '100%',
     };
@@ -134,11 +140,9 @@ const CaseProjects = ({ data }) => {
       return <OneImageLayout />;
     case 2:
       return <TwoImageLayout />;
-    case 3:
+    default:
       return <ThreeImageLayout />;
   }
-
-  return null;
 };
 
 export default CaseProjects;

@@ -6,6 +6,8 @@ import { BtnMore } from '../btn';
 import cx from 'classnames';
 
 const DesignerContent = ({ data }) => {
+  if (_.isEmpty(data)) return null;
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const Carousel = useRef();
 
@@ -21,7 +23,10 @@ const DesignerContent = ({ data }) => {
           <div className={index === currentIndex ? '' : styles.inactive} key={index}>
             <div
               style={{
-                background: `url(${value.imgUrl}) no-repeat center center`,
+                background: value.caseCoverUrlList[0]
+                  ? `url(${value.caseCoverUrlList[0]}) no-repeat center center`
+                  : '#e8e8e8',
+                backgroundSize: 'cover',
               }}
               className={styles.container}
             >
@@ -29,14 +34,21 @@ const DesignerContent = ({ data }) => {
                 <div className={styles.designerWrapper}>
                   <div className={styles.topSection}>
                     <div className={styles.userImageWrapper}>
-                      <img src={value.imgUserUrl} className={styles.userImage} />
+                      <img
+                        src={value.headPicUrl}
+                        className={styles.userImage}
+                        style={{
+                          width: '91px',
+                          height: '91px',
+                        }}
+                      />
                     </div>
                     <div className={styles.right}>
                       <h3 className={styles.titleWrap}>
-                        <p className={styles.name}>{value.designer.name}</p>
-                        <div className={styles.jobTitle}>{value.designer.title}</div>
+                        <p className={styles.name}>{value.name}</p>
+                        <div className={styles.jobTitle}>{value.position}</div>
                       </h3>
-                      <p className={styles.content}>{value.designer.content}</p>
+                      <p className={styles.content}>{value.designConcept}</p>
                     </div>
                   </div>
                   <BtnMore

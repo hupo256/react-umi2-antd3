@@ -2,15 +2,20 @@ import { BtnMore } from '../btn';
 import _ from 'lodash';
 import styles from './Case.module.less';
 
+const CHN_NUM_CHAR = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九'];
+
 const CaseProjects = ({ data }) => {
-  // 初版
   if (_.isEmpty(data)) return null;
+
   const len = data.length;
 
   const caseStyle = {};
   _.forEach(data, (item, index) => {
+    data[index]['text'] = `${item.title} | ${item.acreage}m² | ${CHN_NUM_CHAR[item.bedroom]}室${
+      CHN_NUM_CHAR[item.liveroom]
+    }厅 | ${item.decorationCost / 10000}万元`;
     caseStyle[`image${index}`] = {
-      background: `url(${item.imgUrl}) no-repeat center center`,
+      background: `url(${item.coverPicUrl}) no-repeat center center`,
       backgroundSize: 'cover',
       height: '100%',
     };
@@ -263,11 +268,9 @@ const CaseProjects = ({ data }) => {
       return <ThreeImageLayout />;
     case 4:
       return <FourImageLayout />;
-    case 5:
+    default:
       return <FiveImageLayout />;
   }
-
-  return null;
 };
 
 export default CaseProjects;
