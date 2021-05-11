@@ -37,7 +37,7 @@ const CaseProjects = ({ data }) => {
           <div
             style={caseStyle.caseItem}
             className={styles.clickableImg}
-            onClick={() => (window.location.href = `/sites/details?gongdiUid=${data[0].gongdiUid}`)}
+            onClick={() => (window.location.href = `/sites/details?gongdiUid=${data[0].uid}`)}
           >
             <div className={styles.bgText}>
               <p>{data[0].text}</p>
@@ -63,7 +63,7 @@ const CaseProjects = ({ data }) => {
           <div
             style={caseStyle.caseItem}
             className={styles.clickableImg}
-            onClick={() => (window.location.href = `/sites/details?gongdiUid=${data[0].gongdiUid}`)}
+            onClick={() => (window.location.href = `/sites/details?gongdiUid=${data[0].uid}`)}
           >
             <div className={styles.bgText}>
               <p>{data[0].text}</p>
@@ -74,7 +74,7 @@ const CaseProjects = ({ data }) => {
           <div
             style={caseStyle.caseItem}
             className={styles.clickableImg}
-            onClick={() => (window.location.href = `/sites/details?gongdiUid=${data[1].gongdiUid}`)}
+            onClick={() => (window.location.href = `/sites/details?gongdiUid=${data[1].uid}`)}
           >
             <div className={styles.bgText}>
               <p>{data[1].text}</p>
@@ -117,7 +117,7 @@ const CaseProjects = ({ data }) => {
           <div
             style={caseStyle.left}
             className={styles.clickableImg}
-            onClick={() => (window.location.href = `/sites/details?gongdiUid=${data[0].gongdiUid}`)}
+            onClick={() => (window.location.href = `/sites/details?gongdiUid=${data[0].uid}`)}
           >
             <div className={styles.bgText}>
               <p>{data[1].text}</p>
@@ -128,9 +128,7 @@ const CaseProjects = ({ data }) => {
             <div
               style={caseStyle.caseItem}
               className={styles.clickableImg}
-              onClick={() =>
-                (window.location.href = `/sites/details?gongdiUid=${data[1].gongdiUid}`)
-              }
+              onClick={() => (window.location.href = `/sites/details?gongdiUid=${data[1].uid}`)}
             >
               <div className={styles.bgText}>
                 <p>{data[1].text}</p>
@@ -140,9 +138,7 @@ const CaseProjects = ({ data }) => {
             <div
               style={caseStyle.caseItem}
               className={styles.clickableImg}
-              onClick={() =>
-                (window.location.href = `/sites/details?gongdiUid=${data[2].gongdiUid}`)
-              }
+              onClick={() => (window.location.href = `/sites/details?gongdiUid=${data[2].uid}`)}
             >
               <div className={styles.bgText}>
                 <p>{data[2].text}</p>
