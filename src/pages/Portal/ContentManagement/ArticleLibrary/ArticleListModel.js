@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-04-29 17:47:52 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-10 17:11:22
+ * @Last Modified time: 2021-05-11 18:40:24
  * 公有文章库列表
  */
 import React, { Component } from 'react';
@@ -28,6 +28,10 @@ class ArticleListModel extends Component {
 
   componentDidMount() {
     this.getList({ pageNum: 1, articleStatus: 0 });
+    // 获取公有文章栏目
+    // queryDicModuleList
+    const { dispatch } = this.props;
+    dispatch({ type: 'ArticleLibrary/queryDicModuleList', payload: { dicModuleCodes: 'DM006' } });
   }
 
   render() {
@@ -74,8 +78,11 @@ class ArticleListModel extends Component {
     ];
     const {
       Loading,
-      ArticleLibrary: { publicList },
+      ArticleLibrary: { publicList, DicModuleList },
     } = this.props;
+    console.log('====================================');
+    console.log(DicModuleList);
+    console.log('====================================');
     return (
       <Modal
         title="公有文章库"

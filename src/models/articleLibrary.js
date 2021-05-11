@@ -7,6 +7,7 @@ import {
   articleStatus, //切换文章状态
   publicList, //公有库文章
   publicDetail, //公有库文章详情
+  queryDicModuleList, //公有库文章栏目
 } from '@/services/articleLibrary';
 
 export default {
@@ -19,9 +20,23 @@ export default {
     publicList: {},
     publicListQuery: {},
     publicListDetail: {},
+    DicModuleList: [],
   },
 
   effects: {
+    // 公有库文章栏目
+    *queryDicModuleList({ payload }, { call, put }) {
+      const response = yield call(queryDicModuleList, {
+        ...payload,
+      });
+      yield put({
+        type: 'upData',
+        payload: {
+          DicModuleList: response?.data?.DM006 || [],
+        },
+      });
+      return response;
+    },
     // 公有库文章列表
     *getPublicListModel({ payload }, { call, put }) {
       const response = yield call(publicList, {

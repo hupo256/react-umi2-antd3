@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:50:21 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-10 17:12:53
+ * @Last Modified time: 2021-05-11 18:41:51
  * 文章库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -199,7 +199,7 @@ class ArticleLibrary extends PureComponent {
             <Table
               loading={Loading}
               style={{ marginTop: 20 }}
-              rowKey={record => record.uid}
+              rowKey={(r, i) => i}
               dataSource={ArticleList.list}
               columns={columns}
               onChange={this.handleTableChange}
