@@ -31,6 +31,7 @@ export default {
   'menu.insite.decorate': '首页装修',
   'menu.insite.channelmanage': '频道管理',
   'menu.insite.websetting': '网站设置',
+  'menu.insite.applet': '小程序设置',
 
   'menu.activity': '活动',
   'menu.activity.mktGame': '营销小游戏',
