@@ -80,7 +80,7 @@ export default class ChannelManage extends Component {
             pageNum: 1,
             recordTotal: 0,
             data: null,
-            pageSize: 10
+            pageSize: 100
         }
     }
 
@@ -155,15 +155,6 @@ export default class ChannelManage extends Component {
                 }
             }) 
         } 
-        if ( typeString === 'selectSite' ) {
-            dispatch({
-                type: 'channelManage/save',
-                payload: {
-                    currentDetailType: 0,
-                    selectDetailData: []
-                }
-            }) 
-        }
         
     }
     /**
@@ -175,6 +166,7 @@ export default class ChannelManage extends Component {
         confirm({
             title: `确定要${record.status === 2 ? '启' : '停'}用当前频道吗?`,
             content: record.status === 2 ? '启用后，将可以在装企小程序和网站中显示' : '停用后，在装企小程序和网站中均不会显示当前频道',
+            icon: record.status === 2 ? <Icon style={{color: '#52c41a'}}   type="check-circle" /> :  "question-circle",
             onOk: async () => {
                 try {
                     const res = await toggleStatusApi({
@@ -211,8 +203,16 @@ export default class ChannelManage extends Component {
             }
         })
     }
+
+    pageNumChange = pageNum => {
+        this.setState({
+            pageNum
+        })
+        this.getList({pageNum})
+    }
+
     render() {
-        const { isShow, list, pageNum, recordTotal } = this.state;
+        const { isShow, list, pageNum, recordTotal, pageSize } = this.state;
         const { isOver, connectDragSource, connectDropTarget, moveRow, showCreateEdit, showSelectSite, isCreate, currentDetailType } = this.props;
         const appTip = <img  src="https://img0.baidu.com/it/u=2568886724,3755935577&fm=26&fmt=auto&gp=0.jpg" alt="" srcset=""/>
         const webTip = <img  src="https://img0.baidu.com/it/u=2568886724,3755935577&fm=26&fmt=auto&gp=0.jpg" alt="" srcset=""/>
@@ -284,7 +284,7 @@ export default class ChannelManage extends Component {
                 }   
             },
             {
-                title: '操作',
+                title: <span style={{padding: '0 15px'}}>操作</span> ,
                 key: 'modify',
                 render: (text, record) => {
                     return (
@@ -323,8 +323,9 @@ export default class ChannelManage extends Component {
                                     pagination={{
                                         current: pageNum,
                                         total: recordTotal,
-                                        defaultPageSize: 100,
-                                        hideOnSinglePage: true
+                                        pageSize,
+                                        hideOnSinglePage: true,
+                                        onChange: this.pageNumChange
                                     }}
                                 />
                             </DndProvider>
@@ -340,7 +341,7 @@ export default class ChannelManage extends Component {
                     >
                         <CreateEdit />
                     </Modal>
-                    <Modal
+                    {/* <Modal
                         title={`选择${DETAIL_TYPE_MAP[currentDetailType]}`}
                         width='800px'
                         footer={null}
@@ -349,7 +350,7 @@ export default class ChannelManage extends Component {
                         onCancel={() => {this.toggleShow('selectSite')}}
                     >
                         <SelectSite />
-                    </Modal>
+                    </Modal> */}
                 </div>
             </PageHeaderWrapper>          
         )
