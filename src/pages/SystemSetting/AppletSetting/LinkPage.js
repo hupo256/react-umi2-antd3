@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-04-30 11:36:34 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-11 14:15:48
+ * @Last Modified time: 2021-05-11 14:51:11
  * 关联设置
  */
 import React, { Component } from 'react';
@@ -87,6 +87,9 @@ class LinkPage extends Component {
       return false;
     } else if (!btnName) {
       message.error('请输入按钮名称');
+      return false;
+    } else if (btnName && btnName.length > 6) {
+      message.error('按钮名称限制1-6个字符');
       return false;
     }
     const { dispatch, defvalue, directType } = this.props;
