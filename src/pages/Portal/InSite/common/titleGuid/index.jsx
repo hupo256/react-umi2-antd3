@@ -5,8 +5,8 @@
  * @Last Modified time: 2021-03-25 16:49:12 
  * 移动端首页 公用头部
  */
-import React, { useContext, useState } from 'react';
-import { Button, message, Modal } from 'antd';
+import React, { useContext } from 'react';
+import { Button, message, Modal, Icon } from 'antd';
 import router from 'umi/router';
 import { baseRouteKey, themes } from '../../tools/data';
 import { ctx } from '../context';
@@ -57,10 +57,6 @@ export default function TitleGuid(props) {
     });
   }
 
-  function toPreview() {
-    router.push(`/pc/preview`);
-  }
-
   return (
     <div className={styles.guidBox}>
       <h3>
@@ -68,9 +64,13 @@ export default function TitleGuid(props) {
         {isEdit && (
           <div className={styles.btnBox}>
             <Button onClick={showConfirm}>放弃更改</Button>
-            <Button onClick={toPreview} icon="dribbble">
+            {/* <Button onClick={toPreview} icon="dribbble">
               网站预览
-            </Button>
+            </Button> */}
+            <a href="#/pc/preview" target="_blank">
+              <Icon type="dribbble" />
+              <span>网站预览</span>
+            </a>
             <Button onClick={toPublish} type="primary">
               <img
                 src="https://img.inbase.in-deco.com/crm_saas/release/20210511/bb4bd99abc374cae9b1dbe634a6a388c/ic_send.png"
