@@ -73,7 +73,7 @@ export default function TitleGuid(props) {
             </Button>
             <Button onClick={toPublish} type="primary">
               <img
-                src="https://test.img.inbase.in-deco.com/crm_saas/dev/20210427/4baa9248ecf944b0a13f5fea5453f859/ic_send.png"
+                src="https://img.inbase.in-deco.com/crm_saas/release/20210511/bb4bd99abc374cae9b1dbe634a6a388c/ic_send.png"
                 alt=""
               />
               发布
