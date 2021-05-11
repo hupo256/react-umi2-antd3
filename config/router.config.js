@@ -22,6 +22,11 @@ export default [
     PageHeaderName: '专题配置',
     component: './Portal/ContentManagement/ProjectLibrary/ConfigurationTopic',
   },
+  //PC 首页 编辑 : ximing 2020 05 10
+  {
+    path: '/pc/preview',
+    component: './PcPreview/HomePage',
+  },
   // app
   {
     path: '/',

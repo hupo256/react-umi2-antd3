@@ -1,0 +1,141 @@
+.carouselContainer {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 500px;
+}
+
+.designerWrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 33px 20px 23px;
+
+  height: 221px;
+  width: 358px;
+  position: absolute;
+  background-color: #fff;
+  right: -94px;
+  bottom: 42px;
+  color: #000;
+  border-radius: 8px;
+}
+
+.designerWrapper .topSection {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+}
+
+.designerWrapper .topSection .right {
+  display: flex;
+  flex-direction: column;
+  margin-left: 8px;
+}
+
+.userImageWrapper {
+  background: url(/img/designer/frame.png) no-repeat center center;
+  margin-right: 8px;
+}
+
+.userImage {
+  padding: 12px;
+}
+
+.titleWrap {
+  background: url(/img/designer/quote.png) no-repeat left center;
+  display: flex;
+  gap: 12px;
+  padding-top: 17px;
+  align-items: center;
+}
+
+.titleWrap .name {
+  font-size: 20px;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #333330;
+}
+.titleWrap .jobTitle {
+  font-size: 14px;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #a27b44;
+  padding: 6px 8px;
+  background: #f9f6f1;
+  border-radius: 26px;
+}
+
+.right .content {
+  font-size: 14px;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #747474;
+  line-height: 22px;
+  text-align: left;
+}
+.moreBtn {
+  justify-content: flex-end;
+}
+
+.inactive .container {
+  filter: brightness(0.6);
+}
+.container {
+  height: 400px;
+  width: 733px;
+  padding-top: 80px;
+  text-align: center;
+  background: #52c0f5;
+  color: #fff;
+  font-family: sans-serif;
+  font-size: 12px;
+  text-transform: uppercase;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+.inactive {
+  position: relative;
+}
+
+.inactive::before {
+  position: absolute;
+  left: 20px;
+  content: '';
+  width: 20px;
+  height: 20px;
+  background: url(/img/designer/ic_next.png) no-repeat center center;
+  top: calc(50% - 10px);
+  z-index: 9;
+  transform: rotate(180deg);
+}
+
+.inactive::after {
+  position: absolute;
+  right: 20px;
+  content: '';
+  width: 20px;
+  height: 20px;
+  background: url(/img/designer/ic_next.png) no-repeat center center;
+  top: calc(50% - 10px);
+}
+
+/* carousel dots */
+.carouselDotsWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 17px;
+}
+.carouselDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background: #d8d8d8;
+}
+.carouselDot.current {
+  background: #ff7300;
+}
