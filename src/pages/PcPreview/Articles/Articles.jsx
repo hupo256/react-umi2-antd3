@@ -21,10 +21,10 @@ const Articles = ({ data }) => {
               {item.name}
             </div>
             <div className={styles.wrapper}>
-              {_.map(item.articleList, article => {
+              {_.map(item.articleList, (article, index) => {
                 return (
                   <a
-                    key={article.articleDicCode}
+                    key={`${article.articleDicCode}-${index}`}
                     href={`posts/${article.articleDicCode}`}
                     className={styles.articleLine}
                   >

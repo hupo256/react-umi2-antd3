@@ -43,7 +43,7 @@ const Home = () => {
   useEffect(
     () => {
       (async () => {
-        const res = await getMenuList({ keyword:'', pageNum:1, pageSize:18 });
+        const res = await getMenuList({ keyword: '', pageNum: 1, pageSize: 18 });
         setMenuList(_.get(res, 'data.list', []));
       })();
 
@@ -100,7 +100,9 @@ const Home = () => {
 
         <div
           className={styles.banner}
-          style={{ backgroundImage: `url(${_.get(publishedData, '0.list.0.imgUrl')} )` }}
+          style={{
+            background: `url(${_.get(publishedData, '0.list.0.imgUrl')} ) no-repeat center center`,
+          }}
         />
 
         <Content className={styles.mainWrapper}>
