@@ -54,6 +54,7 @@ const DesignerContent = ({ data }) => {
                   <BtnMore
                     text={'查看详情'}
                     solid
+                    url={`/designers/details?uid=${value.uid}`}
                     style={{ justifyContent: 'flex-end', marginTop: '15px' }}
                   />
                 </div>
@@ -71,6 +72,7 @@ const DesignerContent = ({ data }) => {
           />
         ))}
       </div>
+      <BtnMore url={'/designers'} text={'更多设计师'} />
     </div>
   );
 };

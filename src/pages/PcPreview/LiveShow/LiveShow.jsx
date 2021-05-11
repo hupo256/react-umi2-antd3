@@ -34,15 +34,18 @@ const CaseProjects = ({ data }) => {
     return (
       <>
         <div style={caseStyle.projectCasesWrapper}>
-          <div style={caseStyle.caseItem} className={styles.clickableImg}>
+          <div
+            style={caseStyle.caseItem}
+            className={styles.clickableImg}
+            onClick={() => (window.location.href = `/sites/details?gongdiUid=${data[0].gongdiUid}`)}
+          >
             <div className={styles.bgText}>
               <p>{data[0].text}</p>
-              {/* <BtnMore text={'查看详情'} solid /> */}
             </div>
             <div style={caseStyle.image0} className={styles.bgBlur} />
           </div>
         </div>
-        <BtnMore text={'更多工地'} />
+        <BtnMore text={'更多工地'} url={'/sites'} />
       </>
     );
   };
@@ -52,22 +55,27 @@ const CaseProjects = ({ data }) => {
       display: 'flex',
       gap: '18px',
     };
-    caseStyle.caseItem = {
-      flex: 1,
-      height: '368px',
-    };
+    caseStyle.caseItem = { flex: 1, height: '368px' };
 
     return (
       <>
         <div style={caseStyle.projectCasesWrapper}>
-          <div style={caseStyle.caseItem} className={styles.clickableImg}>
+          <div
+            style={caseStyle.caseItem}
+            className={styles.clickableImg}
+            onClick={() => (window.location.href = `/sites/details?gongdiUid=${data[0].gongdiUid}`)}
+          >
             <div className={styles.bgText}>
               <p>{data[0].text}</p>
               {/* <BtnMore text={'查看详情'} solid /> */}
             </div>
             <div style={caseStyle.image0} className={styles.bgBlur} />
           </div>
-          <div style={caseStyle.caseItem} className={styles.clickableImg}>
+          <div
+            style={caseStyle.caseItem}
+            className={styles.clickableImg}
+            onClick={() => (window.location.href = `/sites/details?gongdiUid=${data[1].gongdiUid}`)}
+          >
             <div className={styles.bgText}>
               <p>{data[1].text}</p>
               {/* <BtnMore text={'查看详情'} solid /> */}
@@ -75,7 +83,7 @@ const CaseProjects = ({ data }) => {
             <div style={caseStyle.image1} className={styles.bgBlur} />
           </div>
         </div>
-        <BtnMore text={'更多工地'} />
+        <BtnMore text={'更多工地'} url={'/sites'} />
       </>
     );
   };
@@ -106,31 +114,44 @@ const CaseProjects = ({ data }) => {
     return (
       <>
         <div style={caseStyle.projectCasesWrapper}>
-          <div style={caseStyle.left} className={styles.clickableImg}>
+          <div
+            style={caseStyle.left}
+            className={styles.clickableImg}
+            onClick={() => (window.location.href = `/sites/details?gongdiUid=${data[0].gongdiUid}`)}
+          >
             <div className={styles.bgText}>
               <p>{data[1].text}</p>
-              {/* <BtnMore text={'查看详情'} solid /> */}
             </div>
             <div style={caseStyle.image0} className={styles.bgBlur} />
           </div>
           <div style={caseStyle.right}>
-            <div style={caseStyle.caseItem} className={styles.clickableImg}>
+            <div
+              style={caseStyle.caseItem}
+              className={styles.clickableImg}
+              onClick={() =>
+                (window.location.href = `/sites/details?gongdiUid=${data[1].gongdiUid}`)
+              }
+            >
               <div className={styles.bgText}>
                 <p>{data[1].text}</p>
-                {/* <BtnMore text={'查看详情'} solid /> */}
               </div>
               <div style={caseStyle.image1} className={styles.bgBlur} />
             </div>
-            <div style={caseStyle.caseItem} className={styles.clickableImg}>
+            <div
+              style={caseStyle.caseItem}
+              className={styles.clickableImg}
+              onClick={() =>
+                (window.location.href = `/sites/details?gongdiUid=${data[2].gongdiUid}`)
+              }
+            >
               <div className={styles.bgText}>
                 <p>{data[2].text}</p>
-                {/* <BtnMore text={'查看详情'} solid /> */}
               </div>
               <div style={caseStyle.image2} className={styles.bgBlur} />
             </div>
           </div>
         </div>
-        <BtnMore text={'更多工地'} />
+        <BtnMore text={'更多工地'} url={'/sites'} />
       </>
     );
   };

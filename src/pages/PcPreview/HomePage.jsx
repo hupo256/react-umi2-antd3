@@ -60,50 +60,26 @@ const Home = () => {
     [refresh]
   );
 
-  return (
-    <div className={styles.container}>
+  return <div className={styles.container}>
       <Layout className={styles.mainLayout}>
         <div className={styles.editableWrapper}>
           <div className={styles.editHeader}>
-            <Button
-              className={styles.editBtn}
-              type="primary"
-              onClick={() => setShowHeaderDrawer(true)}
-            >
+            <Button className={styles.editBtn} type="primary" onClick={() => setShowHeaderDrawer(true)}>
               编辑
             </Button>
           </div>
-          <HeaderLayout
-            left={
-              <div className={styles.companyHeaderStyle}>
-                <Avatar
-                  src={footerData.icon}
-                  className={'avatar'}
-                  style={{ backgroundColor: '#FF7300', verticalAlign: 'middle' }}
-                  size="large"
-                  gap={20}
-                >
+          <HeaderLayout left={<div className={styles.companyHeaderStyle}>
+                <Avatar src={footerData.icon} className={'avatar'} style={{ backgroundColor: '#FF7300', verticalAlign: 'middle' }} size="large" gap={20}>
                   C
                 </Avatar>
                 <h1>{footerData.companyName}</h1>
-              </div>
-            }
-            middle={<MenuList menuList={menuList} />}
-            right={
-              <>
+              </div>} middle={<MenuList menuList={menuList} />} right={<>
                 <img className={styles.phoneIcon} src={'/img/ic_phone_slices/ic_phone.png'} />
                 <span className={styles.phone}>{footerData.customerService}</span>
-              </>
-            }
-          />
+              </>} />
         </div>
 
-        <div
-          className={styles.banner}
-          style={{
-            background: `url(${_.get(publishedData, '0.list.0.imgUrl')} ) no-repeat center center`,
-          }}
-        />
+        <div className={styles.banner} style={{ background: `url(${_.get(publishedData, '0.list.0.imgUrl')} ) no-repeat center center` }} />
 
         <Content className={styles.mainWrapper}>
           <ChapterLayout title={'产品特点'} description={'颠覆传统家装企业'}>
@@ -133,11 +109,7 @@ const Home = () => {
 
         <div className={styles.editableWrapper}>
           <div className={styles.editHeader}>
-            <Button
-              className={styles.editBtn}
-              type="primary"
-              onClick={() => setShowFooterDrawer(true)}
-            >
+            <Button className={styles.editBtn} type="primary" onClick={() => setShowFooterDrawer(true)}>
               编辑
             </Button>
           </div>
@@ -145,35 +117,22 @@ const Home = () => {
         </div>
       </Layout>
 
-      <Drawer
-        title="编辑频道"
-        placement="right"
-        closable={true}
-        onClose={() => {
+      <Drawer title="编辑频道" placement="right" closable={true} onClose={() => {
           setRefresh(!refresh);
           setShowHeaderDrawer(false);
-        }}
-        visible={showHeaderDrawer}
-        width={900}
-      >
+        }} visible={showHeaderDrawer} width={900}>
         <ChannelManage />
       </Drawer>
 
-      <Drawer
-        title="编辑公司信息"
-        placement="right"
-        closable={true}
-        onClose={() => {
+      <Drawer title="编辑公司信息" placement="right" closable={true} onClose={() => {
           setRefresh(!refresh);
           setShowFooterDrawer(false);
-        }}
-        visible={showFooterDrawer}
-        width={600}
-      >
+        }} visible={showFooterDrawer} width={600}>
         <WebSetting />
       </Drawer>
-    </div>
-  );
+
+      <div className={styles.scrollToTop} onClick={() => scrollTo(0, 0)} />
+    </div>;
 };
 
 export default Home;
