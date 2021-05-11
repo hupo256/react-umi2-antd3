@@ -57,6 +57,10 @@ export default function TitleGuid(props) {
     });
   }
 
+  function toPreview() {
+    router.push(`/pc/preview`);
+  }
+
   return (
     <div className={styles.guidBox}>
       <h3>
@@ -64,6 +68,9 @@ export default function TitleGuid(props) {
         {isEdit && (
           <div className={styles.btnBox}>
             <Button onClick={showConfirm}>放弃更改</Button>
+            <Button onClick={toPreview} icon="dribbble">
+              网站预览
+            </Button>
             <Button onClick={toPublish} type="primary">
               <img
                 src="https://test.img.inbase.in-deco.com/crm_saas/dev/20210427/4baa9248ecf944b0a13f5fea5453f859/ic_send.png"
