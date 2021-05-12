@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-04-30 11:36:34 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-07 15:34:37
+ * @Last Modified time: 2021-05-11 19:02:18
  * 关联设置
  */
 import React, { Component } from 'react';
@@ -17,6 +17,7 @@ class LinkPage extends Component {
     super(props);
     this.state = {
       btnName: null,
+      btnType: 0,
       isEdit: false,
       saveValue: null,
       defvalue: null,
@@ -34,7 +35,7 @@ class LinkPage extends Component {
   }
 
   render() {
-    const { btnName, defvalue } = this.state;
+    const { btnName, defvalue, btnType } = this.state;
     return (
       <Modal
         title="关联页面设置"
@@ -53,7 +54,7 @@ class LinkPage extends Component {
             <Input
               value={btnName}
               onChange={e => this.setState({ btnName: e.target.value, isEdit: true })}
-              disabled={btnName == '立即咨询'}
+              disabled={btnType == '1'}
               placeholder="请输入按钮名称"
               style={{ width: 360 }}
             />
@@ -66,12 +67,12 @@ class LinkPage extends Component {
     const { btnName, isEdit, defvalue } = this.state;
     this.setState({ saveValue: value });
     if (value.type == 1) {
-      this.setState({ btnName: '立即咨询' });
+      this.setState({ btnName: this.props.defvalue.buttonText, btnType: '1' });
     } else if (value.type == 3 && !isEdit) {
-      this.setState({ btnName: null });
+      this.setState({ btnName: null, btnType: '0' });
     } else {
       if (!btnName) {
-        this.setState({ btnName: value.record.buttonText });
+        this.setState({ btnName: value.record.buttonText, btnType: '0' });
       }
     }
   };
@@ -87,13 +88,16 @@ class LinkPage extends Component {
     } else if (!btnName) {
       message.error('请输入按钮名称');
       return false;
+    } else if (btnName && btnName.length > 6) {
+      message.error('按钮名称限制1-6个字符');
+      return false;
     }
     const { dispatch, defvalue, directType } = this.props;
     dispatch({
       type: 'MiniProgram/formcollocateModel',
       payload: {
         bindType: saveValue.type == 1 ? 1 : 0,
-        buttonText: saveValue.type == 1 ? '立即咨询' : btnName,
+        buttonText: saveValue.type == 1 ? this.props.defvalue.buttonText : btnName,
         directType,
         formUid: saveValue.type == 1 ? null : saveValue.record.formUid,
       },
