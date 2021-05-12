@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-04-29 17:47:52 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-12 16:57:59
+ * @Last Modified time: 2021-05-12 19:35:58
  * 公有文章库列表
  */
 import React, { Component } from 'react';
@@ -99,11 +99,12 @@ class ArticleListModel extends Component {
             // onBlur={() => this.handleSrarch()}
             style={{ width: 300 }}
           />
-          <p style={{ marginTop: 16 }}>
+          <div style={{ marginTop: 16 }}>
             状态：
             <span
               onClick={() => this.handleSrarchStatus(null)}
               className={`tagstatus ${!status && 'tagstatusCur'}`}
+              style={{ display: 'inline-block', marginBottom: 12 }}
             >
               全部
             </span>
@@ -112,12 +113,13 @@ class ArticleListModel extends Component {
                 <span
                   onClick={() => this.handleSrarchStatus(item.code)}
                   className={`tagstatus ${status == item.code && 'tagstatusCur'}`}
+                  style={{ display: 'inline-block', marginBottom: 12 }}
                 >
                   {item.name}
                 </span>
               );
             })}
-          </p>
+          </div>
           <Table
             rowKey={(r, i) => i}
             loading={Loading}
