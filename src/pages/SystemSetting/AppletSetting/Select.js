@@ -65,7 +65,7 @@ class Select extends Component {
         title: '更新时间',
         dataIndex: 'updateTime',
         render: (t, r) => {
-          return t.slice(0, 10);
+          return t
         },
       },
     ];
