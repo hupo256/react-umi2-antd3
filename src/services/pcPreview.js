@@ -2,13 +2,6 @@ import request from '../utils/request';
 import { baseurl } from './config';
 import { stringify } from 'qs';
 
-// PC HEADER (不登陆)
-export function getMenuListPublic(params) {
-  return request(baseurl + `/api/v1/wechat/menu/preview/list`, {
-    method: 'GET',
-  });
-}
-
 // PC HEADER （登陆）
 export function getMenuList(params) {
   return request(`${baseurl}/api/v1/wechat/menu/list`, {
