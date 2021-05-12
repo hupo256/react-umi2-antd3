@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-04-30 13:39:59 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-11 14:16:50
+ * @Last Modified time: 2021-05-12 16:27:52
  * 关联页面
  */
 import React, { Component } from 'react';
@@ -90,7 +90,7 @@ class Select extends Component {
             <div className={styles.selectListTitle}>
               <span
                 className={step == 1 && styles.cur}
-                onClick={() => this.setState({ step: 1, textTwo: '请选择' })}
+                onClick={() => this.setState({ step: 1, textTwo: '请选择', textTwo: '请选择' })}
               >
                 {step > 0 && textOne}
               </span>
