@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-04-28 17:05:47 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-11 19:02:20
+ * @Last Modified time: 2021-05-12 16:15:30
  * 小程序设置
  */
 
@@ -59,18 +59,18 @@ class Index extends PureComponent {
         dataIndex: 'link',
         render: (t, r) => {
           return (
-            <div
-              className={styles.copy}
-              onClick={() => {
-                this.handleCopy(t);
-              }}
-            >
+            <div className={styles.copy}>
               <p id="text" style={{ display: 'block' }}>
                 {t}
               </p>
               <textarea id="input" className={styles.ipt} />
               {t ? (
-                <span style={{ marginLeft: 0 }}>
+                <span
+                  style={{ marginLeft: 0 }}
+                  onClick={() => {
+                    this.handleCopy(t);
+                  }}
+                >
                   <Icon type="copy" />
                   <span style={{ marginLeft: 5 }}>复制链接</span>
                 </span>
@@ -173,7 +173,7 @@ class Index extends PureComponent {
                       type="icon-tips"
                       style={{ color: '#ccebfa', fontSize: 18, marginRight: 6 }}
                     />
-                    关联后，在小程序的对应模块内点击按钮，会跳转至关联的页面
+                    关联后，在小程序的对应模块内点击按钮，会跳转展示所关联的页面
                   </p>
                   <Table columns={columns} dataSource={data} pagination={false} />
                 </div>
