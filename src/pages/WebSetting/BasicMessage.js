@@ -336,9 +336,10 @@ class BasicMessage extends Component {
   // icon图片选择
   iconUploadOk = data => {
     // console.log(data);
-    this.setState({ basicIcon: data[0].path });
+    const sizes = '?x-oss-process=image/crop,w_32,h_32,g_center'
+    this.setState({ basicIcon: data[0].path + sizes });
     this.props.form.setFieldsValue({
-      basicIcon: data[0].path,
+      basicIcon: data[0].path + sizes,
     });
     this.handleUploadCancel();
   };
