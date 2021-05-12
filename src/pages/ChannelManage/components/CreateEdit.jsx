@@ -32,6 +32,7 @@ export default class CreateEdit extends Component {
             pageNum: 1,
             pageSize: 10,
             showSelectPanl: false,
+            btnLoading: false
 
         }
     }
@@ -113,12 +114,18 @@ export default class CreateEdit extends Component {
             if (err) {
               return
             }
+            this.setState({
+                btnLoading: true
+            })
             if (isCreate) {
                 let {   relatedPage, ...params } = { ...values, paths: arr, detailUid: detailUid2 }
                 
                 createChannel(params).then(res => {
                     if (res?.code === 200) {
                         this.resetHandle();
+                        this.setState({
+                            btnLoading: false
+                        })
                         message.success('频道创建成功!')
                     }
                 })
@@ -130,6 +137,9 @@ export default class CreateEdit extends Component {
                 editChannelApi(params).then(res => {
                     if (res?.code === 200) {
                         this.resetHandle();
+                        this.setState({
+                            btnLoading: false
+                        })
                         message.success('编辑已保存，发布后生效 !')
                     }
                 })
@@ -405,7 +415,7 @@ export default class CreateEdit extends Component {
         const { form, isCreate  } = this.props;
         const { relatedPageOption, currentSelectRelatedPageOpt, currentKey, dataList,detailType, 
             articleDicOpts, currentarticleDicCode, searchText, relatedPageText, showSelectPanl,
-            pageNum, pageSize, recordTotal
+            pageNum, pageSize, recordTotal, btnLoading
         } = this.state
         const { getFieldDecorator } = form
         const ColumnsObj = {
@@ -420,15 +430,15 @@ export default class CreateEdit extends Component {
                 },
                 {
                     title: <span style={{fontWeight: 300}}>工地信息</span>,
-                    key: 'gongdiDescription',
-                    dataIndex: 'gongdiDescription',
+                    key: 'buildingName',
+                    dataIndex: 'buildingName',
                     // width: 200,
-                    render: (text, r) => <div>
-                        <div style={{width: 120, display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 2}}>{text}</div>
+                    render: (text, r) => <div style={{maxWidth: 120}}>
+                        <div style={{ display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 2}}>{text}</div>
                         {
                             <div>
                                 {r.houseType.bedroom && <Tag color="blue" style={{marginTop: 8}}>{`${r.houseType.bedroom}居室 `}</Tag>}
-                                <Tag color="green"  style={{marginTop: 8}}>{r.buildingArea}</Tag>
+                                <Tag color="green"  style={{marginTop: 8}}>{r.buildingArea}㎡</Tag>
                                 <Tag color="volcano"  style={{marginTop: 8}}>{r.renovationCosts}万</Tag>
                                 <Tag color="magenta"  style={{marginTop: 8}}>{r.houseStyleName}</Tag>
                             </div>
@@ -437,9 +447,9 @@ export default class CreateEdit extends Component {
                     </div>
                 },
                 {
-                    title: <span style={{fontWeight: 300}}>状态</span>,
-                    key: 'gongdiStatus',
-                    dataIndex: 'gongdiStatus'
+                    title: <span style={{fontWeight: 300}}>阶段</span>,
+                    key: 'gongdiStageName',
+                    dataIndex: 'gongdiStageName',
                 }
             ],
 
@@ -471,6 +481,11 @@ export default class CreateEdit extends Component {
             columns_3: [
                 {
                     title: <span style={{fontWeight: 300}}>案例</span>,
+                    key: 'titleInfo',
+                    dataIndex: 'title'
+                },
+                {
+                    title: <span style={{fontWeight: 300}}>案例信息</span>,
                     key: 'title',
                     dataIndex: 'title',
                     render: (text, r) => <div>
@@ -485,11 +500,6 @@ export default class CreateEdit extends Component {
                             
                         }
                     </div>
-                },
-                {
-                    title: <span style={{fontWeight: 300}}>案例信息</span>,
-                    key: 'titleInfo',
-                    dataIndex: 'title'
                 },
                 {
                     title: <span style={{fontWeight: 300}}>设计师</span>,
@@ -557,14 +567,14 @@ export default class CreateEdit extends Component {
                                 <TabPane tab={currentSelectRelatedPageOpt[0]?.name || '请选择'} key='0'>
                                     {
                                         relatedPageOption?.map(item => 
-                                            <p key={item.uid} onClick={() => this.selectedHandle(item, '0')}>{item.name}</p>
+                                            <p style={{cursor: 'pointer'}} key={item.uid} onClick={() => this.selectedHandle(item, '0')}>{item.name}</p>
                                         )
                                     }
                                 </TabPane>
                                 {currentSelectRelatedPageOpt[0]?.children.length && <TabPane tab={currentSelectRelatedPageOpt[1]?.name || '请选择'} key='1'>
                                     {
                                         currentSelectRelatedPageOpt[0].children.map(item => 
-                                            <p key={item.uid} onClick={() => this.selectedHandle(item, '1')}>{item.name}</p>)
+                                            <p style={{cursor: 'pointer'}} key={item.uid} onClick={() => this.selectedHandle(item, '1')}>{item.name}</p>)
                                     }
                                 </TabPane>}
                                 {currentSelectRelatedPageOpt[1]?.linkType === 2  && <TabPane tab={currentSelectRelatedPageOpt[2]?.articleTitle || '请选择'} key='2'>
@@ -580,7 +590,7 @@ export default class CreateEdit extends Component {
                                     </Radio.Group>
                                     <Table
                                         size='small'
-                                        style={{marginTop: 8}}
+                                        style={{marginTop: 8, cursor: 'pointer'}}
                                         columns={ ColumnsObj[`columns_${detailType}`] }
                                         dataSource={dataList}
                                         onRow={record => {
@@ -609,7 +619,7 @@ export default class CreateEdit extends Component {
                         })(<TextArea placeholder='请输入频道说明' autoSize={{minRows: 4}} />)}
                     </Form.Item>
                     <Form.Item wrapperCol={{ span:6, offset: 9 }}>
-                        <Button type="primary" htmlType="submit" style={{float: 'left'}}>
+                        <Button type="primary" loading={btnLoading} htmlType="submit" style={{float: 'left'}}>
                             确定
                         </Button>
                         <Button  style={{float: 'right'}} onClick={this.resetHandle}>
