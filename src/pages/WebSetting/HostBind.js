@@ -33,7 +33,7 @@ class HostBind extends Component {
             defaultDomain = domain.slice(0, resIndex);
           }
           customDomain = domain;
-          const resIndexs = randomDomain.indexOf('.');
+          const resIndexs = randomDomain.indexOf('-');
           randomDomains = randomDomain.slice(0, resIndexs);
         } else if (isBind && type == 1) {
           const resIndex = randomDomain.indexOf(suffix);
@@ -45,7 +45,7 @@ class HostBind extends Component {
           customDomain = domain;
           randomDomains = defaultDomain;
         } else {
-          const resIndex = randomDomain.indexOf('.');
+          const resIndex = randomDomain.indexOf('-');
           defaultDomain = randomDomain.slice(0, resIndex);
           customDomain = randomDomain;
           randomDomains = defaultDomain;
@@ -90,7 +90,7 @@ class HostBind extends Component {
     let payload;
     if (tabsValue == 0) {
       if (defaultHostValue.length < 4 || defaultHostValue.length > 20 || !ifDefaultHost) {
-        message.error('请正确填写三级域名');
+        message.error('请正确填写二级域名');
         return;
       }
       payload = {
@@ -142,13 +142,13 @@ class HostBind extends Component {
         <div style={{ display: tabsValue == 0 ? 'block' : 'none' }}>
           <div style={{ display: 'flex' }}>
             <Form>
-              <FormItem label="默认域名（三级域名）">
+              <FormItem label="默认域名（二级域名）">
                 {getFieldDecorator('defaultHost', {
                   initialValue: defaultHostValue,
                   rules: [
                     {
                       pattern: regExpConfig.defalutHostType,
-                      message: '请正确填写三级域名',
+                      message: '请正确填写二级域名',
                     },
                     {
                       max: 20,
