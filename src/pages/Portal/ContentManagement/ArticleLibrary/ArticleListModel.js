@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-04-29 17:47:52 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-11 18:40:24
+ * @Last Modified time: 2021-05-12 16:57:59
  * 公有文章库列表
  */
 import React, { Component } from 'react';
@@ -22,6 +22,7 @@ class ArticleListModel extends Component {
       searchWord: null,
       uid: null,
       previewVisible: false,
+      status: null,
     };
   }
   componentWillMount() {}
@@ -35,7 +36,7 @@ class ArticleListModel extends Component {
   }
 
   render() {
-    const { previewVisible } = this.state;
+    const { previewVisible, status } = this.state;
 
     const columns = [
       {
@@ -80,9 +81,6 @@ class ArticleListModel extends Component {
       Loading,
       ArticleLibrary: { publicList, DicModuleList },
     } = this.props;
-    console.log('====================================');
-    console.log(DicModuleList);
-    console.log('====================================');
     return (
       <Modal
         title="公有文章库"
@@ -109,18 +107,16 @@ class ArticleListModel extends Component {
             >
               全部
             </span>
-            <span
-              onClick={() => this.handleSrarchStatus('1')}
-              className={`tagstatus ${status == '1' && 'tagstatusCur'}`}
-            >
-              正常
-            </span>
-            <span
-              onClick={() => this.handleSrarchStatus('0')}
-              className={`tagstatus ${status == '0' && 'tagstatusCur'}`}
-            >
-              停用
-            </span>
+            {DicModuleList.map(item => {
+              return (
+                <span
+                  onClick={() => this.handleSrarchStatus(item.code)}
+                  className={`tagstatus ${status == item.code && 'tagstatusCur'}`}
+                >
+                  {item.name}
+                </span>
+              );
+            })}
           </p>
           <Table
             rowKey={(r, i) => i}
@@ -157,9 +153,9 @@ class ArticleListModel extends Component {
     }
   };
 
-  handleSrarchStatus = status => {
-    this.setState({ status }, () => {
-      // this.getList({ articleStatus: status, pageNum: 1 });
+  handleSrarchStatus = statu => {
+    this.setState({ status: statu }, () => {
+      this.getList({ articleDicCode: statu, pageNum: 1 });
     });
   };
   handleSrarch = () => {
