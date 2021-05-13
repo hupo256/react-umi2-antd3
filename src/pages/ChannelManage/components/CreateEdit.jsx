@@ -237,7 +237,7 @@ export default class CreateEdit extends Component {
         const { detailType } = this.state;
         let res;
         detailType === 1 && (res = await siteListApi({
-            gongdiStatus: status,
+            gongdiStatus: 0,
             pageNum,
             pageSize,
             searchText
@@ -486,8 +486,8 @@ export default class CreateEdit extends Component {
                 },
                 {
                     title: <span style={{fontWeight: 300}}>案例信息</span>,
-                    key: 'title',
-                    dataIndex: 'title',
+                    key: 'buildingName',
+                    dataIndex: 'buildingName',
                     render: (text, r) => <div>
                         <div style={{width: 120, display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 2}}>{text}</div>
                         {
