@@ -6,6 +6,16 @@ const FAKE_ACTIVE_INDEX = 'home';
 const MAX_CHUNK_SIZE = 40;
 const MIN_CHUNK_SIZE = 20;
 
+const isCurrentMenu = (linkUrl, location) => {
+  const value = location.href.replace(location.origin, '');
+  if (value.length === 1) {
+    return linkUrl === value;
+  }
+  if (value.length > 1) {
+    return linkUrl === _.trimEnd(value, '/');
+  }
+  return false;
+};
 const MenuListComp = ({ menuList }) => {
   const [menuChunkList, setMenuChunkList] = useState([]);
   const [chunkIndex, setChunkIndex] = useState(0);
@@ -76,7 +86,7 @@ const MenuListComp = ({ menuList }) => {
               <a
                 href={item.linkUrl}
                 key={index}
-                className={item.linkKey === FAKE_ACTIVE_INDEX ? styles.active : undefined}
+                className={isCurrentMenu(item.linkUrl, location) ? styles.active : undefined}
               >
                 {item.websiteName}
               </a>

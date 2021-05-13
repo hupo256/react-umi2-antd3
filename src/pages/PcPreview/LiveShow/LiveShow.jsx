@@ -1,6 +1,7 @@
 import { BtnMore } from '../btn';
 import _ from 'lodash';
 import styles from './LiveShow.module.less';
+import { typeMap, paramMap, domain } from '../constants.js';
 
 const CHN_NUM_CHAR = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九'];
 
@@ -37,7 +38,9 @@ const CaseProjects = ({ data }) => {
           <div
             style={caseStyle.caseItem}
             className={styles.clickableImg}
-            onClick={() => (window.location.href = `/sites/details?gongdiUid=${data[0].uid}`)}
+            onClick={() =>
+              (window.location.href = `${domain}/sites/details?gongdiUid=${data[0].gongdiUid}`)
+            }
           >
             <div className={styles.bgText}>
               <p>{data[0].text}</p>
@@ -45,7 +48,7 @@ const CaseProjects = ({ data }) => {
             <div style={caseStyle.image0} className={styles.bgBlur} />
           </div>
         </div>
-        <BtnMore text={'更多工地'} url={'/sites'} />
+        <BtnMore text={'更多工地'} url={domain + '/sites'} />
       </>
     );
   };
@@ -63,7 +66,9 @@ const CaseProjects = ({ data }) => {
           <div
             style={caseStyle.caseItem}
             className={styles.clickableImg}
-            onClick={() => (window.location.href = `/sites/details?gongdiUid=${data[0].uid}`)}
+            onClick={() =>
+              (window.location.href = `${domain}/sites/details?gongdiUid=${data[0].gongdiUid}`)
+            }
           >
             <div className={styles.bgText}>
               <p>{data[0].text}</p>
@@ -74,7 +79,9 @@ const CaseProjects = ({ data }) => {
           <div
             style={caseStyle.caseItem}
             className={styles.clickableImg}
-            onClick={() => (window.location.href = `/sites/details?gongdiUid=${data[1].uid}`)}
+            onClick={() =>
+              (window.location.href = `${domain}/sites/details?gongdiUid=${data[1].gongdiUid}`)
+            }
           >
             <div className={styles.bgText}>
               <p>{data[1].text}</p>
@@ -83,7 +90,7 @@ const CaseProjects = ({ data }) => {
             <div style={caseStyle.image1} className={styles.bgBlur} />
           </div>
         </div>
-        <BtnMore text={'更多工地'} url={'/sites'} />
+        <BtnMore text={'更多工地'} url={domain + '/sites'} />
       </>
     );
   };
@@ -117,7 +124,9 @@ const CaseProjects = ({ data }) => {
           <div
             style={caseStyle.left}
             className={styles.clickableImg}
-            onClick={() => (window.location.href = `/sites/details?gongdiUid=${data[0].uid}`)}
+            onClick={() =>
+              (window.location.href = `${domain}/sites/details?gongdiUid=${data[0].gongdiUid}`)
+            }
           >
             <div className={styles.bgText}>
               <p>{data[1].text}</p>
@@ -128,7 +137,9 @@ const CaseProjects = ({ data }) => {
             <div
               style={caseStyle.caseItem}
               className={styles.clickableImg}
-              onClick={() => (window.location.href = `/sites/details?gongdiUid=${data[1].uid}`)}
+              onClick={() =>
+                (window.location.href = `${domain}/sites/details?gongdiUid=${data[1].gongdiUid}`)
+              }
             >
               <div className={styles.bgText}>
                 <p>{data[1].text}</p>
@@ -138,7 +149,9 @@ const CaseProjects = ({ data }) => {
             <div
               style={caseStyle.caseItem}
               className={styles.clickableImg}
-              onClick={() => (window.location.href = `/sites/details?gongdiUid=${data[2].uid}`)}
+              onClick={() =>
+                (window.location.href = `${domain}/sites/details?gongdiUid=${data[2].gongdiUid}`)
+              }
             >
               <div className={styles.bgText}>
                 <p>{data[2].text}</p>
@@ -147,7 +160,7 @@ const CaseProjects = ({ data }) => {
             </div>
           </div>
         </div>
-        <BtnMore text={'更多工地'} url={'/sites'} />
+        <BtnMore text={'更多工地'} url={domain + '/sites'} />
       </>
     );
   };
