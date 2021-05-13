@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-04-30 13:39:59 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-13 16:11:07
+ * @Last Modified time: 2021-05-12 16:27:52
  * 关联页面
  */
 import React, { Component } from 'react';
@@ -121,7 +121,7 @@ class Select extends Component {
                   loading={Loading}
                   className={styles.tablename}
                   dataSource={formList?.list}
-                  rowKey={record => record.formUid}
+                  rowKey={(r, i) => i}
                   onRow={record => {
                     return {
                       onClick: event => {

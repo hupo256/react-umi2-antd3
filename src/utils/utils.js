@@ -964,7 +964,7 @@ export function doHandleDateMonth() {
 }
 
 export const MyIcon = Icon.createFromIconfontCN({
-  scriptUrl: '//at.alicdn.com/t/font_2260966_co94trl4wk8.js',
+  scriptUrl: '//at.alicdn.com/t/font_2260966_gakc64rvcyi.js',
 });
 export const successIcon = <MyIcon type="icon-dui" style={{ color: '#52c41a' }} />;
 export const waringIcon = <MyIcon type="icon-wenhao" style={{ color: '#faad15' }} />;

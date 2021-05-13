@@ -1,7 +1,6 @@
 .guidBox {
   background: #fff;
   border-bottom: 1px solid #e8e8e8;
-  // width: 108%;
   margin: -18px -18px 18px;
   position: relative;
   z-index: 2;
@@ -23,6 +22,34 @@
 
       img {
         padding-right: 7px;
+      }
+    }
+
+    a {
+      display: inline-block;
+      text-align: center;
+      border: 1px solid #d9d9d9;
+      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.05);
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+      user-select: none;
+      touch-action: manipulation;
+      height: 32px;
+      line-height: 30px;
+      padding: 0 15px;
+      font-size: 14px;
+      border-radius: 4px;
+      color: rgba(0, 0, 0, 0.65);
+      vertical-align: middle;
+      margin-right: 12px;
+
+      &:hover {
+        color: #fe6a30;
+        border-color: #fe6a30;
+      }
+
+      span {
+        padding-left: 3px;
       }
     }
 
