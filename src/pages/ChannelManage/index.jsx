@@ -166,7 +166,7 @@ export default class ChannelManage extends Component {
         confirm({
             title: `确定要${record.status === 2 ? '启' : '停'}用当前频道吗?`,
             content: record.status === 2 ? '启用后，将可以在装企小程序和网站中显示' : '停用后，在装企小程序和网站中均不会显示当前频道',
-            icon: record.status === 2 ? <Icon style={{color: '#52c41a'}}   type="check-circle" /> :  "question-circle",
+            icon: record.status === 2 ? <Icon style={{color: '#52c41a'}} theme='filled'  type="check-circle" /> :  "question-circle",
             onOk: async () => {
                 try {
                     const res = await toggleStatusApi({
