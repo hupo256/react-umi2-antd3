@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-03-18 11:21:43 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-13 11:19:21
+ * @Last Modified time: 2021-05-13 11:33:55
  * 创建文章
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -24,9 +24,7 @@ import {
   Col,
 } from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
-import { regExpConfig } from '../../../../utils/regular.config';
 import { paginations, getQueryUrlVal } from '@/utils/utils';
-import ImgUploads from '@/components/Upload/ImgUploads';
 import TagGroup from '@/components/TagSelect/TagGroup';
 import BraftEditor from '@/components/BraftEditor/BraftEditor';
 import styles from './ArticleLibrary.less';
@@ -242,27 +240,6 @@ class ArticleLibraryAdd extends PureComponent {
                       <TagGroup tags={[]} handleSave={tags => this.handleTagSave(tags)} />
                     )}
                   </div>
-                )}
-              </Form.Item>
-
-              <h4 className={styles.title}>TDK设置（用于搜索引擎收录）</h4>
-              <Form.Item
-                label={
-                  <span>
-                    关键词
-                    {'  '}
-                    <Tooltip
-                      placement="right"
-                      title="业主有可能通过您输入的关键词，搜索到您的网站哦！"
-                    >
-                      <Icon type="question-circle" />
-                    </Tooltip>
-                    {'  '}
-                  </span>
-                }
-              >
-                {getFieldDecorator('articleTag', {})(
-                  <TagGroup tags={tags} handleSave={tags => this.handleTagSave(tags)} />
                 )}
               </Form.Item>
 
