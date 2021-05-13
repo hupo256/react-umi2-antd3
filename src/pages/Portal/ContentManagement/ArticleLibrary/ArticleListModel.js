@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-04-29 17:47:52 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-12 19:35:58
+ * @Last Modified time: 2021-05-12 21:44:30
  * 公有文章库列表
  */
 import React, { Component } from 'react';
@@ -93,7 +93,7 @@ class ArticleListModel extends Component {
           <Search
             placeholder="可通过文章标题 / 内容进行搜索"
             value={this.state.searchWord}
-            onChange={e => this.setState({ searchWord: e.target.value })}
+            onChange={e => this.handleChange(e)}
             onSearch={value => this.handleSrarch()}
             onPressEnter={() => this.handleSrarch()}
             // onBlur={() => this.handleSrarch()}
@@ -139,13 +139,23 @@ class ArticleListModel extends Component {
           <ArticlePreviewModel
             visible={previewVisible}
             record={this.state.record}
-            handleUseArticle={uid => this.setState({ uid, previewVisible: false })}
+            handleUseArticle={uid => {
+              this.props.handleOk(uid);
+              // this.setState({ uid, previewVisible: false })
+            }}
             handleCancel={() => this.setState({ previewVisible: false })}
           />
         )}
       </Modal>
     );
   }
+  handleChange = e => {
+    this.setState({ searchWord: e.target.value }, () => {
+      const { searchWord } = this.state;
+      !searchWord &&
+        this.getList({ searchText: searchWord && searchWord.substring(0, 30), pageNum: 1 });
+    });
+  };
   handleOk = () => {
     const { uid } = this.state;
     if (!uid) {
