@@ -4,6 +4,7 @@ import _ from 'lodash';
 import styles from './DesignerContent.module.less';
 import { BtnMore } from '../btn';
 import cx from 'classnames';
+import { domain } from '../constants.js';
 
 const DesignerContent = ({ data }) => {
   if (_.isEmpty(data)) return null;
@@ -54,7 +55,7 @@ const DesignerContent = ({ data }) => {
                   <BtnMore
                     text={'查看详情'}
                     solid
-                    url={`/designers/details?uid=${value.uid}`}
+                    url={`${domain}/designers/details?uid=${value.uid}`}
                     style={{ justifyContent: 'flex-end', marginTop: '15px' }}
                   />
                 </div>
@@ -72,7 +73,7 @@ const DesignerContent = ({ data }) => {
           />
         ))}
       </div>
-      <BtnMore url={'/designers'} text={'更多设计师'} />
+      <BtnMore url={domain + '/designers'} text={'更多设计师'} />
     </div>
   );
 };

@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react'
-import styles from './FooterComp.module.less'
+import React, { useEffect, useState } from 'react';
+import styles from './FooterComp.module.less';
+import { domain } from '../constants.js';
 
 export default function FooterComp({ data }) {
-  if (!data) return null
+  if (!data) return null;
 
   const {
     copyright,
@@ -14,7 +15,8 @@ export default function FooterComp({ data }) {
     wechatName,
     wechatNumber,
     wechatQrCode,
-  } = data
+    disclaimer,
+  } = data;
 
   return (
     <>
@@ -23,7 +25,10 @@ export default function FooterComp({ data }) {
           <div>
             <b>公众号</b>
             <img className={styles.qrCodeImg} src={wechatQrCode} alt="" />
-            <p>微信公众号：{wechatNumber}</p>
+            <p>
+              微信公众号：
+              {wechatName}
+            </p>
           </div>
           <div className={styles.contactUs}>
             <b>联系我们</b>
@@ -44,12 +49,12 @@ export default function FooterComp({ data }) {
       <div className={styles.copyRightOut}>
         <div className={styles.copyRightBox}>
           <p>
-            <span>免责声明：本网站部分内容由用户自行上传，如权利人发现存在误传其作品情形，请及时与本站联系。</span>
+            <span>{disclaimer}</span>
             <span>{icp}</span>
           </p>
           <p>{copyright}</p>
         </div>
       </div>
     </>
-  )
+  );
 }

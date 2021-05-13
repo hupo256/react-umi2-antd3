@@ -3,6 +3,7 @@ import { BtnMore } from '../btn';
 import _ from 'lodash';
 import styles from './Articles.module.less';
 import cx from 'classnames';
+import { domain } from '../constants.js';
 
 const Articles = ({ data }) => {
   if (_.isEmpty(data)) return null;
@@ -39,7 +40,7 @@ const Articles = ({ data }) => {
           );
         })}
       </div>
-      <BtnMore text={'更多攻略'} url={'/articles'} />
+      <BtnMore text={'更多攻略'} url={domain + '/articles'} />
     </>
   );
 };
