@@ -112,7 +112,9 @@ export default function Preview(props) {
           {pageData?.jsonData?.length > 0 &&
             pageData.jsonData.map((item, ind) => {
               const { flag, list = [] } = item;
-              const { tips, creatCom } = componentMap[flag];
+              const curComponent = componentMap[flag];
+              if (!curComponent) return;
+              const { tips, creatCom } = curComponent;
               return (
                 <HoverMd key={ind} tips={tips} flag={flag} isEmpty={!list?.length}>
                   {creatCom({ ...item })}
