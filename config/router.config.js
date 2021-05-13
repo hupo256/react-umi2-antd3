@@ -22,6 +22,11 @@ export default [
     PageHeaderName: '专题配置',
     component: './Portal/ContentManagement/ProjectLibrary/ConfigurationTopic',
   },
+  //PC 首页 编辑 : ximing 2020 05 10
+  {
+    path: '/pc/preview',
+    component: './PcPreview/HomePage',
+  },
   // app
   {
     path: '/',
@@ -101,6 +106,11 @@ export default [
             path: '/portal/insite/websetting',
             name: 'websetting',
             component: './WebSetting/index',
+          },
+          {
+            path: '/portal/insite/appletsetting',
+            name: 'applet',
+            component: './SystemSetting/AppletSetting/Index.js',
           },
         ],
       },
@@ -182,11 +192,21 @@ export default [
             PageHeaderName: '编辑设计师',
             component: './Portal/ContentManagement/DesignerLibrary/DesignerLibraryEdit',
           },
-          // {
-          //   path: '/portal/contentmanagement/articlelibrary',
-          //   name: 'articlelibrary',
-          //   component: './Portal/ContentManagement/ArticleLibrary/ArticleLibrary',
-          // },
+          {
+            path: '/portal/contentmanagement/articlelibrary',
+            name: 'articlelibrary',
+            component: './Portal/ContentManagement/ArticleLibrary/ArticleLibrary',
+          },
+          {
+            path: '/portal/contentmanagement/articlelibrary/add',
+            PageHeaderName: '创建文章',
+            component: './Portal/ContentManagement/ArticleLibrary/ArticleLibraryAdd',
+          },
+          {
+            path: '/portal/contentmanagement/articlelibrary/edit',
+            PageHeaderName: '编辑文章',
+            component: './Portal/ContentManagement/ArticleLibrary/ArticleLibraryEdit',
+          },
           {
             path: '/portal/contentmanagement/projectlibrary',
             name: 'projectlibrary',
@@ -209,6 +229,12 @@ export default [
             code: 'MU9000000100010005',
             component: './Portal/ContentManagement/FormLibrary/FormLibrary',
           },
+          // {
+          //   path: '/portal/contentmanagement/websetting',
+          //   name: 'websetting',
+          //   // code: 'MU9000000100010008',
+          //   component: './Portal/ContentManagement/WebSetting/index',
+          // },
         ],
       },
       // 活动 - 营销小游戏

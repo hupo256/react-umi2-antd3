@@ -1,8 +1,8 @@
 /*
  * @Author: zqm 
  * @Date: 2021-02-17 10:32:27 
- * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-09 18:58:17
+ * @Last Modified by: zqm
+ * @Last Modified time: 2021-04-30 10:05:49
  * 小程序授权
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -54,7 +54,7 @@ class MiniProgram extends PureComponent {
             {!AuthInfo.isAuthedWechatMini && <NotBound />}
             {AuthInfo.isAuthedWechatMini && (
               <div className={styles.dictWrap}>
-                <div className={styles.dictLeft}>
+                <div className={styles.dictLeft} style={{ display: 'none' }}>
                   <Tabs
                     tabPosition="left"
                     className={styles.dictTabs}
@@ -69,7 +69,7 @@ class MiniProgram extends PureComponent {
                     )}
                   </Tabs>
                 </div>
-                <div className={styles.dictRight}>
+                <div className={styles.dictRight} style={{ borderLeft: 0 }}>
                   {permissionsBtn.includes('MU9000000300020001') &&
                     leftactiveKey === 'baseinfo' && (
                       <div>
