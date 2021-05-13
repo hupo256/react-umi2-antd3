@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'dva';
 
 import EnterpriseMessage from '../../WebSetting/EnterpriseMessage';
-import '../../WebSetting/Websetting.less';
+import '../../WebSetting/WebSetting.less';
 
 @connect(({ WebSettingStroe }) => ({
   WebSettingStroe,
