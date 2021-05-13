@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-01-22 13:30:46 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-04-02 17:46:49
+ * @Last Modified time: 2021-05-13 16:09:34
  * 线索列表
  */
 import React, { Component } from 'react';
@@ -14,7 +14,7 @@ import ChangeStatus from './common/ChangeStatus';
 import ChangeRecord from './common/ChangeRecord';
 import CluesEdit from './common/CluesEdit';
 import { paginations } from '@/utils/utils';
-import { getauth } from "@/utils/authority";
+import { getauth } from '@/utils/authority';
 
 @connect(({ LeadManage, loading }) => ({
   LeadManage,
@@ -36,7 +36,7 @@ class LeadManageTable extends Component {
   }
 
   render() {
-    const permissionsBtn = getauth().permissions||[];
+    const permissionsBtn = getauth().permissions || [];
     const columns = [
       {
         title: '线索',
@@ -77,10 +77,17 @@ class LeadManageTable extends Component {
       {
         title: '建筑面积',
         dataIndex: 'area',
-        width:150,
-        render:text=>{
-          return text?<span>{text}m²</span>:''
-        }
+        width: 150,
+        render: text => {
+          return text ? (
+            <span>
+              {text}
+              m²
+            </span>
+          ) : (
+            ''
+          );
+        },
       },
       {
         title: '状态',
@@ -105,7 +112,18 @@ class LeadManageTable extends Component {
       {
         title: '来源渠道',
         dataIndex: 'sourceChannelName',
-        width: 120,
+        width: 200,
+        render: text => {
+          return (
+            <div className={styles.remark}>
+              <p style={{ width: 200, marginBottom: 0, maxHeight: 42, overflow: 'hidden' }}>
+                <span className={styles.remarkspan} style={{ WebkitBoxOrient: 'vertical' }}>
+                  {text}
+                </span>
+              </p>
+            </div>
+          );
+        },
       },
       {
         title: '推荐人',
@@ -125,15 +143,24 @@ class LeadManageTable extends Component {
         render: (t, r) => {
           return (
             <span className={styles.operate}>
-            {permissionsBtn.includes('BTN210326000022')&&<span onClick={() => this.setState({ changeVisible: true, record: r })}>
-                变更状态
-              </span>}
-              {permissionsBtn.includes('BTN210326000022')&&(permissionsBtn.includes('BTN210326000023')||permissionsBtn.includes('BTN210326000024'))&&<span> | </span>}
-              {permissionsBtn.includes('BTN210326000023')&&<span onClick={() => this.setState({ clueVisible: true, record: r })}>编辑</span>}
-              {(permissionsBtn.includes('BTN210326000023'))&&permissionsBtn.includes('BTN210326000024')&&<span> | </span>}
-              {permissionsBtn.includes('BTN210326000024')&&<span onClick={() => this.setState({ recordVisible: true, record: r })}>
-                变更记录
-              </span>}
+              {permissionsBtn.includes('BTN210326000022') && (
+                <span onClick={() => this.setState({ changeVisible: true, record: r })}>
+                  变更状态
+                </span>
+              )}
+              {permissionsBtn.includes('BTN210326000022') &&
+                (permissionsBtn.includes('BTN210326000023') ||
+                  permissionsBtn.includes('BTN210326000024')) && <span> | </span>}
+              {permissionsBtn.includes('BTN210326000023') && (
+                <span onClick={() => this.setState({ clueVisible: true, record: r })}>编辑</span>
+              )}
+              {permissionsBtn.includes('BTN210326000023') &&
+                permissionsBtn.includes('BTN210326000024') && <span> | </span>}
+              {permissionsBtn.includes('BTN210326000024') && (
+                <span onClick={() => this.setState({ recordVisible: true, record: r })}>
+                  变更记录
+                </span>
+              )}
             </span>
           );
         },
@@ -146,10 +173,12 @@ class LeadManageTable extends Component {
     return (
       <div style={{ marginTop: 20 }}>
         <Card bordered={false}>
-        {permissionsBtn.includes('BTN210326000021')&&<Button style={{ marginBottom: 16 }} onClick={() => this.handleDownload()}>
-            导出Excel
-            <Icon type="download" />
-          </Button>}
+          {permissionsBtn.includes('BTN210326000021') && (
+            <Button style={{ marginBottom: 16 }} onClick={() => this.handleDownload()}>
+              导出Excel
+              <Icon type="download" />
+            </Button>
+          )}
 
           <Table
             loading={loading}

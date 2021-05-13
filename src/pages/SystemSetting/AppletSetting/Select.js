@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-04-30 13:39:59 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-12 16:19:24
+ * @Last Modified time: 2021-05-13 16:11:07
  * 关联页面
  */
 import React, { Component } from 'react';
@@ -65,7 +65,7 @@ class Select extends Component {
         title: '更新时间',
         dataIndex: 'updateTime',
         render: (t, r) => {
-          return t
+          return t;
         },
       },
     ];
