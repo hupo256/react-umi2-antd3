@@ -14,56 +14,58 @@ const DesignerContent = ({ data }) => {
 
   return (
     <div className={styles.carouselContainer}>
-      <ReactCardCarousel
-        autoplay={false}
-        autoplay_speed={10000}
-        ref={Carousel}
-        afterChange={() => setCurrentIndex(Carousel.current.getCurrentIndex())}
-      >
-        {_.map(data, (value, index) => (
-          <div className={index === currentIndex ? '' : styles.inactive} key={index}>
-            <div
-              style={{
-                background: value.caseCoverUrlList[0]
-                  ? `url(${value.caseCoverUrlList[0]}) no-repeat center center`
-                  : '#e8e8e8',
-                backgroundSize: 'cover',
-              }}
-              className={styles.container}
-            >
-              {index === currentIndex && (
-                <div className={styles.designerWrapper}>
-                  <div className={styles.topSection}>
-                    <div className={styles.userImageWrapper}>
-                      <img
-                        src={value.headPicUrl}
-                        className={styles.userImage}
-                        style={{
-                          width: '91px',
-                          height: '91px',
-                        }}
-                      />
+      <div style={{ height: '500px' }}>
+        <ReactCardCarousel
+          autoplay={false}
+          autoplay_speed={10000}
+          ref={Carousel}
+          afterChange={() => setCurrentIndex(Carousel.current.getCurrentIndex())}
+        >
+          {_.map(data, (value, index) => (
+            <div className={index === currentIndex ? '' : styles.inactive} key={index}>
+              <div
+                style={{
+                  background: value.caseCoverUrlList[0]
+                    ? `url(${value.caseCoverUrlList[0]}) no-repeat center center`
+                    : '#e8e8e8',
+                  backgroundSize: 'cover',
+                }}
+                className={styles.container}
+              >
+                {index === currentIndex && (
+                  <div className={styles.designerWrapper}>
+                    <div className={styles.topSection}>
+                      <div className={styles.userImageWrapper}>
+                        <img
+                          src={value.headPicUrl}
+                          className={styles.userImage}
+                          style={{
+                            width: '91px',
+                            height: '91px',
+                          }}
+                        />
+                      </div>
+                      <div className={styles.right}>
+                        <h3 className={styles.titleWrap}>
+                          <p className={styles.name}>{value.name}</p>
+                          <div className={styles.jobTitle}>{value.position}</div>
+                        </h3>
+                        <p className={styles.content}>{value.designConcept}</p>
+                      </div>
                     </div>
-                    <div className={styles.right}>
-                      <h3 className={styles.titleWrap}>
-                        <p className={styles.name}>{value.name}</p>
-                        <div className={styles.jobTitle}>{value.position}</div>
-                      </h3>
-                      <p className={styles.content}>{value.designConcept}</p>
-                    </div>
+                    <BtnMore
+                      text={'查看详情'}
+                      solid
+                      url={`${domain}/designers/details?uid=${value.uid}`}
+                      style={{ justifyContent: 'flex-end', marginTop: '15px' }}
+                    />
                   </div>
-                  <BtnMore
-                    text={'查看详情'}
-                    solid
-                    url={`${domain}/designers/details?uid=${value.uid}`}
-                    style={{ justifyContent: 'flex-end', marginTop: '15px' }}
-                  />
-                </div>
-              )}
+                )}
+              </div>
             </div>
-          </div>
-        ))}
-      </ReactCardCarousel>
+          ))}
+        </ReactCardCarousel>
+      </div>
       <div className={styles.carouselDotsWrapper}>
         {_.map(data, (value, index) => (
           <div
