@@ -39,7 +39,7 @@ const CaseProjects = ({ data }) => {
             style={caseStyle.caseItem}
             className={styles.clickableImg}
             onClick={() =>
-              (window.location.href = `${domain}/sites/details?gongdiUid=${data[0].gongdiUid}`)
+              (window.location.href = `${domain}/sites/details?gongdiUid=${data[0].uid}`)
             }
           >
             <div className={styles.bgText}>
@@ -67,7 +67,7 @@ const CaseProjects = ({ data }) => {
             style={caseStyle.caseItem}
             className={styles.clickableImg}
             onClick={() =>
-              (window.location.href = `${domain}/sites/details?gongdiUid=${data[0].gongdiUid}`)
+              (window.location.href = `${domain}/sites/details?gongdiUid=${data[0].uid}`)
             }
           >
             <div className={styles.bgText}>
@@ -80,7 +80,7 @@ const CaseProjects = ({ data }) => {
             style={caseStyle.caseItem}
             className={styles.clickableImg}
             onClick={() =>
-              (window.location.href = `${domain}/sites/details?gongdiUid=${data[1].gongdiUid}`)
+              (window.location.href = `${domain}/sites/details?gongdiUid=${data[1].uid}`)
             }
           >
             <div className={styles.bgText}>
@@ -125,7 +125,7 @@ const CaseProjects = ({ data }) => {
             style={caseStyle.left}
             className={styles.clickableImg}
             onClick={() =>
-              (window.location.href = `${domain}/sites/details?gongdiUid=${data[0].gongdiUid}`)
+              (window.location.href = `${domain}/sites/details?gongdiUid=${data[0].uid}`)
             }
           >
             <div className={styles.bgText}>
@@ -138,7 +138,7 @@ const CaseProjects = ({ data }) => {
               style={caseStyle.caseItem}
               className={styles.clickableImg}
               onClick={() =>
-                (window.location.href = `${domain}/sites/details?gongdiUid=${data[1].gongdiUid}`)
+                (window.location.href = `${domain}/sites/details?gongdiUid=${data[1].uid}`)
               }
             >
               <div className={styles.bgText}>
@@ -150,7 +150,7 @@ const CaseProjects = ({ data }) => {
               style={caseStyle.caseItem}
               className={styles.clickableImg}
               onClick={() =>
-                (window.location.href = `${domain}/sites/details?gongdiUid=${data[2].gongdiUid}`)
+                (window.location.href = `${domain}/sites/details?gongdiUid=${data[2].uid}`)
               }
             >
               <div className={styles.bgText}>
