@@ -2,16 +2,16 @@
  * @Author: zqm 
  * @Date: 2020-04-15 13:37:41 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-04-15 16:07:20
+ * @Last Modified time: 2021-05-14 11:02:26
  */
 import React from 'react';
 // 引入编辑器组件
 import BraftEditor from 'braft-editor';
 import { connect } from 'dva';
 import { ContentUtils } from 'braft-utils';
-import styles from './BraftEditor.less';
 // 引入编辑器样式
 import 'braft-editor/dist/index.css';
+import styles from './BraftEditor.less';
 import { Upload, message, Modal, Icon, Button } from 'antd';
 import { controls, colors, imageControls, fontSizes, accepts } from './utils';
 
