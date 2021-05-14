@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-// import Head from 'next/head'
+
 import styles from './Home.module.less';
 import _ from 'lodash';
 import CaseProjects from './Case/Case.jsx';
@@ -47,7 +47,6 @@ const Home = () => {
   const [showHeaderDrawer, setShowHeaderDrawer] = useState(false);
   const [showFooterDrawer, setShowFooterDrawer] = useState(false);
 
-  // const [refresh, setRefresh] = useState(false)
 
   useEffect(() => {
     (async () => {
@@ -81,7 +80,7 @@ const Home = () => {
             left={
               <div className={styles.companyHeaderStyle}>
                 <Avatar
-                  src={footerData.icon}
+                  src={footerData.logo}
                   className={'avatar'}
                   style={{ backgroundColor: '#FF7300', verticalAlign: 'middle' }}
                   size="large"
@@ -107,8 +106,7 @@ const Home = () => {
             <div
               key={`banner-${index}`}
               onClick={() =>
-                (window.location.href = `${domain}/${typeMap[item.type]}/details?${
-                  paramMap[item.type]
+              (window.location.href = `${domain}/${typeMap[item.type]}/details?${paramMap[item.type]
                 }=${item.uid}`)
               }
             >
@@ -140,7 +138,7 @@ const Home = () => {
           </div>
 
           <ChapterLayout title={'装修攻略'} description={'一分钟了解家装'}>
-            <Articles data={_.get(publishedData, '5.list')} />
+            <Articles data={_.slice(_.get(publishedData, '5.list'), 0, 3)} />
           </ChapterLayout>
 
           <div className={styles.designerSectionWiderBackground}>
