@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-04-28 17:05:47 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-12 16:27:43
+ * @Last Modified time: 2021-05-14 14:30:50
  * 小程序设置
  */
 
@@ -33,11 +33,17 @@ class Index extends PureComponent {
     const { dispatch } = this.props;
     const code = localStorage.getItem('auth');
     const saasSellerCode = JSON.parse(code).companyCode;
-    dispatch({ type: 'MiniProgram/getAuthInfoModel', payload: { saasSellerCode } }).then(res => {});
-    dispatch({ type: 'MiniProgram/formbindmapModel' });
-    dispatch({ type: 'MiniProgram/queryWechatMiniGlobalModel' }).then(res => {
-      if (res?.code === 200) {
-        this.setState({ switchChecked: res.data?.homePageOpenAuth });
+    dispatch({ type: 'MiniProgram/getAuthInfoModel', payload: { saasSellerCode } }).then(res => {
+      console.log('====================================');
+      console.log(res);
+      console.log('====================================');
+      if (res && res.code === 200 && res.data.isAuthedWechatMini) {
+        dispatch({ type: 'MiniProgram/formbindmapModel' });
+        dispatch({ type: 'MiniProgram/queryWechatMiniGlobalModel' }).then(res => {
+          if (res?.code === 200) {
+            this.setState({ switchChecked: res.data?.homePageOpenAuth });
+          }
+        });
       }
     });
   }
@@ -208,6 +214,7 @@ class Index extends PureComponent {
             directType={record.key}
             handleCancel={() => this.handleCancel()}
             handleOk={() => this.handleOk()}
+            show={AuthInfo.isCompanyAuthWechatMini}
           />
         )}
       </div>

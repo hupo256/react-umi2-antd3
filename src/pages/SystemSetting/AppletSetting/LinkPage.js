@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-04-30 11:36:34 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-11 19:19:04
+ * @Last Modified time: 2021-05-14 14:30:56
  * 关联设置
  */
 import React, { Component } from 'react';
@@ -47,7 +47,11 @@ class LinkPage extends Component {
         <div style={{ minHeight: 86 }}>
           <div className={styles.linkpage}>
             <span className="beforeStar">关联页面：</span>
-            <Select defvalue={defvalue} handleSelect={value => this.handleSelect(value)} />
+            <Select
+              defvalue={defvalue}
+              handleSelect={value => this.handleSelect(value)}
+              show={this.props.show}
+            />
           </div>
           <div>
             <span className="beforeStar">按钮名称：</span>
