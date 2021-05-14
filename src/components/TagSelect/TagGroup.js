@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { Tag, Input, Tooltip, Icon, message } from 'antd';
+
 class TagGroup extends Component {
   state = {
     tags: [],
     inputVisible: false,
     inputValue: '',
   };
+
   componentDidMount() {
     const { tags } = this.props;
     this.setState({ tags: tags || [] });
@@ -62,7 +64,12 @@ class TagGroup extends Component {
         {tags.map((tag, index) => {
           const isLongTag = tag.length > 20;
           const tagElem = (
-            <Tag key={tag} closable={true} onClose={() => this.handleClose(tag)}>
+            <Tag
+              key={tag}
+              closable={true}
+              onClose={() => this.handleClose(tag)}
+              style={{ fontSize: 14 }}
+            >
               {isLongTag ? `${tag.slice(0, 20)}...` : tag}
             </Tag>
           );
@@ -88,7 +95,10 @@ class TagGroup extends Component {
         )}
         {!inputVisible &&
           tags.length < 10 && (
-            <Tag onClick={this.showInput} style={{ background: '#fff', borderStyle: 'dashed' }}>
+            <Tag
+              onClick={this.showInput}
+              style={{ background: '#fff', borderStyle: 'dashed', fontSize: 14 }}
+            >
               <Icon type="plus" />
               添加关键词
             </Tag>
@@ -97,4 +107,5 @@ class TagGroup extends Component {
     );
   }
 }
+
 export default TagGroup;
