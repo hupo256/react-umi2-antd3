@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-// import Head from 'next/head'
+
 import styles from './Home.module.less';
 import _ from 'lodash';
 import CaseProjects from './Case/Case.jsx';
@@ -11,13 +11,13 @@ import Articles from './Articles/Articles.jsx';
 import LiveShow from './LiveShow/LiveShow.jsx';
 import FooterComp from './FooterComp/FooterComp.jsx';
 
-import { typeMap, paramMap, domain } from './constants.js';
+import { typeMap, paramMap } from './constants.js';
 import WebSetting from './WebSettingOut';
 import ChannelManage from '../ChannelManage';
 
 import { Layout, Avatar, Carousel, Drawer, Button } from 'antd';
 
-import { getMenuList, getFooter, getPublishedData } from '@/services/pcPreview'; //admin特需
+import { getMenuList, getFooter, getPublishedData, getDomain } from '@/services/pcPreview'; //admin特需
 
 const { Content } = Layout;
 
@@ -42,12 +42,13 @@ const contentStyle = {
 const Home = () => {
   const [menuList, setMenuList] = useState([]);
   const [footerData, setFooterData] = useState([]);
+  const [dynamicDomain, setDynamicDomain] = useState([]);
   const [publishedData, setPublishedData] = useState([]);
+  const [refresh, setRefresh] = useState(false);
 
   const [showHeaderDrawer, setShowHeaderDrawer] = useState(false);
   const [showFooterDrawer, setShowFooterDrawer] = useState(false);
 
-  // const [refresh, setRefresh] = useState(false)
 
   useEffect(() => {
     (async () => {
@@ -62,7 +63,11 @@ const Home = () => {
       const res = await getFooter();
       setFooterData(_.get(res, 'data', []));
     })();
-  }, []);
+    (async () => {
+      const res = await getDomain();
+      setDynamicDomain(`http://${_.get(res, 'data.domain', '')}`);
+    })();
+  }, [refresh]);
 
   return (
     <div className={styles.container}>
@@ -81,7 +86,7 @@ const Home = () => {
             left={
               <div className={styles.companyHeaderStyle}>
                 <Avatar
-                  src={footerData.icon}
+                  src={footerData.logo}
                   className={'avatar'}
                   style={{ backgroundColor: '#FF7300', verticalAlign: 'middle' }}
                   size="large"
@@ -107,8 +112,7 @@ const Home = () => {
             <div
               key={`banner-${index}`}
               onClick={() =>
-                (window.location.href = `${domain}/${typeMap[item.type]}/details?${
-                  paramMap[item.type]
+              (window.location.href = `${dynamicDomain}/${typeMap[item.type]}/details?${paramMap[item.type]
                 }=${item.uid}`)
               }
             >
@@ -126,26 +130,26 @@ const Home = () => {
 
         <Content className={styles.mainWrapper}>
           <ChapterLayout title={'产品特点'} description={'颠覆传统家装企业'}>
-            <KeyPoints pointsList={_.get(publishedData, '1.list')} />
+            <KeyPoints pointsList={_.get(publishedData, '1.list')} domain={dynamicDomain} />
           </ChapterLayout>
 
           <ChapterLayout title={'装修案例'} description={'定制全套装修方案'}>
-            <CaseProjects data={_.get(publishedData, '2.list')} />
+            <CaseProjects data={_.get(publishedData, '2.list')} domain={dynamicDomain} />
           </ChapterLayout>
 
           <div className={styles.designerSectionWiderBackground}>
             <ChapterLayout title={'首席设计师'} description={'定制全套装修方案'}>
-              <DesignerContent data={_.get(publishedData, '4.list')} />
+              <DesignerContent data={_.get(publishedData, '4.list')} domain={dynamicDomain} />
             </ChapterLayout>
           </div>
 
           <ChapterLayout title={'装修攻略'} description={'一分钟了解家装'}>
-            <Articles data={_.get(publishedData, '5.list')} />
+            <Articles data={_.slice(_.get(publishedData, '5.list'), 0, 3)} domain={dynamicDomain} />
           </ChapterLayout>
 
           <div className={styles.designerSectionWiderBackground}>
             <ChapterLayout title={'工地直播'} description={'全程透明 追踪可查'}>
-              <LiveShow data={_.get(publishedData, '3.list')} />
+              <LiveShow data={_.get(publishedData, '3.list')} domain={dynamicDomain} />
             </ChapterLayout>
           </div>
         </Content>

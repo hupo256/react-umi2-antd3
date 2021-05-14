@@ -72,6 +72,7 @@ const MenuListComp = ({ menuList }) => {
         }
       >
         {_.map(menuChunkList[chunkIndex], (item, index) => {
+          if (item.status === 2) return null
           return (
             <div className={styles.menuItemWrapper} key={`menuItemWrapper-${index}`}>
               {index === 0 &&

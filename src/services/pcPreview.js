@@ -25,3 +25,11 @@ export function getPublishedData(params) {
     body: params,
   });
 }
+
+// 获取域名
+export function getDomain(params) {
+  return request(baseurl + '/api/v1/wechat/website/domain/get', {
+    method: 'POST',
+    body: params,
+  });
+}

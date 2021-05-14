@@ -3,9 +3,9 @@ import { BtnMore } from '../btn';
 import _ from 'lodash';
 import styles from './Articles.module.less';
 import cx from 'classnames';
-import { domain } from '../constants.js';
 
-const Articles = ({ data }) => {
+
+const Articles = ({ data, domain }) => {
   if (_.isEmpty(data)) return null;
 
   return (
@@ -28,7 +28,7 @@ const Articles = ({ data }) => {
                   return (
                     <a
                       key={`${article.articleDicCode}-${index}`}
-                      href={`/articles/details?articleUid=${article.articleUid}`}
+                      href={`${domain}/articles/details?articleUid=${article.articleUid}`}
                       className={styles.articleLine}
                     >
                       {article.articleTitle}
