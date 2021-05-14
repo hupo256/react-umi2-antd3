@@ -28,7 +28,7 @@ const Articles = ({ data, domain }) => {
                   return (
                     <a
                       key={`${article.articleDicCode}-${index}`}
-                      href={`/articles/details?articleUid=${article.articleUid}`}
+                      href={`${domain}/articles/details?articleUid=${article.articleUid}`}
                       className={styles.articleLine}
                     >
                       {article.articleTitle}
