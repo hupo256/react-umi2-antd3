@@ -24,6 +24,9 @@ export default {
   },
 
   effects: {
+    *resetSearchModel({ payload }, { call, put }) {
+      yield put({ type: 'upData', payload: { ArticleListQuery: { ...payload } } });
+    },
     // 公有库文章栏目
     *queryDicModuleList({ payload }, { call, put }) {
       const response = yield call(queryDicModuleList, {
