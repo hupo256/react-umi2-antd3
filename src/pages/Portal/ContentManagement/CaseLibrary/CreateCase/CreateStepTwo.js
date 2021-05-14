@@ -1,8 +1,8 @@
 /*
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
- * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-16 21:43:58
+ * @Last Modified by: zqm
+ * @Last Modified time: 2021-05-14 09:54:07
  * 创建工地
  */
 import React, { PureComponent, Fragment, Component } from 'react';
@@ -526,8 +526,9 @@ class CreateStepTwo extends Component {
       this.handleUploadCancel();
     } else {
       // 新增
-      const newData = data.map(item => {
-        item.isCover = false;
+      const len = DicList.length;
+      const newData = data.map((item, i) => {
+        item.isCover = len + '' == '0' && i == 0 ? true : false;
         item.isVr = false;
         item.picDesc = null;
         item.categoryDicCode = null;
