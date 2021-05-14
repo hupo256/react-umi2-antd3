@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2020-04-15 13:37:37 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-14 10:24:53
+ * @Last Modified time: 2021-05-14 14:57:38
  */
 export const controls = [
   'undo',
@@ -46,6 +46,7 @@ export const controls = [
 
   'link',
   'fullscreen',
+  'separator',
   // {
   //   key: 'bold',
   //   text: <b>加粗</b>,
