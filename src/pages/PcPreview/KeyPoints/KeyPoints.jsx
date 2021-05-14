@@ -1,8 +1,8 @@
 import styles from './KeyPoints.module.less';
 import _ from 'lodash';
 
-import { domain } from '../constants.js';
-const KeyPoints = ({ pointsList }) => {
+import { typeMap, paramMap } from '../constants.js';
+const KeyPoints = ({ pointsList, domain }) => {
   return (
     <div className={styles.featurePoints}>
       {_.map(pointsList, (feature, index) => (
@@ -10,8 +10,7 @@ const KeyPoints = ({ pointsList }) => {
           key={index}
           className={styles.featurePoint}
           onClick={() =>
-            (window.location.href = `${domain}/${typeMap[feature.type]}/details?${
-              paramMap[feature.type]
+          (window.location.href = `${domain}/${typeMap[feature.type]}/details?${paramMap[feature.type]
             }=${feature.uid}`)
           }
           style={{ cursor: 'pointer' }}

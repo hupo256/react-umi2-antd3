@@ -4,9 +4,9 @@ import _ from 'lodash';
 import styles from './DesignerContent.module.less';
 import { BtnMore } from '../btn';
 import cx from 'classnames';
-import { domain } from '../constants.js';
 
-const DesignerContent = ({ data }) => {
+
+const DesignerContent = ({ data, domain }) => {
   if (_.isEmpty(data)) return null;
 
   const [currentIndex, setCurrentIndex] = useState(0);
