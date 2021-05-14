@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-04-30 13:39:59 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-12 16:27:52
+ * @Last Modified time: 2021-05-14 14:32:11
  * 关联页面
  */
 import React, { Component } from 'react';
@@ -98,7 +98,12 @@ class Select extends Component {
             </div>
             {step == 1 && (
               <div className={styles.tab1}>
-                <p onClick={() => this.handleClickOne()}>一键授权</p>
+                <p
+                  onClick={() => this.handleClickOne()}
+                  style={{ display: this.props.show ? 'block' : 'none' }}
+                >
+                  一键授权
+                </p>
                 <p onClick={() => this.handleClickTwo()}>表单</p>
               </div>
             )}
