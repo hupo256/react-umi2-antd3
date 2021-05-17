@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-03-18 11:22:23 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-10 16:16:04
+ * @Last Modified time: 2021-05-13 16:56:52
  * 编辑文章
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -255,7 +255,7 @@ class ArticleLibraryEdit extends PureComponent {
                 <Col span={8} />
                 <Col span={16}>
                   <Button type="primary" htmlType="submit">
-                    提交
+                    保存
                   </Button>
                 </Col>
               </Row>

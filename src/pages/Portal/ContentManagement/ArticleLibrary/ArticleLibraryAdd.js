@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-03-18 11:21:43 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-13 11:33:55
+ * @Last Modified time: 2021-05-14 18:23:32
  * 创建文章
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -328,7 +328,7 @@ class ArticleLibraryAdd extends PureComponent {
           articleContent: editorContent,
           headKeywords: tags,
           articleChannel: isCopy ? 1 : 2,
-          articleShareId: getQueryUrlVal('uid'),
+          articleShareId: getQueryUrlVal('uid') || '',
         },
       }).then(res => {
         if (res && res.code === 200) {

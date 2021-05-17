@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:50:21 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-11 18:41:51
+ * @Last Modified time: 2021-05-14 18:50:43
  * 文章库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -152,7 +152,7 @@ class ArticleLibrary extends PureComponent {
             <Search
               placeholder="可通过文章标题 / 内容进行搜索"
               value={this.state.searchWord}
-              onChange={e => this.setState({ searchWord: e.target.value })}
+              onChange={e => this.handleChanges(e)}
               onSearch={value => this.handleSrarch()}
               onPressEnter={() => this.handleSrarch()}
               // onBlur={() => this.handleSrarch()}
@@ -252,6 +252,12 @@ class ArticleLibrary extends PureComponent {
       </div>
     );
   }
+  handleChanges = e => {
+    this.setState({ searchWord: e.target.value }, () => {
+      const { searchWord } = this.state;
+      !searchWord && this.getList({ searchText: null, pageNum: 1 });
+    });
+  };
   handleEdit = r => {
     router.push(`/portal/contentmanagement/articlelibrary/edit?uid=${r.articleUid}`);
   };

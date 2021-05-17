@@ -1,8 +1,8 @@
 /*
  * @Author: pengyc 
  * @Date: 2020-08-19 13:42:59 
- * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-19 16:02:38
+ * @Last Modified by: zqm
+ * @Last Modified time: 2021-05-14 18:52:01
  * 新一个公有方法文件
  */
 // 离开当前模块 清空搜索数据
@@ -26,6 +26,9 @@ export const handleRouterFun = props => {
   }
   if (!hash.includes('FormLibrary')) {
     handleResetFormLibrary(props);
+  }
+  if (!hash.includes('articlelibrary')) {
+    handleResetarticlelibrary(props);
   }
 };
 const handleResetcustomer = props => {
@@ -72,6 +75,15 @@ const handleResetProjectLibrary = props => {
 const handleResetFormLibrary = props => {
   props.dispatch({
     type: 'FormLibrary/resetSearchModel',
+    payload: {
+      pageNum: 1,
+    },
+  });
+};
+
+const handleResetarticlelibrary = props => {
+  props.dispatch({
+    type: 'ArticleLibrary/resetSearchModel',
     payload: {
       pageNum: 1,
     },
