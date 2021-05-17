@@ -87,6 +87,13 @@ class HostBind extends Component {
     const { tabsValue, hostSuffix, custonHostValue, defaultHostValue, randomDomain } = this.state;
     const ifCustomHost = regExpConfig.customHostType.test(custonHostValue);
     const ifDefaultHost = regExpConfig.defalutHostType.test(defaultHostValue);
+    const ifCustomHosts =
+      custonHostValue.indexOf('ingongdi.com') != -1 ||
+      custonHostValue.indexOf('in-deco.com') != -1 ||
+      custonHostValue.indexOf('in-site.com') != -1 ||
+      custonHostValue.indexOf('in-spire.com') != -1 ||
+      custonHostValue.indexOf('in-create.com') != -1;
+      console.log('ifCustomHosts', ifCustomHosts)
     let payload;
     if (tabsValue == 0) {
       if (defaultHostValue.length < 4 || defaultHostValue.length > 20 || !ifDefaultHost) {
@@ -100,6 +107,9 @@ class HostBind extends Component {
     } else if (tabsValue == 1) {
       if (custonHostValue.length < 4 || custonHostValue.length > 100 || !ifCustomHost) {
         message.error('绑定失败，请检查输入后再试');
+        return;
+      } else if (ifCustomHosts) {
+        message.error('当前域名已被注册，请检查后重试');
         return;
       }
       payload = {
