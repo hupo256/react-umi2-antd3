@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:50:21 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-14 18:50:43
+ * @Last Modified time: 2021-05-17 14:16:30
  * 文章库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -12,6 +12,8 @@ import { Card, Button, Icon, Divider, Table, Input, message, Modal, Tabs } from 
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import ArticleListModel from './ArticleListModel';
 import { paginations, fixedTitle, successIcon, waringInfo, MyIcon } from '@/utils/utils';
+import imgl from '../../../../assets/banner_left@2x.png';
+import imgr from '../../../../assets/banner_right@2x.png';
 import styles from './ArticleLibrary.less';
 const { confirm } = Modal;
 const { Search } = Input;
@@ -213,11 +215,11 @@ class ArticleLibrary extends PureComponent {
           visible={this.state.CreateModeVisible}
           onCancel={this.handleCancel}
           footer={null}
-          width={600}
+          width={828}
         >
           <div className={styles.CreateMode}>
             <div onClick={() => this.setState({ ArticleListVisible: true })}>
-              <div className={styles.createImg} />
+              <img className={styles.createImg} src={imgl} style={{ width: 313, height: 157 }} />
               <p>公有文章库</p>
               <p>
                 海量文章库，选完直接用
@@ -232,7 +234,7 @@ class ArticleLibrary extends PureComponent {
                 router.push(`/portal/contentmanagement/articlelibrary/add?step=${step}`);
               }}
             >
-              <div className={styles.createImg} />
+              <img className={styles.createImg} src={imgr} style={{ width: 313, height: 157 }} />
               <p>去原创文章</p>
               <p>
                 喜欢自己原创，满满干活
