@@ -123,11 +123,11 @@ export default class CreateEdit extends Component {
                 createChannel(params).then(res => {
                     if (res?.code === 200) {
                         this.resetHandle();
-                        this.setState({
-                            btnLoading: false
-                        })
                         message.success('频道创建成功!')
                     }
+                    this.setState({
+                        btnLoading: false
+                    })
                 })
 
             
@@ -137,11 +137,11 @@ export default class CreateEdit extends Component {
                 editChannelApi(params).then(res => {
                     if (res?.code === 200) {
                         this.resetHandle();
-                        this.setState({
-                            btnLoading: false
-                        })
                         message.success('编辑已保存，发布后生效 !')
                     }
+                    this.setState({
+                        btnLoading: false
+                    })
                 })
             }
             
