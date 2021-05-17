@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import { Tag, Input, Tooltip, Icon, message } from 'antd';
-
 class TagGroup extends Component {
   state = {
     tags: [],
     inputVisible: false,
     inputValue: '',
   };
-
   componentDidMount() {
     const { tags } = this.props;
     this.setState({ tags: tags || [] });
@@ -32,7 +30,7 @@ class TagGroup extends Component {
     // }
   };
 
-  handleInputConfirm = (e) => {
+  handleInputConfirm = e => {
     e.preventDefault();
     const { inputValue } = this.state;
     let { tags } = this.state;
@@ -99,5 +97,4 @@ class TagGroup extends Component {
     );
   }
 }
-
 export default TagGroup;

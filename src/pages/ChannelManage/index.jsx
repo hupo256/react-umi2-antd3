@@ -110,9 +110,15 @@ export default class ChannelManage extends Component {
     }
 
     moveRow = async (dragIndex, hoverIndex, record) => {
+        
+        
         const { list, pageNum, pageSize } = this.state;
         const { dispatch } = this.props;
         const dragRow = list[dragIndex];
+        if (list[dragIndex].isIndex === 1) {
+            message.warning('首页不支持排序！')
+            return
+        }
         try {
             const res = await sortApi({
                 uid: list[dragIndex].uid,
@@ -166,7 +172,7 @@ export default class ChannelManage extends Component {
         confirm({
             title: `确定要${record.status === 2 ? '启' : '停'}用当前频道吗?`,
             content: record.status === 2 ? '启用后，将可以在装企小程序和网站中显示' : '停用后，在装企小程序和网站中均不会显示当前频道',
-            icon: record.status === 2 ? <Icon style={{color: '#52c41a'}}   type="check-circle" /> :  "question-circle",
+            icon: record.status === 2 ? <Icon style={{color: '#52c41a'}} theme='filled'  type="check-circle" /> :  "question-circle",
             onOk: async () => {
                 try {
                     const res = await toggleStatusApi({
@@ -287,13 +293,17 @@ export default class ChannelManage extends Component {
                 title: <span style={{padding: '0 15px'}}>操作</span> ,
                 key: 'modify',
                 render: (text, record) => {
-                    return (
-                        <div>
-                            <Button type='link' onClick={() => this.editHandle(record.uid)}>编辑</Button>
-                            <Divider type='vertical' style={{background: '#ff8e59', margin: 0 }} />
-                            <Button type='link' onClick={() => this.showConfirmHandle(record)}>{record.status === 2 ? '启用' : '停用'}</Button>
-                        </div>
-                    )
+                    console.log({record})
+                    if (record?.isIndex === 0) {
+                        return (
+                            <div>
+                                <Button type='link' onClick={() => this.editHandle(record.uid)}>编辑</Button>
+                                <Divider type='vertical' style={{background: '#ff8e59', margin: 0 }} />
+                                <Button type='link' onClick={() => this.showConfirmHandle(record)}>{record.status === 2 ? '启用' : '停用'}</Button>
+                            </div>
+                        )
+                    }
+                    
                 }       
             },
         ];
@@ -318,7 +328,7 @@ export default class ChannelManage extends Component {
                                     rowKey={record => record.uid}
                                     onRow={(record, index) => ({
                                         index,
-                                        moveRow: this.moveRow
+                                        moveRow:  this.moveRow 
                                     })}
                                     pagination={{
                                         current: pageNum,

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'dva'
 import { createChannel, getRelatedPage, getDetailApi, editChannelApi,
          siteListApi, designerListApi, caseListApi, articleListApi, articleDicApi  } from '@/services/channelManage'
-import { Form, Input, Select, Button, Cascader, message, Tabs, Table, Radio, Tag  } from 'antd'
+import { Form, Input, Select, Button, Cascader, message, Tabs, Table, Radio, Tag, Tooltip   } from 'antd'
 import styles from '../index.less'
 
 
@@ -123,11 +123,11 @@ export default class CreateEdit extends Component {
                 createChannel(params).then(res => {
                     if (res?.code === 200) {
                         this.resetHandle();
-                        this.setState({
-                            btnLoading: false
-                        })
                         message.success('频道创建成功!')
                     }
+                    this.setState({
+                        btnLoading: false
+                    })
                 })
 
             
@@ -137,11 +137,11 @@ export default class CreateEdit extends Component {
                 editChannelApi(params).then(res => {
                     if (res?.code === 200) {
                         this.resetHandle();
-                        this.setState({
-                            btnLoading: false
-                        })
                         message.success('编辑已保存，发布后生效 !')
                     }
+                    this.setState({
+                        btnLoading: false
+                    })
                 })
             }
             
@@ -200,7 +200,8 @@ export default class CreateEdit extends Component {
             return ({
                 currentSelectRelatedPageOpt: arr,
                 currentKey: +step + 1 + '',
-                detailType: item.detailType
+                detailType: item.detailType,
+
             })
         }, () => {
             // console.log(this.state.currentSelectRelatedPageOpt)
@@ -237,7 +238,7 @@ export default class CreateEdit extends Component {
         const { detailType } = this.state;
         let res;
         detailType === 1 && (res = await siteListApi({
-            gongdiStatus: status,
+            gongdiStatus: 0,
             pageNum,
             pageSize,
             searchText
@@ -425,26 +426,20 @@ export default class CreateEdit extends Component {
                     title: <span style={{fontWeight: 300}}>工地</span>,
                     key: 'gongdiTitle',
                     dataIndex: 'gongdiTitle',
-                    width: '30%',
-                    render: text => <div style={{width: '100%', display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>{text}</div>
+                    // width: '30%',
+                    render: (text, r) =>  <Tooltip placement='topLeft' title={text}>
+                        <div style={{ maxWidth: 120, display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>{text}</div>
+                    </Tooltip> 
                 },
                 {
                     title: <span style={{fontWeight: 300}}>工地信息</span>,
                     key: 'buildingName',
                     dataIndex: 'buildingName',
                     // width: 200,
-                    render: (text, r) => <div style={{maxWidth: 120}}>
-                        <div style={{ display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 2}}>{text}</div>
-                        {
-                            <div>
-                                {r.houseType.bedroom && <Tag color="blue" style={{marginTop: 8}}>{`${r.houseType.bedroom}居室 `}</Tag>}
-                                <Tag color="green"  style={{marginTop: 8}}>{r.buildingArea}㎡</Tag>
-                                <Tag color="volcano"  style={{marginTop: 8}}>{r.renovationCosts}万</Tag>
-                                <Tag color="magenta"  style={{marginTop: 8}}>{r.houseStyleName}</Tag>
-                            </div>
-                            
-                        }
-                    </div>
+                    render: (text, r) => 
+                        <Tooltip placement='topLeft' title={text}>
+                            <div style={{ maxWidth: 120, display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>{text}</div>
+                        </Tooltip> 
                 },
                 {
                     title: <span style={{fontWeight: 300}}>阶段</span>,
@@ -482,29 +477,26 @@ export default class CreateEdit extends Component {
                 {
                     title: <span style={{fontWeight: 300}}>案例</span>,
                     key: 'titleInfo',
-                    dataIndex: 'title'
+                    dataIndex: 'title',
+                    render: (text, r) => <Tooltip placement='topLeft' title={text} >
+                        <div style={{maxWidth: 120,  display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>{text}</div>
+                    </Tooltip> 
                 },
                 {
                     title: <span style={{fontWeight: 300}}>案例信息</span>,
-                    key: 'title',
-                    dataIndex: 'title',
-                    render: (text, r) => <div>
-                        <div style={{width: 120, display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 2}}>{text}</div>
-                        {
-                            <div>
-                                {+r.bedroom != 0 && <Tag color="blue" style={{marginTop: 8}}>{`${r.bedroom}居室 `}</Tag>}
-                                <Tag color="green"  style={{marginTop: 8}}>{r.acreage}m²</Tag>
-                                <Tag color="volcano"  style={{marginTop: 8}}>{r.decorationCost}万</Tag>
-                                <Tag color="magenta"  style={{marginTop: 8}}>{r.styleDic.name}</Tag>
-                            </div>
-                            
-                        }
-                    </div>
+                    key: 'buildingName',
+                    dataIndex: 'buildingName',
+                    render: (text, r) => <Tooltip placement='topLeft' title={text}>
+                        <span style={{ display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>{text}</span>
+                    </Tooltip> 
                 },
                 {
                     title: <span style={{fontWeight: 300}}>设计师</span>,
                     key: 'designerName',
-                    dataIndex: 'designerName'
+                    dataIndex: 'designerName',
+                    render: (text, r) => <Tooltip placement='topLeft' title={text}>
+                        <div style={{maxWidth: 120,  display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>{text}</div>
+                    </Tooltip> 
                 },
             ],
 
@@ -513,12 +505,18 @@ export default class CreateEdit extends Component {
                 {
                     title: <span style={{fontWeight: 300}}>文章标题</span>,
                     key: 'articleTitle',
-                    dataIndex: 'articleTitle'
+                    dataIndex: 'articleTitle',
+                    render: (text, r) => <Tooltip placement='topLeft' title={text}>
+                        <div style={{maxWidth: 120,  display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>{text}</div>
+                    </Tooltip> 
                 },
                 {
                     title: <span style={{fontWeight: 300}}>发布人</span>,
                     key: 'creatorName',
-                    dataIndex: 'creatorName'
+                    dataIndex: 'creatorName',
+                    render: (text, r) => <Tooltip placement='topLeft' title={text}>
+                        <div style={{maxWidth: 120,  display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>{text}</div>
+                    </Tooltip> 
                 },
                 {
                     title: <span style={{fontWeight: 300}}>更新时间</span>,
@@ -583,11 +581,11 @@ export default class CreateEdit extends Component {
                                         placeholder='可输入关键字进行检索'
                                         onChange={  e => { const value = e.target.value; this.setState({searchText: value, pageNum: 1}); this.handleChange(value) }}
                                     />
-                                    <Radio.Group style={{marginTop: 8}} buttonStyle='solid'  size='small' value={currentarticleDicCode} buttonStyle="solid"  onChange={this.radioGroupChange}>
+                                    {detailType === 4 && <Radio.Group style={{marginTop: 8}} buttonStyle='solid'  size='small' value={currentarticleDicCode} buttonStyle="solid"  onChange={this.radioGroupChange}>
                                         {
                                             articleDicOpts.map(item => <Radio.Button key={item.code} value={item.code}>{item.name}</Radio.Button>)
                                         }
-                                    </Radio.Group>
+                                    </Radio.Group>}
                                     <Table
                                         size='small'
                                         style={{marginTop: 8, cursor: 'pointer'}}

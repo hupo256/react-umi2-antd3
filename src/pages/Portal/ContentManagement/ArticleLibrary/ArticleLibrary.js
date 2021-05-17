@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:50:21 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-04-15 19:29:10
+ * @Last Modified time: 2021-05-11 18:41:51
  * 文章库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -10,7 +10,8 @@ import { connect } from 'dva';
 import router from 'umi/router';
 import { Card, Button, Icon, Divider, Table, Input, message, Modal, Tabs } from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
-import { paginations, fixedTitle, successIcon, waringInfo } from '@/utils/utils';
+import ArticleListModel from './ArticleListModel';
+import { paginations, fixedTitle, successIcon, waringInfo, MyIcon } from '@/utils/utils';
 import styles from './ArticleLibrary.less';
 const { confirm } = Modal;
 const { Search } = Input;
@@ -29,6 +30,9 @@ class ArticleLibrary extends PureComponent {
       status: null,
       step: null,
       dictionaries: [],
+
+      CreateModeVisible: false,
+      ArticleListVisible: false,
     };
   }
 
@@ -126,7 +130,7 @@ class ArticleLibrary extends PureComponent {
         },
       },
     ];
-    const { status, step, dictionaries } = this.state;
+    const { status, step, dictionaries, ArticleListVisible } = this.state;
     return (
       <div>
         <div
@@ -181,9 +185,13 @@ class ArticleLibrary extends PureComponent {
           <Card bordered={false} style={{ marginTop: 20 }}>
             <Button
               type="primary"
-              onClick={() => {
-                router.push(`/portal/contentmanagement/articlelibrary/add`);
-              }}
+              onClick={
+                () => this.handleAddArticle()
+                //   {
+                //   const { step } = this.state;
+                //   router.push(`/portal/contentmanagement/articlelibrary/add?step=${step}`);
+                // }
+              }
             >
               <Icon type="plus" />
               创建文章
@@ -191,7 +199,7 @@ class ArticleLibrary extends PureComponent {
             <Table
               loading={Loading}
               style={{ marginTop: 20 }}
-              rowKey={record => record.uid}
+              rowKey={(r, i) => i}
               dataSource={ArticleList.list}
               columns={columns}
               onChange={this.handleTableChange}
@@ -199,19 +207,53 @@ class ArticleLibrary extends PureComponent {
             />
           </Card>
         </PageHeaderWrapper>
+
+        <Modal
+          title="选择创建方式"
+          visible={this.state.CreateModeVisible}
+          onCancel={this.handleCancel}
+          footer={null}
+          width={600}
+        >
+          <div className={styles.CreateMode}>
+            <div onClick={() => this.setState({ ArticleListVisible: true })}>
+              <div className={styles.createImg} />
+              <p>公有文章库</p>
+              <p>
+                海量文章库，选完直接用
+                {'  '}
+                <MyIcon type="icon-jiayouaoligei" />
+              </p>
+              <span className={styles.recommend}>推荐</span>
+            </div>
+            <div
+              onClick={() => {
+                const { step } = this.state;
+                router.push(`/portal/contentmanagement/articlelibrary/add?step=${step}`);
+              }}
+            >
+              <div className={styles.createImg} />
+              <p>去原创文章</p>
+              <p>
+                喜欢自己原创，满满干活
+                {'  '}
+                <MyIcon type="icon-xiaolian" style={{ color: '#f4b058' }} />
+              </p>
+            </div>
+          </div>
+        </Modal>
+        {ArticleListVisible && (
+          <ArticleListModel
+            handleCancel={() => this.handleArticleCancel()}
+            handleOk={uid => this.handleArticleOk(uid)}
+            visible={ArticleListVisible}
+          />
+        )}
       </div>
     );
   }
   handleEdit = r => {
-    // const { dispatch } = this.props;
-    // dispatch({
-    //   type: 'ArticleLibrary/getArticleDetailModel',
-    //   payload: {articleUid:r.articleUid },
-    // }).then(res=>{
-    //   if(res&&res.code===200){
     router.push(`/portal/contentmanagement/articlelibrary/edit?uid=${r.articleUid}`);
-    // }
-    // });
   };
   callback = step => {
     this.setState({ step, status: null, searchWord: null }, () => {
@@ -275,6 +317,22 @@ class ArticleLibrary extends PureComponent {
       type: 'ArticleLibrary/getArticleListModel',
       payload: { ...ArticleListQuery, ...obj },
     });
+  };
+  // 新建文章
+  handleAddArticle = () => {
+    this.setState({ CreateModeVisible: true });
+  };
+  handleCancel = () => {
+    this.setState({ CreateModeVisible: false });
+  };
+
+  handleArticleOk = uid => {
+    this.setState({ CreateModeVisible: false });
+    const { step } = this.state;
+    router.push(`/portal/contentmanagement/articlelibrary/add?step=${step}&uid=${uid}`);
+  };
+  handleArticleCancel = () => {
+    this.setState({ ArticleListVisible: false });
   };
 }
 
