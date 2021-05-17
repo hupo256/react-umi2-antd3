@@ -119,6 +119,10 @@ export default class ChannelManage extends Component {
             message.warning('首页不支持排序！')
             return
         }
+        if (hoverIndex < 1 ) {
+            message.warning('不可排于首页之前！')
+            return
+        }
         try {
             const res = await sortApi({
                 uid: list[dragIndex].uid,

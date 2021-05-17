@@ -2,6 +2,9 @@
   // height: 420px;
   border: 1px solid #ccc;
   border-radius: 6px;
+  p {
+    min-height: 20px;
+  }
   p,
   span,
   img,
@@ -17,13 +20,14 @@
 
 .preview {
   padding-bottom: 0px;
-
   :global {
   }
-
   .previewCont {
     height: 500px;
     overflow-y: scroll;
+    p {
+      min-height: 20px;
+    }
     p,
     span,
     img,
