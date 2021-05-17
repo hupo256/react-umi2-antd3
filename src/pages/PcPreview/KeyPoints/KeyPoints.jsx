@@ -5,7 +5,7 @@ import { typeMap, paramMap } from '../constants.js';
 const KeyPoints = ({ pointsList, domain }) => {
   return (
     <div className={styles.featurePoints}>
-      {_.map(pointsList, (feature, index) => (
+      {_.map(pointsList, (feature, index) => feature.type === 'games' || (
         <div
           key={index}
           className={styles.featurePoint}
@@ -25,3 +25,6 @@ const KeyPoints = ({ pointsList, domain }) => {
 };
 
 export default KeyPoints;
+
+
+
