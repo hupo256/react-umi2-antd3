@@ -110,9 +110,15 @@ export default class ChannelManage extends Component {
     }
 
     moveRow = async (dragIndex, hoverIndex, record) => {
+        
+        
         const { list, pageNum, pageSize } = this.state;
         const { dispatch } = this.props;
         const dragRow = list[dragIndex];
+        if (list[dragIndex].isIndex === 1) {
+            message.warning('首页不支持排序！')
+            return
+        }
         try {
             const res = await sortApi({
                 uid: list[dragIndex].uid,
@@ -287,13 +293,17 @@ export default class ChannelManage extends Component {
                 title: <span style={{padding: '0 15px'}}>操作</span> ,
                 key: 'modify',
                 render: (text, record) => {
-                    return (
-                        <div>
-                            <Button type='link' onClick={() => this.editHandle(record.uid)}>编辑</Button>
-                            <Divider type='vertical' style={{background: '#ff8e59', margin: 0 }} />
-                            <Button type='link' onClick={() => this.showConfirmHandle(record)}>{record.status === 2 ? '启用' : '停用'}</Button>
-                        </div>
-                    )
+                    console.log({record})
+                    if (record?.isIndex === 0) {
+                        return (
+                            <div>
+                                <Button type='link' onClick={() => this.editHandle(record.uid)}>编辑</Button>
+                                <Divider type='vertical' style={{background: '#ff8e59', margin: 0 }} />
+                                <Button type='link' onClick={() => this.showConfirmHandle(record)}>{record.status === 2 ? '启用' : '停用'}</Button>
+                            </div>
+                        )
+                    }
+                    
                 }       
             },
         ];
@@ -318,7 +328,7 @@ export default class ChannelManage extends Component {
                                     rowKey={record => record.uid}
                                     onRow={(record, index) => ({
                                         index,
-                                        moveRow: this.moveRow
+                                        moveRow:  this.moveRow 
                                     })}
                                     pagination={{
                                         current: pageNum,

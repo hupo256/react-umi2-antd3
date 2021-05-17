@@ -292,7 +292,7 @@ class EnterpriseMessage extends Component {
               </div>
             )}
           </FormItem>
-          <FormItem label="免费声明">
+          <FormItem label="免责声明">
             {getFieldDecorator('disclaimer', {
               initialValue: disclaimer,
               rules: [
