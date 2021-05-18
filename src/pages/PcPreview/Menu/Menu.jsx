@@ -105,7 +105,6 @@ const MenuListComp = ({ menuList }) => {
                   </div>
                 )}
               <a
-                // href={item.linkUrl}
                 key={index}
                 className={isCurrentMenu(item) ? styles.active : undefined}
                 onClick={e => clickMenuItem(item)}
