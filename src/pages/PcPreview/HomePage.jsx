@@ -1,25 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
 
-import styles from './Home.module.scss';
-import _ from 'lodash';
-import CaseProjects from './Case/Case.jsx';
-import MenuList from './Menu/Menu.jsx';
-import KeyPoints from './KeyPoints/KeyPoints.jsx';
-import HeaderLayout from './HeaderLayout/HeaderLayout.jsx';
-import DesignerContent from './DesignerContent/DesignerContent.jsx';
-import Articles from './Articles/Articles.jsx';
-import LiveShow from './LiveShow/LiveShow.jsx';
-import FooterComp from './FooterComp/FooterComp.jsx';
+import styles from './Home.module.scss'
+import _ from 'lodash'
+import CaseProjects from './Case/Case.jsx'
+import MenuList from './Menu/Menu.jsx'
+import KeyPoints from './KeyPoints/KeyPoints.jsx'
+import HeaderLayout from './HeaderLayout/HeaderLayout.jsx'
+import DesignerContent from './DesignerContent/DesignerContent.jsx'
+import Articles from './Articles/Articles.jsx'
+import LiveShow from './LiveShow/LiveShow.jsx'
+import FooterComp from './FooterComp/FooterComp.jsx'
 
-import { typeMap, paramMap } from './constants.js';
-import WebSetting from './WebSettingOut';
-import ChannelManage from '../ChannelManage';
+import { typeMap, paramMap } from './constants.js'
+import WebSetting from './WebSettingOut'
+import ChannelManage from '../ChannelManage'
 
-import { Layout, Avatar, Carousel, Drawer, Button } from 'antd';
+import { Layout, Avatar, Carousel, Drawer, Button } from 'antd'
 
-import { getMenuList, getFooter, getPublishedData, getDomain } from '@/services/pcPreview'; //admin特需
+import { getMenuList, getFooter, getPublishedData, getDomain } from '@/services/pcPreview' //admin特需
 
-const { Content } = Layout;
+const { Content } = Layout
 
 const ChapterLayout = ({ children, title, description }) => (
   <div className={styles.chapterWrapper}>
@@ -29,7 +29,7 @@ const ChapterLayout = ({ children, title, description }) => (
     </div>
     {children}
   </div>
-);
+)
 
 const contentStyle = {
   height: '460px',
@@ -38,73 +38,73 @@ const contentStyle = {
   textAlign: 'center',
   background: '#364d79',
   backgroundSize: 'cover',
-};
+}
 const Home = () => {
-  const [menuList, setMenuList] = useState([]);
-  const [footerData, setFooterData] = useState([]);
-  const [dynamicDomain, setDynamicDomain] = useState([]);
-  const [publishedData, setPublishedData] = useState([]);
-  const [refresh, setRefresh] = useState(false);
+  const [menuList, setMenuList] = useState([])
+  const [footerData, setFooterData] = useState([])
+  const [dynamicDomain, setDynamicDomain] = useState([])
+  const [publishedData, setPublishedData] = useState([])
+  const [refresh, setRefresh] = useState(false)
 
-  const [showHeaderDrawer, setShowHeaderDrawer] = useState(false);
-  const [showFooterDrawer, setShowFooterDrawer] = useState(false);
+  const [showHeaderDrawer, setShowHeaderDrawer] = useState(false)
+  const [showFooterDrawer, setShowFooterDrawer] = useState(false)
+  const [totopShow, settotopShow] = useState(false)
 
-  useEffect(
-    () => {
-      (async () => {
-        const res = await getMenuList({ keyword: '', pageNum: 1, pageSize: 18 });
-        setMenuList(_.get(res, 'data.list', []));
-      })();
-      (async () => {
-        const res = await getPublishedData([{ key: 'article', pageNum: 1, pageSize: 4 }]);
-        setPublishedData(_.get(res, 'data.templateJson.jsonData'), []);
-      })();
-      (async () => {
-        const res = await getFooter();
-        setFooterData(_.get(res, 'data', []));
-      })();
-      (async () => {
-        const res = await getDomain();
-        setDynamicDomain(`http://${_.get(res, 'data.domain', '')}`);
-      })();
-    },
-    [refresh]
-  );
+  useEffect(() => {
+    ;(async () => {
+      const res = await getMenuList({ keyword: '', pageNum: 1, pageSize: 18 })
+      setMenuList(_.get(res, 'data.list', []))
+    })()
+    ;(async () => {
+      const res = await getPublishedData([{ key: 'article', pageNum: 1, pageSize: 4 }])
+      setPublishedData(_.get(res, 'data.templateJson.jsonData'), [])
+    })()
+    ;(async () => {
+      const res = await getFooter()
+      setFooterData(_.get(res, 'data', []))
+    })()
+  }, [])
 
+  useEffect(() => {
+    document.addEventListener('scroll', conScroll)
+    return () => {
+      document.removeEventListener('scroll', conScroll)
+    }
+  }, [])
+
+  function conScroll() {
+    const clientHeight = document.documentElement.clientHeight //可视区域高度
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop //滚动条滚动高度
+    settotopShow(scrollTop > clientHeight / 3)
+  }
+
+  if (_.isEmpty(menuList) || _.isEmpty(publishedData) || _.isEmpty(footerData)) return null
   return (
     <div className={styles.container}>
       <Layout className={styles.mainLayout}>
         <div className={styles.editableWrapper}>
           <div className={styles.editHeader}>
-            <Button
-              className={styles.editBtn}
-              type="primary"
-              onClick={() => setShowHeaderDrawer(true)}
-            >
+            <Button className={styles.editBtn} type="primary" onClick={() => setShowHeaderDrawer(true)}>
               编辑
             </Button>
           </div>
           <HeaderLayout
             left={
               <div className={styles.companyHeaderStyle}>
-                <Avatar
+                <img
                   src={footerData.logo}
-                  className={'avatar'}
-                  style={{ backgroundColor: '#FF7300', verticalAlign: 'middle' }}
-                  size="large"
-                  gap={20}
-                >
-                  C
-                </Avatar>
-                <h1>{footerData.companyName}</h1>
+                  alt={footerData.companyName}
+                  className={styles.logoStyle}
+                  onClick={() => (window.location.href = '/')}
+                />
               </div>
             }
             middle={<MenuList menuList={menuList} />}
             right={
-              <>
+              <div className={styles.contactHeader}>
                 <img className={styles.phoneIcon} src={'/img/ic_phone_slices/ic_phone.png'} />
                 <span className={styles.phone}>{footerData.customerService}</span>
-              </>
+              </div>
             }
           />
         </div>
@@ -114,9 +114,9 @@ const Home = () => {
             <div
               key={`banner-${index}`}
               onClick={() =>
-                (window.location.href = `${dynamicDomain}/${typeMap[item.type]}/details?${
-                  paramMap[item.type]
-                }=${item.uid}`)
+                (window.location.href = `${dynamicDomain}/${typeMap[item.type]}/details?${paramMap[item.type]}=${
+                  item.uid
+                }`)
               }
             >
               <h3
@@ -159,11 +159,7 @@ const Home = () => {
 
         <div className={styles.editableWrapper}>
           <div className={styles.editHeader}>
-            <Button
-              className={styles.editBtn}
-              type="primary"
-              onClick={() => setShowFooterDrawer(true)}
-            >
+            <Button className={styles.editBtn} type="primary" onClick={() => setShowFooterDrawer(true)}>
               编辑
             </Button>
           </div>
@@ -176,8 +172,8 @@ const Home = () => {
         placement="right"
         closable={true}
         onClose={() => {
-          setRefresh(!refresh);
-          setShowHeaderDrawer(false);
+          setRefresh(!refresh)
+          setShowHeaderDrawer(false)
         }}
         visible={showHeaderDrawer}
         width={900}
@@ -191,8 +187,8 @@ const Home = () => {
         placement="right"
         closable={true}
         onClose={() => {
-          setRefresh(!refresh);
-          setShowFooterDrawer(false);
+          setRefresh(!refresh)
+          setShowFooterDrawer(false)
         }}
         visible={showFooterDrawer}
         width={600}
@@ -201,9 +197,9 @@ const Home = () => {
         <WebSetting />
       </Drawer>
 
-      <div className={styles.scrollToTop} onClick={() => scrollTo(0, 0)} />
+      <div className={`${styles.scrollToTop} ${totopShow ? styles.show : ''}`} onClick={() => scrollTo(0, 0)} />
     </div>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home

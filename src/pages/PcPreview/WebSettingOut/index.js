@@ -5,9 +5,9 @@
  * @Last Modified time: 2021-04-08 15:05:51
  * 网站设置
  */
-import React, { Component } from 'react';
-import WebSetting from './WebSettingOut';
-import PageHeaderWrapper from '@/components/PageHeaderWrapper';
+import React, { Component } from 'react'
+import WebSetting from './WebSettingOut'
+import PageHeaderWrapper from '@/components/PageHeaderWrapper'
 
 class WebsettingIndex extends Component {
   componentWillMount() {}
@@ -18,8 +18,8 @@ class WebsettingIndex extends Component {
           <WebSetting />
         </PageHeaderWrapper>
       </div>
-    );
+    )
   }
 }
 
-export default WebsettingIndex;
+export default WebsettingIndex
