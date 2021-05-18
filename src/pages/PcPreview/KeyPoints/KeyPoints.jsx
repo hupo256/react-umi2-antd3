@@ -13,11 +13,12 @@ const KeyPoints = ({ pointsList, domain }) => {
               key={index}
               className={styles.featurePoint}
               onClick={() =>
+                feature.type === 'games' ||
                 (window.location.href = `${domain}/${typeMap[feature.type]}/details?${paramMap[feature.type]}=${
                   feature.uid
                 }`)
               }
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: feature.type === 'games' ? 'default' : 'pointer' }}
             >
               <img src={feature.icon} />
               <p className={styles.pointTitle}>{feature.title}</p>
