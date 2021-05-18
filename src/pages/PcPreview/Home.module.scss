@@ -55,6 +55,8 @@ body {
   align-items: center;
   height: 100%;
   gap: 12px;
+  overflow: hidden;
+  max-width: 200px;
 }
 .companyHeaderStyle .avatar {
   background-color: '--themeColor';
