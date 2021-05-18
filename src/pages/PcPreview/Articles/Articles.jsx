@@ -1,12 +1,11 @@
-import React from 'react';
-import { BtnMore } from '../btn';
-import _ from 'lodash';
-import styles from './Articles.module.less';
-import cx from 'classnames';
-
+import React from 'react'
+import { BtnMore } from '../btn'
+import _ from 'lodash'
+import styles from './Articles.module.scss'
+import cx from 'classnames'
 
 const Articles = ({ data, domain }) => {
-  if (_.isEmpty(data)) return null;
+  if (_.isEmpty(data)) return null
 
   return (
     <>
@@ -33,16 +32,16 @@ const Articles = ({ data, domain }) => {
                     >
                       {article.articleTitle}
                     </a>
-                  );
+                  )
                 })}
               </div>
             </div>
-          );
+          )
         })}
       </div>
       <BtnMore text={'更多攻略'} url={domain + '/articles'} />
     </>
-  );
-};
+  )
+}
 
-export default Articles;
+export default Articles
