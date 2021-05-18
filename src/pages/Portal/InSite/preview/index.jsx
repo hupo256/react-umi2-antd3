@@ -128,7 +128,7 @@ export default function Preview(props) {
                 </HoverMd>
               );
             })}
-            <div style={{position: 'absolute', width: '100%', left: 0, bottom: 0}}>
+            <div style={{position: 'absolute', width: '100%', left: 0, bottom: 0, height: 50}}>
               <HoverMd key={999} tips='导航' flag="nav">
                 <div className={pageStyle.footerBox}>
                   <ul className={pageStyle.flex}>
@@ -139,9 +139,9 @@ export default function Preview(props) {
                       <span>首页</span>
                     </li>
                     {navData?.map(e =>
-                      <li key={e.navModule} className={pageStyle.on}>
-                        <svg className="icon" aria-hidden="true">
-                          <use href={`#${e.navModule === 'case' ? 'iconic_case_no' : e.navModule === 'site' ? 'iconic_site_no' : e.navModule === 'design' ? 'iconic_designer_no' :e.navModule === 'article' ? 'iconic_article_no' : ''}`} />
+                      <li key={e.navModule}>
+                        <svg className="icon">
+                          <use href={`#${e.navModule === 'case' ? 'iconic_case_no' : e.navModule === 'site' ? 'iconic_site_no' : e.navModule === 'design' ? 'iconic_designer_no' :e.navModule === 'article' ? 'iconic_article' : ''}`} />
                         </svg>
                         <span>{e.name}</span>
                       </li>

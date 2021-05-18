@@ -37,7 +37,7 @@ export default function MdTitle(props) {
   }
 
   return (
-    <div className={`${pageStyle.hoverBox} ${flag === curFlag ? pageStyle.curMd : ''}`} style={{padding: flag === 'nav' ? 0 : 16}}>
+    <div className={`${pageStyle.hoverBox} ${flag === curFlag ? pageStyle.curMd : ''}`} style={{padding: flag === 'nav' ? 0 : 16, height: flag === 'nav' ? '100%' : 'auto'}}>
       <span
         onClick={() => setcurFlag(flag)}
         className={`${pageStyle.hoverHandle} ${!canEdit ? pageStyle.block : ''}`}
