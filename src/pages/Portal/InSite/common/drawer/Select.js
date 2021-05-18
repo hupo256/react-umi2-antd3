@@ -54,8 +54,14 @@ class Select extends Component {
     }
   }
   handleSrarchStatus = status => {
-    this.setState({ status }, () => {
-      this.queryList({ articleDicCode: status});
+    const {
+      dispatch,
+      ArticleSpecial: { formListQuery },
+    } = this.props;
+    this.setState({ status });
+    dispatch({
+      type: 'ArticleSpecial/getArticleListModel',
+      payload: { ...formListQuery, articleDicCode: status },
     });
   };
   render() {
@@ -189,12 +195,19 @@ class Select extends Component {
     this.queryList({ searchText: (searchWord && searchWord.substring(0, 30)) || '', pageNum: 1 });
   };
   handleClickTwo = type => {
+    const {status} = this.state
+    const payload = {
+      pageNum: 1, pageSize: 10
+    }
+    if (type === 'article') {
+      payload.articleDicCode = status
+    }
     this.props.dispatch({
       type:
         type === 'special'
           ? 'ArticleSpecial/getSpecialListModel'
           : 'ArticleSpecial/getArticleListModel',
-      payload: { pageNum: 1, pageSize: 10 },
+      payload,
     });
     this.setState({
       textOne: type === 'special' ? '专题' : '文章',
