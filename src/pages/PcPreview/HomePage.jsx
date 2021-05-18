@@ -62,14 +62,15 @@ const Home = () => {
       })()
       ;(async () => {
         const res = await getFooter()
-        setFooterData(_.get(res, 'data', []))
+        const data = _.get(res, 'data', [])
+        setFooterData(data)
 
-        if (document) {
+        if (document && data) {
           // 注意：此处营销站独有
-          document.title = res.data.title
+          document.title = data.title
 
           const link = document.querySelector("link[rel*='icon']")
-          link.href = res.data.icon
+          link.href = data.icon
         }
       })()
       ;(async () => {
