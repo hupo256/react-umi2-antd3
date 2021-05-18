@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
-import { Card, Button, Table, Modal, Divider, Icon, Popover, message } from 'antd'
+import { Card, Button, Table, Modal, Divider, Icon, Popover, message, Tooltip } from 'antd'
 import { DndProvider, DragSource, DropTarget } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import update from 'immutability-helper';
@@ -31,7 +31,7 @@ class BodyRow extends Component {
             className2 = styles['drop-over-upward']
         }
       }
-  
+
       return connectDragSource(
         connectDropTarget(<tr {...restProps} className={`${className} ${className2}`} style={style} />),
       );
@@ -89,8 +89,9 @@ export default class ChannelManage extends Component {
     }
 
     async componentDidUpdate(prevProps) {
+        const { pageNum } = this.state;
         if (prevProps.showCreateEdit !== this.props.showCreateEdit && !this.props.showCreateEdit  ) {
-            this.getList()
+            this.getList({pageNum})
         }
     }
 
@@ -119,7 +120,7 @@ export default class ChannelManage extends Component {
             message.warning('首页不支持排序！')
             return
         }
-        if (hoverIndex < 1 ) {
+        if (hoverIndex < 1 && list[0].isIndex === 1 ) {
             message.warning('不可排于首页之前！')
             return
         }
@@ -177,6 +178,8 @@ export default class ChannelManage extends Component {
             title: `确定要${record.status === 2 ? '启' : '停'}用当前频道吗?`,
             content: record.status === 2 ? '启用后，将可以在装企小程序和网站中显示' : '停用后，在装企小程序和网站中均不会显示当前频道',
             icon: record.status === 2 ? <Icon style={{color: '#52c41a'}} theme='filled'  type="check-circle" /> :  "question-circle",
+            cancelText: '取消',
+            okText: '确定',
             onOk: async () => {
                 try {
                     const res = await toggleStatusApi({
@@ -223,26 +226,26 @@ export default class ChannelManage extends Component {
 
     render() {
         const { isShow, list, pageNum, recordTotal, pageSize } = this.state;
-        const { isOver, connectDragSource, connectDropTarget, moveRow, showCreateEdit, showSelectSite, isCreate, currentDetailType } = this.props;
+        const { isOver, connectDragSource, connectDropTarget, moveRow, showCreateEdit, showSelectSite, isCreate, currentDetailType, isPcPreview } = this.props;
         const appTip = <img  src="https://img0.baidu.com/it/u=2568886724,3755935577&fm=26&fmt=auto&gp=0.jpg" alt="" srcset=""/>
         const webTip = <img  src="https://img0.baidu.com/it/u=2568886724,3755935577&fm=26&fmt=auto&gp=0.jpg" alt="" srcset=""/>
 
-        const DETAIL_TYPE_MAP = ['', '工地', '设计师', '案例', '文章']
 
-        const columns = [
+        let columns = [
             {
                 dataIndex: 'icon',
-                width: 80,
+                width: 60,
                 align: 'center',
                 key: 'icon', 
-                render: () => <Icon type="fullscreen" rotate={45} style={{fontSize: 20}} />
+                render: (text, record) => record.isIndex === 0 && <Icon type="fullscreen" rotate={45} style={{fontSize: 20}} />
             },
             {
                 title: <div>
                             <span>小程序频道名称</span>
+                            {!!!isPcPreview &&
                             <Popover content={appTip} >
                                 <Icon type="question-circle" className={styles['table-header-icon']} />
-                            </Popover>
+                            </Popover>}
                             
                         </div>,
                 dataIndex: 'appletsName',
@@ -251,10 +254,11 @@ export default class ChannelManage extends Component {
             {
                 title: <div>
                             <span>网站频道名称</span>
+                            {!!!isPcPreview &&
                             <Popover content={webTip}>
                                 <Icon type="question-circle" className={styles['table-header-icon']} />
-                            </Popover>
-                            
+                            </Popover>}
+
                         </div>,
                 key: 'websiteName',
                 dataIndex: 'websiteName',
@@ -263,7 +267,10 @@ export default class ChannelManage extends Component {
                 title: '链接',
                 key: 'linkDisplayName',   
                 dataIndex: 'linkDisplayName',
-                render: (text, record) => text
+                render: (text, record) =>
+                    <Tooltip placement="topLeft" title={text}>
+                        <div style={{maxWidth: 220, overflow:'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis'}}>{text}</div>
+                    </Tooltip>     
             },
             {
                 title: '状态',
@@ -297,7 +304,6 @@ export default class ChannelManage extends Component {
                 title: <span style={{padding: '0 15px'}}>操作</span> ,
                 key: 'modify',
                 render: (text, record) => {
-                    console.log({record})
                     if (record?.isIndex === 0) {
                         return (
                             <div>
@@ -311,6 +317,9 @@ export default class ChannelManage extends Component {
                 }       
             },
         ];
+        if (isPcPreview) {
+            columns.splice(5 , 1);
+        }
         const components = {
             body: {
               row: DragableBodyRow,
