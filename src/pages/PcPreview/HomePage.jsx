@@ -183,7 +183,7 @@ const Home = () => {
         width={900}
         headerStyle={{ border: 'none', marginBottom: '-18px' }}
       >
-        <ChannelManage />
+        <ChannelManage isPcPreview={true} />
       </Drawer>
 
       <Drawer

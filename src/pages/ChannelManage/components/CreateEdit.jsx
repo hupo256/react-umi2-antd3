@@ -58,6 +58,9 @@ export default class CreateEdit extends Component {
         // 关闭重置表单组件数据
         if (  this.props.showCreateEdit !== prevProps.showCreateEdit  ) {
             form.resetFields()
+            this.setState({
+                showSelectPanl: false
+            })
         }
 
     }
