@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:50:21 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-17 14:16:30
+ * @Last Modified time: 2021-05-18 10:44:49
  * 文章库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -215,31 +215,40 @@ class ArticleLibrary extends PureComponent {
           visible={this.state.CreateModeVisible}
           onCancel={this.handleCancel}
           footer={null}
-          width={828}
+          width={730}
         >
           <div className={styles.CreateMode}>
-            <div onClick={() => this.setState({ ArticleListVisible: true })}>
-              <img className={styles.createImg} src={imgl} style={{ width: 313, height: 157 }} />
-              <p>公有文章库</p>
-              <p>
+            <div>
+              <img src={imgl} style={{ width: 312, height: 157 }} />
+              <p className={styles.subTitle}>共有文章库</p>
+              <p className={styles.subText}>
                 海量文章库，选完直接用
                 {'  '}
                 <MyIcon type="icon-jiayouaoligei" />
               </p>
-              <span className={styles.recommend}>推荐</span>
+              <p
+                onClick={() => this.setState({ ArticleListVisible: true })}
+                className={styles.directuse}
+              >
+                直接使用
+              </p>
             </div>
-            <div
-              onClick={() => {
-                const { step } = this.state;
-                router.push(`/portal/contentmanagement/articlelibrary/add?step=${step}`);
-              }}
-            >
-              <img className={styles.createImg} src={imgr} style={{ width: 313, height: 157 }} />
-              <p>去原创文章</p>
+            <div>
+              <img src={imgr} style={{ width: 312, height: 157 }} />
+              <p className={styles.subTitle}>原创文章库</p>
               <p>
                 喜欢自己原创，满满干活
                 {'  '}
                 <MyIcon type="icon-xiaolian" style={{ color: '#f4b058' }} />
+              </p>
+              <p
+                onClick={() => {
+                  const { step } = this.state;
+                  router.push(`/portal/contentmanagement/articlelibrary/add?step=${step}`);
+                }}
+                className={styles.original}
+              >
+                自己原创
               </p>
             </div>
           </div>
