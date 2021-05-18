@@ -63,6 +63,14 @@ const Home = () => {
       ;(async () => {
         const res = await getFooter()
         setFooterData(_.get(res, 'data', []))
+
+        if (document) {
+          // 注意：此处营销站独有
+          document.title = res.data.title
+
+          const link = document.querySelector("link[rel*='icon']")
+          link.href = res.data.icon
+        }
       })()
       ;(async () => {
         const res = await getDomain()
