@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import styles from './Menu.module.less';
+import styles from './Menu.module.scss';
 import { useState, useEffect } from 'react';
 
 const MAX_CHUNK_SIZE = 40;

@@ -1,9 +1,8 @@
 import React from 'react';
 import { BtnMore } from '../btn';
 import _ from 'lodash';
-import styles from './Articles.module.less';
+import styles from './Articles.module.scss';
 import cx from 'classnames';
-
 
 const Articles = ({ data, domain }) => {
   if (_.isEmpty(data)) return null;
