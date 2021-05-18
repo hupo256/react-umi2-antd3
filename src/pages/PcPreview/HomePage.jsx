@@ -50,20 +50,27 @@ const Home = () => {
   const [showFooterDrawer, setShowFooterDrawer] = useState(false)
   const [totopShow, settotopShow] = useState(false)
 
-  useEffect(() => {
-    ;(async () => {
-      const res = await getMenuList({ keyword: '', pageNum: 1, pageSize: 18 })
-      setMenuList(_.get(res, 'data.list', []))
-    })()
-    ;(async () => {
-      const res = await getPublishedData([{ key: 'article', pageNum: 1, pageSize: 4 }])
-      setPublishedData(_.get(res, 'data.templateJson.jsonData'), [])
-    })()
-    ;(async () => {
-      const res = await getFooter()
-      setFooterData(_.get(res, 'data', []))
-    })()
-  }, [])
+  useEffect(
+    () => {
+      ;(async () => {
+        const res = await getMenuList({ keyword: '', pageNum: 1, pageSize: 18 })
+        setMenuList(_.get(res, 'data.list', []))
+      })()
+      ;(async () => {
+        const res = await getPublishedData([{ key: 'article', pageNum: 1, pageSize: 4 }])
+        setPublishedData(_.get(res, 'data.templateJson.jsonData'), [])
+      })()
+      ;(async () => {
+        const res = await getFooter()
+        setFooterData(_.get(res, 'data', []))
+      })()
+      ;(async () => {
+        const res = await getDomain()
+        setDynamicDomain(`http://${_.get(res, 'data.domain', '')}`)
+      })()
+    },
+    [refresh],
+  )
 
   useEffect(() => {
     document.addEventListener('scroll', conScroll)
