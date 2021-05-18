@@ -10,6 +10,7 @@ import MdTitle from './common/mdTitle';
 import EmptyMd from './common/emptyMd';
 import pageStyle from '../preview.less';
 import { Icon, Tabs } from 'antd';
+import imgBG from '../../../../../assets/img_bg@2x.png';
 
 const bgImgs = [
   'https://test.img.inbase.in-deco.com/crm_saas/dev/20210408/3c485acbe81f42f1ac621b34496ebf51/img_designer_1.png',
@@ -22,36 +23,41 @@ export default function CaseMd(props) {
   const { list, title, flag, nameListData, showModule } = props;
 
   return (
-    <div className={pageStyle.mdBlock}>
+    <div className={`${pageStyle.mdBlock} ${pageStyle.hasbg2}`}>
+      <img className={pageStyle.bg} src={imgBG} alt=''  />
       <MdTitle title={title} />
       <div className={pageStyle.nav}>
-        {nameListData.map(e =>
+        {nameListData.map(e => (
           <div key={e.code}>{e.name}</div>
-        )}
+        ))}
       </div>
       <div className={pageStyle.content}>
-        {showModule ? <>
-          {list.map(i =>
-            <div>
-              <div className={pageStyle.imgsWrapper}>
-                <div className={pageStyle.imgBox}>
-                  <img src={i.articleCoverImg} alt='' />
-                </div>
-                <div className={pageStyle.right}>
-                  <div className={pageStyle.title}>{i.articleTitle}</div>
-                  <div className={pageStyle.text}>
-                    {i.articleShortContent}
+        {showModule ? (
+          <>
+            {list.map(i => (
+              <div>
+                <div className={pageStyle.imgsWrapper}>
+                  <div className={pageStyle.imgBox}>
+                    <img src={i.articleCoverImg} alt="" />
                   </div>
-                  <div className={pageStyle.view}><Icon type="eye" />&nbsp;{i.view}</div>
+                  <div className={pageStyle.right}>
+                    <div className={pageStyle.title}>{i.articleTitle}</div>
+                    <div className={pageStyle.text}>{i.articleShortContent}</div>
+                    <div className={pageStyle.view}>
+                      <Icon type="eye" />
+                      &nbsp;
+                      {i.view}
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
-        </> :
-        <div className={pageStyle.noData}>
-          发布后若该模块无任何一篇文章，该模块在小程序内不展示。
-        </div>
-        }
+            ))}
+          </>
+        ) : (
+          <div className={pageStyle.noData}>
+            发布后若该模块无任何一篇文章，该模块在小程序内不展示。
+          </div>
+        )}
       </div>
     </div>
   );

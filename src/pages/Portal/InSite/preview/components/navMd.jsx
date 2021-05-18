@@ -28,7 +28,7 @@ export default function CaseMd(props) {
         {navData?.map(e =>
           <li key={e.navModule} className={pageStyle.on}>
             <svg className="icon" aria-hidden="true">
-              <use href={`#${e.navModule === 'case' ? 'iconic_case_no' : e.navModule === 'site' ? 'iconic_site_no' : e.navModule === 'design' ? 'iconic_designer_no' :e.navModule === 'article' ? 'iconic_article_no' : ''}`} />
+              <use href={`#${e.navModule === 'case' ? 'iconic_case_no' : e.navModule === 'site' ? 'iconic_site_no' : e.navModule === 'design' ? 'iconic_designer_no' :e.navModule === 'article' ? 'iconic_article' : ''}`} />
             </svg>
             <span>{e.name}</span>
           </li>
