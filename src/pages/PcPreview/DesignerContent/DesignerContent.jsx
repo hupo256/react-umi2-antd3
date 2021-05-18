@@ -1,16 +1,15 @@
-import React, { useState, useRef } from 'react';
-import ReactCardCarousel from 'react-card-carousel';
-import _ from 'lodash';
-import styles from './DesignerContent.module.less';
-import { BtnMore } from '../btn';
-import cx from 'classnames';
-
+import React, { useState, useRef } from 'react'
+import ReactCardCarousel from 'react-card-carousel'
+import _ from 'lodash'
+import styles from './DesignerContent.module.scss'
+import { BtnMore } from '../btn'
+import cx from 'classnames'
 
 const DesignerContent = ({ data, domain }) => {
-  if (_.isEmpty(data)) return null;
+  if (_.isEmpty(data)) return null
 
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const Carousel = useRef();
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const Carousel = useRef()
 
   return (
     <div className={styles.carouselContainer}>
@@ -77,7 +76,7 @@ const DesignerContent = ({ data, domain }) => {
       </div>
       <BtnMore url={domain + '/designers'} text={'更多设计师'} />
     </div>
-  );
-};
+  )
+}
 
-export default DesignerContent;
+export default DesignerContent

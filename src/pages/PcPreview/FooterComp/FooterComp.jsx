@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import styles from './FooterComp.module.less';
-
+import React, { useEffect, useState } from 'react'
+import styles from './FooterComp.module.scss'
 
 export default function FooterComp({ data }) {
-  if (!data) return null;
+  if (!data) return null
 
   const {
     copyright,
@@ -16,7 +15,7 @@ export default function FooterComp({ data }) {
     wechatNumber,
     wechatQrCode,
     disclaimer,
-  } = data;
+  } = data
 
   return (
     <>
@@ -56,5 +55,5 @@ export default function FooterComp({ data }) {
         </div>
       </div>
     </>
-  );
+  )
 }
