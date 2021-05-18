@@ -4,7 +4,7 @@ import styles from './Case.module.scss'
 
 const CHN_NUM_CHAR = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九']
 
-const CaseProjects = ({ data, domain }) => {
+const CaseProjects = ({ data, domain = '' }) => {
   if (_.isEmpty(data)) return null
 
   const len = data.length
