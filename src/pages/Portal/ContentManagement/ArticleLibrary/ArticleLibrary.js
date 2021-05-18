@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:50:21 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-18 10:44:49
+ * @Last Modified time: 2021-05-18 10:52:06
  * 文章库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -236,7 +236,7 @@ class ArticleLibrary extends PureComponent {
             <div>
               <img src={imgr} style={{ width: 312, height: 157 }} />
               <p className={styles.subTitle}>原创文章库</p>
-              <p>
+              <p className={styles.subText}>
                 喜欢自己原创，满满干活
                 {'  '}
                 <MyIcon type="icon-xiaolian" style={{ color: '#f4b058' }} />
