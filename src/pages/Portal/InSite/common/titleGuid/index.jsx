@@ -1,8 +1,8 @@
 /*
- * @Author: tdd 
- * @Date: 2021-03-25 16:49:12 
+ * @Author: tdd
+ * @Date: 2021-03-25 16:49:12
  * @Last Modified by: tdd
- * @Last Modified time: 2021-03-25 16:49:12 
+ * @Last Modified time: 2021-03-25 16:49:12
  * 移动端首页 公用头部
  */
 import React, { useContext } from 'react';
@@ -12,12 +12,13 @@ import { baseRouteKey, themes } from '../../tools/data';
 import { ctx } from '../context';
 import { updateHomePageEditData, publishEditData } from '@/services/miniProgram';
 import styles from './titleGuid.less';
+import { saveNavEditData } from '../../../../../services/miniProgram';
 
 const { confirm } = Modal;
 
 export default function TitleGuid(props) {
   const { title = '标题', disc, isEdit } = props;
-  const { pageData, setcurFlag, templateCode, templateName } = useContext(ctx);
+  const { pageData, setcurFlag, templateCode, templateName, navData } = useContext(ctx);
 
   function toPublish() {
     console.log(pageData);
@@ -29,14 +30,20 @@ export default function TitleGuid(props) {
       editTemplateJson: { jsonData, themeData, templateName, globalInfor: { customerService } },
     };
     updateHomePageEditData(parmas).then(res => {
-      res.code === 200 &&
-        publishEditData().then(res => {
-          setcurFlag(''); // 置空
-          message.success('发布成功');
-          setTimeout(() => {
-            router.push(`${baseRouteKey}home`);
-          }, 1000);
-        });
+      if (res.code === 200) {
+        saveNavEditData(navData)
+          .then(r => {
+            if (r.code === 200) {
+              publishEditData().then(() => {
+                setcurFlag(''); // 置空
+                message.success('发布成功');
+                setTimeout(() => {
+                  router.push(`${baseRouteKey}home`);
+                }, 1000);
+              });
+            }
+          })
+      }
     });
   }
 
