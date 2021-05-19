@@ -92,6 +92,11 @@ export default [
             PageHeaderName: '继续编辑',
             component: './Portal/InSite/edit',
           },
+          {
+            path: '/portal/insite/appletsetting',
+            name: 'applet',
+            component: './SystemSetting/AppletSetting/Index.js',
+          },
         ],
       },
 
@@ -167,11 +172,21 @@ export default [
             PageHeaderName: '编辑设计师',
             component: './Portal/ContentManagement/DesignerLibrary/DesignerLibraryEdit',
           },
-          // {
-          //   path: '/portal/contentmanagement/articlelibrary',
-          //   name: 'articlelibrary',
-          //   component: './Portal/ContentManagement/ArticleLibrary/ArticleLibrary',
-          // },
+          {
+            path: '/portal/contentmanagement/articlelibrary',
+            name: 'articlelibrary',
+            component: './Portal/ContentManagement/ArticleLibrary/ArticleLibrary',
+          },
+          {
+            path: '/portal/contentmanagement/articlelibrary/add',
+            PageHeaderName: '创建文章',
+            component: './Portal/ContentManagement/ArticleLibrary/ArticleLibraryAdd',
+          },
+          {
+            path: '/portal/contentmanagement/articlelibrary/edit',
+            PageHeaderName: '编辑文章',
+            component: './Portal/ContentManagement/ArticleLibrary/ArticleLibraryEdit',
+          },
           {
             path: '/portal/contentmanagement/projectlibrary',
             name: 'projectlibrary',
