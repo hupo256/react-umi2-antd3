@@ -790,14 +790,14 @@ export function getDay() {
   const Day = myDate.getDate(); // 当前日
 
   let m = tMonth + 1;
-  let n = Day
+  let n = Day;
   if (m.toString().length == 1) {
     m = '0' + m;
   }
   if (n.toString().length == 1) {
     n = '0' + n;
   }
-  return tYear + '-' + m+ '-' + n;
+  return tYear + '-' + m + '-' + n;
 }
 // 分页配置
 export const paginations = data => {
@@ -856,7 +856,7 @@ export function fixedTitle() {
   const left = sessionStorage.collapsed == 'false' ? '220px' : '80px';
   return {
     padding: '16px 32px 0 32px',
-     borderBottom: '0px solid #e8e8e8',
+    borderBottom: '0px solid #e8e8e8',
     position: 'fixed',
     top: 64,
     right: 0,
@@ -964,8 +964,8 @@ export function doHandleDateMonth() {
 }
 
 export const MyIcon = Icon.createFromIconfontCN({
-  scriptUrl: '//at.alicdn.com/t/font_2260966_ttvhlx422is.js',
+  scriptUrl: '//at.alicdn.com/t/font_2260966_co94trl4wk8.js',
 });
-export const successIcon=<MyIcon type='icon-dui' style={{color:'#52c41a'}}/>
-export const waringIcon=<MyIcon type='icon-wenhao' style={{color:'#faad15'}}/>
-export const errorIcon=<MyIcon type='icon-close' style={{color:'#f5212d'}}/>
+export const successIcon = <MyIcon type="icon-dui" style={{ color: '#52c41a' }} />;
+export const waringIcon = <MyIcon type="icon-wenhao" style={{ color: '#faad15' }} />;
+export const errorIcon = <MyIcon type="icon-close" style={{ color: '#f5212d' }} />;
