@@ -49,38 +49,39 @@
       }
     }
   }
+
+  :global {
+    .ant-carousel .slick-dots li {
+      background: #40a9ff;
+    }
+
+    .ant-carousel .slick-dots li.slick-active button {
+      background: #096dd9;
+    }
+
+    .ant-carousel .slick-slide {
+      position: relative;
+      height: 564px;
+    }
+
+    .ant-upload-list-item-info {
+      position: relative;
+    }
+    .ant-upload-list-picture-card .ant-upload-list-item-thumbnail img {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      display: block;
+      width: 100%;
+      height: initial;
+      // object-fit: cover;
+    }
+  }
 }
-.imgPrefiew{
+
+.imgPrefiew {
   // background:red;
-}
-:global {
-  .ant-carousel .slick-dots li {
-    background: #40a9ff;
-  }
-
-  .ant-carousel .slick-dots li.slick-active button {
-    background: #096dd9;
-  }
-
-  .ant-carousel .slick-slide {
-    position: relative;
-    height: 564px;
-  }
- 
-
-.ant-upload-list-item-info{
-  position:relative;
-}
-  .ant-upload-list-picture-card .ant-upload-list-item-thumbnail img {
-    position: absolute;
-    left:0;
-    top:50%;
-    transform:translateY(-50%);
-    display: block;
-    width:100%;
-    height: initial;
-    // object-fit: cover;
-}
 }
 
 // 图片展示 商品库 商品详情

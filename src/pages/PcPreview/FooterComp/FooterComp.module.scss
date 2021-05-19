@@ -12,27 +12,26 @@
   margin: 0 auto;
   padding: 1.5em 0;
 }
-.companyBox p,
-.copyRightBox p {
-  margin: 0;
-}
+
 .companyBox {
   display: flex;
   gap: 20px;
+  position: relative;
 }
-.companyBox > div {
+.wechatWrapper,
+.contactUs,
+.companyAddressWrapper {
   width: 30%;
   padding-right: 1em;
+
+  & > b {
+    color: rgba(244, 243, 244, 1);
+    display: block;
+    font-size: 16px;
+    padding-bottom: 25px;
+  }
 }
-.companyBox > div > b {
-  color: rgba(244, 243, 244, 1);
-  display: block;
-  font-size: 16px;
-  padding-bottom: 1.2em;
-}
-.companyBox > div > p {
-  margin-top: 0.6em;
-}
+
 .companyBox > div .qrCodeImg {
   width: 78px;
   height: 78px;
@@ -51,10 +50,8 @@
   object-fit: cover;
   object-position: 50% 50%;
 }
-.companyBox .contactUs > b {
-  padding-bottom: 0.5em;
-}
-.companyBox > div:last-child {
+
+.companyBox > .companyAddressWrapper {
   width: 33%;
 }
 .copyRightBox {
@@ -80,9 +77,43 @@
   .wechat {
     background: url(/img/wechat.png) no-repeat left center;
   }
+
+  .customerService,
+  .email,
+  .wechat {
+    margin-bottom: 12px;
+  }
 }
 
+.wechatName {
+  margin-top: 12px;
+}
 .storeAddress {
   text-indent: 29px;
   background: url(/img/add.png) no-repeat left center;
+  margin-top: 12px;
+}
+
+.editButton {
+  display: none;
+  font-size: 14px;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #ffffff;
+  background-color: #515151;
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 3px 15px;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 26px;
+  border-radius: 2px;
+  cursor: pointer;
+}
+.editMode:hover {
+  border: 1px dashed #ff7300;
+  .editButton {
+    display: block;
+  }
 }
