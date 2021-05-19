@@ -7,6 +7,12 @@
   padding: 0 35px;
 }
 
+.editMode:hover {
+  border: 1px dashed #ff7300;
+  .editButton {
+    display: block;
+  }
+}
 .editButton {
   display: none;
   font-size: 14px;
@@ -23,12 +29,6 @@
   line-height: 26px;
   border-radius: 2px;
   cursor: pointer;
-}
-.editMode:hover {
-  border: 1px dashed #ff7300;
-  .editButton {
-    display: block;
-  }
 }
 
 .menuItemWrapper .active {
