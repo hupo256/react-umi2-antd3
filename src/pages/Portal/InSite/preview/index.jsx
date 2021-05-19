@@ -1,10 +1,4 @@
-/*
- * @Author: tdd 
- * @Date: 2021-03-23 13:49:12 
- * @Last Modified by: tdd
- * @Last Modified time: 2021-03-23 13:49:12 
- * 小程序UI模板
- */
+
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import router from 'umi/router';
 import { ctx } from '../common/context';
@@ -18,6 +12,9 @@ import HighlightsMd from './components/highlightsMd';
 import SiteMd from './components/siteMd';
 import DesignMd from './components/designMd';
 import AdMd from './components/adMd';
+import AboutUsMd from './components/aboutUsMd';
+import ArticleMd from './components/articleMd';
+import NavMd from './components/navMd';
 
 import './components/fontclass/iconfont.js';
 import pageStyle from './preview.less';
@@ -48,11 +45,23 @@ const componentMap = {
     tips: '图片广告',
     creatCom: e => <AdMd {...e} />,
   },
+  aboutUs: {
+    tips: '关于我们',
+    creatCom: e => <AboutUsMd {...e} />,
+  },
+  article: {
+    tips: '文章',
+    creatCom: e => <ArticleMd {...e} />,
+  },
+  nav: {
+    tips: '导航',
+    creatCom: e => <NavMd {...e} />,
+  },
 };
 
 export default function Preview(props) {
   const { from } = props;
-  const { pageData, touchPageData, templateCode } = useContext(ctx);
+  const { pageData, touchPageData, templateCode, curFlag, navData } = useContext(ctx);
   const [totopShow, settotopShow] = useState(false);
   const [curTheme, setcurTheme] = useState('WMHPT0001');
   const contentBox = useRef();
@@ -106,9 +115,9 @@ export default function Preview(props) {
             <span>首页</span>
           </div>
         </div>
-
         {/* 循环出主体 */}
         <div className={pageStyle.conBox} ref={contentBox}>
+          {console.log(pageData.jsonData)}
           {pageData?.jsonData?.length > 0 &&
             pageData.jsonData.map((item, ind) => {
               const { flag, list = [] } = item;
@@ -121,37 +130,31 @@ export default function Preview(props) {
                 </HoverMd>
               );
             })}
+            <div style={{position: 'absolute', width: '100%', left: 0, bottom: 0, height: 50}}>
+              <HoverMd key={999} tips='导航' flag="nav">
+                <div className={pageStyle.footerBox}>
+                  <ul className={pageStyle.flex}>
+                    <li className={pageStyle.on}>
+                      <svg className="icon" aria-hidden="true">
+                        <use href="#iconic_home_no" />
+                      </svg>
+                      <span>首页</span>
+                    </li>
+                    {navData?.map(e =>
+                      <li key={e.navModule}>
+                        <svg className="icon">
+                          <use href={`#${e.navModule === 'case' ? 'iconic_case_no' : e.navModule === 'site' ? 'iconic_site_no' : e.navModule === 'design' ? 'iconic_designer_no' :e.navModule === 'article' ? 'iconic_article' : ''}`} />
+                        </svg>
+                        <span>{e.name}</span>
+                      </li>
+                    )}
+                  </ul>
+                </div>
+              </HoverMd>
+            </div>
         </div>
 
         {/* footer */}
-        <div className={pageStyle.footerBox}>
-          <ul className={pageStyle.flex}>
-            <li className={pageStyle.on}>
-              <svg className="icon" aria-hidden="true">
-                <use href="#iconic_home_no" />
-              </svg>
-              <span>首页</span>
-            </li>
-            <li>
-              <svg className="icon" aria-hidden="true">
-                <use href="#iconic_case_no" />
-              </svg>
-              <span>案例</span>
-            </li>
-            <li>
-              <svg className="icon" aria-hidden="true">
-                <use href="#iconic_site_no" />
-              </svg>
-              <span>工地</span>
-            </li>
-            <li>
-              <svg className="icon" aria-hidden="true">
-                <use href="#iconic_designer_no" />
-              </svg>
-              <span>设计师</span>
-            </li>
-          </ul>
-        </div>
 
         <div className={`${pageStyle.totopBox} ${totopShow ? pageStyle.show : ''}`}>
           <span>
