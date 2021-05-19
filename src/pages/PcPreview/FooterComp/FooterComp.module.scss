@@ -1,11 +1,13 @@
 .companyOut {
-  background: rgba(44, 44, 44, 1);
-  color: rgba(174, 174, 174, 1);
+  background: #2c2c2c;
+  color: #aeaeae;
 }
+
 .copyRightOut {
-  background: rgba(6, 6, 6, 1);
-  color: rgba(101, 101, 101, 1);
+  background: #060606;
+  color: #656565;
 }
+
 .companyBox,
 .copyRightBox {
   width: 1000px;
@@ -18,18 +20,20 @@
   gap: 20px;
   position: relative;
 }
+
 .wechatWrapper,
 .contactUs,
 .companyAddressWrapper {
   width: 30%;
   padding-right: 1em;
-
-  & > b {
-    color: rgba(244, 243, 244, 1);
-    display: block;
-    font-size: 16px;
-    padding-bottom: 25px;
-  }
+}
+.wechatWrapper > b,
+.contactUs > b,
+.companyAddressWrapper > b {
+  color: #f4f3f4;
+  display: block;
+  font-size: 16px;
+  padding-bottom: 25px;
 }
 
 .companyBox > div .qrCodeImg {
@@ -37,6 +41,7 @@
   height: 78px;
   border: 3px solid #fff;
 }
+
 .companyBox > div .minImgBox {
   width: 156px;
   height: 78px;
@@ -44,6 +49,7 @@
   margin-right: 16px;
   overflow: hidden;
 }
+
 .companyBox > div .minImgBox img {
   width: 100%;
   height: 100%;
@@ -54,40 +60,38 @@
 .companyBox > .companyAddressWrapper {
   width: 33%;
 }
+
 .copyRightBox {
   font-size: 12px;
 }
+
 .copyRightBox p {
   display: flex;
   justify-content: space-between;
 }
 
-.contactUs {
-  p {
-    text-indent: 29px;
-  }
-
-  .customerService {
-    background: url(/img/phone.png) no-repeat left center;
-  }
-
-  .email {
-    background: url(/img/mail-fill.png) no-repeat left center;
-  }
-  .wechat {
-    background: url(/img/wechat.png) no-repeat left center;
-  }
-
-  .customerService,
-  .email,
-  .wechat {
-    margin-bottom: 12px;
-  }
+.contactUs p {
+  text-indent: 29px;
+}
+.contactUs .customerService {
+  background: url(/img/phone.png) no-repeat left center;
+}
+.contactUs .email {
+  background: url(/img/mail-fill.png) no-repeat left center;
+}
+.contactUs .wechat {
+  background: url(/img/wechat.png) no-repeat left center;
+}
+.contactUs .customerService,
+.contactUs .email,
+.contactUs .wechat {
+  margin-bottom: 12px;
 }
 
 .wechatName {
   margin-top: 12px;
 }
+
 .storeAddress {
   text-indent: 29px;
   background: url(/img/add.png) no-repeat left center;
