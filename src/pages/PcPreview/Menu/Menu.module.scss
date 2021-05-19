@@ -9,9 +9,9 @@
 
 .editMode:hover {
   border: 1px dashed #ff7300;
-  .editButton {
-    display: block;
-  }
+}
+.editMode:hover .editButton {
+  display: block;
 }
 .editButton {
   display: none;
