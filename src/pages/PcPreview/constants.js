@@ -5,13 +5,13 @@ export const typeMap = {
   design: 'designers',
   special: 'special',
   games: 'games',
-};
+}
 
 export const paramMap = {
   case: 'uid',
   site: 'gongdiUid',
   article: 'articleUid',
   design: 'uid',
-};
+}
 
-export const domain = 'http://dev-site.ingongdi.com';
+export const domain = 'http://dev-site.ingongdi.com'

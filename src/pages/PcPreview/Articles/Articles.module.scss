@@ -37,6 +37,7 @@
       align-items: flex-start;
       padding-top: 15px;
       padding-bottom: 15px;
+      height: 100%;
 
       .articleLine {
         font-size: 16px;
@@ -49,7 +50,7 @@
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
-        padding: 0 5px;
+        padding: 0 15px;
       }
     }
   }

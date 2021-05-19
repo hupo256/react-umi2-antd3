@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2020-04-15 13:37:37 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-14 14:57:38
+ * @Last Modified time: 2021-05-18 11:07:38
  */
 export const controls = [
   'undo',
@@ -32,7 +32,7 @@ export const controls = [
 
   'list-ul',
   'list-ol',
-  'blockquote',
+  // 'blockquote',
   'separator',
 
   'hr',

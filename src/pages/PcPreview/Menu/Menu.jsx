@@ -1,88 +1,88 @@
-import _ from 'lodash';
-import styles from './Menu.module.less';
-import { useState, useEffect } from 'react';
+import _ from 'lodash'
+import styles from './Menu.module.scss'
+import { useState, useEffect } from 'react'
 
-const MAX_CHUNK_SIZE = 40;
-const MIN_CHUNK_SIZE = 20;
+const MAX_CHUNK_SIZE = 40
+const MIN_CHUNK_SIZE = 20
 
 const isCurrentMenu = ({ uid, linkKey }) => {
-  const currentMenuUid = localStorage.getItem('currentMenu');
+  const currentMenuUid = localStorage.getItem('currentMenu')
   if (currentMenuUid) {
-    return currentMenuUid === uid;
+    return currentMenuUid === uid
   }
 
-  return linkKey === 'home';
-};
+  return linkKey === 'home'
+}
 
 const MenuListComp = ({ menuList }) => {
-  const [menuChunkList, setMenuChunkList] = useState([]);
-  const [chunkIndex, setChunkIndex] = useState(0);
-  const [extraCharCount, setExtraCharCount] = useState([]);
+  const [menuChunkList, setMenuChunkList] = useState([])
+  const [chunkIndex, setChunkIndex] = useState(0)
+  const [extraCharCount, setExtraCharCount] = useState([])
 
   const hasPrevious = () => {
-    return !Boolean(chunkIndex - 1 < 0);
-  };
+    return !Boolean(chunkIndex - 1 < 0)
+  }
 
   const hasNext = () => {
-    return Boolean(chunkIndex + 1 < menuChunkList.length);
-  };
+    return Boolean(chunkIndex + 1 < menuChunkList.length)
+  }
 
   useEffect(
     () => {
-      if (_.isEmpty(menuList)) return;
+      if (_.isEmpty(menuList)) return
 
-      const menuListClone = menuList.slice(); //clone state
-      const chunkRes = [];
-      const extraCharCount = [];
+      const menuListClone = menuList.slice() //clone state
+      const chunkRes = []
+      const extraCharCount = []
       while (menuListClone.length) {
-        let charCount = 0;
-        let index = 0;
-        let oneChunk = [];
+        let charCount = 0
+        let index = 0
+        let oneChunk = []
 
         while (charCount <= MAX_CHUNK_SIZE && !_.isNil(menuListClone[index])) {
-          oneChunk.push(menuListClone[index]);
-          const websiteName = _.get(menuListClone, `${index}.websiteName`, '');
+          oneChunk.push(menuListClone[index])
+          const websiteName = _.get(menuListClone, `${index}.websiteName`, '')
           if (websiteName) {
-            charCount += websiteName.length;
+            charCount += websiteName.length
           }
-          index++;
+          index++
         }
 
-        menuListClone.splice(0, index);
-        chunkRes.push(oneChunk);
-        extraCharCount.push(charCount);
+        menuListClone.splice(0, index)
+        chunkRes.push(oneChunk)
+        extraCharCount.push(charCount)
       }
 
-      setMenuChunkList(chunkRes);
-      setExtraCharCount(extraCharCount);
+      setMenuChunkList(chunkRes)
+      setExtraCharCount(extraCharCount)
     },
-    [menuList]
-  );
+    [menuList],
+  )
 
   useEffect(
     () => {
-      if (_.isEmpty(menuChunkList)) return;
+      if (_.isEmpty(menuChunkList)) return
 
-      const currentMenu = localStorage.getItem('currentMenu');
+      const currentMenu = localStorage.getItem('currentMenu')
       if (currentMenu) {
         _.forEach(menuChunkList, (chunk, index) => {
           _.forEach(chunk, (item, i) => {
             if (item.uid === currentMenu) {
-              console.log(index);
-              setChunkIndex(index);
-              return;
+              console.log(index)
+              setChunkIndex(index)
+              return
             }
-          });
-        });
+          })
+        })
       }
     },
-    [menuChunkList]
-  );
+    [menuChunkList],
+  )
 
   const clickMenuItem = ({ uid, linkUrl }) => {
-    localStorage.setItem('currentMenu', uid);
-    window.location.href = linkUrl;
-  };
+    localStorage.setItem('currentMenu', uid)
+    window.location.href = linkUrl
+  }
 
   return (
     <div className={styles.menuWrapper}>
@@ -95,20 +95,16 @@ const MenuListComp = ({ menuList }) => {
         }
       >
         {_.map(menuChunkList[chunkIndex], (item, index) => {
-          if (item.status === 2) return null;
+          if (item.status === 2) return null
           return (
             <div className={styles.menuItemWrapper} key={`menuItemWrapper-${index}`}>
               {index === 0 &&
                 hasPrevious() && (
-                  <div
-                    className={styles.arrowWrapperPrev}
-                    onClick={() => setChunkIndex(() => chunkIndex - 1)}
-                  >
+                  <div className={styles.arrowWrapperPrev} onClick={() => setChunkIndex(() => chunkIndex - 1)}>
                     <a className={styles.prevArrow} />
                   </div>
                 )}
               <a
-                // href={item.linkUrl}
                 key={index}
                 className={isCurrentMenu(item) ? styles.active : undefined}
                 onClick={e => clickMenuItem(item)}
@@ -117,19 +113,16 @@ const MenuListComp = ({ menuList }) => {
               </a>
               {index + 1 === menuChunkList[chunkIndex].length &&
                 hasNext() && (
-                  <div
-                    className={styles.arrowWrapperNext}
-                    onClick={() => setChunkIndex(chunkIndex + 1)}
-                  >
+                  <div className={styles.arrowWrapperNext} onClick={() => setChunkIndex(chunkIndex + 1)}>
                     <a className={styles.nextArrow} />
                   </div>
                 )}
             </div>
-          );
+          )
         })}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default MenuListComp;
+export default MenuListComp

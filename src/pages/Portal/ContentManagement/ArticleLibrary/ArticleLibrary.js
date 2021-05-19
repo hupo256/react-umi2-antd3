@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:50:21 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-14 18:50:43
+ * @Last Modified time: 2021-05-18 10:52:06
  * 文章库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -12,6 +12,8 @@ import { Card, Button, Icon, Divider, Table, Input, message, Modal, Tabs } from 
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import ArticleListModel from './ArticleListModel';
 import { paginations, fixedTitle, successIcon, waringInfo, MyIcon } from '@/utils/utils';
+import imgl from '../../../../assets/banner_left@2x.png';
+import imgr from '../../../../assets/banner_right@2x.png';
 import styles from './ArticleLibrary.less';
 const { confirm } = Modal;
 const { Search } = Input;
@@ -213,31 +215,40 @@ class ArticleLibrary extends PureComponent {
           visible={this.state.CreateModeVisible}
           onCancel={this.handleCancel}
           footer={null}
-          width={600}
+          width={730}
         >
           <div className={styles.CreateMode}>
-            <div onClick={() => this.setState({ ArticleListVisible: true })}>
-              <div className={styles.createImg} />
-              <p>公有文章库</p>
-              <p>
+            <div>
+              <img src={imgl} style={{ width: 312, height: 157 }} />
+              <p className={styles.subTitle}>共有文章库</p>
+              <p className={styles.subText}>
                 海量文章库，选完直接用
                 {'  '}
                 <MyIcon type="icon-jiayouaoligei" />
               </p>
-              <span className={styles.recommend}>推荐</span>
+              <p
+                onClick={() => this.setState({ ArticleListVisible: true })}
+                className={styles.directuse}
+              >
+                直接使用
+              </p>
             </div>
-            <div
-              onClick={() => {
-                const { step } = this.state;
-                router.push(`/portal/contentmanagement/articlelibrary/add?step=${step}`);
-              }}
-            >
-              <div className={styles.createImg} />
-              <p>去原创文章</p>
-              <p>
+            <div>
+              <img src={imgr} style={{ width: 312, height: 157 }} />
+              <p className={styles.subTitle}>原创文章库</p>
+              <p className={styles.subText}>
                 喜欢自己原创，满满干活
                 {'  '}
                 <MyIcon type="icon-xiaolian" style={{ color: '#f4b058' }} />
+              </p>
+              <p
+                onClick={() => {
+                  const { step } = this.state;
+                  router.push(`/portal/contentmanagement/articlelibrary/add?step=${step}`);
+                }}
+                className={styles.original}
+              >
+                自己原创
               </p>
             </div>
           </div>
