@@ -1,6 +1,6 @@
 // 注：此文件与marketing版有大量不同，整合的时候需特别注意
 import _ from 'lodash'
-import styles from './Menu.module.scss'
+import styles from './Menu.less'
 import { useState, useEffect } from 'react'
 import cx from 'classnames'
 

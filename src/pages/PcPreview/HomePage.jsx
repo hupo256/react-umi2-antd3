@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-import styles from './Home.module.scss'
+import styles from './Home.less'
 import _ from 'lodash'
 import CaseProjects from './Case/Case.jsx'
 import MenuList from './Menu/Menu.jsx'

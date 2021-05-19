@@ -1,5 +1,5 @@
 import { Layout } from 'antd'
-import styles from './HeaderLayout.module.scss'
+import styles from './HeaderLayout.less'
 
 const HeaderLayout = ({ left, middle, right }) => (
   <Layout.Header className={styles.headerWrapper} style={{ height: '58px' }}>
