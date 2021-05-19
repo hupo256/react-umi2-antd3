@@ -5,7 +5,7 @@ import styles from './DesignerContent.module.scss'
 import { BtnMore } from '../btn'
 import cx from 'classnames'
 
-const DesignerContent = ({ data, domain = '' }) => {
+const DesignerContent = ({ data, domain }) => {
   if (_.isEmpty(data)) return null
 
   const [currentIndex, setCurrentIndex] = useState(0)

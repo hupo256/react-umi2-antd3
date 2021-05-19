@@ -1,8 +1,6 @@
-// 注：此文件与marketing版有大量不同，整合的时候需特别注意
 import _ from 'lodash'
 import styles from './Menu.module.scss'
 import { useState, useEffect } from 'react'
-import cx from 'classnames'
 
 const MAX_CHUNK_SIZE = 40
 const MIN_CHUNK_SIZE = 20
@@ -16,7 +14,7 @@ const isCurrentMenu = ({ uid, linkKey }) => {
   return linkKey === 'home'
 }
 
-const MenuListComp = ({ menuList, setShowHeaderDrawer }) => {
+const MenuListComp = ({ menuList }) => {
   const [menuChunkList, setMenuChunkList] = useState([])
   const [chunkIndex, setChunkIndex] = useState(0)
   const [extraCharCount, setExtraCharCount] = useState([])

@@ -4,17 +4,16 @@ import styles from './Case.module.scss'
 
 const CHN_NUM_CHAR = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九']
 
-const CaseProjects = ({ data, domain = '' }) => {
+const CaseProjects = ({ data, domain }) => {
   if (_.isEmpty(data)) return null
 
   const len = data.length
 
   const caseStyle = {}
   _.forEach(data, (item, index) => {
-    data[index]['name'] = `${item.title.length > 6 ? item.title.slice(0, 6) + '...' : item.title}`
-    data[index]['text'] = `${item.acreage}m² | ${CHN_NUM_CHAR[item.bedroom]}室${CHN_NUM_CHAR[item.liveroom]}厅 | ${
-      item.decorationCost
-    }万元`
+    data[index]['text'] = `${item.title} | ${item.acreage}m² | ${CHN_NUM_CHAR[item.bedroom]}室${
+      CHN_NUM_CHAR[item.liveroom]
+    }厅 | ${item.decorationCost / 10000}万元`
     caseStyle[`image${index}`] = {
       background: `url(${item.coverPicUrl}) no-repeat center center`,
       backgroundSize: 'cover',

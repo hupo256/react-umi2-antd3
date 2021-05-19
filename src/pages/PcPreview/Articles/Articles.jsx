@@ -4,7 +4,7 @@ import _ from 'lodash'
 import styles from './Articles.module.scss'
 import cx from 'classnames'
 
-const Articles = ({ data, domain = '' }) => {
+const Articles = ({ data, domain }) => {
   if (_.isEmpty(data)) return null
 
   return (
