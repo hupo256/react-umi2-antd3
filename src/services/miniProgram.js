@@ -96,6 +96,20 @@ export async function queryHomePageData(params) {
     body: params,
   });
 }
+// 查询导航编辑中数据
+export async function queryNavEditData(params) {
+  return request(baseurl + '/api/v1/wechat/wechat-mini/navigation/queryEditData', {
+    method: 'POST',
+    body: params,
+  });
+}
+// 保存编辑数据
+export async function saveNavEditData(params) {
+  return request(baseurl + '/api/v1/wechat/wechat-mini/navigation/saveEditData', {
+    method: 'POST',
+    body: params,
+  });
+}
 
 // 获取小程序全局设置
 export async function queryWechatMiniGlobal(params) {

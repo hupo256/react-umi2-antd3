@@ -1,8 +1,8 @@
 /*
- * @Author: tdd 
- * @Date: 2021-03-23 13:49:12 
+ * @Author: tdd
+ * @Date: 2021-03-23 13:49:12
  * @Last Modified by: tdd
- * @Last Modified time: 2021-03-23 13:49:12 
+ * @Last Modified time: 2021-03-23 13:49:12
  * 小程序UI模板
  */
 import React, { useState, useEffect, useContext } from 'react';
@@ -15,9 +15,11 @@ import TitleGuid from '../common/titleGuid';
 import { queryTemplate } from '@/services/miniProgram';
 import { imgBaseUrl } from '../tools';
 import styles from './templates.less';
+import { message } from 'antd';
+import { saveNavEditData } from '../../../../services/miniProgram';
 
 function Templates(props) {
-  const { pageData, touchPageData, settemplateName } = useContext(ctx);
+  const { pageData, touchPageData, settemplateName, navData } = useContext(ctx);
   const [isChange, setisChange] = useState(false);
   const [tepList, settepList] = useState([]);
 
@@ -60,8 +62,14 @@ function Templates(props) {
     };
     updateHomePageEditData(parmas).then(res => {
       if (res.code === 200) {
-        const key = `edit?templateCode=${code}`;
-        router.push(`${baseRouteKey}${key}`);
+        saveNavEditData(navData)
+          .then(r => {
+            if (r.code === 200) {
+              const key = `edit?templateCode=${code}`;
+              router.push(`${baseRouteKey}${key}`);
+            }
+          })
+
       }
     });
   }
