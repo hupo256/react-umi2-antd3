@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react'
+// 注：此文件与marketing版有大量不同，整合的时候需特别注意
+import React from 'react'
+import cx from 'classnames'
 import styles from './FooterComp.module.scss'
 
-export default function FooterComp({ data }) {
+export default function FooterComp({ data, setShowFooterDrawer }) {
   if (!data) return null
 
   const {
@@ -20,11 +22,11 @@ export default function FooterComp({ data }) {
   return (
     <>
       <div className={styles.companyOut}>
-        <div className={styles.companyBox}>
-          <div>
+        <div className={cx(styles.companyBox, styles.editMode)}>
+          <div className={styles.wechatWrapper}>
             <b>公众号</b>
             <img className={styles.qrCodeImg} src={wechatQrCode} alt="" />
-            <p>
+            <p className={styles.wechatName}>
               微信公众号：
               {wechatName}
             </p>
@@ -35,12 +37,15 @@ export default function FooterComp({ data }) {
             <p>{email}</p>
             <p>{wechatNumber}</p>
           </div>
-          <div>
+          <div className={styles.companyAddressWrapper}>
             <b>门店地址</b>
             <div className={styles.minImgBox}>
-              <img src={storeCover} alt="" />
+              <img src={storeCover} alt={storeAddress} />
             </div>
             <p>{storeAddress}</p>
+          </div>
+          <div className={styles.editButton} onClick={() => setShowFooterDrawer(true)}>
+            编辑
           </div>
         </div>
       </div>

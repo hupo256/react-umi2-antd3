@@ -2,8 +2,35 @@
   display: flex;
   align-items: center;
   position: relative;
-  padding-left: 2em;
+  height: 58px;
+  overflow: hidden;
+  padding: 0 35px;
 }
+
+.editButton {
+  display: none;
+  font-size: 14px;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #ffffff;
+  background-color: #515151;
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 3px 15px;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 26px;
+  border-radius: 2px;
+  cursor: pointer;
+}
+.editMode:hover {
+  border: 1px dashed #ff7300;
+  .editButton {
+    display: block;
+  }
+}
+
 .menuItemWrapper .active {
   border-bottom: 2px solid var(--themeColor);
   color: var(--themeColor);
