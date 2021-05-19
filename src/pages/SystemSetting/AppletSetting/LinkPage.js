@@ -2,12 +2,12 @@
  * @Author: zqm 
  * @Date: 2021-04-30 11:36:34 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-14 14:26:34
+ * @Last Modified time: 2021-05-19 11:09:25
  * 关联设置
  */
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Modal, Input, Icon, message } from 'antd';
+import { Modal, Input, Button, message } from 'antd';
 import Select from './Select';
 import styles from './index.less';
 
@@ -43,6 +43,7 @@ class LinkPage extends Component {
         onOk={this.handleOk}
         onCancel={() => this.props.handleCancel()}
         maskClosable={false}
+        footer={null}
       >
         <div style={{ minHeight: 86 }}>
           <div className={styles.linkpage}>
@@ -62,6 +63,12 @@ class LinkPage extends Component {
               placeholder="请输入按钮名称"
               style={{ width: 360 }}
             />
+          </div>
+          <div style={{ textAlign: 'center', marginTop: 28 }}>
+            <Button type="primary" onClick={() => this.handleOk()} style={{ marginRight: 16 }}>
+              确定
+            </Button>
+            <Button onClick={() => this.props.handleCancel()}>取消</Button>
           </div>
         </div>
       </Modal>
