@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
 import { createChannel, getRelatedPage, getDetailApi, editChannelApi,
-         siteListApi, designerListApi, caseListApi, articleListApi, articleDicApi  } from '@/services/channelManage'
+         siteListApi, designerListApi, caseListApi, articleListApi, articleDicApi, specialListApi  } from '@/services/channelManage'
 import { Form, Input, Select, Button, Cascader, message, Tabs, Table, Radio, Tag, Tooltip   } from 'antd'
 import styles from '../index.less'
 
@@ -104,19 +104,24 @@ export default class CreateEdit extends Component {
     handleSubmit =  e => {
         const { form, isCreate, selectDetailData } = this.props
         const { currentSelectRelatedPageOpt, modifyPaths, detailUid } = this.state;
-        // console.log({currentSelectRelatedPageOpt})
-        const detailUid2 = currentSelectRelatedPageOpt[2]?.uid || currentSelectRelatedPageOpt[2]?.gongdiUid || currentSelectRelatedPageOpt[2]?.articleUid || detailUid
-        let arr = this.formatData().map(item => item.code)
-
-        if(arr.length === 3) {
-            arr = arr.slice(0, arr.length - 1)
-        }
-        
+        const optArr = this.formatData();
         e.preventDefault();
         form.validateFields( (err, values) => {       
             if (err) {
               return
             }
+           
+            let detailUid2;
+            let arr = optArr.map(item => item.code);
+            if (optArr[0].text === '专题') {
+                detailUid2 = optArr[1].code;
+                arr = optArr.map(item => item.code).slice(0, arr.length - 1)
+            }
+
+            if(arr.length === 3) {
+                detailUid2 = arr.pop()
+            }
+        
             this.setState({
                 btnLoading: true
             })
@@ -191,9 +196,6 @@ export default class CreateEdit extends Component {
 
     }
 
-
-
-
     // 选择关联页面
     selectedHandle =  ( item, step ) => {
         const { pageNum, searchText, currentarticleDicCode } = this.state
@@ -207,7 +209,6 @@ export default class CreateEdit extends Component {
 
             })
         }, () => {
-            // console.log(this.state.currentSelectRelatedPageOpt)
             this.props.form.setFieldsValue({
                 relatedPage:  this.formatData().map(item => {if(item){return item.text}}).join(' / ')
             })
@@ -272,8 +273,13 @@ export default class CreateEdit extends Component {
             });
 
         }
+        detailType === 5 && (res = await specialListApi({
+            specialStatus: 0,
+            searchText,
+            pageNum,
+            pageSize
+        }));
         
-        // console.log({res})
         this.setState( {
             dataList: res?.data?.list,
             recordTotal: res?.data?.recordTotal
@@ -295,7 +301,6 @@ export default class CreateEdit extends Component {
     // 文章类型切换
     radioGroupChange = e => {
         const { pageNum, searchText } = this.state
-        // console.log({e: e.target.value})
         this.setState({
             currentarticleDicCode: e.target.value
         });
@@ -317,18 +322,17 @@ export default class CreateEdit extends Component {
 
     // 行点击事件
     rowClick = (e, record) => {
-        // console.log({record})
+       
         this.setState(prevState => {
             let arr = prevState.currentSelectRelatedPageOpt;
-            arr[2] = record;
+            arr.push( record );
             return ({
                 currentSelectRelatedPageOpt: arr,
-                currentKey: 2,
+                // currentKey: 2,
             })
         }, () => {
-        
             this.props.form.setFieldsValue({
-                relatedPage:  this.formatData().map(item => {if(item){return item.text}}).join(' / ')
+                relatedPage:  this.formatData().map(item =>item.text).join(' / ')
             })
            this.toggleSelectPanlHandle(false)
             
@@ -339,21 +343,24 @@ export default class CreateEdit extends Component {
     // 格式化回显
     formatData = () => {
         const {currentSelectRelatedPageOpt } = this.state;
-        return currentSelectRelatedPageOpt.map( item => {
-            if (item) {
-                return ({
-                    text: item.name || item.title || item.articleTitle  || item.gongdiTitle,
-                    code: item.uid || item.gongdiUid || item.articleUid
+        let arr = [];
+        for (const key in currentSelectRelatedPageOpt) {
+            if (currentSelectRelatedPageOpt.hasOwnProperty.call(currentSelectRelatedPageOpt, key)) {
+                const item = currentSelectRelatedPageOpt[key];
+                arr.push({
+                    text: item.name || item.title || item.articleTitle  || item.gongdiTitle || item.specialTitle,
+                    code: item.uid || item.gongdiUid || item.articleUid || item.specialUid
                 })
-            } 
-        })
+            }
+        }
+        return arr;
             
     }
 
     // 切换选择页面面板显示
     toggleSelectPanlHandle = ( isShow ) => {
         const { currentSelectRelatedPageOpt } = this.state;
-        if ( currentSelectRelatedPageOpt[1]?.linkType === 2 && !!!currentSelectRelatedPageOpt[2]) {
+        if ( (currentSelectRelatedPageOpt[1]?.linkType === 2 && !!!currentSelectRelatedPageOpt[2]) || (currentSelectRelatedPageOpt[0]?.linkType === 2 && !!!currentSelectRelatedPageOpt[1] )) {
             
             this.setState(prevState => {
                 
@@ -361,7 +368,6 @@ export default class CreateEdit extends Component {
                     currentSelectRelatedPageOpt: prevState.currentSelectRelatedPageOpt.slice(0, prevState.currentSelectRelatedPageOpt.length - 1)
                 })
             }, () => {
-                // console.log({aa:  this.state.currentSelectRelatedPageOpt.slice(0,  this.state.currentSelectRelatedPageOpt.length)})
                 this.props.form.setFieldsValue({
                     relatedPage: this.state.currentSelectRelatedPageOpt?.slice(0, this.state.currentSelectRelatedPageOpt.length).map(item => item.name).join(' / ')
                 })
@@ -384,8 +390,6 @@ export default class CreateEdit extends Component {
 
     closeHanlde = e => {
         const parent = this.refs.parentNode;
-
-        // console.log({aaa:  parent.contains(e.target) })
         if (!parent?.contains(e.target) && !e.target.className.includes('targetInput')) {
             this.toggleSelectPanlHandle(false)
         }
@@ -396,10 +400,9 @@ export default class CreateEdit extends Component {
         this.setState({
             currentSelectRelatedPageOpt: [],
             currentKey: '0',
-            relatedPageText: undefined
         }, () => {
             this.props.form.setFieldsValue({
-                relatedPage:  this.formatData().map(item => {if(item){return item.text}}).join(' / ')
+                relatedPage:  this.formatData().map(item =>item.text).join(' / ')
             })
         })
     }
@@ -418,7 +421,7 @@ export default class CreateEdit extends Component {
     render() {
         const { form, isCreate  } = this.props;
         const { relatedPageOption, currentSelectRelatedPageOpt, currentKey, dataList,detailType, 
-            articleDicOpts, currentarticleDicCode, searchText, relatedPageText, showSelectPanl,
+            articleDicOpts, currentarticleDicCode, searchText, showSelectPanl,
             pageNum, pageSize, recordTotal, btnLoading
         } = this.state
         const { getFieldDecorator } = form
@@ -490,7 +493,7 @@ export default class CreateEdit extends Component {
                     key: 'buildingName',
                     dataIndex: 'buildingName',
                     render: (text, r) => <Tooltip placement='topLeft' title={text}>
-                        <span style={{ display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>{text}</span>
+                        <span style={{ maxWidth: 120, display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>{text}</span>
                     </Tooltip> 
                 },
                 {
@@ -526,12 +529,33 @@ export default class CreateEdit extends Component {
                     key: 'updateTime',
                     dataIndex: 'updateTime'
                 },
+            ],
+            // 专题表头
+            columns_5: [
+                {
+                    title: <span style={{fontWeight: 300}}>专题标题</span>,
+                    key: 'specialTitle',
+                    dataIndex: 'specialTitle',
+                    render: (text, r) => <Tooltip placement='topLeft' title={text}>
+                        <div style={{maxWidth: 120,  display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>{text}</div>
+                    </Tooltip> 
+                },
+                {
+                    title: <span style={{fontWeight: 300}}>创建人</span>,
+                    key: 'creatorName',
+                    dataIndex: 'creatorName',
+                    render: (text, r) => <Tooltip placement='topLeft' title={text}>
+                        <div style={{maxWidth: 120,  display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>{text}</div>
+                    </Tooltip> 
+                },
+                {
+                    title: <span style={{fontWeight: 300}}>更新时间</span>,
+                    key: 'updateTime',
+                    dataIndex: 'updateTime'
+                },
             ]
         }
 
-       
-
-        
         return (
             <div className='createEdit' onClick={this.closeHanlde}>
                 <Form labelCol={{ span: 6 }} wrapperCol={{ span: 13 }} onSubmit={this.handleSubmit}>
@@ -578,7 +602,7 @@ export default class CreateEdit extends Component {
                                             <p style={{cursor: 'pointer'}} key={item.uid} onClick={() => this.selectedHandle(item, '1')}>{item.name}</p>)
                                     }
                                 </TabPane>}
-                                {currentSelectRelatedPageOpt[1]?.linkType === 2  && <TabPane tab={currentSelectRelatedPageOpt[2]?.articleTitle || '请选择'} key='2'>
+                                {(currentSelectRelatedPageOpt[1]?.linkType === 2 || currentSelectRelatedPageOpt[0]?.linkType === 2 ) && <TabPane tab='请选择' key= {currentSelectRelatedPageOpt[0]?.linkType === 2 ? '1' : '2'}>
                                     <Search
                                         value={searchText}
                                         placeholder='可输入关键字进行检索'
