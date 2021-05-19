@@ -10,9 +10,11 @@
 .editMode:hover {
   border: 1px dashed #ff7300;
 }
+
 .editMode:hover .editButton {
   display: block;
 }
+
 .editButton {
   display: none;
   font-size: 14px;
@@ -36,6 +38,7 @@
   color: var(--themeColor);
   padding-bottom: 9px;
 }
+
 .menuWrapper .left {
   position: absolute;
   left: 0;
@@ -44,6 +47,7 @@
   color: #333;
   padding-left: 0;
 }
+
 .menuWrapper .right {
   position: absolute;
   right: 0;
@@ -58,17 +62,18 @@
   justify-content: flex-end;
   width: 100%;
 }
+
 .menuRoot a {
   line-height: 58px;
   font-size: 15px;
   font-weight: 400;
   color: #1d1d1d;
   font-family: PingFangSC-Regular, PingFang SC;
-
-  img {
-    margin-right: 6px;
-  }
 }
+.menuRoot a img {
+  margin-right: 6px;
+}
+
 .menuRoot a:last-child {
   gap: unset;
 }
@@ -76,14 +81,14 @@
 .menuItemWrapper {
   position: relative;
   height: 58px;
-
-  a {
-    font-size: 15px;
-    font-family: PingFangSC-Regular, PingFang SC;
-    font-weight: 400;
-    color: #1d1d1d;
-  }
 }
+.menuItemWrapper a {
+  font-size: 15px;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #1d1d1d;
+}
+
 .arrowWrapperPrev {
   height: 100%;
   width: 50%;
@@ -100,6 +105,7 @@
   background: url('/img/ic_more_slices/ic_more.png') no-repeat right center;
   transform: scaleX(-1);
 }
+
 .nextArrow {
   display: block;
   width: 100%;
