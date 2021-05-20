@@ -269,7 +269,7 @@ export default class ChannelManage extends Component {
                 dataIndex: 'linkDisplayName',
                 render: (text, record) =>
                     <Tooltip placement="topLeft" title={text}>
-                        <div style={{maxWidth: 220, overflow:'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis'}}>{text}</div>
+                        <div style={{maxWidth: 180, overflow:'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis'}}>{text}</div>
                     </Tooltip>     
             },
             {
