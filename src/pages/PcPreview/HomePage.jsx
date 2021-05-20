@@ -94,7 +94,9 @@ const Home = () => {
                 />
               </div>
             }
-            middle={<MenuList menuList={menuList} setShowHeaderDrawer={setShowHeaderDrawer} />}
+            middle={
+              <MenuList menuList={menuList} setShowHeaderDrawer={setShowHeaderDrawer} dynamicDomain={dynamicDomain} />
+            }
             right={
               <div className={styles.contactHeader}>
                 <img className={styles.phoneIcon} src={'/img/ic_phone_slices/ic_phone.png'} />

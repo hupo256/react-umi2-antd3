@@ -12,7 +12,7 @@ const isCurrentMenu = (item, current) => {
   return item.uid === current.uid
 }
 
-const MenuListComp = ({ menuList, setShowHeaderDrawer }) => {
+const MenuListComp = ({ menuList, setShowHeaderDrawer, dynamicDomain = '' }) => {
   const [menuChunkList, setMenuChunkList] = useState([])
   const [chunkIndex, setChunkIndex] = useState(0)
   const [extraCharCount, setExtraCharCount] = useState([])
@@ -114,7 +114,7 @@ const MenuListComp = ({ menuList, setShowHeaderDrawer }) => {
     [menuList],
   )
   const clickMenuItem = ({ linkUrl }) => {
-    window.location.href = linkUrl
+    window.location.href = `${dynamicDomain}${linkUrl}`
   }
 
   return (
