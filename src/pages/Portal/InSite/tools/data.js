@@ -2,7 +2,7 @@ export const baseRouteKey = '/portal/insite/decorate/';
 export const canEditTags = ['banner', 'highlights', 'advertising'];
 export const defaultImg = 'http://img.inbase.in-deco.com/crm-saas/img/games/default/';
 export const tipsText =
-  '您的“案例、工地直播、设计师团队、公司电话/名称”在内容管理维护后，会依据您已有的内容自动生成样式。';
+  '您的“案例、参观工单、设计师团队、公司电话/名称”在内容管理维护后，会依据您已有的内容自动生成样式。';
 export const LinkType = [
   {
     name: '案例',

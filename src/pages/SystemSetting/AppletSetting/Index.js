@@ -133,7 +133,7 @@ class Index extends PureComponent {
           {
             key: '3',
             name: '设计师',
-            link: 'page/designer/designer',
+            link: 'page/Designer/Designer',
             ...FormDetail['3'],
           },
         ]
