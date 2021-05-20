@@ -169,6 +169,7 @@ const Home = () => {
         visible={showHeaderDrawer}
         width={900}
         headerStyle={{ border: 'none', marginBottom: '-18px' }}
+        destroyOnClose
       >
         <ChannelManage isPcPreview={true} />
       </Drawer>
@@ -184,6 +185,7 @@ const Home = () => {
         visible={showFooterDrawer}
         width={600}
         headerStyle={{ border: 'none', marginBottom: '-18px' }}
+        destroyOnClose
       >
         <WebSetting />
       </Drawer>
