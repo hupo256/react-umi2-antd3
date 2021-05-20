@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-04-30 11:36:34 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-20 14:44:10
+ * @Last Modified time: 2021-05-20 16:15:51
  * 关联设置
  */
 import React, { Component } from 'react';
@@ -108,7 +108,8 @@ class LinkPage extends Component {
       type: 'MiniProgram/formcollocateModel',
       payload: {
         bindType: saveValue.type == 1 ? 1 : 0,
-        buttonText: saveValue.type == 1 ? this.props.defvalue.buttonText : btnName,
+        // buttonText: saveValue.type == 1 ? this.props.defvalue.buttonText : btnName,
+        buttonText: btnName,
         directType,
         formUid: saveValue.type == 1 ? null : saveValue.record.formUid,
       },
