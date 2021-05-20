@@ -141,18 +141,18 @@ const Home = () => {
           </ChapterLayout>
 
           <div className={styles.designerSectionWiderBackground}>
-            <ChapterLayout title={'首席设计师'} description={'定制全套装修方案'}>
-              <DesignerContent data={_.get(publishedData, '4.list')} domain={dynamicDomain} />
+            <ChapterLayout title={'工地直播'} description={'全程透明 追踪可查'}>
+              <LiveShow data={_.get(publishedData, '3.list')} domain={dynamicDomain} />
             </ChapterLayout>
           </div>
 
-          <ChapterLayout title={'装修攻略'} description={'一分钟了解家装'}>
-            <Articles data={_.slice(_.get(publishedData, '5.list'), 0, 3)} domain={dynamicDomain} />
+          <ChapterLayout title={'首席设计师'} description={'定制全套装修方案'}>
+            <DesignerContent data={_.get(publishedData, '4.list')} domain={dynamicDomain} />
           </ChapterLayout>
 
           <div className={styles.designerSectionWiderBackground}>
-            <ChapterLayout title={'工地直播'} description={'全程透明 追踪可查'}>
-              <LiveShow data={_.get(publishedData, '3.list')} domain={dynamicDomain} />
+            <ChapterLayout title={'装修攻略'} description={'一分钟了解家装'}>
+              <Articles data={_.slice(_.get(publishedData, '5.list'), 0, 3)} domain={dynamicDomain} />
             </ChapterLayout>
           </div>
         </Content>
