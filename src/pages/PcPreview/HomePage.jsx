@@ -138,7 +138,13 @@ const Home = () => {
           <HeaderLayout
             left={
               <div className={styles.companyHeaderStyle}>
-                <img src={footerData.logo} className={styles.logoStyle} />
+                <img
+                  src={footerData.logo}
+                  alt={footerData.companyName}
+                  className={styles.logoStyle}
+                  onClick={() => (window.location.href = '/')}
+                  style={{ cursor: 'pointer' }}
+                />
               </div>
             }
             middle={
