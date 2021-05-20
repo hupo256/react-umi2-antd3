@@ -160,33 +160,29 @@ const Home = () => {
         </div>
 
         <Carousel autoplay>
-          {_.map(publishedData['banner']['list'], (item, index) => (
-            <div
-              key={`banner-${index}`}
-              onClick={() => {
-                if (!item.uid) {
-                  return
-                }
-                if (item.type === 'games') {
-                  message.destroy()
-                  message.warning('PC端不允许跳转到小游戏')
-                  return
-                }
-                if (item.type === 'special') {
-                  window.open(`${dynamicDomain}/img/PublicLibraryPc/special.html#/?uid=${item.uid}`, '页面预览')
-                  return
-                }
-                window.open(
-                  `${dynamicDomain}/${typeMap[item.type]}/details?${paramMap[item.type]}=${item.uid}`,
-                  '页面预览',
-                )
-              }}
-            >
-              <h3 className={styles.banner} style={{ backgroundImage: `url('${item?.imgUrl}')` }}>
-                {' '}
-              </h3>
-            </div>
-          ))}
+          {_.map(
+            _.get(publishedData, '0.list', null),
+            (item, index) =>
+              item.type === 'games' || (
+                <div
+                  key={`banner-${index}`}
+                  onClick={() =>
+                    (window.location.href = `${dynamicDomain}/${typeMap[item.type]}/details?${paramMap[item.type]}=${
+                      item.uid
+                    }`)
+                  }
+                >
+                  <h3
+                    className={styles.banner}
+                    style={{
+                      backgroundImage: `url(${_.get(item, 'imgUrl')})`,
+                    }}
+                  >
+                    {' '}
+                  </h3>
+                </div>
+              ),
+          )}
         </Carousel>
 
         <Content className={styles.mainWrapper}>
