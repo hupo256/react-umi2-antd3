@@ -13,7 +13,7 @@ const CaseProjects = ({ data, domain }) => {
     const { bedroom, parlor } = JSON.parse(item.houseType)
     data[index]['text'] = `${item.buildingName} | ${item.buildingArea}m² | ${CHN_NUM_CHAR[bedroom]}室${
       CHN_NUM_CHAR[parlor]
-    }厅 | ${item.renovationCosts / 10000}万元`
+    }厅 | ${item.renovationCosts}万元`
 
     caseStyle[`image${index}`] = {
       background: `url(${item.coverImg}) no-repeat center center`,
