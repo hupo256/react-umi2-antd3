@@ -1,5 +1,13 @@
 export const baseRouteKey = '/portal/insite/decorate/';
-export const canEditTags = ['banner', 'highlights', 'advertising', 'editModel', 'aboutUs', 'nav'];
+export const canEditTags = [
+  'banner',
+  'highlights',
+  'advertising',
+  'editModel',
+  'aboutUs',
+  'nav',
+  'channel',
+];
 export const defaultImg = 'http://img.inbase.in-deco.com/crm-saas/img/games/default/';
 export const editText =
   '编辑模块后，【模块标题】将按照您编辑后的展示。 鼠标悬浮示例，查看示例图片。';

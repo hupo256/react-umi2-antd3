@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import router from 'umi/router';
 import { ctx } from '../common/context';
@@ -15,6 +14,7 @@ import AdMd from './components/adMd';
 import AboutUsMd from './components/aboutUsMd';
 import ArticleMd from './components/articleMd';
 import NavMd from './components/navMd';
+import ChannelMd from './components/channelMd';
 
 import './components/fontclass/iconfont.js';
 import pageStyle from './preview.less';
@@ -57,11 +57,15 @@ const componentMap = {
     tips: '导航',
     creatCom: e => <NavMd {...e} />,
   },
+  channel: {
+    tips: '频道',
+    creatCom: e => <ChannelMd {...e} />,
+  },
 };
 
 export default function Preview(props) {
   const { from } = props;
-  const { pageData, touchPageData, templateCode, curFlag, navData } = useContext(ctx);
+  const { pageData, touchPageData, templateCode, navData } = useContext(ctx);
   const [totopShow, settotopShow] = useState(false);
   const [curTheme, setcurTheme] = useState('WMHPT0001');
   const contentBox = useRef();
@@ -130,32 +134,43 @@ export default function Preview(props) {
                 </HoverMd>
               );
             })}
-            <div style={{position: 'absolute', width: '100%', left: 0, bottom: 0, height: 50}}>
-              <HoverMd key={999} tips='导航' flag="nav">
-                <div className={pageStyle.footerBox}>
-                  <ul className={pageStyle.flex}>
-                    <li className={pageStyle.on}>
-                      <svg className="icon" aria-hidden="true">
-                        <use href="#iconic_home_no" />
+          <div style={{ position: 'absolute', width: '100%', left: 0, bottom: 0, height: 50 }}>
+            <HoverMd key={999} tips="导航" flag="nav">
+              <div className={pageStyle.footerBox}>
+                <ul className={pageStyle.flex}>
+                  <li className={pageStyle.on}>
+                    <svg className="icon" aria-hidden="true">
+                      <use href="#iconic_home_no" />
+                    </svg>
+                    <span>首页</span>
+                  </li>
+                  {navData?.map(e => (
+                    <li key={e.navModule}>
+                      <svg className="icon">
+                        <use
+                          href={`#${
+                            e.navModule === 'case'
+                              ? 'iconic_case_no'
+                              : e.navModule === 'site'
+                                ? 'iconic_site_no'
+                                : e.navModule === 'design'
+                                  ? 'iconic_designer_no'
+                                  : e.navModule === 'article'
+                                    ? 'iconic_article'
+                                    : ''
+                          }`}
+                        />
                       </svg>
-                      <span>首页</span>
+                      <span>{e.name}</span>
                     </li>
-                    {navData?.map(e =>
-                      <li key={e.navModule}>
-                        <svg className="icon">
-                          <use href={`#${e.navModule === 'case' ? 'iconic_case_no' : e.navModule === 'site' ? 'iconic_site_no' : e.navModule === 'design' ? 'iconic_designer_no' :e.navModule === 'article' ? 'iconic_article' : ''}`} />
-                        </svg>
-                        <span>{e.name}</span>
-                      </li>
-                    )}
-                  </ul>
-                </div>
-              </HoverMd>
-            </div>
+                  ))}
+                </ul>
+              </div>
+            </HoverMd>
+          </div>
         </div>
 
         {/* footer */}
-
         <div className={`${pageStyle.totopBox} ${totopShow ? pageStyle.show : ''}`}>
           <span>
             <svg className="icon" aria-hidden="true">
