@@ -7,19 +7,32 @@ import cx from 'classnames'
 const MAX_CHUNK_SIZE = 40
 const MIN_CHUNK_SIZE = 20
 
-const isCurrentMenu = ({ uid, linkKey }) => {
-  const currentMenuUid = localStorage.getItem('currentMenu')
-  if (currentMenuUid) {
-    return currentMenuUid === uid
-  }
-
-  return linkKey === 'home'
+const isCurrentMenu = (item, current) => {
+  if (!current || !item) return false
+  return item.uid === current.uid
 }
 
-const MenuListComp = ({ menuList, setShowHeaderDrawer }) => {
+const findParent = (menuList, url) => {
+  if (/cases/.test(url)) {
+    return _.find(menuList, { linkUrl: '/cases' })
+  }
+  if (/sites/.test(url)) {
+    return _.find(menuList, { linkUrl: '/sites' })
+  }
+  if (/designers/.test(url)) {
+    return _.find(menuList, { linkUrl: '/designers' })
+  }
+  if (/articles/.test(url)) {
+    return _.find(menuList, { linkUrl: '/articles' })
+  }
+  return null
+}
+
+const MenuListComp = ({ menuList, setShowHeaderDrawer, dynamicDomain = '' }) => {
   const [menuChunkList, setMenuChunkList] = useState([])
   const [chunkIndex, setChunkIndex] = useState(0)
   const [extraCharCount, setExtraCharCount] = useState([])
+  const [current, setCurrent] = useState(0)
 
   const hasPrevious = () => {
     return !Boolean(chunkIndex - 1 < 0)
@@ -65,11 +78,10 @@ const MenuListComp = ({ menuList, setShowHeaderDrawer }) => {
     () => {
       if (_.isEmpty(menuChunkList)) return
 
-      const currentMenu = localStorage.getItem('currentMenu')
-      if (currentMenu) {
+      if (current) {
         _.forEach(menuChunkList, (chunk, index) => {
           _.forEach(chunk, (item, i) => {
-            if (item.uid === currentMenu) {
+            if (item.uid === current.uid) {
               console.log(index)
               setChunkIndex(index)
               return
@@ -80,10 +92,46 @@ const MenuListComp = ({ menuList, setShowHeaderDrawer }) => {
     },
     [menuChunkList],
   )
+  useEffect(
+    () => {
+      if (_.isEmpty(menuList)) return
 
-  const clickMenuItem = ({ uid, linkUrl }) => {
-    localStorage.setItem('currentMenu', uid)
-    window.location.href = linkUrl
+      const url = new URL(location.href)
+      const [uid] = url.searchParams.values()
+
+      if (uid) {
+        // 详情页
+
+        const res = _.find(menuList, value => {
+          const urlObj = new URL(location.origin + value.linkUrl)
+          const [urlCompare] = urlObj.searchParams.values()
+
+          return urlCompare === uid
+        })
+
+        if (!res) {
+          // 去除当前状态
+          const parentMenu = findParent(menuList, location.href)
+          setCurrent(parentMenu)
+          return
+        }
+        // 设置此为当前
+        setCurrent(res)
+        return
+      }
+
+      const res = _.find(menuList, { linkUrl: location.pathname })
+      if (res) {
+        setCurrent(res)
+        return
+      }
+
+      setCurrent(null)
+    },
+    [menuList],
+  )
+  const clickMenuItem = ({ linkUrl }) => {
+    window.open(`${dynamicDomain}${linkUrl}`, '页面预览')
   }
 
   return (
@@ -108,7 +156,7 @@ const MenuListComp = ({ menuList, setShowHeaderDrawer }) => {
                 )}
               <a
                 key={index}
-                className={isCurrentMenu(item) ? styles.active : undefined}
+                className={isCurrentMenu(item, current) ? styles.active : undefined}
                 onClick={e => clickMenuItem(item)}
               >
                 {item.websiteName}

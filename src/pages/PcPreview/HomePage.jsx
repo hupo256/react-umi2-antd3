@@ -90,11 +90,14 @@ const Home = () => {
                   src={footerData.logo}
                   alt={footerData.companyName}
                   className={styles.logoStyle}
-                  onClick={() => (window.location.href = '/')}
+                  onClick={() => window.open('/', '页面预览')}
+                  style={{ cursor: 'pointer' }}
                 />
               </div>
             }
-            middle={<MenuList menuList={menuList} setShowHeaderDrawer={setShowHeaderDrawer} />}
+            middle={
+              <MenuList menuList={menuList} setShowHeaderDrawer={setShowHeaderDrawer} dynamicDomain={dynamicDomain} />
+            }
             right={
               <div className={styles.contactHeader}>
                 <img className={styles.phoneIcon} src={'/img/ic_phone_slices/ic_phone.png'} />
@@ -109,9 +112,11 @@ const Home = () => {
             <div
               key={`banner-${index}`}
               onClick={() =>
-                (window.location.href = `${dynamicDomain}/${typeMap[item.type]}/details?${paramMap[item.type]}=${
-                  item.uid
-                }`)
+                item.type === 'games' ||
+                window.open(
+                  `${dynamicDomain}/${typeMap[item.type]}/details?${paramMap[item.type]}=${item.uid}`,
+                  '页面预览',
+                )
               }
             >
               <h3
@@ -136,18 +141,18 @@ const Home = () => {
           </ChapterLayout>
 
           <div className={styles.designerSectionWiderBackground}>
-            <ChapterLayout title={'首席设计师'} description={'定制全套装修方案'}>
-              <DesignerContent data={_.get(publishedData, '4.list')} domain={dynamicDomain} />
+            <ChapterLayout title={'工地直播'} description={'全程透明 追踪可查'}>
+              <LiveShow data={_.get(publishedData, '3.list')} domain={dynamicDomain} />
             </ChapterLayout>
           </div>
 
-          <ChapterLayout title={'装修攻略'} description={'一分钟了解家装'}>
-            <Articles data={_.slice(_.get(publishedData, '5.list'), 0, 3)} domain={dynamicDomain} />
+          <ChapterLayout title={'首席设计师'} description={'定制全套装修方案'}>
+            <DesignerContent data={_.get(publishedData, '4.list')} domain={dynamicDomain} />
           </ChapterLayout>
 
           <div className={styles.designerSectionWiderBackground}>
-            <ChapterLayout title={'工地直播'} description={'全程透明 追踪可查'}>
-              <LiveShow data={_.get(publishedData, '3.list')} domain={dynamicDomain} />
+            <ChapterLayout title={'装修攻略'} description={'一分钟了解家装'}>
+              <Articles data={_.slice(_.get(publishedData, '5.list'), 0, 3)} domain={dynamicDomain} />
             </ChapterLayout>
           </div>
         </Content>
@@ -166,6 +171,7 @@ const Home = () => {
         visible={showHeaderDrawer}
         width={900}
         headerStyle={{ border: 'none', marginBottom: '-18px' }}
+        destroyOnClose
       >
         <ChannelManage isPcPreview={true} />
       </Drawer>
@@ -181,6 +187,7 @@ const Home = () => {
         visible={showFooterDrawer}
         width={600}
         headerStyle={{ border: 'none', marginBottom: '-18px' }}
+        destroyOnClose
       >
         <WebSetting />
       </Drawer>

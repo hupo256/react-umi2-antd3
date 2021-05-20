@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-04-28 17:05:47 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-14 18:23:42
+ * @Last Modified time: 2021-05-20 14:42:39
  * 小程序设置
  */
 
@@ -133,7 +133,7 @@ class Index extends PureComponent {
           {
             key: '3',
             name: '设计师',
-            link: 'page/designer/designer',
+            link: 'page/Designer/Designer',
             ...FormDetail['3'],
           },
         ]
