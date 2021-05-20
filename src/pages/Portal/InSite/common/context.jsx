@@ -96,29 +96,16 @@ export function Provider({ children }) {
         getHomePageEditData(param).then(res => {
           if (res?.code !== 200) return message.error(res?.message || '数据返回出错');
           if (!res?.data) return;
-          message.destroy();
-          const userInfo = getauth();
-          const aboutUs = res.data.editTemplateJson.jsonData.find(e => e.flag === 'aboutUs');
-          const article = res.data.editTemplateJson.jsonData.find(e => e.flag === 'article');
-          if (!article) {
-            res.data.editTemplateJson.jsonData.push({
-              flag: 'article',
-              list: [],
-              title: '装修攻略',
-              afterName: '装修攻略',
-              styleType: '',
-              showModule: true,
-              nameListData: [],
-            });
-          }
+          console.log(res.data.jsonData)
+          const aboutUs = res.data.editTemplateJson.jsonData.find(e => e.flag === 'aboutUs')
           if (!aboutUs) {
             res.data.editTemplateJson.jsonData.push({
               flag: 'aboutUs',
               title: '关于我们',
-              name: userInfo.abbreviateName || '公司简介',
+              name: '公司简称',
               content: '请用一句简明扼要的话，来描述下您的公司吧',
-              url: 'http://img.inbase.in-deco.com/crm-saas/img/banner_about.png',
-            });
+              url: 'http://img.inbase.in-deco.com/crm-saas/img/banner_about.png'
+            })
           }
           const { editTemplateCode, editTemplateJson } = res.data;
           editTemplateJson.jsonData.map(e => {
