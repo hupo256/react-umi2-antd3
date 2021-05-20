@@ -23,23 +23,8 @@ const findParent = (menuList, url) => {
   if (/designers/.test(url)) {
     return _.find(menuList, { linkUrl: '/designers' })
   }
-  if (/articles\?uid=$/.test(url)) {
-    return _.find(menuList, { linkKey: 'articleList' })
-  }
   if (/articles/.test(url)) {
-    return _.find(menuList, { linkKey: 'articleGroup' })
-  }
-  if (/material/.test(url)) {
-    return _.find(menuList, { linkKey: 'material' })
-  }
-  if (/trim/.test(url)) {
-    return _.find(menuList, { linkKey: 'decorate' })
-  }
-  if (/material/.test(url)) {
-    return _.find(menuList, { linkKey: 'material' })
-  }
-  if (/trim/.test(url)) {
-    return _.find(menuList, { linkKey: 'decorate' })
+    return _.find(menuList, { linkUrl: '/articles' })
   }
   return null
 }

@@ -184,28 +184,6 @@ const Home = () => {
         </Carousel>
 
         <Content className={styles.mainWrapper}>
-<<<<<<< HEAD
-          {_.isEmpty(publishedData['highlights']['list']) || (
-            <ChapterLayout title={'产品特点'}>
-              <KeyPoints pointsList={publishedData['highlights']['list']} domain={dynamicDomain} />
-            </ChapterLayout>
-          )}
-          {_.isEmpty(publishedData['case']['list']) || (
-            <ChapterLayout title={publishedData['case']['title']}>
-              <CaseProjects data={publishedData['case']['list']} domain={dynamicDomain} />
-            </ChapterLayout>
-          )}
-          {_.isEmpty(publishedData['site']['list']) || (
-            <div className={styles.liveShowSectionWiderBackground}>
-              <ChapterLayout title={publishedData['site']['title']}>
-                <LiveShow data={publishedData['site']['list']} domain={dynamicDomain} />
-              </ChapterLayout>
-            </div>
-          )}
-          {_.isEmpty(publishedData['design']['list']) || (
-            <ChapterLayout title={publishedData['design']['title']} moreStyles={{ marginBottom: '10px' }}>
-              <DesignerContent data={publishedData['design']['list']} domain={dynamicDomain} />
-=======
           <ChapterLayout title={'产品特点'} description={'颠覆传统家装企业'}>
             <KeyPoints pointsList={_.get(publishedData, '1.list')} domain={dynamicDomain} />
           </ChapterLayout>
@@ -227,7 +205,6 @@ const Home = () => {
           <div className={styles.designerSectionWiderBackground}>
             <ChapterLayout title={'装修攻略'} description={'一分钟了解家装'}>
               <Articles data={_.slice(_.get(publishedData, '5.list'), 0, 3)} domain={dynamicDomain} />
->>>>>>> 68a597a... fix SITE-2849
             </ChapterLayout>
           )}
           {_.isEmpty(publishedData['article']['list']) || (
