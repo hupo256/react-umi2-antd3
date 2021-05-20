@@ -12,6 +12,22 @@ const isCurrentMenu = (item, current) => {
   return item.uid === current.uid
 }
 
+const findParent = (menuList, url) => {
+  if (/cases/.test(url)) {
+    return _.find(menuList, { linkUrl: '/cases' })
+  }
+  if (/sites/.test(url)) {
+    return _.find(menuList, { linkUrl: '/sites' })
+  }
+  if (/designers/.test(url)) {
+    return _.find(menuList, { linkUrl: '/designers' })
+  }
+  if (/articles/.test(url)) {
+    return _.find(menuList, { linkUrl: '/articles' })
+  }
+  return null
+}
+
 const MenuListComp = ({ menuList, setShowHeaderDrawer, dynamicDomain = '' }) => {
   const [menuChunkList, setMenuChunkList] = useState([])
   const [chunkIndex, setChunkIndex] = useState(0)
@@ -95,7 +111,8 @@ const MenuListComp = ({ menuList, setShowHeaderDrawer, dynamicDomain = '' }) => 
 
         if (!res) {
           // 去除当前状态
-          setCurrent(null)
+          const parentMenu = findParent(menuList, location.href)
+          setCurrent(parentMenu)
           return
         }
         // 设置此为当前
@@ -114,7 +131,7 @@ const MenuListComp = ({ menuList, setShowHeaderDrawer, dynamicDomain = '' }) => 
     [menuList],
   )
   const clickMenuItem = ({ linkUrl }) => {
-    window.location.href = `${dynamicDomain}${linkUrl}`
+    window.open(`${dynamicDomain}${linkUrl}`, '页面预览')
   }
 
   return (

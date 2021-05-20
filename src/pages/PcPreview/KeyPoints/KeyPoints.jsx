@@ -13,9 +13,10 @@ const KeyPoints = ({ pointsList, domain }) => {
               key={index}
               className={styles.featurePoint}
               onClick={() =>
-                (window.location.href = `${domain}/${typeMap[feature.type]}/details?${paramMap[feature.type]}=${
-                  feature.uid
-                }`)
+                window.open(
+                  `${domain}/${typeMap[feature.type]}/details?${paramMap[feature.type]}=${feature.uid}`,
+                  '页面预览',
+                )
               }
               style={{ cursor: 'pointer' }}
             >
