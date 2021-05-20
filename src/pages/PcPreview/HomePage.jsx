@@ -90,7 +90,7 @@ const Home = () => {
                   src={footerData.logo}
                   alt={footerData.companyName}
                   className={styles.logoStyle}
-                  onClick={() => (window.location.href = '/')}
+                  onClick={() => window.open('/', '页面预览')}
                   style={{ cursor: 'pointer' }}
                 />
               </div>
@@ -113,9 +113,10 @@ const Home = () => {
               key={`banner-${index}`}
               onClick={() =>
                 item.type === 'games' ||
-                (window.location.href = `${dynamicDomain}/${typeMap[item.type]}/details?${paramMap[item.type]}=${
-                  item.uid
-                }`)
+                window.open(
+                  `${dynamicDomain}/${typeMap[item.type]}/details?${paramMap[item.type]}=${item.uid}`,
+                  '页面预览',
+                )
               }
             >
               <h3

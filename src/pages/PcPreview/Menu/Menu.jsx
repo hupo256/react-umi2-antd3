@@ -114,7 +114,7 @@ const MenuListComp = ({ menuList, setShowHeaderDrawer, dynamicDomain = '' }) => 
     [menuList],
   )
   const clickMenuItem = ({ linkUrl }) => {
-    window.location.href = `${dynamicDomain}${linkUrl}`
+    window.open(`${dynamicDomain}${linkUrl}`, '页面预览')
   }
 
   return (
