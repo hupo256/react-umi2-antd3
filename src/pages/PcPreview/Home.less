@@ -21,8 +21,34 @@ body {
   color: #fff;
   line-height: 160px;
   text-align: center;
-  padding-top: 66px;
-  background-size: contain;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+:global {
+  .ant-carousel .slick-dots li {
+    background: #ffffff;
+    opacity: 0.5;
+    border-radius: 4px;
+    height: 7px;
+    button {
+      background-color: #fff;
+      border-radius: 4px;
+      width: 14;
+    }
+  }
+
+  .ant-carousel .slick-dots li.slick-active {
+    opacity: 1;
+    .button {
+      width: 30px;
+    }
+  }
+
+  .ant-carousel .slick-slide {
+    height: 460px;
+  }
 }
 
 .mainWrapper {

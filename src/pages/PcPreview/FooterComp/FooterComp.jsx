@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react'
-import styles from './FooterComp.module.scss'
+// 注：此文件与marketing版有大量不同，整合的时候需特别注意
+import React from 'react'
+import cx from 'classnames'
+import styles from './FooterComp.less'
 
-export default function FooterComp({ data }) {
+export default function FooterComp({ data, setShowFooterDrawer }) {
   if (!data) return null
 
   const {

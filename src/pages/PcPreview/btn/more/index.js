@@ -1,4 +1,4 @@
-import styles from './index.module.scss'
+import styles from './index.less'
 
 const BtnMore = ({ text = '更多案例', url = '/', solid = false, style }) => {
   if (solid) {

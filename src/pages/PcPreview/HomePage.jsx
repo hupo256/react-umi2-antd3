@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-import styles from './Home.module.scss'
+import styles from './Home.less'
 import _ from 'lodash'
 import CaseProjects from './Case/Case.jsx'
 import MenuList from './Menu/Menu.jsx'
@@ -12,12 +12,12 @@ import LiveShow from './LiveShow/LiveShow.jsx'
 import FooterComp from './FooterComp/FooterComp.jsx'
 
 import { typeMap, paramMap } from './constants.js'
-import WebSetting from './WebSettingOut'
-import ChannelManage from '../ChannelManage'
+import WebSetting from './WebSettingOut' // 注意：此处营销站独有
+import ChannelManage from '../ChannelManage' // 注意：此处营销站独有
 
 import { Layout, Avatar, Carousel, Drawer, Button } from 'antd'
 
-import { getMenuList, getFooter, getPublishedData, getDomain } from '@/services/pcPreview' //admin特需
+import { getMenuList, getFooter, getPublishedData, getDomain } from '@/services/pcPreview' // 注意：此处营销站独有
 
 const { Content } = Layout
 
@@ -31,24 +31,17 @@ const ChapterLayout = ({ children, title, description }) => (
   </div>
 )
 
-const contentStyle = {
-  height: '460px',
-  color: '#fff',
-  lineHeight: '160px',
-  textAlign: 'center',
-  background: '#364d79',
-  backgroundSize: 'cover',
-}
 const Home = () => {
   const [menuList, setMenuList] = useState([])
   const [footerData, setFooterData] = useState([])
-  const [dynamicDomain, setDynamicDomain] = useState([])
-  const [publishedData, setPublishedData] = useState([])
-  const [refresh, setRefresh] = useState(false)
 
-  const [showHeaderDrawer, setShowHeaderDrawer] = useState(false)
-  const [showFooterDrawer, setShowFooterDrawer] = useState(false)
+  const [publishedData, setPublishedData] = useState([])
   const [totopShow, settotopShow] = useState(false)
+
+  const [dynamicDomain, setDynamicDomain] = useState([]) // 注意：此处营销站独有
+  const [refresh, setRefresh] = useState(false) // 注意：此处营销站独有
+  const [showHeaderDrawer, setShowHeaderDrawer] = useState(false) // 注意：此处营销站独有
+  const [showFooterDrawer, setShowFooterDrawer] = useState(false) // 注意：此处营销站独有
 
   useEffect(
     () => {
@@ -90,11 +83,6 @@ const Home = () => {
     <div className={styles.container}>
       <Layout className={styles.mainLayout}>
         <div className={styles.editableWrapper}>
-          <div className={styles.editHeader}>
-            <Button className={styles.editBtn} type="primary" onClick={() => setShowHeaderDrawer(true)}>
-              编辑
-            </Button>
-          </div>
           <HeaderLayout
             left={
               <div className={styles.companyHeaderStyle}>
@@ -164,14 +152,7 @@ const Home = () => {
           </div>
         </Content>
 
-        <div className={styles.editableWrapper}>
-          <div className={styles.editHeader}>
-            <Button className={styles.editBtn} type="primary" onClick={() => setShowFooterDrawer(true)}>
-              编辑
-            </Button>
-          </div>
-          <FooterComp data={footerData} />
-        </div>
+        <FooterComp data={footerData} setShowFooterDrawer={setShowFooterDrawer} />
       </Layout>
 
       <Drawer
