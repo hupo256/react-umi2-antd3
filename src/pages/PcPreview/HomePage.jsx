@@ -184,6 +184,7 @@ const Home = () => {
         </Carousel>
 
         <Content className={styles.mainWrapper}>
+<<<<<<< HEAD
           {_.isEmpty(publishedData['highlights']['list']) || (
             <ChapterLayout title={'产品特点'}>
               <KeyPoints pointsList={publishedData['highlights']['list']} domain={dynamicDomain} />
@@ -204,6 +205,29 @@ const Home = () => {
           {_.isEmpty(publishedData['design']['list']) || (
             <ChapterLayout title={publishedData['design']['title']} moreStyles={{ marginBottom: '10px' }}>
               <DesignerContent data={publishedData['design']['list']} domain={dynamicDomain} />
+=======
+          <ChapterLayout title={'产品特点'} description={'颠覆传统家装企业'}>
+            <KeyPoints pointsList={_.get(publishedData, '1.list')} domain={dynamicDomain} />
+          </ChapterLayout>
+
+          <ChapterLayout title={'装修案例'} description={'定制全套装修方案'}>
+            <CaseProjects data={_.get(publishedData, '2.list')} domain={dynamicDomain} />
+          </ChapterLayout>
+
+          <div className={styles.designerSectionWiderBackground}>
+            <ChapterLayout title={'工地直播'} description={'全程透明 追踪可查'}>
+              <LiveShow data={_.get(publishedData, '3.list')} domain={dynamicDomain} />
+            </ChapterLayout>
+          </div>
+
+          <ChapterLayout title={'首席设计师'} description={'定制全套装修方案'}>
+            <DesignerContent data={_.get(publishedData, '4.list')} domain={dynamicDomain} />
+          </ChapterLayout>
+
+          <div className={styles.designerSectionWiderBackground}>
+            <ChapterLayout title={'装修攻略'} description={'一分钟了解家装'}>
+              <Articles data={_.slice(_.get(publishedData, '5.list'), 0, 3)} domain={dynamicDomain} />
+>>>>>>> 68a597a... fix SITE-2849
             </ChapterLayout>
           )}
           {_.isEmpty(publishedData['article']['list']) || (
