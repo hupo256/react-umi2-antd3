@@ -79,14 +79,16 @@ export function Provider({ children }) {
           console.log(res);
           if (!res?.data) return;
           console.log(res.data.jsonData)
-          //
-          // res.data.editTemplateJson.jsonData.push({
-          //   flag: 'aboutUs',
-          //   title: '关于我们',
-          //   name: '主标题默认公司简称',
-          //   content: '一家涵盖“住宅装饰设计、苏式高品质施工、建材选购、家装体验、整体软装、木作产品定制配套”等一站式全产业链的专业家装企业，专注为中高端精英阶层提供“高品质集成定制家装”。',
-          //   url: 'http://img.inbase.in-deco.com/crm-saas/img/banner_about.png'
-          // })
+          const aboutUs = res.data.editTemplateJson.jsonData.find(e => e.flag === 'aboutUs')
+          if (!aboutUs) {
+            res.data.editTemplateJson.jsonData.push({
+              flag: 'aboutUs',
+              title: '关于我们',
+              name: '公司简称',
+              content: '请用一句简明扼要的话，来描述下您的公司吧',
+              url: 'http://img.inbase.in-deco.com/crm-saas/img/banner_about.png'
+            })
+          }
           const { editTemplateCode, editTemplateJson } = res.data;
           editTemplateJson.jsonData.map(e => {
             if (e.flag === 'article') {
