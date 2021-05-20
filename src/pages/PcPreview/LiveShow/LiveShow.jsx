@@ -39,7 +39,7 @@ const CaseProjects = ({ data, domain }) => {
           <div
             style={caseStyle.caseItem}
             className={styles.clickableImg}
-            onClick={() => data[0].uid && window.open(`${domain}/sites/details?gongdiUid=${data[0].uid}`, '页面预览')}
+            onClick={() => window.open(`${domain}/sites/details?gongdiUid=${data[0].uid}`, '页面预览')}
           >
             <div className={styles.bgText}>
               <p>{data[0].name}</p>
@@ -65,7 +65,7 @@ const CaseProjects = ({ data, domain }) => {
           <div
             style={{ ...caseStyle.caseItem, marginRight: '18px' }}
             className={styles.clickableImg}
-            onClick={() => data[0].uid && window.open(`${domain}/sites/details?gongdiUid=${data[0].uid}`, '页面预览')}
+            onClick={() => window.open(`${domain}/sites/details?gongdiUid=${data[0].uid}`, '页面预览')}
           >
             <div className={styles.bgText}>
               <p>{data[0].name}</p>
@@ -76,7 +76,7 @@ const CaseProjects = ({ data, domain }) => {
           <div
             style={caseStyle.caseItem}
             className={styles.clickableImg}
-            onClick={() => data[0].uid && window.open(`${domain}/sites/details?gongdiUid=${data[1].uid}`, '页面预览')}
+            onClick={() => window.open(`${domain}/sites/details?gongdiUid=${data[1].uid}`, '页面预览')}
           >
             <div className={styles.bgText}>
               <p>{data[1].name}</p>
@@ -118,7 +118,7 @@ const CaseProjects = ({ data, domain }) => {
           <div
             style={caseStyle.left}
             className={styles.clickableImg}
-            onClick={() => data[0].uid && window.open(`${domain}/sites/details?gongdiUid=${data[0].uid}`, '页面预览')}
+            onClick={() => window.open(`${domain}/sites/details?gongdiUid=${data[0].uid}`, '页面预览')}
           >
             <div className={styles.bgText}>
               <p>{data[0].name}</p>
@@ -130,7 +130,7 @@ const CaseProjects = ({ data, domain }) => {
             <div
               style={{ ...caseStyle.caseItem, marginBottom: '18px' }}
               className={styles.clickableImg}
-              onClick={() => data[0].uid && window.open(`${domain}/sites/details?gongdiUid=${data[1].uid}`, '页面预览')}
+              onClick={() => window.open(`${domain}/sites/details?gongdiUid=${data[1].uid}`, '页面预览')}
             >
               <div className={styles.bgText}>
                 <p>{data[1].name}</p>
@@ -141,7 +141,7 @@ const CaseProjects = ({ data, domain }) => {
             <div
               style={caseStyle.caseItem}
               className={styles.clickableImg}
-              onClick={() => data[0].uid && window.open(`${domain}/sites/details?gongdiUid=${data[2].uid}`, '页面预览')}
+              onClick={() => window.open(`${domain}/sites/details?gongdiUid=${data[2].uid}`, '页面预览')}
             >
               <div className={styles.bgText}>
                 <p>{data[2].name}</p>

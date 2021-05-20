@@ -149,13 +149,7 @@ const MenuListComp = ({ menuList, setShowHeaderDrawer, dynamicDomain = '' }) => 
     },
     [menuList],
   )
-  const clickMenuItem = ({ linkUrl, uid, linkKey }) => {
-    if (!uid) return
-    if (linkKey === 'games') {
-      message.destroy()
-      message.warning('网站端暂不支持打开小游戏，请在小程序中打开！')
-      return
-    }
+  const clickMenuItem = ({ linkUrl }) => {
     window.open(`${dynamicDomain}${linkUrl}`, '页面预览')
   }
 
