@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-04-28 17:05:47 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-14 18:23:42
+ * @Last Modified time: 2021-05-20 14:42:39
  * 小程序设置
  */
 
@@ -118,25 +118,25 @@ class Index extends PureComponent {
     ];
     const data = FormDetail
       ? [
-        {
-          key: '1',
-          name: '案例',
-          link: 'page/Case/Case',
-          ...FormDetail['1'],
-        },
-        {
-          key: '2',
-          name: '工地',
-          link: 'page/Site/Site',
-          ...FormDetail['2'],
-        },
-        {
-          key: '3',
-          name: '设计师',
-          link: 'page/designer/designer',
-          ...FormDetail['3'],
-        },
-      ]
+          {
+            key: '1',
+            name: '案例',
+            link: 'page/Case/Case',
+            ...FormDetail['1'],
+          },
+          {
+            key: '2',
+            name: '工地',
+            link: 'page/Site/Site',
+            ...FormDetail['2'],
+          },
+          {
+            key: '3',
+            name: '设计师',
+            link: 'page/Designer/Designer',
+            ...FormDetail['3'],
+          },
+        ]
       : [];
     const { visible, record, selectedKeys, switchChecked } = this.state;
     return (
