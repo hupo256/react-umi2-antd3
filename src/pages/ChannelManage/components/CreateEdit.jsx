@@ -113,7 +113,8 @@ export default class CreateEdit extends Component {
            
             let detailUid2;
             let arr = optArr.map(item => item.code);
-            if (optArr[0].text === '专题') {
+            console.log({arr})
+            if (optArr[0]?.text === '专题') {
                 detailUid2 = optArr[1].code;
                 arr = optArr.map(item => item.code).slice(0, arr.length - 1)
             }
@@ -141,7 +142,7 @@ export default class CreateEdit extends Component {
             
             } else {
                 const { currentEditUid } = this.props;
-                let {   relatedPage, ...params } = { ...values, paths: arr.length > 0 ?  arr : modifyPaths, detailUid: detailUid2, uid: currentEditUid }
+                let {   relatedPage, ...params } = { ...values, paths: arr.length > 0 ?  arr : modifyPaths, detailUid: detailUid2 || detailUid, uid: currentEditUid }
                 editChannelApi(params).then(res => {
                     if (res?.code === 200) {
                         this.resetHandle();
