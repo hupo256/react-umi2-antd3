@@ -75,8 +75,8 @@ export default class CreateEdit extends Component {
         if (!uid) return;
         const res = await getDetailApi({ uid });
         this.setState({
-            detailUid: res.data.detailUid,
-            modifyPaths: res.data.paths
+            detailUid: res?.data?.detailUid,
+            modifyPaths: res?.data?.paths
         })
         form.setFieldsValue({
             ...res?.data,

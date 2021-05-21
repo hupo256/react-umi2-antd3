@@ -78,9 +78,10 @@ export default class ChannelManage extends Component {
         this.state = {
             list: [],
             pageNum: 1,
-            recordTotal: 0,
+            // recordTotal: 0,
+            maxLength: 20,
             data: null,
-            pageSize: 100
+            pageSize: 20
         }
     }
 
@@ -101,11 +102,11 @@ export default class ChannelManage extends Component {
      * @return {*}
      */    
     // 请求数据
-    getList = async ({pageNum = 1, pageSize=100, keyword='' }={}) => {
+    getList = async ({pageNum = 1, pageSize=20, keyword='' }={}) => {
         const res = await getList({keyword, pageNum, pageSize})
         this.setState({
             list: res?.data?.list,
-            recordTotal: res?.data?.recordTotal,
+            // recordTotal: res?.data?.recordTotal,
             pageNum: res?.data?.curPage,
         })
     }
@@ -152,20 +153,23 @@ export default class ChannelManage extends Component {
      * @param typeString {string}  要切换的面板
      * @return {*}
      */
-    toggleShow = (typeString) => {
-        if (!typeString) return;
-        const { dispatch, showCreateEdit, showSelectSite } = this.props;
-        if ( typeString === 'createEdit') {
-            dispatch({
-                type: 'channelManage/save',
-                payload: {
-                    showCreateEdit: !showCreateEdit,
-                    currentEditUid: '',
-                    isCreate: true, 
-                    selectDetailData: []
-                }
-            }) 
-        } 
+    toggleShow = () => {
+        const { maxLength, list } = this.state;
+        const { dispatch, showCreateEdit } = this.props;
+        // 超过20条禁止再创建
+        if ( list.length >= maxLength && !showCreateEdit) {
+            message.warning(`最多支持创建${maxLength}条频道！`);
+            return;
+        }
+        dispatch({
+            type: 'channelManage/save',
+            payload: {
+                showCreateEdit: !showCreateEdit,
+                currentEditUid: '',
+                isCreate: true, 
+                selectDetailData: []
+            }
+        }) 
         
     }
     /**
@@ -226,7 +230,7 @@ export default class ChannelManage extends Component {
 
     render() {
         const { isShow, list, pageNum, recordTotal, pageSize } = this.state;
-        const { isOver, connectDragSource, connectDropTarget, moveRow, showCreateEdit, showSelectSite, isCreate, currentDetailType, isPcPreview } = this.props;
+        const { isOver, connectDragSource, connectDropTarget, moveRow, showCreateEdit,  isCreate, currentDetailType, isPcPreview } = this.props;
         const appTip = <img  src="https://img0.baidu.com/it/u=2568886724,3755935577&fm=26&fmt=auto&gp=0.jpg" alt="" srcset=""/>
         const webTip = <img  src="https://img0.baidu.com/it/u=2568886724,3755935577&fm=26&fmt=auto&gp=0.jpg" alt="" srcset=""/>
 
@@ -330,7 +334,7 @@ export default class ChannelManage extends Component {
             <PageHeaderWrapper>
                 <div>
                     <Card>
-                        <Button type='primary' icon="plus" onClick={() => {this.toggleShow('createEdit')}}>创建频道</Button>
+                        <Button type='primary' icon="plus" onClick={this.toggleShow}>创建频道</Button>
                         <div style={{marginTop: 16}}>
                             <DndProvider backend={HTML5Backend}>
                                 <Table
@@ -344,11 +348,11 @@ export default class ChannelManage extends Component {
                                         moveRow:  this.moveRow 
                                     })}
                                     pagination={{
-                                        current: pageNum,
-                                        total: recordTotal,
-                                        pageSize,
+                                        // current: pageNum,
+                                        // total: recordTotal,
+                                        pageSize: 20,
                                         hideOnSinglePage: true,
-                                        onChange: this.pageNumChange
+                                        // onChange: this.pageNumChange
                                     }}
                                 />
                             </DndProvider>
@@ -360,7 +364,7 @@ export default class ChannelManage extends Component {
                         width='750px'
                         footer={null}
                         visible={ showCreateEdit }
-                        onCancel={() => {this.toggleShow('createEdit')}}
+                        onCancel={this.toggleShow}
                     >
                         <CreateEdit />
                     </Modal>
