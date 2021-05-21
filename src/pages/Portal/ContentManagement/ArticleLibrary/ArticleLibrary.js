@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:50:21 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-18 10:52:06
+ * @Last Modified time: 2021-05-20 15:11:51
  * 文章库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -220,7 +220,7 @@ class ArticleLibrary extends PureComponent {
           <div className={styles.CreateMode}>
             <div>
               <img src={imgl} style={{ width: 312, height: 157 }} />
-              <p className={styles.subTitle}>共有文章库</p>
+              <p className={styles.subTitle}>公有文章库</p>
               <p className={styles.subText}>
                 海量文章库，选完直接用
                 {'  '}

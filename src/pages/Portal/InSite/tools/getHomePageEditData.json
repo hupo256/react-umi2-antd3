@@ -1,0 +1,130 @@
+{
+  "jsonData": [
+      {
+          "flag": "banner",
+          "list": [
+              {
+                  "uid": "",
+                  "type": "",
+                  "title": "",
+                  "imgUrl": "https://img.inbase.in-deco.com/crm-saas/img/games/swiper/img_banner_orange.png"
+              },
+              {
+                  "uid": "",
+                  "type": "",
+                  "title": "",
+                  "imgUrl": "https://img.inbase.in-deco.com/crm-saas/img/games/swiper/img_banner_red.png"
+              },
+              {
+                  "uid": "",
+                  "type": "",
+                  "title": "",
+                  "imgUrl": "https://img.inbase.in-deco.com/crm-saas/img/games/swiper/img_banner_lake.png"
+              }
+          ],
+          "title": "banner",
+          "height": 176,
+          "styleType": ""
+      },
+      {
+          "flag": "highlights",
+          "list": [
+              {
+                  "uid": "",
+                  "desc": "1v1服务对接 方便省心",
+                  "type": "",
+                  "bgImg": "https://img.inbase.in-deco.com/crm-saas/img/highlights/img_%201@2x.png",
+                  "title": "专属服务"
+              },
+              {
+                  "uid": "",
+                  "desc": "100+设计师提供专业服务",
+                  "type": "",
+                  "bgImg": "https://img.inbase.in-deco.com/crm-saas/img/highlights/img_2@2x.png",
+                  "title": "资深设计"
+              },
+              {
+                  "uid": "",
+                  "desc": "品牌材料直供",
+                  "type": "",
+                  "bgImg": "https://img.inbase.in-deco.com/crm-saas/img/highlights/img_3@2x.png",
+                  "title": "优质选材"
+              },
+              {
+                  "uid": "",
+                  "desc": "全流程负责到底",
+                  "type": "",
+                  "bgImg": "https://img.inbase.in-deco.com/crm-saas/img/highlights/img_3@2x(1).png",
+                  "title": "无忧服务"
+              }
+          ],
+          "title": "亮点",
+          "styleType": ""
+      },
+      {
+          "flag": "case",
+          "list": [],
+          "title": "精选案例",
+          "styleType": ""
+      },
+      {
+          "flag": "site",
+          "list": [],
+          "title": "工地直播",
+          "styleType": ""
+      },
+      {
+          "flag": "design",
+          "list": [],
+          "title": "设计师",
+          "styleType": ""
+      },
+      {
+          "flag": "channel",
+          "list": [],
+          "title": "频道",
+          "styleType": ""
+      },
+      {
+          "flag": "advertising",
+          "list": [
+              {
+                  "uid": "",
+                  "type": "",
+                  "imgUrl": "https://img.inbase.in-deco.com/crm-saas/img/games/swiper/img_banner_orange_bottom.png"
+              },
+              {
+                  "uid": "",
+                  "type": "",
+                  "imgUrl": "https://img.inbase.in-deco.com/crm-saas/img/games/swiper/img_banner_red_bottom.png"
+
+              },
+              {
+                  "uid": "",
+                  "type": "",
+                  "imgUrl": "https://img.inbase.in-deco.com/crm-saas/img/games/swiper/img_banner_lake_bottom.png"
+
+              }
+          ],
+          "title": "轮播广告",
+          "height": 85,
+          "styleType": ""
+      }
+  ],
+  "themeData": {
+      "baseColor": "rgba(49, 181, 89, 1)",
+      "gradientColor": {
+          "header": {
+              "dark": "rgba(198, 234, 209, 1)",
+              "light": "rgba(236, 248, 240, 1)"
+          },
+          "moduleTitle": {
+              "dark": "rgba(58, 184, 96, 1)",
+              "light": "rgba(231, 246, 236, 1)"
+          }
+      }
+  },
+  "globalInfor": {
+      "customerService": "13012345678"
+  }
+}

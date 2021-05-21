@@ -15,6 +15,7 @@ import AdMd from './components/adMd';
 import AboutUsMd from './components/aboutUsMd';
 import ArticleMd from './components/articleMd';
 import NavMd from './components/navMd';
+import ChannelMd from './components/channelMd';
 
 import './components/fontclass/iconfont.js';
 import pageStyle from './preview.less';
@@ -56,12 +57,16 @@ const componentMap = {
   nav: {
     tips: '导航',
     creatCom: e => <NavMd {...e} />,
-  }
+  },
+  channel: {
+    tips: '频道',
+    creatCom: e => <ChannelMd {...e} />,
+  },
 };
 
 export default function Preview(props) {
   const { from } = props;
-  const { pageData, touchPageData, templateCode, curFlag, navData } = useContext(ctx);
+  const { pageData, touchPageData, templateCode, navData } = useContext(ctx);
   const [totopShow, settotopShow] = useState(false);
   const [curTheme, setcurTheme] = useState('WMHPT0001');
   const contentBox = useRef();
@@ -117,7 +122,6 @@ export default function Preview(props) {
         </div>
         {/* 循环出主体 */}
         <div className={pageStyle.conBox} ref={contentBox}>
-          {console.log(pageData.jsonData)}
           {pageData?.jsonData?.length > 0 &&
             pageData.jsonData.map((item, ind) => {
               const { flag, list = [] } = item;
@@ -150,7 +154,6 @@ export default function Preview(props) {
         </div>
 
         {/* footer */}
-
         <div className={`${pageStyle.totopBox} ${totopShow ? pageStyle.show : ''}`}>
           <span>
             <svg className="icon" aria-hidden="true">

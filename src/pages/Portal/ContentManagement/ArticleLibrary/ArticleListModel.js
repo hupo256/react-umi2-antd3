@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-04-29 17:47:52 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-12 21:44:30
+ * @Last Modified time: 2021-05-20 15:14:29
  * 公有文章库列表
  */
 import React, { Component } from 'react';
@@ -124,6 +124,16 @@ class ArticleListModel extends Component {
             rowKey={(r, i) => i}
             loading={Loading}
             dataSource={publicList?.list}
+            columns={columns}
+            scroll={{ y: 400 }}
+            onChange={this.handleTableChange}
+            pagination={{
+              pageSize: 10,
+              hideOnSinglePage: true,
+              // size: 'small',
+              current: publicList && publicList.curPage,
+              total: publicList && publicList.recordTotal,
+            }}
             onRow={record => {
               return {
                 onClick: event => {
@@ -131,8 +141,6 @@ class ArticleListModel extends Component {
                 }, // 点击行
               };
             }}
-            columns={columns}
-            scroll={{ y: 400 }}
           />
         </div>
         {previewVisible && (
@@ -149,6 +157,9 @@ class ArticleListModel extends Component {
       </Modal>
     );
   }
+  handleTableChange = pagination => {
+    this.getList({ pageNum: pagination.current });
+  };
   handleChange = e => {
     this.setState({ searchWord: e.target.value }, () => {
       const { searchWord } = this.state;

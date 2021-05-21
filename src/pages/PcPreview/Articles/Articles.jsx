@@ -27,8 +27,10 @@ const Articles = ({ data, domain }) => {
                   return (
                     <a
                       key={`${article.articleDicCode}-${index}`}
-                      href={`${domain}/articles/details?articleUid=${article.articleUid}`}
                       className={styles.articleLine}
+                      onClick={() =>
+                        window.open(`${domain}/articles/details?articleUid=${article.articleUid}`, '页面预览')
+                      }
                     >
                       {article.articleTitle}
                     </a>
