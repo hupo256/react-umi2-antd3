@@ -70,6 +70,9 @@ export default function editModel(props) {
           case 'advertising':
             return '图片广告2'
             break;
+          case 'channel':
+            return '频道'
+            break;
           default:
             return ''
         }
