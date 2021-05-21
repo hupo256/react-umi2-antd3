@@ -59,7 +59,7 @@ export default function DrawerEditor(props) {
       pageSize: 20,
       status: 1,
     };
-    getList({ param }).then(re => {
+    getList(param).then(re => {
       console.log(re);
       if (!re?.data) return;
       const newObj = { ...pageData };
