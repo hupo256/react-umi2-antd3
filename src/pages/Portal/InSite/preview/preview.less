@@ -123,7 +123,7 @@
       padding-left: 16px;
       padding-right: 16px;
     }
-    .hasbg2{
+    .hasbg2 {
       background: rgba(250, 250, 250, 1);
       width: 110%;
       margin: -16px 0 -16px -16px;
@@ -213,6 +213,26 @@
       }
     }
 
+    .channelBox {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      > li {
+        flex: 1;
+        width: 20%;
+        text-align: center;
+
+        > img {
+          width: 60%;
+          border-radius: 50%;
+        }
+        > p {
+          padding-top: 0.5em;
+        }
+      }
+    }
+
     .mdBlock {
       padding-top: 2em;
       padding-bottom: 2em;
@@ -249,24 +269,24 @@
           font-size: 14px;
         }
       }
-      .bg{
+      .bg {
         position: absolute;
         right: 0;
         top: 0;
         height: 46px;
       }
-      .nav{
+      .nav {
         white-space: nowrap;
         margin-top: 12px;
         div {
           display: inline-block;
           font-size: 14px;
           margin-right: 32px;
-          &:first-child{
+          &:first-child {
             color: rgba(254, 96, 28, 1);
             font-weight: bold;
             position: relative;
-            &:after{
+            &:after {
               content: '';
               width: 26px;
               height: 2px;
@@ -278,22 +298,21 @@
               margin-left: -13px;
             }
           }
-
         }
       }
-      .content{
+      .content {
         margin-top: 32px;
-        .imgsWrapper{
+        .imgsWrapper {
           overflow: hidden;
           margin-bottom: 26px;
-          .imgBox{
+          .imgBox {
             width: 91px;
             height: 91px;
             margin-right: 18px;
             float: left;
             border-radius: 4px;
             overflow: hidden;
-            img{
+            img {
               width: 100%;
               height: 100%;
             }
@@ -303,7 +322,7 @@
             float: left;
             width: 230px;
           }
-          .title{
+          .title {
             font-size: 16px;
             color: rgba(34, 34, 34, 1);
             text-overflow: ellipsis;
@@ -326,17 +345,16 @@
           }
           .view {
             font-size: 12px;
-            color: rgba(161, 161, 161, 1)
+            color: rgba(161, 161, 161, 1);
           }
         }
-        .noData{
+        .noData {
           text-align: center;
           font-size: 12px;
           color: rgba(161, 161, 161, 1);
           margin: 20px 0;
         }
       }
-
     }
 
     .caseBox {
@@ -570,14 +588,14 @@
       }
     }
     .modelEditBox {
-      .bg{
+      .bg {
         position: absolute;
         right: 15px;
         top: 26px;
         height: 46px;
       }
       background: url('@{picturePath}img_word_about@2x.png') no-repeat fixed right top;
-      h3{
+      h3 {
         margin: 16px 0;
       }
       .contentWrapper {
@@ -685,7 +703,7 @@
   }
 }
 .navBox {
-  .on{
+  .on {
     display: flex;
     flex-direction: column;
     align-items: center;
