@@ -104,7 +104,7 @@ export function Provider({ children }) {
           const { editTemplateCode, editTemplateJson } = res.data;
           editTemplateJson.jsonData.map(e => {
             if (e.flag === 'article') {
-              e.nameListData = dictionaries;
+              e.nameListData = dictionaries.filter(i => i.status === '1')
             }
           });
           setpageData(addMapToData(editTemplateJson));
