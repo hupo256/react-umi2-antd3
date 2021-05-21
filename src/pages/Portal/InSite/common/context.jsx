@@ -94,7 +94,6 @@ export function Provider({ children }) {
           },
         ];
         getHomePageEditData(param).then(res => {
-          if (res?.code !== 200) return message.error(res?.message || '数据返回出错');
           if (!res?.data) return;
           console.log(res.data.jsonData)
           const aboutUs = res.data.editTemplateJson.jsonData.find(e => e.flag === 'aboutUs')
@@ -110,7 +109,7 @@ export function Provider({ children }) {
           const { editTemplateCode, editTemplateJson } = res.data;
           editTemplateJson.jsonData.map(e => {
             if (e.flag === 'article') {
-              e.nameListData = dictionaries.filter(i => i.status === '1');
+              e.nameListData = dictionaries.filter(i => i.status === '1')
             }
             if (e.title) {
               e.afterName = e.title;

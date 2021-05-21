@@ -53,10 +53,10 @@ const componentMap = {
     tips: '文章',
     creatCom: e => <ArticleMd {...e} />,
   },
-  channel: {
-    tips: '频道',
-    creatCom: e => <ChannelMd {...e} />,
-  },
+  nav: {
+    tips: '导航',
+    creatCom: e => <NavMd {...e} />,
+  }
 };
 
 export default function Preview(props) {
@@ -119,21 +119,37 @@ export default function Preview(props) {
         </div>
         {/* 循环出主体 */}
         <div className={pageStyle.conBox} ref={contentBox}>
-          <div className={pageStyle.conInnerBox}>
-            {pageData?.jsonData?.length > 0 &&
-              pageData.jsonData.map((item, ind) => {
-                const { flag, list = [] } = item;
-                if (flag === 'channel' && list.length === 0) return;
-                const model = componentMap[flag];
-                if (model) {
-                  const { tips, creatCom } = model;
-                  return (
-                    <HoverMd key={ind} tips={tips} flag={flag} isEmpty={!list?.length}>
-                      {creatCom({ ...item })}
-                    </HoverMd>
-                  );
-                }
-              })}
+          {console.log(pageData.jsonData)}
+          {pageData?.jsonData?.length > 0 &&
+            pageData.jsonData.map((item, ind) => {
+              const { flag, list = [] } = item;
+              const model = componentMap[flag];
+              if (model) {
+                const { tips, creatCom } = model
+                return (
+                  <HoverMd key={ind} tips={tips} flag={flag} isEmpty={!list?.length}>
+                    {creatCom({ ...item })}
+                  </HoverMd>
+                );
+              }
+            })}
+            <div style={{position: 'absolute', width: '100%', left: 0, bottom: 0, height: 50}}>
+              <HoverMd key={999} tips='导航' flag="nav">
+                <div className={pageStyle.footerBox}>
+                  <ul className={pageStyle.flex}>
+                    {navData?.map(e =>
+                      <li key={e.navModule} className={e.navModule === 'home' ? pageStyle.on : ''}>
+                        <svg className="icon">
+                          <use href={`#${e.icon}`} />
+                        </svg>
+                        <span>{e.name}</span>
+                      </li>
+                    )}
+                  </ul>
+                </div>
+              </HoverMd>
+            </div>
+        </div>
 
             {/* 底部导航 */}
             <NavMd />
