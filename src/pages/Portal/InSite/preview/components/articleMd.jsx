@@ -34,7 +34,7 @@ export default function CaseMd(props) {
       <div className={pageStyle.content}>
         {showModule ? (
           <>
-            {list.map(i => (
+            {list?.map(i => (
               <div>
                 <div className={pageStyle.imgsWrapper}>
                   <div className={pageStyle.imgBox}>
