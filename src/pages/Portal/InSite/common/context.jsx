@@ -7,7 +7,6 @@
  */
 import React, { useState, createContext } from 'react';
 import { getHomePageEditData, queryNavEditData } from '@/services/miniProgram';
-import { getList } from '@/services/channelManage';
 import { highlightsBgImgs } from '../tools/data';
 import {
   queryDicForForm, //其他模块查询字典
