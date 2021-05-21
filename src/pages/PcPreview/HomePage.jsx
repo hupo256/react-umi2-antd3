@@ -191,7 +191,7 @@ const Home = () => {
           setShowFooterDrawer(false)
         }}
         visible={showFooterDrawer}
-        width={600}
+        width={800}
         headerStyle={{ border: 'none', marginBottom: '-18px' }}
         destroyOnClose
       >
