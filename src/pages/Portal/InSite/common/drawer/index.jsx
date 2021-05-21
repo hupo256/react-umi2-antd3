@@ -53,12 +53,18 @@ export default function DrawerEditor(props) {
 
   // 抽屉关闭时获取新的channles
   function drawerClose() {
-    getList({}).then(re => {
+    const param = {
+      includeDefIndex: false,
+      pageNum: 1,
+      pageSize: 20,
+      status: 1,
+    };
+    getList(param).then(re => {
       console.log(re);
       if (!re?.data) return;
       const newObj = { ...pageData };
       const { list = [] } = re.data;
-      list.shift();
+      // list.shift();
       newObj.maps[curFlag].list = list;
       setpageData(newObj);
       setTimeout(() => setcurFlag(''));
