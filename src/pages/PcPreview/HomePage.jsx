@@ -15,7 +15,7 @@ import { typeMap, paramMap } from './constants.js'
 import WebSetting from './WebSettingOut' // 注意：此处营销站独有
 import ChannelManage from '../ChannelManage' // 注意：此处营销站独有
 
-import { Layout, Avatar, Carousel, Drawer, Button } from 'antd'
+import { Layout, Carousel, Drawer, message } from 'antd'
 
 import { getMenuList, getFooter, getPublishedData, getDomain } from '@/services/pcPreview' // 注意：此处营销站独有
 
@@ -111,13 +111,16 @@ const Home = () => {
           {_.map(_.get(publishedData, '0.list', null), (item, index) => (
             <div
               key={`banner-${index}`}
-              onClick={() =>
-                item.type === 'games' ||
+              onClick={() => {
+                if (item.type === 'games') {
+                  message.warning('PC端不允许跳转到小游戏')
+                  return
+                }
                 window.open(
                   `${dynamicDomain}/${typeMap[item.type]}/details?${paramMap[item.type]}=${item.uid}`,
                   '页面预览',
                 )
-              }
+              }}
             >
               <h3
                 className={styles.banner}
