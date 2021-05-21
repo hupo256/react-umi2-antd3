@@ -13,7 +13,6 @@ import { tipsText, canEditTags, editText } from '../tools/data';
 import Preview from '../preview';
 import TitleGuid from '../common/titleGuid';
 import DrawerEditor from '../common/drawer';
-import EditModel from '../common/drawer/modelsEdit';
 import Prompt from './prompt';
 import styles from './edit.less';
 

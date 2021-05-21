@@ -121,7 +121,6 @@ export default function Preview(props) {
         </div>
         {/* 循环出主体 */}
         <div className={pageStyle.conBox} ref={contentBox}>
-          {console.log(pageData.jsonData)}
           {pageData?.jsonData?.length > 0 &&
             pageData.jsonData.map((item, ind) => {
               const { flag, list = [] } = item;

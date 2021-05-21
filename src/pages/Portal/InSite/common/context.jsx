@@ -6,7 +6,7 @@
  * mini program 里的store
  */
 import React, { useState, createContext } from 'react';
-import { getHomePageEditData, queryNavEditData, saveNavEditData } from '@/services/miniProgram';
+import { getHomePageEditData, queryNavEditData } from '@/services/miniProgram';
 import { getList } from '@/services/channelManage';
 import { highlightsBgImgs } from '../tools/data';
 import {
@@ -81,32 +81,24 @@ export function Provider({ children }) {
             pageNum: '1',
             pageSize: '4',
           },
+          {
+            key: 'channel',
+            pageNum: '1',
+            pageSize: '20',
+          },
         ];
         getHomePageEditData(param).then(res => {
           console.log(res);
           if (!res?.data) return;
-          getList({}).then(re => {
-            console.log(re);
-            if (!re?.data) return;
-            const channelData = {
-              flag: 'channel',
-              list: re.data?.list,
-              title: '频道',
-              styleType: '',
-            };
-
-            const { editTemplateCode, editTemplateJson } = res.data;
-            editTemplateJson.jsonData.map(e => {
-              if (e.flag === 'article') {
-                e.nameListData = dictionaries;
-              }
-            });
-            editTemplateJson.jsonData.unshift(channelData);
-            // editTemplateJson.jsonData.splice(1, 1, channelData);
-            setpageData(addMapToData(editTemplateJson));
-            settemplateCode(editTemplateCode);
-            settemplateName(editTemplateJson.templateName);
+          const { editTemplateCode, editTemplateJson } = res.data;
+          editTemplateJson.jsonData.map(e => {
+            if (e.flag === 'article') {
+              e.nameListData = dictionaries;
+            }
           });
+          setpageData(addMapToData(editTemplateJson));
+          settemplateCode(editTemplateCode);
+          settemplateName(editTemplateJson.templateName);
         });
       }
     });

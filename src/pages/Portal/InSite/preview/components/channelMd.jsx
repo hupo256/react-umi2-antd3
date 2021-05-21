@@ -13,14 +13,13 @@ export default function CaseMd(props) {
   const { list } = props;
 
   return (
-    <ul className={pageStyle.tagBox}>
+    <ul className={pageStyle.channelBox}>
       {list?.map((channel, ind) => {
         const { appletsName } = channel;
         return (
           <li key={ind}>
-            <h3>{appletsName}</h3>
-            {/* <p>{desc}</p>
-            <img src={highlightsBgImgs[ind]} alt="" /> */}
+            <img src={highlightsBgImgs[ind]} alt="" />
+            <p>{appletsName}</p>
           </li>
         );
       })}
