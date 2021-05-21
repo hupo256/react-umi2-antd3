@@ -7,7 +7,6 @@
  */
 import React, { useState, createContext } from 'react';
 import { getHomePageEditData, queryNavEditData } from '@/services/miniProgram';
-import { getList } from '@/services/channelManage';
 import { highlightsBgImgs } from '../tools/data';
 import {
   queryDicForForm, //其他模块查询字典
@@ -102,7 +101,7 @@ export function Provider({ children }) {
           const { editTemplateCode, editTemplateJson } = res.data;
           editTemplateJson.jsonData.map(e => {
             if (e.flag === 'article') {
-              e.nameListData = dictionaries.filter(i => i.status === '1')
+              e.nameListData = dictionaries.filter(i => i.status === '1');
             }
           });
           setpageData(addMapToData(editTemplateJson));
