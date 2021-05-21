@@ -196,7 +196,7 @@ const Home = () => {
           </ChapterLayout>
 
           <div className={styles.designerSectionWiderBackground}>
-            <ChapterLayout title={'工地直播'} description={'全程透明 追踪可查'}>
+            <ChapterLayout title={'参观工地'} description={'全程透明 追踪可查'}>
               <LiveShow data={_.get(publishedData, '3.list')} domain={dynamicDomain} />
             </ChapterLayout>
           </div>
