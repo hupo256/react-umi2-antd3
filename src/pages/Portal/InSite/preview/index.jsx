@@ -56,7 +56,7 @@ const componentMap = {
   nav: {
     tips: '导航',
     creatCom: e => <NavMd {...e} />,
-  },
+  }
 };
 
 export default function Preview(props) {
@@ -121,29 +121,24 @@ export default function Preview(props) {
           {pageData?.jsonData?.length > 0 &&
             pageData.jsonData.map((item, ind) => {
               const { flag, list = [] } = item;
-              const curComponent = componentMap[flag];
-              if (!curComponent) return;
-              const { tips, creatCom } = curComponent;
-              return (
-                <HoverMd key={ind} tips={tips} flag={flag} isEmpty={!list?.length}>
-                  {creatCom({ ...item })}
-                </HoverMd>
-              );
+              const model = componentMap[flag];
+              if (model) {
+                const { tips, creatCom } = model
+                return (
+                  <HoverMd key={ind} tips={tips} flag={flag} isEmpty={!list?.length}>
+                    {creatCom({ ...item })}
+                  </HoverMd>
+                );
+              }
             })}
             <div style={{position: 'absolute', width: '100%', left: 0, bottom: 0, height: 50}}>
               <HoverMd key={999} tips='导航' flag="nav">
                 <div className={pageStyle.footerBox}>
                   <ul className={pageStyle.flex}>
-                    <li className={pageStyle.on}>
-                      <svg className="icon" aria-hidden="true">
-                        <use href="#iconic_home_no" />
-                      </svg>
-                      <span>首页</span>
-                    </li>
                     {navData?.map(e =>
-                      <li key={e.navModule}>
+                      <li key={e.navModule} className={e.navModule === 'home' ? pageStyle.on : ''}>
                         <svg className="icon">
-                          <use href={`#${e.navModule === 'case' ? 'iconic_case_no' : e.navModule === 'site' ? 'iconic_site_no' : e.navModule === 'design' ? 'iconic_designer_no' :e.navModule === 'article' ? 'iconic_article' : ''}`} />
+                          <use href={`#${e.icon}`} />
                         </svg>
                         <span>{e.name}</span>
                       </li>
