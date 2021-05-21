@@ -64,7 +64,7 @@ export default function DrawerEditor(props) {
       if (!re?.data) return;
       const newObj = { ...pageData };
       const { list = [] } = re.data;
-      list.shift();
+      // list.shift();
       newObj.maps[curFlag].list = list;
       setpageData(newObj);
       setTimeout(() => setcurFlag(''));
