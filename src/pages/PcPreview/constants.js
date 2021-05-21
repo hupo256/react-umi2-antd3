@@ -7,11 +7,6 @@ export const typeMap = {
   games: 'games',
 }
 
-export const paramMap = {
-  case: 'uid',
-  site: 'gongdiUid',
-  article: 'articleUid',
-  design: 'uid',
-}
+export const paramMap = { case: 'uid', site: 'gongdiUid', article: 'articleUid', design: 'uid', special: 'uid' }
 
 export const domain = 'http://dev-site.ingongdi.com'
