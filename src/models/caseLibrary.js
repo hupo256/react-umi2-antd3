@@ -48,6 +48,7 @@ export default {
                 kitchen: data.kitchen,
                 bathroom: data.bathroom,
               },
+              keywords: data.keywords ? JSON.parse(data.keywords) : null,
             }) ||
             {},
           // stepTwo: (response && data) || [],
@@ -126,7 +127,7 @@ export default {
     *resetSearchModel({ payload }, { call, put }) {
       yield put({
         type: 'upData',
-        payload: {CaseListQuery: { ...payload }, },
+        payload: { CaseListQuery: { ...payload } },
       });
     },
   },

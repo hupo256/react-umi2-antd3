@@ -1,23 +1,24 @@
 /*
- * @Author: tdd 
- * @Date: 2021-03-25 16:49:12 
+ * @Author: tdd
+ * @Date: 2021-03-25 16:49:12
  * @Last Modified by: tdd
- * @Last Modified time: 2021-03-25 16:49:12 
+ * @Last Modified time: 2021-03-25 16:49:12
  * 移动端首页 公用头部
  */
-import React, { useContext, useState } from 'react';
-import { Button, message, Modal } from 'antd';
+import React, { useContext } from 'react';
+import { Button, message, Modal, Icon } from 'antd';
 import router from 'umi/router';
 import { baseRouteKey, themes } from '../../tools/data';
 import { ctx } from '../context';
 import { updateHomePageEditData, publishEditData } from '@/services/miniProgram';
 import styles from './titleGuid.less';
+import { saveNavEditData } from '../../../../../services/miniProgram';
 
 const { confirm } = Modal;
 
 export default function TitleGuid(props) {
   const { title = '标题', disc, isEdit } = props;
-  const { pageData, setcurFlag, templateCode, templateName } = useContext(ctx);
+  const { pageData, setcurFlag, templateCode, templateName, navData } = useContext(ctx);
 
   function toPublish() {
     console.log(pageData);
@@ -29,14 +30,19 @@ export default function TitleGuid(props) {
       editTemplateJson: { jsonData, themeData, templateName, globalInfor: { customerService } },
     };
     updateHomePageEditData(parmas).then(res => {
-      res.code === 200 &&
-        publishEditData().then(res => {
-          setcurFlag(''); // 置空
-          message.success('发布成功');
-          setTimeout(() => {
-            router.push(`${baseRouteKey}home`);
-          }, 1000);
+      if (res.code === 200) {
+        saveNavEditData(navData).then(r => {
+          if (r.code === 200) {
+            publishEditData().then(() => {
+              setcurFlag(''); // 置空
+              message.success('发布成功');
+              setTimeout(() => {
+                router.push(`${baseRouteKey}home`);
+              }, 1000);
+            });
+          }
         });
+      }
     });
   }
 
@@ -64,9 +70,13 @@ export default function TitleGuid(props) {
         {isEdit && (
           <div className={styles.btnBox}>
             <Button onClick={showConfirm}>放弃更改</Button>
+            <a href="#/pc/preview" target="_blank">
+              <Icon type="dribbble" />
+              <span>网站预览</span>
+            </a>
             <Button onClick={toPublish} type="primary">
               <img
-                src="https://test.img.inbase.in-deco.com/crm_saas/dev/20210427/4baa9248ecf944b0a13f5fea5453f859/ic_send.png"
+                src="https://img.inbase.in-deco.com/crm_saas/release/20210511/bb4bd99abc374cae9b1dbe634a6a388c/ic_send.png"
                 alt=""
               />
               发布

@@ -9,6 +9,7 @@ export default {
   history: 'hash',
   // 开启 hash 文件后缀。
   hash: true,
+  sass: {},
   plugins: [
     [
       'umi-plugin-react',

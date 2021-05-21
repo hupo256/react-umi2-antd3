@@ -127,10 +127,10 @@ class UploadVR extends PureComponent {
       CaseLibrary: { stepOne },
     } = this.props;
     if (!VRUrl) {
-      message.info('请先上传VR效果图URL');
+      message.warning('请先上传VR效果图URL');
       return false;
     } else if (VRUrl && !(VRUrl.includes('https://') || VRUrl.includes('HTTPS://'))) {
-      message.info('VR效果图URL必须以https://开始');
+      message.warning('VR效果图URL必须以https://开始');
       return false;
     } else {
       if (type === 'edit') {

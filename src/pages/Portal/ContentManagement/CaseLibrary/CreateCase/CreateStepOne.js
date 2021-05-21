@@ -1,8 +1,8 @@
 /*
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
- * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-17 12:21:49
+ * @Last Modified by: zqm
+ * @Last Modified time: 2021-04-28 14:55:10
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -19,9 +19,11 @@ import {
   Select,
   Row,
   Col,
+  Tooltip,
   InputNumber,
 } from 'antd';
 import { getQueryUrlVal } from '@/utils/utils';
+import TagGroup from '@/components/TagSelect/TagGroup';
 import styles from '../CaseLibrary.less';
 const { TextArea } = Input;
 const { Option } = Select;
@@ -45,6 +47,8 @@ class CreateStepOne extends PureComponent {
     designerUid: [],
     designerList: [],
     disabledDesigner: '',
+    tags: [],
+    show: false,
   };
 
   componentDidMount() {
@@ -59,13 +63,19 @@ class CreateStepOne extends PureComponent {
         this.setState({ disabled });
       }
     });
-
     const { stepOne } = this.props.CaseLibrary;
-
     ['bedroom', 'liveroom', 'kitchen', 'bathroom'].forEach(item => {
       this.setState({ [item]: (stepOne && stepOne[item]) || 0 });
     });
-    this.setState({ designerUid: stepOne.designerUid });
+    this.setState(
+      {
+        designerUid: stepOne.designerUid,
+        tags: stepOne?.keywords || [],
+      },
+      () => {
+        this.setState({ show: true });
+      }
+    );
     dispatch({
       type: 'DesignerLibrary/queryDesignerListModel',
       payload: { pageNum: -1 },
@@ -84,7 +94,16 @@ class CreateStepOne extends PureComponent {
   }
 
   render() {
-    const { status, name, disabled, designerUid, designerList, disabledDesigner } = this.state;
+    const {
+      status,
+      name,
+      disabled,
+      designerUid,
+      designerList,
+      disabledDesigner,
+      show,
+      tags,
+    } = this.state;
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
@@ -114,6 +133,7 @@ class CreateStepOne extends PureComponent {
     return (
       <div>
         <Form {...formItemLayout} onSubmit={this.handleSubmit}>
+          <h4 className={styles.title}>基本信息</h4>
           <Form.Item label="案例标题">
             {getFieldDecorator('title', {
               initialValue: stepOne.title || '',
@@ -310,8 +330,37 @@ class CreateStepOne extends PureComponent {
               />
             )}
           </Form.Item>
-
-          <Form.Item label="案例说明">
+          <h4 className={styles.title}>TDK设置（用于搜索引擎收录）</h4>
+          <Form.Item
+            label={
+              <span>
+                关键词
+                {'  '}
+                <Tooltip placement="right" title="业主有可能通过您输入的关键词，搜索到您的网站哦！">
+                  <Icon type="question-circle" />
+                </Tooltip>
+                {'  '}
+              </span>
+            }
+          >
+            {getFieldDecorator('keywords', {})(
+              <div>
+                {show && <TagGroup tags={tags} handleSave={tags => this.handleTagSave(tags)} />}
+              </div>
+            )}
+          </Form.Item>
+          <Form.Item
+            label={
+              <span>
+                案例说明
+                {'  '}
+                <Tooltip placement="right" title="业主有可能通过您输入的关键词，搜索到您的网站哦！">
+                  <Icon type="question-circle" />
+                </Tooltip>
+                {'  '}
+              </span>
+            }
+          >
             {getFieldDecorator('caseDesc', {
               initialValue: stepOne.caseDesc || '',
               rules: [
@@ -366,13 +415,13 @@ class CreateStepOne extends PureComponent {
     const { name } = this.state;
     const { dispatch } = this.props;
     if (!name) {
-      message.info('请输入风格名称');
+      message.warning('请输入风格名称');
       return false;
     } else if (name && name.trim().length == 0) {
-      message.info('请输入风格名称');
+      message.warning('请输入风格名称');
       return false;
     } else if (name && name.length > 20) {
-      message.info('最多输入20位字符');
+      message.warning('最多输入20位字符');
       return false;
     } else {
       dispatch({
@@ -397,7 +446,7 @@ class CreateStepOne extends PureComponent {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (err) throw err;
       console.log(values);
-      const { bedroom, liveroom, kitchen, bathroom } = this.state;
+      const { bedroom, liveroom, kitchen, bathroom, tags } = this.state;
       const { dispatch } = this.props;
       if (parseFloat(values.acreage) < 0.01 || parseFloat(values.acreage) > 99999.99) {
         message.error('面积限制输入0.01-99999.99范围内的数字');
@@ -420,6 +469,7 @@ class CreateStepOne extends PureComponent {
               kitchen,
               bathroom,
               uid: getQueryUrlVal('uid'),
+              keywords: JSON.stringify(tags || []),
             },
           }).then(res => {
             if (res && res.code === 200) {
@@ -436,6 +486,7 @@ class CreateStepOne extends PureComponent {
                 liveroom,
                 kitchen,
                 bathroom,
+                keywords: JSON.stringify(tags || []),
               },
             },
           }).then(res => {
@@ -444,6 +495,11 @@ class CreateStepOne extends PureComponent {
         }
       }
     });
+  };
+
+  // 关键词
+  handleTagSave = tags => {
+    this.setState({ tags });
   };
 }
 

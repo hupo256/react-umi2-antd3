@@ -197,6 +197,7 @@ class Uploads extends Component {
         type: 'base/photoxImg',
         payload: subType,
       }).then(data => {
+        console.log('1',data)
         if (data && data.code === 200) {
           if (data.data.fileName !== '') {
             filenames = `${data.data.fileName}.${fiename}`;

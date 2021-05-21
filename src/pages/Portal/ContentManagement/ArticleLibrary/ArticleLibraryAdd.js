@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-03-18 11:21:43 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-04-15 19:24:46
+ * @Last Modified time: 2021-05-14 18:23:32
  * 创建文章
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -22,12 +22,10 @@ import {
   Select,
   Row,
   Col,
-  Checkbox,
 } from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
-import { paginations, getUrl } from '@/utils/utils';
-import ImgUploads from '@/components/Upload/ImgUploads';
-import { regExpConfig } from '../../../../utils/regular.config';
+import { paginations, getQueryUrlVal } from '@/utils/utils';
+import TagGroup from '@/components/TagSelect/TagGroup';
 import BraftEditor from '@/components/BraftEditor/BraftEditor';
 import styles from './ArticleLibrary.less';
 const { Search } = Input;
@@ -49,13 +47,29 @@ class ArticleLibraryAdd extends PureComponent {
       uploadVisible: false,
       dictionaries: [],
       editorContent: null,
+      step: null,
+      tags: [],
+      show: false,
+      isCopy: false,
     };
   }
 
   componentDidMount() {
     // 获取字典数据 queryDicModel
     const { dispatch } = this.props;
-
+    this.setState({ step: getQueryUrlVal('step') });
+    if (getQueryUrlVal('uid')) {
+      this.setState({ isCopy: true });
+      dispatch({
+        type: 'ArticleLibrary/getPublicDetailModel',
+        payload: { articleUid: getQueryUrlVal('uid') },
+      }).then(res => {
+        if (res && res.code === 200) {
+          this.init(res.data);
+          this.setState({ show: true });
+        }
+      });
+    }
     dispatch({
       type: 'DictConfig/queryDicModel',
       payload: { dicModuleCodes: 'DM006' },
@@ -68,10 +82,11 @@ class ArticleLibraryAdd extends PureComponent {
   }
 
   render() {
-    const { status, coverImg, uploadVisible, dictionaries, editorContent } = this.state;
+    const { isCopy, show, coverImg, uploadVisible, dictionaries, editorContent, tags } = this.state;
     const { getFieldDecorator } = this.props.form;
     const {
       DictConfig: { dicData },
+      ArticleLibrary: { publicListDetail },
     } = this.props;
     const formItemLayout = {
       labelCol: {
@@ -83,28 +98,30 @@ class ArticleLibraryAdd extends PureComponent {
         sm: { span: 16 },
       },
     };
-
     return (
       <div>
         <PageHeaderWrapper>
           <Card bordered={false}>
             <Form {...formItemLayout} onSubmit={this.handleSubmit}>
+              <h4 className={styles.title}>基本信息</h4>
               <Form.Item label="文章标题">
                 {getFieldDecorator('articleTitle', {
+                  initialValue: (isCopy && publicListDetail.articleTitle) || '',
                   rules: [
                     {
                       required: true,
                       message: '请输入文章标题',
                     },
                     {
-                      max: 10,
-                      message: '限制1-10字符长度',
+                      max: 30,
+                      message: '限制1-30字符长度',
                     },
                   ],
                 })(<Input style={{ width: 400 }} placeholder="请输入文章标题" />)}
               </Form.Item>
               <Form.Item label="所属栏目">
                 {getFieldDecorator('articleDicCode', {
+                  initialValue: getQueryUrlVal('step') || null,
                   rules: [
                     {
                       required: true,
@@ -125,6 +142,7 @@ class ArticleLibraryAdd extends PureComponent {
               </Form.Item>
               <Form.Item label="封面图">
                 {getFieldDecorator('articleCoverImg', {
+                  initialValue: (isCopy && publicListDetail.articleCoverImg) || '',
                   rules: [],
                 })(
                   <div className="coverImg">
@@ -165,38 +183,83 @@ class ArticleLibraryAdd extends PureComponent {
                   </div>
                 )}
               </Form.Item>
-
-              <Form.Item label={<span className="beforeStar">文章正文</span>}>
-                {getFieldDecorator('articleContent', {
-                  initialValue: editorContent || null,
-                  rules: [
-                    {
-                      required: false,
-                      message: '请输入文章正文',
-                    },
-                  ],
+              {isCopy &&
+                editorContent && (
+                  <Form.Item label={<span className="beforeStar">文章正文</span>}>
+                    {getFieldDecorator('articleContent', {
+                      initialValue: (isCopy && editorContent) || null,
+                      rules: [
+                        {
+                          required: false,
+                          message: '请输入文章正文',
+                        },
+                      ],
+                    })(
+                      <BraftEditor
+                        defval={editorContent}
+                        editorCont={cont => {
+                          this.handleEditorCont(cont);
+                        }}
+                      />
+                    )}
+                  </Form.Item>
+                )}
+              {!isCopy && (
+                <Form.Item label={<span className="beforeStar">文章正文</span>}>
+                  {getFieldDecorator('articleContent', {
+                    initialValue: null,
+                    rules: [
+                      {
+                        required: false,
+                        message: '请输入文章正文',
+                      },
+                    ],
+                  })(
+                    <BraftEditor
+                      defval={null}
+                      editorCont={cont => {
+                        this.handleEditorCont(cont);
+                      }}
+                    />
+                  )}
+                </Form.Item>
+              )}
+              <h4 className={styles.title}>TDK设置（用于搜索引擎收录）</h4>
+              <Form.Item label={this.title('关键词')}>
+                {getFieldDecorator('headKeywords', {
+                  initialValue: null,
+                  rules: [],
                 })(
-                  <BraftEditor
-                    defval={editorContent}
-                    editorCont={cont => {
-                      this.handleEditorCont(cont);
-                    }}
-                  />
+                  // <TagGroup tags={tags || []} handleSave={tags => this.handleTagSave(tags)} />
+                  <div>
+                    {isCopy &&
+                      show && (
+                        <TagGroup tags={tags || []} handleSave={tags => this.handleTagSave(tags)} />
+                      )}
+                    {!isCopy && (
+                      <TagGroup tags={[]} handleSave={tags => this.handleTagSave(tags)} />
+                    )}
+                  </div>
                 )}
               </Form.Item>
-              <Form.Item label="关键词">
-                {getFieldDecorator('articleTag', {
-                  rules: [
-                    {
-                      max: 10,
-                      message: '限制1-10字符长度',
-                    },
-                  ],
-                })(<Input style={{ width: 400 }} placeholder="请输入关键词" />)}
-              </Form.Item>
 
-              <Form.Item label="文章说明">
+              <Form.Item
+                label={
+                  <span>
+                    文章说明
+                    {'  '}
+                    <Tooltip
+                      placement="right"
+                      title="业主有可能通过您输入的关键词，搜索到您的网站哦！"
+                    >
+                      <Icon type="question-circle" />
+                    </Tooltip>
+                    {'  '}
+                  </span>
+                }
+              >
                 {getFieldDecorator('articleDescription', {
+                  initialValue: (isCopy && publicListDetail.articleDescription) || '',
                   rules: [
                     {
                       max: 200,
@@ -248,7 +311,7 @@ class ArticleLibraryAdd extends PureComponent {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (err) throw err;
       console.log(values);
-      const { editorContent } = this.state;
+      const { editorContent, tags, isCopy } = this.state;
       if (!editorContent) {
         message.error('请输入文章正文');
         return false;
@@ -263,6 +326,9 @@ class ArticleLibraryAdd extends PureComponent {
         payload: {
           ...values,
           articleContent: editorContent,
+          headKeywords: tags,
+          articleChannel: isCopy ? 1 : 2,
+          articleShareId: getQueryUrlVal('uid') || '',
         },
       }).then(res => {
         if (res && res.code === 200) {
@@ -285,6 +351,36 @@ class ArticleLibraryAdd extends PureComponent {
       articleCoverImg: data[0].path,
     });
     this.handleUploadCancel();
+  };
+
+  // 关键词
+  handleTagSave = tags => {
+    this.setState({ tags });
+  };
+  title = title => {
+    return (
+      <span>
+        {title}
+        {'  '}
+        <Tooltip placement="right" title="业主有可能通过您输入的关键词，搜索到您的网站哦！">
+          <Icon type="question-circle" />
+        </Tooltip>
+        {'  '}
+      </span>
+    );
+  };
+  init = detail => {
+    console.log('====================================');
+    console.log(detail);
+    console.log('====================================');
+    this.props.form.setFieldsValue({
+      articleCoverImg: detail.articleCoverImg,
+    });
+    this.setState({
+      editorContent: detail.articleContent,
+      coverImg: detail.articleCoverImg,
+      tags: detail.headKeywords || [],
+    });
   };
 }
 

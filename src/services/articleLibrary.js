@@ -40,3 +40,34 @@ export async function articleStatus(params) {
     body: params,
   });
 }
+
+// 公有库文章
+export async function publicList(params) {
+  return request(baseurl + '/api/v1/wechat/article/public/pageList', {
+    method: 'POST',
+    body: params,
+  });
+}
+
+// 公有库文章
+export async function publicDetail(params) {
+  return request(baseurl + '/api/v1/wechat/article/public/detail', {
+    method: 'POST',
+    body: params,
+  });
+}
+
+// 公有库文章详情
+export async function getPublicArticleDetail(params) {
+  return request(baseurl + '/api/v1/wechat/article/public/detail', {
+    method: 'POST',
+    body: params,
+  });
+}
+// 公有库文章栏目
+export async function queryDicModuleList(params) {
+  return request(baseurl + '/api/v1/wechat/article/public/queryDicForForm', {
+    method: 'POST',
+    body: params,
+  });
+}

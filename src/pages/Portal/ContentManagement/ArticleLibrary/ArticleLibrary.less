@@ -26,3 +26,74 @@
     }
   }
 }
+.title {
+  font-size: 16px;
+  border-left: 3px solid #fe6a30;
+  padding-left: 10px;
+  margin-left: 14%;
+  margin-bottom: 20px;
+  margin-top: -10px;
+}
+
+.CreateMode {
+  min-height: 365px;
+  display: flex;
+  padding: 22px 20px 0;
+  margin-bottom: 20px;
+  > div {
+    // flex: 1;
+    text-align: center;
+    width: 312px;
+    text-align: center;
+    border: 1px solid #ededed;
+    .directuse,
+    .original {
+      width: 264px;
+      height: 48px;
+      background: #fe6a30;
+      border-radius: 2px;
+      font-size: 18px;
+      font-family: PingFangSC-Medium, PingFang SC;
+      font-weight: 500;
+      color: #ffffff;
+      margin: 0 auto;
+      line-height: 48px;
+      cursor: pointer;
+    }
+    .original {
+      background: #454545;
+    }
+    .subTitle {
+      font-size: 18px;
+      font-family: PingFangSC-Medium, PingFang SC;
+      font-weight: 500;
+      color: #454545;
+      margin-top: 32px;
+      margin-bottom: 5px;
+    }
+    .subText {
+      font-size: 14px;
+      font-family: PingFangSC-Regular, PingFang SC;
+      font-weight: 400;
+      color: #262626;
+      margin-bottom: 24px;
+    }
+  }
+  > div:nth-child(1) {
+    margin-right: 20px;
+    position: relative;
+  }
+}
+
+.previerArticle {
+  margin: 0 auto;
+  border: 1px solid #ccc;
+  height: 550px;
+  overflow-y: scroll;
+  padding: 16px;
+  font-size: 16px;
+  text-align: left;
+  img {
+    max-width: 100% !important;
+  }
+}
