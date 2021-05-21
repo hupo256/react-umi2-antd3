@@ -112,6 +112,9 @@ const Home = () => {
             <div
               key={`banner-${index}`}
               onClick={() => {
+                if (!item.uid) {
+                  return
+                }
                 if (item.type === 'games') {
                   message.warning('PC端不允许跳转到小游戏')
                   return
@@ -188,7 +191,7 @@ const Home = () => {
           setShowFooterDrawer(false)
         }}
         visible={showFooterDrawer}
-        width={600}
+        width={800}
         headerStyle={{ border: 'none', marginBottom: '-18px' }}
         destroyOnClose
       >
