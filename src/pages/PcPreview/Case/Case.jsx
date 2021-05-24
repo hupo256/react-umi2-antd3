@@ -1,8 +1,7 @@
-import { BtnMore } from '../btn'
+import { BtnDetail, BtnMore } from '../btn'
 import _ from 'lodash'
 import styles from './Case.less'
 
-const CHN_NUM_CHAR = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九', '十']
 
 const CaseProjects = ({ data, domain }) => {
   if (_.isEmpty(data)) return null
@@ -11,16 +10,14 @@ const CaseProjects = ({ data, domain }) => {
 
   const caseStyle = {}
   _.forEach(data, (item, index) => {
-    data[index]['name'] = `${item.title.length > 6 ? item.title.slice(0, 6) + '...' : item.title}`
+    data[index]['name'] = `${item.title.length > 10 ? item.title.slice(0, 10) + '...' : item.title}`
 
     item.bedroom
       ? (data[index]['text'] = `${item.acreage}m² | ${item.bedroom}居室 | ${item.decorationCost}万元`)
       : (data[index]['text'] = `${item.acreage}m² | ${item.decorationCost}万元`)
 
     caseStyle[`image${index}`] = {
-      background: `url(${item.coverPicUrl}) no-repeat center center`,
-      backgroundSize: 'cover',
-      height: '100%',
+      backgroundImage: `url(${item.coverPicUrl})`,
     }
   })
 
@@ -40,7 +37,7 @@ const CaseProjects = ({ data, domain }) => {
             <div className={styles.bgText}>
               <p>{data[0].name}</p>
               <p>{data[0].text}</p>
-              <BtnMore text={'查看详情'} solid url={`${domain}/cases/details?uid=${data[0]['uid']}`} />
+              <BtnDetail text={'查看详情'} solid url={`${domain}/cases/details?uid=${data[0]['uid']}`} />
             </div>
             <div style={caseStyle.image0} className={styles.bgBlur} />
           </div>
@@ -67,7 +64,7 @@ const CaseProjects = ({ data, domain }) => {
             <div className={styles.bgText}>
               <p>{data[0].name}</p>
               <p>{data[0].text}</p>
-              <BtnMore text={'查看详情'} solid url={`${domain}/cases/details?uid=${data[0]['uid']}`} />
+              <BtnDetail text={'查看详情'} solid url={`${domain}/cases/details?uid=${data[0]['uid']}`} />
             </div>
             <div style={caseStyle.image0} className={styles.bgBlur} />
           </div>
@@ -75,7 +72,7 @@ const CaseProjects = ({ data, domain }) => {
             <div className={styles.bgText}>
               <p>{data[1].name}</p>
               <p>{data[1].text}</p>
-              <BtnMore text={'查看详情'} solid url={`${domain}/cases/details?uid=${data[1]['uid']}`} />
+              <BtnDetail text={'查看详情'} solid url={`${domain}/cases/details?uid=${data[1]['uid']}`} />
             </div>
             <div style={caseStyle.image1} className={styles.bgBlur} />
           </div>
@@ -114,7 +111,7 @@ const CaseProjects = ({ data, domain }) => {
             <div className={styles.bgText}>
               <p>{data[0].name}</p>
               <p>{data[0].text}</p>
-              <BtnMore text={'查看详情'} solid url={`${domain}/cases/details?uid=${data[0]['uid']}`} />
+              <BtnDetail text={'查看详情'} solid url={`${domain}/cases/details?uid=${data[0]['uid']}`} />
             </div>
             <div style={caseStyle.image0} className={styles.bgBlur} />
           </div>
@@ -123,7 +120,7 @@ const CaseProjects = ({ data, domain }) => {
               <div className={styles.bgText}>
                 <p>{data[1].name}</p>
                 <p>{data[1].text}</p>
-                <BtnMore text={'查看详情'} solid url={`${domain}/cases/details?uid=${data[1]['uid']}`} />
+                <BtnDetail text={'查看详情'} solid url={`${domain}/cases/details?uid=${data[1]['uid']}`} />
               </div>
               <div style={caseStyle.image1} className={styles.bgBlur} />
             </div>
@@ -131,7 +128,7 @@ const CaseProjects = ({ data, domain }) => {
               <div className={styles.bgText}>
                 <p>{data[2].name}</p>
                 <p>{data[2].text}</p>
-                <BtnMore text={'查看详情'} solid url={`${domain}/cases/details?uid=${data[2]['uid']}`} />
+                <BtnDetail text={'查看详情'} solid url={`${domain}/cases/details?uid=${data[2]['uid']}`} />
               </div>
               <div style={caseStyle.image2} className={styles.bgBlur} />
             </div>
@@ -165,7 +162,7 @@ const CaseProjects = ({ data, domain }) => {
               <div className={styles.bgText}>
                 <p>{data[0].name}</p>
                 <p>{data[0].text}</p>
-                <BtnMore text={'查看详情'} solid url={`${domain}/cases/details?uid=${data[0]['uid']}`} />
+                <BtnDetail text={'查看详情'} solid url={`${domain}/cases/details?uid=${data[0]['uid']}`} />
               </div>
               <div style={caseStyle.image0} className={styles.bgBlur} />
             </div>
@@ -173,7 +170,7 @@ const CaseProjects = ({ data, domain }) => {
               <div className={styles.bgText}>
                 <p>{data[1].name}</p>
                 <p>{data[1].text}</p>
-                <BtnMore text={'查看详情'} solid url={`${domain}/cases/details?uid=${data[1]['uid']}`} />
+                <BtnDetail text={'查看详情'} solid url={`${domain}/cases/details?uid=${data[1]['uid']}`} />
               </div>
               <div style={caseStyle.image1} className={styles.bgBlur} />
             </div>
@@ -183,7 +180,7 @@ const CaseProjects = ({ data, domain }) => {
               <div className={styles.bgText}>
                 <p>{data[2].name}</p>
                 <p>{data[2].text}</p>
-                <BtnMore text={'查看详情'} solid url={`${domain}/cases/details?uid=${data[2]['uid']}`} />
+                <BtnDetail text={'查看详情'} solid url={`${domain}/cases/details?uid=${data[2]['uid']}`} />
               </div>
               <div style={caseStyle.image2} className={styles.bgBlur} />
             </div>
@@ -191,7 +188,7 @@ const CaseProjects = ({ data, domain }) => {
               <div className={styles.bgText}>
                 <p>{data[3].name}</p>
                 <p>{data[3].text}</p>
-                <BtnMore text={'查看详情'} solid url={`${domain}/cases/details?uid=${data[3]['uid']}`} />
+                <BtnDetail text={'查看详情'} solid url={`${domain}/cases/details?uid=${data[3]['uid']}`} />
               </div>
               <div style={caseStyle.image3} className={styles.bgBlur} />
             </div>
@@ -231,7 +228,7 @@ const CaseProjects = ({ data, domain }) => {
             <div className={styles.bgText}>
               <p>{data[0].name}</p>
               <p>{data[0].text}</p>
-              <BtnMore text={'查看详情'} solid url={`${domain}/cases/details?uid=${data[0]['uid']}`} />
+              <BtnDetail text={'查看详情'} solid url={`${domain}/cases/details?uid=${data[0]['uid']}`} />
             </div>
             <div style={caseStyle.image0} className={styles.bgBlur} />
           </div>
@@ -240,7 +237,7 @@ const CaseProjects = ({ data, domain }) => {
               <div className={styles.bgText}>
                 <p>{data[1].name}</p>
                 <p>{data[1].text}</p>
-                <BtnMore text={'查看详情'} solid url={`${domain}/cases/details?uid=${data[1]['uid']}`} />
+                <BtnDetail text={'查看详情'} solid url={`${domain}/cases/details?uid=${data[1]['uid']}`} />
               </div>
               <div style={caseStyle.image1} className={styles.bgBlur} />
             </div>
@@ -248,7 +245,7 @@ const CaseProjects = ({ data, domain }) => {
               <div className={styles.bgText}>
                 <p>{data[2].name}</p>
                 <p>{data[2].text}</p>
-                <BtnMore text={'查看详情'} solid url={`${domain}/cases/details?uid=${data[2]['uid']}`} />
+                <BtnDetail text={'查看详情'} solid url={`${domain}/cases/details?uid=${data[2]['uid']}`} />
               </div>
               <div style={caseStyle.image2} className={styles.bgBlur} />
             </div>
@@ -258,7 +255,7 @@ const CaseProjects = ({ data, domain }) => {
               <div className={styles.bgText}>
                 <p>{data[3].name}</p>
                 <p>{data[3].text}</p>
-                <BtnMore text={'查看详情'} solid url={`${domain}/cases/details?uid=${data[3]['uid']}`} />
+                <BtnDetail text={'查看详情'} solid url={`${domain}/cases/details?uid=${data[3]['uid']}`} />
               </div>
               <div style={caseStyle.image3} className={styles.bgBlur} />
             </div>
@@ -266,7 +263,7 @@ const CaseProjects = ({ data, domain }) => {
               <div className={styles.bgText}>
                 <p>{data[4].name}</p>
                 <p>{data[4].text}</p>
-                <BtnMore text={'查看详情'} solid url={`${domain}/cases/details?uid=${data[4]['uid']}`} />
+                <BtnDetail text={'查看详情'} solid url={`${domain}/cases/details?uid=${data[4]['uid']}`} />
               </div>
               <div style={caseStyle.image4} className={styles.bgBlur} />
             </div>

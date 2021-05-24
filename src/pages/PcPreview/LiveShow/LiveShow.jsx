@@ -2,7 +2,6 @@ import { BtnMore } from '../btn'
 import _ from 'lodash'
 import styles from './LiveShow.less'
 
-const CHN_NUM_CHAR = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九', '十']
 
 const CaseProjects = ({ data, domain }) => {
   if (_.isEmpty(data)) return null
@@ -11,7 +10,9 @@ const CaseProjects = ({ data, domain }) => {
   const caseStyle = {}
   _.forEach(data, (item, index) => {
     const { bedroom, parlor } = JSON.parse(item.houseType)
-    data[index]['name'] = `${item.buildingName.length > 6 ? item.buildingName.slice(0, 6) + '...' : item.buildingName}`
+    data[index]['name'] = `${
+      item.buildingName.length > 10 ? item.buildingName.slice(0, 10) + '...' : item.buildingName
+    }`
     bedroom
       ? (data[index]['text'] = `${item.buildingArea}m² | ${bedroom}居室 | ${item.renovationCosts}万元`)
       : (data[index]['text'] = `${item.buildingArea}m² | ${item.renovationCosts}万元`)

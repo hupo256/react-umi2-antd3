@@ -1,5 +1,6 @@
 .clickableImg {
   position: relative;
+  overflow: hidden;
 }
 
 .clickableImg:hover .bgText {
@@ -7,8 +8,17 @@
   z-index: 9;
 }
 
+.clickableImg .bgBlur {
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: all 0.5s;
+  background-size: cover;
+  background-origin: content-box;
+  height: 100%;
+}
 .clickableImg:hover .bgBlur {
   filter: brightness(0.7);
+  transform: scale(1.5);
 }
 
 .bgText {

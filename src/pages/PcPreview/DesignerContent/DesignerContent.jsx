@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react'
 import ReactCardCarousel from 'react-card-carousel'
 import _ from 'lodash'
 import styles from './DesignerContent.less'
-import { BtnMore } from '../btn'
+import { BtnMore, BtnDetail } from '../btn'
 import cx from 'classnames'
 
 const DesignerContent = ({ data, domain }) => {
@@ -13,7 +13,7 @@ const DesignerContent = ({ data, domain }) => {
 
   return (
     <div className={styles.carouselContainer}>
-      <div style={{ height: '500px' }}>
+      <div style={{ height: '500px', marginTop: '40px' }}>
         <ReactCardCarousel
           autoplay={false}
           autoplay_speed={10000}
@@ -59,7 +59,7 @@ const DesignerContent = ({ data, domain }) => {
                         </p>
                       </div>
                     </div>
-                    <BtnMore
+                    <BtnDetail
                       text={'查看详情'}
                       solid
                       url={`${domain}/designers/details?uid=${value.uid}`}
