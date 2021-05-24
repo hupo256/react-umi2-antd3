@@ -13,7 +13,7 @@ const DesignerContent = ({ data, domain }) => {
 
   return (
     <div className={styles.carouselContainer}>
-      <div style={{ height: '500px', marginTop: '40px' }}>
+      <div style={{ height: '500px', marginTop: '60px' }}>
         <ReactCardCarousel
           autoplay={false}
           autoplay_speed={10000}
@@ -26,7 +26,7 @@ const DesignerContent = ({ data, domain }) => {
                 style={{
                   background: value.caseCoverUrlList[0]
                     ? `url(${value.caseCoverUrlList[0]}) no-repeat center center`
-                    : '#e8e8e8',
+                    : `url(/img/designer/designer-placeholder.png) no-repeat center center`,
                   backgroundSize: 'cover',
                 }}
                 className={styles.container}
@@ -52,8 +52,8 @@ const DesignerContent = ({ data, domain }) => {
                         </h3>
                         <p className={styles.content}>
                           {value.designConcept
-                            ? value.designConcept.length > 43
-                              ? `${value.designConcept.slice(0, 43)}...`
+                            ? value.designConcept.length > 36
+                              ? `${value.designConcept.slice(0, 36)}...`
                               : value.designConcept
                             : null}
                         </p>
