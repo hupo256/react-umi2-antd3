@@ -215,20 +215,25 @@
 
     .channelBox {
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
+      height: 180px;
+      align-content: space-between;
 
       > li {
-        flex: 1;
         width: 20%;
         text-align: center;
 
         > img {
-          width: 60%;
-          border-radius: 50%;
+          width: 48px;
+          height: 48px;
+          background: #f8f8f8;
+          border-radius: 25px;
         }
         > p {
-          padding-top: 0.5em;
+          font-size: 12px;
+          color: #676767;
+          padding-top: 1em;
         }
       }
     }
@@ -446,7 +451,7 @@
     }
 
     .siteBox {
-      width: 100%;
+      width: 110%;
       overflow: hidden;
       overflow-x: auto;
 
@@ -466,7 +471,7 @@
             width: 152px;
             height: 152px;
             border-radius: @borderRadius;
-            margin-right: 5px;
+            // margin-right: 5px;
             overflow: hidden;
 
             img {
