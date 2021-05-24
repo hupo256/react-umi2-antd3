@@ -58,9 +58,11 @@ const DesignerContent = ({ data, domain }) => {
                           </div>
                         </h3>
                         <p className={styles.content}>
-                          {value.designConcept.length > 43
-                            ? `${value.designConcept.slice(0, 43)}...`
-                            : value.designConcept}
+                          {value.designConcept
+                            ? value.designConcept.length > 43
+                              ? `${value.designConcept.slice(0, 43)}...`
+                              : value.designConcept
+                            : null}
                         </p>
                       </div>
                     </div>
