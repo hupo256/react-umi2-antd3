@@ -57,7 +57,7 @@ class Select extends Component {
     this.setState({ status });
     dispatch({
       type: 'ArticleSpecial/getArticleListModel',
-      payload: { ...formListQuery, articleDicCode: status, pageNum: 1 },
+      payload: { ...formListQuery, articleDicCode: status, pageNum: 1, articleStatus: 1 },
     });
   };
   render() {
@@ -223,11 +223,9 @@ class Select extends Component {
   handleClickTwo = type => {
     const { status } = this.state;
     const payload = {
-      pageNum: 1,
-      pageSize: 10,
-      articleStatus: 1,
-      specialStatus: 1,
-    };
+      pageNum: 1, pageSize: 10,
+      articleStatus: 1, specialStatus: 1
+    }
     if (type === 'article') {
       payload.articleDicCode = status;
     }
@@ -283,7 +281,7 @@ class Select extends Component {
         textOne === '专题'
           ? 'ArticleSpecial/getSpecialListModel'
           : 'ArticleSpecial/getArticleListModel',
-      payload: { ...formListQuery, pageNum: current },
+      payload: { ...formListQuery, pageNum: current, articleStatus: 1, specialStatus: 1 },
     });
   };
   queryList = obj => {
