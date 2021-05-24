@@ -4,7 +4,7 @@ import styles from './Menu.less'
 import { useState, useEffect } from 'react'
 import cx from 'classnames'
 
-const MAX_CHUNK_SIZE = 40
+const MAX_CHUNK_SIZE = 30
 const MIN_CHUNK_SIZE = 20
 
 const isCurrentMenu = (item, current) => {
