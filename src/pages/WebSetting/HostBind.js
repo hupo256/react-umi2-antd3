@@ -93,7 +93,7 @@ class HostBind extends Component {
       custonHostValue.indexOf('in-site.com') != -1 ||
       custonHostValue.indexOf('in-spire.com') != -1 ||
       custonHostValue.indexOf('in-create.com') != -1;
-      console.log('ifCustomHosts', ifCustomHosts)
+      // console.log('ifCustomHosts', ifCustomHosts)
     let payload;
     if (tabsValue == 0) {
       if (defaultHostValue.length < 4 || defaultHostValue.length > 20 || !ifDefaultHost) {
@@ -119,7 +119,7 @@ class HostBind extends Component {
     }
     await dispatch({ type: 'WebSettingStroe/hostSettingBind', payload: payload }).then(res => {
       if (res && res.code == 200) {
-        console.log(payload.type);
+        // console.log(payload.type);
         message.success('保存成功');
         if (payload.type == 1) {
           this.setState({
