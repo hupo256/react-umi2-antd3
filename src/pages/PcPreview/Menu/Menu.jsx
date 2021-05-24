@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react'
 import cx from 'classnames'
 import { message } from 'antd'
 
-const MAX_CHUNK_SIZE = 25
+const MAX_CHUNK_SIZE = 30
 const MIN_CHUNK_SIZE = 20
 
 const isCurrentMenu = (item, current) => {
