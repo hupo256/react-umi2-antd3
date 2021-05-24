@@ -2,7 +2,6 @@ import { BtnDetail, BtnMore } from '../btn'
 import _ from 'lodash'
 import styles from './Case.less'
 
-const CHN_NUM_CHAR = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九', '十']
 
 const CaseProjects = ({ data, domain }) => {
   if (_.isEmpty(data)) return null
@@ -11,7 +10,7 @@ const CaseProjects = ({ data, domain }) => {
 
   const caseStyle = {}
   _.forEach(data, (item, index) => {
-    data[index]['name'] = `${item.title.length > 6 ? item.title.slice(0, 6) + '...' : item.title}`
+    data[index]['name'] = `${item.title.length > 10 ? item.title.slice(0, 10) + '...' : item.title}`
 
     item.bedroom
       ? (data[index]['text'] = `${item.acreage}m² | ${item.bedroom}居室 | ${item.decorationCost}万元`)

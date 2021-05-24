@@ -18,7 +18,7 @@ const DesignerContent = ({ data, domain }) => {
 
   return (
     <div className={styles.carouselContainer}>
-      <div style={{ height: '500px', marginTop: '60px' }}>
+      <div style={{ height: '500px', marginTop: '40px' }}>
         <ReactCardCarousel
           autoplay={false}
           autoplay_speed={10000}
