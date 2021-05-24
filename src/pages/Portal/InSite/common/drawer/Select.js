@@ -7,7 +7,7 @@
  */
 import React, { Component, useContext } from 'react';
 import { connect } from 'dva';
-import { Table, Input, Pagination, Icon } from 'antd';
+import { Table, Input, Pagination, Icon, Tooltip } from 'antd';
 import styles from './drawerEditor.less';
 import { ctx } from '../context';
 
@@ -96,12 +96,23 @@ class Select extends Component {
     };
     return (
       <div className={styles.selectWrap}>
-        <Input
-          placeholder="请选择关联页面"
-          value={inputVal}
-          onClick={() => this.handleInputTogger()}
-          style={{ width: '100%' }}
-        />
+        {inputVal?.length > 20 ?
+          <Tooltip placement="top" title={inputVal} style={{backgroundColor: 'rgba(0, 0, 0, 0.75)'}}>
+            <Input
+              placeholder="请选择关联页面"
+              value={inputVal}
+              onClick={() => this.handleInputTogger()}
+              style={{ width: '100%' }}
+            />
+          </Tooltip> :
+          <Input
+            placeholder="请选择关联页面"
+            value={inputVal}
+            onClick={() => this.handleInputTogger()}
+            style={{ width: '100%' }}
+          />
+        }
+
         <span className={styles.linkIcon} onClick={() => this.handleInputTogger()}>
           <Icon type={show ? 'up' : 'down'} />
         </span>
@@ -141,7 +152,7 @@ class Select extends Component {
                 {textOne === '文章' && <p style={{paddingBottom: 10}}>
                   文章栏目：
                   <span
-                    onClick={() => this.handleSrarchStatus(null)}
+                    onClick={() => this.handleSrarchStatus('')}
                     className={`tagstatus ${!status && 'tagstatusCur'}`}
                   >
                 全部
