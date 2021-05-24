@@ -38,7 +38,6 @@ class BasicMessage extends Component {
           }
         );
       }
-      console.log('basic', JSON.parse(res.data.keywords), this.state);
     });
   }
   onBasicForm = e => {
@@ -61,12 +60,12 @@ class BasicMessage extends Component {
       } else {
         if (values.basicIcon && basicIcon) {
           newBaiscIcon = values.basicIcon;
-        } else if (basicIcon && !values.basicIco) {
+        } else if (basicIcon && !values.basicIcon) {
           newBaiscIcon = basicIcon;
         } else {
           newBaiscIcon = '';
         }
-        if (values.basicIcon && basicLogo) {
+        if (values.basicLogo && basicLogo) {
           newBasicLogo = values.basicLogo;
         } else if (basicLogo && !values.basicLogo) {
           newBasicLogo = basicLogo;
@@ -326,7 +325,7 @@ class BasicMessage extends Component {
     );
   }
   handleTagSave = tags => {
-    console.log('basicKeyWords', tags, this.state);
+    // console.log('basicKeyWords', tags, this.state);
     this.setState({ basicKeyWords: tags });
   };
   // 图片选择cance
