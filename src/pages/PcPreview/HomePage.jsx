@@ -108,7 +108,7 @@ const Home = () => {
         </div>
 
         <Carousel autoplay>
-          {_.map(_.get(publishedData, '0.list', null), (item, index) => (
+          {_.map(_.find(publishedData, { flag: 'banner' })['list'], (item, index) => (
             <div
               key={`banner-${index}`}
               onClick={() => {
@@ -125,12 +125,7 @@ const Home = () => {
                 )
               }}
             >
-              <h3
-                className={styles.banner}
-                style={{
-                  backgroundImage: `url(${_.get(item, 'imgUrl')})`,
-                }}
-              >
+              <h3 className={styles.banner} style={{ backgroundImage: `url(${_.get(item, 'imgUrl')})` }}>
                 {' '}
               </h3>
             </div>
@@ -139,26 +134,35 @@ const Home = () => {
 
         <Content className={styles.mainWrapper}>
           <ChapterLayout title={'产品特点'} description={'颠覆传统家装企业'}>
-            <KeyPoints pointsList={_.get(publishedData, '1.list')} domain={dynamicDomain} />
+            <KeyPoints pointsList={_.find(publishedData, { flag: 'highlights' })['list']} domain={dynamicDomain} />
           </ChapterLayout>
 
           <ChapterLayout title={'装修案例'} description={'定制全套装修方案'}>
-            <CaseProjects data={_.get(publishedData, '2.list')} domain={dynamicDomain} />
+            <CaseProjects data={_.find(publishedData, { flag: 'case' })['list']} domain={dynamicDomain} />
           </ChapterLayout>
 
           <div className={styles.designerSectionWiderBackground}>
             <ChapterLayout title={'参观工地'} description={'全程透明 追踪可查'}>
-              <LiveShow data={_.get(publishedData, '3.list')} domain={dynamicDomain} />
+              <LiveShow data={_.find(publishedData, { flag: 'site' })['list']} domain={dynamicDomain} />
             </ChapterLayout>
           </div>
 
           <ChapterLayout title={'首席设计师'} description={'定制全套装修方案'}>
-            <DesignerContent data={_.get(publishedData, '4.list')} domain={dynamicDomain} />
+            <DesignerContent data={_.find(publishedData, { flag: 'design' })['list']} domain={dynamicDomain} />
           </ChapterLayout>
 
           <div className={styles.designerSectionWiderBackground}>
             <ChapterLayout title={'装修攻略'} description={'一分钟了解家装'}>
-              <Articles data={_.slice(_.get(publishedData, '5.list'), 0, 3)} domain={dynamicDomain} />
+              <Articles
+                data={_.slice(
+                  _.find(publishedData, {
+                    flag: 'article',
+                  })['list'],
+                  0,
+                  3,
+                )}
+                domain={dynamicDomain}
+              />
             </ChapterLayout>
           </div>
         </Content>
