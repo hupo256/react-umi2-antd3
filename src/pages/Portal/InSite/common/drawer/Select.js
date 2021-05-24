@@ -277,13 +277,13 @@ class Select extends Component {
       dispatch,
       ArticleSpecial: { formListQuery },
     } = this.props;
-    const { textOne } = this.state;
+    const { textOne } = this.state
     dispatch({
       type:
         textOne === '专题'
           ? 'ArticleSpecial/getSpecialListModel'
           : 'ArticleSpecial/getArticleListModel',
-      payload: { ...formListQuery, pageNum: current, articleStatus: 1, specialStatus: 1 },
+      payload: { ...formListQuery, pageNum: current },
     });
   };
   queryList = obj => {
@@ -291,7 +291,7 @@ class Select extends Component {
       dispatch,
       ArticleSpecial: { formListQuery },
     } = this.props;
-    const { textOne } = this.state;
+    const { textOne } = this.state
     dispatch({
       type:
         textOne === '专题'
