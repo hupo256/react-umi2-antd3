@@ -33,7 +33,7 @@ export default function DrawerEditor(props) {
         if (curFlag === 'editModel') {
           const newObj = { ...pageData };
           newObj.jsonData.map((e) => {
-            if (e.afterName) {
+            if (e.afterName !== undefined) {
               e.title = e.afterName
             }
           });

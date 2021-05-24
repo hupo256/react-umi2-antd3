@@ -34,7 +34,7 @@ export default function editModel(props) {
   function saveName () {
     const newObj = { ...pageData };
     newObj.jsonData.map((e) => {
-      if (e.afterName) {
+      if (e.afterName !== undefined) {
         e.title = e.afterName
       }
     });
