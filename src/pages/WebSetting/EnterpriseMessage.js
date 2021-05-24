@@ -36,7 +36,7 @@ class EnterpriseMessage extends Component {
           wechatNumber: res.data.wechatNumber,
           wechatQrCode: res.data.wechatQrCode,
         });
-        console.log('enterprise', this);
+        // console.log('enterprise', this);
       }
     });
   }
@@ -50,7 +50,7 @@ class EnterpriseMessage extends Component {
       const { dispatch } = this.props;
       let newWechatQrCode = '',
         newStoreCover = '';
-      console.log('newWechatQrCode', values);
+      // console.log('newWechatQrCode', values);
       if (values.wechatQrCode && wechatQrCode) {
         newWechatQrCode = values.wechatQrCode;
       } else if (wechatQrCode && !values.wechatQrCode) {
@@ -58,7 +58,7 @@ class EnterpriseMessage extends Component {
       } else {
         newWechatQrCode = '';
       }
-      console.log('newWechatQrCode', newWechatQrCode);
+      // console.log('newWechatQrCode', newWechatQrCode);
       if (values.storeCover && storeCover) {
         newStoreCover = values.storeCover;
       } else if (storeCover && !values.storeCover) {
