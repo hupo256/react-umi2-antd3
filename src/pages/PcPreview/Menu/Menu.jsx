@@ -24,7 +24,7 @@ const findParent = (menuList, url) => {
     return _.find(menuList, { linkUrl: '/designers' })
   }
   if (/articles/.test(url)) {
-    return _.find(menuList, { linkUrl: '/articles' })
+    return _.find(menuList, { linkUrl: '/articles?uid=' })
   }
   return null
 }
