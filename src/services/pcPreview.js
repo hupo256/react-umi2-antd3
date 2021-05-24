@@ -2,9 +2,9 @@ import request from '../utils/request';
 import { baseurl } from './config';
 import { stringify } from 'qs';
 
-// PC HEADER （登陆）
+// PC HEADER （登陆）
 export function getMenuList(params) {
-  return request(`${baseurl}/api/v1/wechat/menu/list`, {
+  return request(`${baseurl}/api/v1/wechat/menu/preview/menuList`, {
     method: 'POST',
     body: params,
   });
