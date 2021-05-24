@@ -255,17 +255,28 @@ class Select extends Component {
   };
 
   handleSizeChange = (current, size) => {
-    this.queryList({ pageNum: current });
+    const {
+      dispatch,
+      ArticleSpecial: { formListQuery },
+    } = this.props;
+    const { textOne } = this.state
+    dispatch({
+      type:
+        textOne === '专题'
+          ? 'ArticleSpecial/getSpecialListModel'
+          : 'ArticleSpecial/getArticleListModel',
+      payload: { ...formListQuery, pageNum: current },
+    });
   };
   queryList = obj => {
     const {
       dispatch,
       ArticleSpecial: { formListQuery },
-      type,
     } = this.props;
+    const { textOne } = this.state
     dispatch({
       type:
-        type === 'special'
+        textOne === '专题'
           ? 'ArticleSpecial/getSpecialListModel'
           : 'ArticleSpecial/getArticleListModel',
       payload: { ...formListQuery, ...obj },
