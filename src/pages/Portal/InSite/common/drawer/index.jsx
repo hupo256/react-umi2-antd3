@@ -28,15 +28,20 @@ export default function DrawerEditor(props) {
     e.stopPropagation();
     // 阻止与原生事件的冒泡
     // e.nativeEvent.stopImmediatePropagation();
-
-    // 如果click到了这里，则认为input失焦
-    if (curFlag === 'nav') {
-      const arr = navData.map((nav, ind) => {
-        const { paths } = nav;
-        nav.showSec = false;
-        if (ind !== 0 && paths?.length !== 2) {
-          nav.linkDisplayName = '';
-          nav.icon = '';
+  }
+  console.log(111)
+  return (
+    <div
+      className={`${styles.drawerOut} ${isShow ? styles.show : ''}`}
+      onClick={() => {
+        if (curFlag === 'editModel') {
+          const newObj = { ...pageData };
+          newObj.jsonData.map((e) => {
+            if (e.afterName !== undefined) {
+              e.title = e.afterName
+            }
+          });
+          setpageData(newObj);
         }
         return nav;
       });
