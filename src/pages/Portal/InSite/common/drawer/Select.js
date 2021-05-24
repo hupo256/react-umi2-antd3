@@ -105,27 +105,22 @@ class Select extends Component {
     };
     return (
       <div className={styles.selectWrap}>
-        {inputVal?.length > 20 ? (
-          <Tooltip
-            placement="top"
-            title={inputVal}
-            style={{ backgroundColor: 'rgba(0, 0, 0, 0.75)' }}
-          >
+        {inputVal?.length > 20 ?
+          <Tooltip placement="top" title={inputVal} style={{backgroundColor: 'rgba(0, 0, 0, 0.75)'}}>
             <Input
               placeholder="请选择关联页面"
               value={inputVal}
               onClick={() => this.handleInputTogger()}
               style={{ width: '100%' }}
             />
-          </Tooltip>
-        ) : (
+          </Tooltip> :
           <Input
             placeholder="请选择关联页面"
             value={inputVal}
             onClick={() => this.handleInputTogger()}
             style={{ width: '100%' }}
           />
-        )}
+        }
 
         <span className={styles.linkIcon} onClick={() => this.handleInputTogger()}>
           <Icon type={show ? 'up' : 'down'} />
@@ -169,6 +164,7 @@ class Select extends Component {
                   onPressEnter={() => this.handleSrarch()}
                   style={{ width: '100%', marginBottom: 10 }}
                 />
+<<<<<<< HEAD
                 {textOne === '文章' && (
                   <p>
                     文章栏目：
@@ -189,6 +185,24 @@ class Select extends Component {
                     ))}
                   </p>
                 )}
+=======
+                {textOne === '文章' && <p style={{paddingBottom: 10}}>
+                  文章栏目：
+                  <span
+                    onClick={() => this.handleSrarchStatus('')}
+                    className={`tagstatus ${!status && 'tagstatusCur'}`}
+                  >
+                全部
+                  </span>
+                  {nameListData.map(e => <span
+                    style={{paddingBottom: 5}}
+                    onClick={() => this.handleSrarchStatus(e.code)}
+                    className={`tagstatus ${e.code === status && 'tagstatusCur'}`}
+                  >
+                    {e.name}
+                  </span>)}
+                </p>}
+>>>>>>> 9658b62... 首页装修-关于我们关联页面，文章标题过长时需要优化展示
                 <Table
                   loading={Loading}
                   className={styles.tablename}
