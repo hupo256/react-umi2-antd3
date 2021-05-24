@@ -18,7 +18,7 @@ const DesignerContent = ({ data, domain }) => {
 
   return (
     <div className={styles.carouselContainer}>
-      <div style={{ height: '500px', marginTop: '40px' }}>
+      <div style={{ height: '500px', marginTop: '60px' }}>
         <ReactCardCarousel
           autoplay={false}
           autoplay_speed={10000}
@@ -29,8 +29,8 @@ const DesignerContent = ({ data, domain }) => {
             <div className={index === currentIndex ? '' : styles.inactive} key={index}>
               <div
                 style={{
-                  background: _.get(value, 'caseList.list.0.coverPicUrl', null)
-                    ? `url(${value['caseList']['list'][0].coverPicUrl}) no-repeat center center`
+                  background: value.caseCoverUrlList[0]
+                    ? `url(${value.caseCoverUrlList[0]}) no-repeat center center`
                     : `url(/img/designer/designer-placeholder.png) no-repeat center center`,
                   backgroundSize: 'cover',
                   cursor: 'pointer',
@@ -59,8 +59,8 @@ const DesignerContent = ({ data, domain }) => {
                         </h3>
                         <p className={styles.content}>
                           {value.designConcept
-                            ? value.designConcept.length > 43
-                              ? `${value.designConcept.slice(0, 43)}...`
+                            ? value.designConcept.length > 36
+                              ? `${value.designConcept.slice(0, 36)}...`
                               : value.designConcept
                             : null}
                         </p>
