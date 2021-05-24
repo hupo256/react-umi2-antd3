@@ -61,7 +61,7 @@ class Select extends Component {
     this.setState({ status });
     dispatch({
       type: 'ArticleSpecial/getArticleListModel',
-      payload: { ...formListQuery, articleDicCode: status },
+      payload: { ...formListQuery, articleDicCode: status, pageNum: 1 },
     });
   };
   render() {
