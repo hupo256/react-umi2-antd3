@@ -164,28 +164,6 @@ class Select extends Component {
                   onPressEnter={() => this.handleSrarch()}
                   style={{ width: '100%', marginBottom: 10 }}
                 />
-<<<<<<< HEAD
-                {textOne === '文章' && (
-                  <p>
-                    文章栏目：
-                    <span
-                      onClick={() => this.handleSrarchStatus('')}
-                      className={`tagstatus ${!status && 'tagstatusCur'}`}
-                    >
-                      全部
-                    </span>
-                    {nameListData.map(e => (
-                      <span
-                        style={{ paddingBottom: 5 }}
-                        onClick={() => this.handleSrarchStatus(e.code)}
-                        className={`tagstatus ${e.code === status && 'tagstatusCur'}`}
-                      >
-                        {e.name}
-                      </span>
-                    ))}
-                  </p>
-                )}
-=======
                 {textOne === '文章' && <p style={{paddingBottom: 10}}>
                   文章栏目：
                   <span
@@ -202,7 +180,6 @@ class Select extends Component {
                     {e.name}
                   </span>)}
                 </p>}
->>>>>>> 9658b62... 首页装修-关于我们关联页面，文章标题过长时需要优化展示
                 <Table
                   loading={Loading}
                   className={styles.tablename}
