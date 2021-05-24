@@ -88,7 +88,6 @@ const Home = () => {
               <div className={styles.companyHeaderStyle}>
                 <img
                   src={footerData.logo}
-                  alt={footerData.companyName}
                   className={styles.logoStyle}
                   onClick={() => window.open('/', '页面预览')}
                   style={{ cursor: 'pointer' }}
