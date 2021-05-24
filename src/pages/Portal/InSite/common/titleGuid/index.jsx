@@ -31,7 +31,14 @@ export default function TitleGuid(props) {
     };
     updateHomePageEditData(parmas).then(res => {
       if (res.code === 200) {
-        saveNavEditData(navData).then(r => {
+        const newArr = [...navData];
+        const arr = [];
+        newArr.map(e => {
+          if (e.navModule) {
+            arr.push(e);
+          }
+        });
+        saveNavEditData(arr).then(r => {
           if (r.code === 200) {
             publishEditData().then(() => {
               setcurFlag(''); // 置空
