@@ -34,7 +34,14 @@ export default function ForPrompt(props) {
       // 保存后再跳转
       updateHomePageEditData(parmas).then(res => {
         if (res.code === 200) {
-          saveNavEditData(navData)
+          const newArr = [...navData];
+          const arr = [];
+          newArr.map(e => {
+            if (e.navModule) {
+              arr.push(e);
+            }
+          });
+          saveNavEditData(arr)
             .then(r => {
               if (r.code === 200) {
                 message.success('保存成功', () => router.push(key));
