@@ -26,14 +26,27 @@ export default function TitleGuid(props) {
       editTemplateCode: templateCode,
       editTemplateJson: { jsonData, themeData, templateName, globalInfor: { customerService } },
     };
-    savePageData(parmas, () => {
-      publishEditData().then(() => {
-        setcurFlag(''); // 置空
-        message.success('发布成功');
-        setTimeout(() => {
-          router.push(`${baseRouteKey}home`);
-        }, 1000);
-      });
+    updateHomePageEditData(parmas).then(res => {
+      if (res.code === 200) {
+        const newArr = [...navData];
+        const arr = [];
+        newArr.map(e => {
+          if (e.navModule) {
+            arr.push(e);
+          }
+        });
+        saveNavEditData(arr).then(r => {
+          if (r.code === 200) {
+            publishEditData().then(() => {
+              setcurFlag(''); // 置空
+              message.success('发布成功');
+              setTimeout(() => {
+                router.push(`${baseRouteKey}home`);
+              }, 1000);
+            });
+          }
+        });
+      }
     });
   }
 

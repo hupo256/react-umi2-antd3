@@ -32,8 +32,22 @@ export default function ForPrompt(props) {
         delete parmas.editTemplateJson.maps;
       }
       // 保存后再跳转
-      savePageData(parmas, () => {
-        message.success('保存成功', () => router.push(key));
+      updateHomePageEditData(parmas).then(res => {
+        if (res.code === 200) {
+          const newArr = [...navData];
+          const arr = [];
+          newArr.map(e => {
+            if (e.navModule) {
+              arr.push(e);
+            }
+          });
+          saveNavEditData(arr)
+            .then(r => {
+              if (r.code === 200) {
+                message.success('保存成功', () => router.push(key));
+              }
+            })
+        }
       });
     }
   }
