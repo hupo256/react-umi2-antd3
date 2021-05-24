@@ -69,11 +69,12 @@ export default function TagsEdit(props) {
   }
   // 图片选择
   function handleUploadOk(data) {
-    console.log(data[0].path);
     const newObj = { ...pageData };
     const result = newObj?.jsonData?.find(e => e.flag === curFlag);
-    result.url = data[0].path;
-    setpageData(newObj);
+    if (data.length) {
+      result.url = data[0].path;
+      setpageData(newObj);
+    }
     setimgEdtor(false);
   }
   function handleSelect(value) {
