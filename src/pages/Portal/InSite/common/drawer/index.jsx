@@ -83,7 +83,7 @@ export default function DrawerEditor(props) {
           width={900}
           headerStyle={{ border: 'none', marginBottom: '-18px' }}
         >
-          <ChannelManage />
+          <ChannelManage isPcPreview={true} />
         </Drawer>
       ) : (
         <div
