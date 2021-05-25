@@ -59,20 +59,20 @@ const Home = () => {
           const filtered = {
             banner: _.find(rawCollection, {
               flag: 'banner',
-            }),
+            })?.list,
             highlights: _.find(rawCollection, {
               flag: 'highlights',
-            }),
+            })?.list,
             case: _.find(rawCollection, {
               flag: 'case',
-            }),
+            })?.list,
             site: _.find(rawCollection, {
               flag: 'site',
-            }),
-            design: _.find(rawCollection, { flag: 'design' }),
+            })?.list,
+            design: _.find(rawCollection, { flag: 'design' })?.list,
             article: _.find(rawCollection, {
               flag: 'article',
-            }),
+            })?.list,
           }
 
           setPublishedData(filtered)
@@ -155,7 +155,7 @@ const Home = () => {
         </div>
 
         <Carousel autoplay>
-          {_.map(_.find(publishedData, { flag: 'banner' })['list'], (item, index) => (
+          {_.map(publishedData['banner'], (item, index) => (
             <div
               key={`banner-${index}`}
               onClick={() => {
@@ -180,42 +180,32 @@ const Home = () => {
         </Carousel>
 
         <Content className={styles.mainWrapper}>
-          <ChapterLayout title={'产品特点'} description={'颠覆传统家装企业'}>
-            <KeyPoints pointsList={_.find(publishedData, { flag: 'highlights' })['list']} domain={dynamicDomain} />
-          </ChapterLayout>
-
-          <ChapterLayout title={'装修案例'} description={'定制全套装修方案'}>
-            <CaseProjects data={_.find(publishedData, { flag: 'case' })['list']} domain={dynamicDomain} />
-          </ChapterLayout>
-
-          <div className={styles.designerSectionWiderBackground}>
-            <ChapterLayout title={'参观工地'} description={'全程透明 追踪可查'}>
-              <LiveShow data={_.find(publishedData, { flag: 'site' })['list']} domain={dynamicDomain} />
-            </ChapterLayout>
-          </div>
-
-          <ChapterLayout title={'首席设计师'} description={'定制全套装修方案'}>
-            <DesignerContent data={_.find(publishedData, { flag: 'design' })['list']} domain={dynamicDomain} />
-          </ChapterLayout>
-
-          <div className={styles.designerSectionWiderBackground}>
-            <ChapterLayout title={'装修攻略'} description={'一分钟了解家装'}>
-              <Articles
-                data={_.slice(
-                  _.find(publishedData, {
-                    flag: 'article',
-                  })['list'],
-                  0,
-                  3,
-                )}
-                domain={dynamicDomain}
-              />
+          {publishedData['highlights'] && (
+            <ChapterLayout title={'产品特点'}>
+              <KeyPoints pointsList={publishedData['highlights']} domain={dynamicDomain} />
             </ChapterLayout>
           )}
-          {_.isEmpty(publishedData['article']['list']) || (
+          {publishedData['case'] && (
+            <ChapterLayout title={'装修案例'}>
+              <CaseProjects data={publishedData['case']} domain={dynamicDomain} />
+            </ChapterLayout>
+          )}
+          {publishedData['site'] && (
             <div className={styles.designerSectionWiderBackground}>
-              <ChapterLayout title={publishedData['article']['title']}>
-                <Articles data={_.slice(publishedData['article']['list'], 0, 3)} domain={dynamicDomain} />
+              <ChapterLayout title={'参观工地'}>
+                <LiveShow data={publishedData['site']} domain={dynamicDomain} />
+              </ChapterLayout>
+            </div>
+          )}
+          {publishedData['design'] && (
+            <ChapterLayout title={'首席设计师'}>
+              <DesignerContent data={publishedData['design']} domain={dynamicDomain} />
+            </ChapterLayout>
+          )}
+          {publishedData['article'] && (
+            <div className={styles.designerSectionWiderBackground}>
+              <ChapterLayout title={'装修攻略'}>
+                <Articles data={_.slice(publishedData['article'], 0, 3)} domain={dynamicDomain} />
               </ChapterLayout>
             </div>
           )}
