@@ -19,12 +19,12 @@ const bgImgs = [
   'https://test.img.inbase.in-deco.com/crm_saas/dev/20210408/8f8b1e6ce303458bb72764b7ba235a0f/img_designer_4.png',
 ];
 
-export default function CaseMd(props) {
+export default function ArtMd(props) {
   const { list, title, flag, nameListData, showModule } = props;
 
   return (
     <div className={`${pageStyle.mdBlock} ${pageStyle.hasbg2}`}>
-      <img className={pageStyle.bg} src={imgBG} alt=''  />
+      <img className={pageStyle.bg} src={imgBG} alt="" />
       <MdTitle title={title} />
       <div className={pageStyle.nav}>
         {nameListData.map(e => (
@@ -34,8 +34,8 @@ export default function CaseMd(props) {
       <div className={pageStyle.content}>
         {showModule ? (
           <>
-            {list?.map(i => (
-              <div>
+            {list?.map((i, ind) => (
+              <div key={ind}>
                 <div className={pageStyle.imgsWrapper}>
                   <div className={pageStyle.imgBox}>
                     <img src={i.articleCoverImg} alt="" />
