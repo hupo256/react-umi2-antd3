@@ -9,7 +9,7 @@ import React, { useState, createContext } from 'react';
 import { getHomePageEditData, queryNavEditData } from '@/services/miniProgram';
 import { highlightsBgImgs } from '../tools/data';
 import {
-  queryDicForForm, //其他模块查询字典
+  queryArticleTopicDic, //其他模块查询字典
 } from '@/services/dictConfig';
 
 export const ctx = createContext();
@@ -50,9 +50,9 @@ export function Provider({ children }) {
   ]); //导航数据
 
   function touchPageData() {
-    queryDicForForm({ dicModuleCodes: 'DM006' }).then(r => {
+    queryArticleTopicDic().then(r => {
       if (r && r.code === 200) {
-        const dictionaries = r.data['DM006'];
+        const dictionaries = r.data;
         const param = [
           {
             key: 'case',
