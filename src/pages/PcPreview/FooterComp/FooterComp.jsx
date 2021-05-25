@@ -40,7 +40,7 @@ export default function FooterComp({ data, setShowFooterDrawer }) {
           <div className={styles.companyAddressWrapper}>
             <b>门店地址</b>
             <div className={styles.minImgBox}>
-              <img src={storeCover} alt={storeAddress} />
+              <img src={storeCover} alt="" />
             </div>
             <p className={styles.storeAddress}>{storeAddress}</p>
           </div>
