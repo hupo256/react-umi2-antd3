@@ -86,12 +86,7 @@ const Home = () => {
           <HeaderLayout
             left={
               <div className={styles.companyHeaderStyle}>
-                <img
-                  src={footerData.logo}
-                  className={styles.logoStyle}
-                  onClick={() => window.open('/', '页面预览')}
-                  style={{ cursor: 'pointer' }}
-                />
+                <img src={footerData.logo} className={styles.logoStyle} />
               </div>
             }
             middle={
