@@ -8,7 +8,7 @@
 import React, { useContext, useEffect } from 'react';
 import { ctx } from '../context';
 import { Drawer } from 'antd';
-import { getList } from '@/services/channelManage';
+import { appletsMenus } from '@/services/channelManage';
 import { canEditTags } from '../../tools/data';
 import ImgsEdit from './imgsEdit';
 import TagsEdit from './tagsEdit';
@@ -54,12 +54,10 @@ export default function DrawerEditor(props) {
   // 抽屉关闭时获取新的channles
   function drawerClose() {
     const param = {
-      includeDefIndex: false,
       pageNum: 1,
       pageSize: 20,
-      status: 1,
     };
-    getList(param).then(re => {
+    appletsMenus(param).then(re => {
       console.log(re);
       if (!re?.data) return;
       const newObj = { ...pageData };
@@ -83,7 +81,7 @@ export default function DrawerEditor(props) {
           width={900}
           headerStyle={{ border: 'none', marginBottom: '-18px' }}
         >
-          <ChannelManage />
+          <ChannelManage isPcPreview={true} />
         </Drawer>
       ) : (
         <div

@@ -25,7 +25,7 @@ const ChapterLayout = ({ children, title, description }) => (
   <div className={styles.chapterWrapper}>
     <div className={styles.chapterSection}>
       <h2 className={styles.title}>{title}</h2>
-      <p className={styles.description}>{description}</p>
+      {/* <p className={styles.description}>{description}</p> */}
     </div>
     {children}
   </div>
@@ -88,7 +88,6 @@ const Home = () => {
               <div className={styles.companyHeaderStyle}>
                 <img
                   src={footerData.logo}
-                  alt={footerData.companyName}
                   className={styles.logoStyle}
                   onClick={() => window.open('/', '页面预览')}
                   style={{ cursor: 'pointer' }}

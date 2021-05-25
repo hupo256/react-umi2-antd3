@@ -20,7 +20,7 @@ const Articles = ({ data, domain }) => {
                   [styles.after]: index === 2,
                 })}
               >
-                {item.name}
+                {`${item.name.length > 12 ? item.name.slice(0, 12) + '...' : item.name}`}
               </div>
               <div className={styles.wrapper}>
                 {_.map(item.articleList, (article, index) => {

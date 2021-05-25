@@ -23,7 +23,7 @@ const findParent = (menuList, url) => {
     return _.find(menuList, { linkUrl: '/designers' })
   }
   if (/articles/.test(url)) {
-    return _.find(menuList, { linkUrl: '/articles' })
+    return _.find(menuList, { linkUrl: '/articles?uid=' })
   }
   return null
 }
@@ -95,6 +95,10 @@ const MenuListComp = ({ menuList, setShowHeaderDrawer, dynamicDomain = '' }) => 
   useEffect(
     () => {
       if (_.isEmpty(menuList)) return
+      if (location.pathname === '/') {
+        setCurrent(_.find(menuList, { linkKey: 'home' }))
+        return
+      }
 
       const url = new URL(location.href)
       const [uid] = url.searchParams.values()
@@ -120,7 +124,7 @@ const MenuListComp = ({ menuList, setShowHeaderDrawer, dynamicDomain = '' }) => 
         return
       }
 
-      const res = _.find(menuList, { linkUrl: location.pathname })
+      const res = findParent(menuList, location.href)
       if (res) {
         setCurrent(res)
         return
