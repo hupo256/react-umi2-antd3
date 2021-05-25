@@ -27,6 +27,7 @@ const ChapterLayout = ({ children, title, moreStyles }) => (
   <div className={styles.chapterWrapper}>
     <div className={styles.chapterSection} style={moreStyles}>
       <h2 className={styles.title}>{title}</h2>
+      {/* <p className={styles.description}>{description}</p> */}
     </div>
     {children}
   </div>
