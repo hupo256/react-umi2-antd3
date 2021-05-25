@@ -6,82 +6,102 @@
  * @Description: In User Settings Edit
  * @FilePath: \front-wechat-saas\src\services\channelManage.js
  */
-import request from '@/utils/request'
+import request from '@/utils/request';
 import { stringify } from 'qs';
 import { baseurl } from './config';
 
 //获取频道管理列表信息
-export const getList =  body => request(`${baseurl}/api/v1/wechat/menu/list`, {
+export const getList = body =>
+  request(`${baseurl}/api/v1/wechat/menu/list`, {
     method: 'POST',
-    body
-})
+    body,
+  });
 
 // 新建频道
-export const createChannel = body => request(`${baseurl}/api/v1/wechat/menu/add`, {
+export const createChannel = body =>
+  request(`${baseurl}/api/v1/wechat/menu/add`, {
     method: 'POST',
-    body
-})
+    body,
+  });
 
 // 编辑频道
-export const editChannelApi = body => request(`${baseurl}/api/v1/wechat/menu/update`, {
+export const editChannelApi = body =>
+  request(`${baseurl}/api/v1/wechat/menu/update`, {
     method: 'POST',
-    body
-})
+    body,
+  });
 
 // 获取关联页面候选项
-export const getRelatedPage = body => request(`${baseurl}/api/v1/wechat/menu/relatedPage?${stringify(body)}`, {
-    method: 'GET'
-})
+export const getRelatedPage = body =>
+  request(`${baseurl}/api/v1/wechat/menu/relatedPage?${stringify(body)}`, {
+    method: 'GET',
+  });
 
 // 获取频道详情
-export const getDetailApi = body => request(`${baseurl}/api/v1/wechat/menu/detail?${stringify(body)}`, {
-    method: 'GET'
-})
+export const getDetailApi = body =>
+  request(`${baseurl}/api/v1/wechat/menu/detail?${stringify(body)}`, {
+    method: 'GET',
+  });
 
 // 排序接口
-export const sortApi = body => request(`${baseurl}/api/v1/wechat/menu/sort`, {
+export const sortApi = body =>
+  request(`${baseurl}/api/v1/wechat/menu/sort`, {
     method: 'POST',
-    body
-})
+    body,
+  });
 
 // 启停用接口
-export const toggleStatusApi = body => request(`${baseurl}/api/v1/wechat/menu/toggleStatus`, {
+export const toggleStatusApi = body =>
+  request(`${baseurl}/api/v1/wechat/menu/toggleStatus`, {
     method: 'POST',
-    body
-})
+    body,
+  });
 
 // 工地列表接口
-export const siteListApi = body => request(`${baseurl}/api/v1/wechat/site/pageList`, {
+export const siteListApi = body =>
+  request(`${baseurl}/api/v1/wechat/site/pageList`, {
     method: 'POST',
-    body
-})
+    body,
+  });
 
 // 设计师列表接口
-export const designerListApi = body => request(`${baseurl}/api/v1/wechat/designer/queryDesignerList`, {
+export const designerListApi = body =>
+  request(`${baseurl}/api/v1/wechat/designer/queryDesignerList`, {
     method: 'POST',
-    body
-})
+    body,
+  });
 
 // 案例列表接口
-export const caseListApi = body => request(`${baseurl}/api/v1/wechat/case/queryCaseList`, {
+export const caseListApi = body =>
+  request(`${baseurl}/api/v1/wechat/case/queryCaseList`, {
     method: 'POST',
-    body
-})
+    body,
+  });
 
 // 文章列表接口
-export const articleListApi = body => request(`${baseurl}/api/v1/wechat/article/pageList`, {
+export const articleListApi = body =>
+  request(`${baseurl}/api/v1/wechat/article/pageList`, {
     method: 'POST',
-    body
-})
+    body,
+  });
 
 // 文章栏目列表信息接口
-export const articleDicApi = body => request(`${baseurl}/api/v1/wechat/dic/queryDicForForm`, {
+export const articleDicApi = body =>
+  request(`${baseurl}/api/v1/wechat/dic/queryDicForForm`, {
     method: 'POST',
-    body
-})
+    body,
+  });
 
 // 专题列表接口
-export const specialListApi = body => request(`${baseurl}/api/v1/wechat/special/pageList`, {
+export const specialListApi = body =>
+  request(`${baseurl}/api/v1/wechat/special/pageList`, {
     method: 'POST',
-    body
-})
+    body,
+  });
+
+// 小程序预览中获取menus
+export const appletsMenus = body =>
+  request(`${baseurl}/api/v1/wechat/menu/applets/listMenus`, {
+    method: 'POST',
+    body,
+  });
