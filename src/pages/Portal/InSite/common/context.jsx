@@ -61,7 +61,6 @@ export function Provider({ children }) {
   ]); //导航数据
 
   function touchPageData() {
-    message.loading('正在加载，请稍后...');
     queryArticleTopicDic().then(r => {
       if (r && r.code === 200) {
         const dictionaries = r.data;
