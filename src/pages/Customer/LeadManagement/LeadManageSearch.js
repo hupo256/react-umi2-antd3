@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-01-22 13:30:02 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-25 09:39:49
+ * @Last Modified time: 2021-05-26 18:50:56
  * 线索搜索 
  */
 import React, { Component } from 'react';
@@ -40,9 +40,6 @@ class LeadManageSearch extends Component {
       LeadManage: { trackDataSearch },
     } = this.props;
     dispatch({ type: 'LeadManage/getTreeModel' });
-    console.log('====================================');
-    console.log(trackDataSearch);
-    console.log('====================================');
     this.setState({
       searchVal: trackDataSearch.searchKeys || '',
       checked: trackDataSearch.status || null,
@@ -71,10 +68,6 @@ class LeadManageSearch extends Component {
       createTimeEnd,
       createTimeStart,
     } = this.state;
-    console.log('====================================');
-    console.log(sourcetag);
-    console.log(codes);
-    console.log('====================================');
     const treedatas = (treeData.length > 0 && this.treeFilter(treeData)) || [];
     return (
       <div>
@@ -195,10 +188,6 @@ class LeadManageSearch extends Component {
   }
   // 来源
   handleCascaderchange = (codes, arr) => {
-    console.log('====================================');
-    console.log(codes);
-    console.log(arr);
-    console.log('====================================');
     this.setState({
       sourcetag: arr,
       codes,

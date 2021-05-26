@@ -39,7 +39,7 @@ class LeadManageDetail extends Component {
               title={
                 <span>
                   基本信息
-                  {permissionsBtn.includes('BTN210519000001') && (
+                  {permissionsBtn.includes('BTN210526000001') && (
                     <span
                       style={{
                         color: '#fe6a30',

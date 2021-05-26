@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-01-22 13:30:46 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-24 19:14:41
+ * @Last Modified time: 2021-05-26 18:52:39
  * 线索列表
  */
 import React, { Component } from 'react';
@@ -156,7 +156,7 @@ class LeadManageTable extends Component {
         render: (t, r) => {
           return (
             <span className={styles.operate}>
-              {permissionsBtn.includes('MU800000040001') && (
+              {permissionsBtn.includes('MU900000020001') && (
                 <span
                   onClick={() => {
                     router.push(`/customer/detail?uid=${r.uid}`);
@@ -165,18 +165,18 @@ class LeadManageTable extends Component {
                   详情
                 </span>
               )}
-              {permissionsBtn.includes('MU800000040001') &&
-                (permissionsBtn.includes('BTN210519000002') ||
-                  permissionsBtn.includes('BTN210519000003')) && <span> | </span>}
-              {permissionsBtn.includes('BTN210519000002') && (
+              {permissionsBtn.includes('MU900000020001') &&
+                (permissionsBtn.includes('BTN210526000002') ||
+                  permissionsBtn.includes('BTN210526000003')) && <span> | </span>}
+              {permissionsBtn.includes('BTN210526000002') && (
                 // <span onClick={() => this.setState({ clueVisible: true, record: r })}>编辑</span>
                 <span onClick={() => this.setState({ changeVisible: true, record: r })}>
                   写跟进
                 </span>
               )}
-              {permissionsBtn.includes('BTN210519000002') &&
-                permissionsBtn.includes('BTN210519000003') && <span> | </span>}
-              {permissionsBtn.includes('BTN210519000003') && (
+              {permissionsBtn.includes('BTN210526000002') &&
+                permissionsBtn.includes('BTN210526000003') && <span> | </span>}
+              {permissionsBtn.includes('BTN210526000003') && (
                 <span onClick={() => this.setState({ recordVisible: true, record: r })}>
                   跟进记录
                 </span>
@@ -193,7 +193,7 @@ class LeadManageTable extends Component {
     return (
       <div style={{ marginTop: 20 }}>
         <Card bordered={false}>
-          {permissionsBtn.includes('BTN210519000004') && (
+          {permissionsBtn.includes('BTN210326000021') && (
             <Button style={{ marginBottom: 16 }} onClick={() => this.handleDownload()}>
               导出Excel
               <Icon type="download" />
