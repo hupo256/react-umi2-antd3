@@ -2,11 +2,6 @@
  * @Author: zqm
  * @Date: 2021-04-30 11:36:34
  * @Last Modified by: zqm
-<<<<<<< HEAD
- * @Last Modified time: 2021-05-19 11:16:13
-=======
- * @Last Modified time: 2021-05-20 16:02:30
->>>>>>> channel1
  * 关联设置
  */
 import React, { Component } from 'react';
