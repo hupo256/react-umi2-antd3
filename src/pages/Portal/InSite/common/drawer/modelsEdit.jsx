@@ -56,7 +56,7 @@ export default function editModel(props) {
             return '案例'
             break;
           case 'site':
-            return '工地直播'
+            return '参观工地'
             break;
           case 'design':
             return '设计师团队'
