@@ -6,6 +6,7 @@
  * 工地直播
  */
 import React, { useState, useEffect } from 'react';
+import { roomType } from '../../tools';
 import MdTitle from './common/mdTitle';
 import EmptyMd from './common/emptyMd';
 import pageStyle from '../preview.less';
@@ -28,14 +29,15 @@ export default function CaseMd(props) {
                 houseType,
                 visitNum,
               } = site;
-              const { bedroom } = JSON.parse(houseType);
+              const { bedroom = '' } = JSON.parse(houseType);
+              const roomTex = roomType(bedroom);
               return (
                 <li key={ind}>
                   <div className={pageStyle.minImgBox}>
                     <img src={coverImg} alt="" />
                   </div>
                   <b>{gongdiTitle}</b>
-                  <p>{`${buildingArea}m² | ${bedroom}居室 | ${renovationCosts}万`}</p>
+                  <p>{`${buildingArea}m² | ${roomTex}${renovationCosts}万`}</p>
                   <p className={pageStyle.flex}>
                     <span>{`${visitNum}人参观过`}</span>
                     <a className={pageStyle.btn}>预约参观</a>
