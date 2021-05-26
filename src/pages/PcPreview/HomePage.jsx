@@ -150,29 +150,29 @@ const Home = () => {
         </Carousel>
 
         <Content className={styles.mainWrapper}>
-          {publishedData['highlights'] && (
+          {_.isEmpty(publishedData['highlights']) || (
             <ChapterLayout title={'产品特点'}>
               <KeyPoints pointsList={publishedData['highlights']} domain={dynamicDomain} />
             </ChapterLayout>
           )}
-          {publishedData['case'] && (
+          {_.isEmpty(publishedData['case']) || (
             <ChapterLayout title={'装修案例'}>
               <CaseProjects data={publishedData['case']} domain={dynamicDomain} />
             </ChapterLayout>
           )}
-          {publishedData['site'] && (
+          {_.isEmpty(publishedData['site']) || (
             <div className={styles.designerSectionWiderBackground}>
               <ChapterLayout title={'参观工地'}>
                 <LiveShow data={publishedData['site']} domain={dynamicDomain} />
               </ChapterLayout>
             </div>
           )}
-          {publishedData['design'] && (
+          {_.isEmpty(publishedData['design']) || (
             <ChapterLayout title={'首席设计师'}>
               <DesignerContent data={publishedData['design']} domain={dynamicDomain} />
             </ChapterLayout>
           )}
-          {publishedData['article'] && (
+          {_.isEmpty(publishedData['article']) || (
             <div className={styles.designerSectionWiderBackground}>
               <ChapterLayout title={'装修攻略'}>
                 <Articles data={_.slice(publishedData['article'], 0, 3)} domain={dynamicDomain} />
