@@ -73,7 +73,7 @@ export function Provider({ children }) {
             key: 'article',
             pageNum: '1',
             pageSize: '2',
-            articleDicCode: dictionaries[0].code,
+            articleDicCode: dictionaries.length ? dictionaries[0].code : '',
           },
           {
             key: 'aboutUs',
