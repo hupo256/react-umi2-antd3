@@ -361,12 +361,15 @@ export default class CreateEdit extends Component {
     // 切换选择页面面板显示
     toggleSelectPanlHandle = ( isShow ) => {
         const { currentSelectRelatedPageOpt } = this.state;
-        if ( (currentSelectRelatedPageOpt[1]?.linkType === 2 && !!!currentSelectRelatedPageOpt[2]) || (currentSelectRelatedPageOpt[0]?.linkType === 2 && !!!currentSelectRelatedPageOpt[1] )) {
+        console.log({ currentSelectRelatedPageOpt})
+        if ((currentSelectRelatedPageOpt[1]?.linkType === 2 && !!!currentSelectRelatedPageOpt[2]) || 
+            (currentSelectRelatedPageOpt[0]?.linkType === 2 && !!!currentSelectRelatedPageOpt[1] ) ||
+            currentSelectRelatedPageOpt[currentSelectRelatedPageOpt.length - 1]?.children?.length) {
             
             this.setState(prevState => {
                 
                 return ({
-                    currentSelectRelatedPageOpt: prevState.currentSelectRelatedPageOpt.slice(0, prevState.currentSelectRelatedPageOpt.length - 1)
+                    currentSelectRelatedPageOpt: []
                 })
             }, () => {
                 this.props.form.setFieldsValue({
