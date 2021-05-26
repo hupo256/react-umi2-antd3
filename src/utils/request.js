@@ -143,7 +143,7 @@ export default function request(
   ) {
     newOptions.headers = {
       token: localStorage.getItem('crmtoken'),
-      systemCode: 'S005',
+      systemCode: newOptions.systemCode || 'S005',
       ...newOptions.headers,
     };
     if (!(newOptions.body instanceof FormData)) {
