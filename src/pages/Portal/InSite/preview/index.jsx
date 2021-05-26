@@ -1,8 +1,8 @@
 /*
- * @Author: tdd 
- * @Date: 2021-03-23 13:49:12 
+ * @Author: tdd
+ * @Date: 2021-03-23 13:49:12
  * @Last Modified by: tdd
- * @Last Modified time: 2021-03-23 13:49:12 
+ * @Last Modified time: 2021-03-23 13:49:12
  * 小程序UI模板
  */
 import React, { useState, useEffect, useContext, useRef } from 'react';
@@ -18,6 +18,9 @@ import HighlightsMd from './components/highlightsMd';
 import SiteMd from './components/siteMd';
 import DesignMd from './components/designMd';
 import AdMd from './components/adMd';
+import AboutUsMd from './components/aboutUsMd';
+import ArticleMd from './components/articleMd';
+import NavMd from './components/navMd';
 
 import './components/fontclass/iconfont.js';
 import pageStyle from './preview.less';
@@ -47,6 +50,18 @@ const componentMap = {
   advertising: {
     tips: '图片广告',
     creatCom: e => <AdMd {...e} />,
+  },
+  aboutUs: {
+    tips: '关于我们',
+    creatCom: e => <AboutUsMd {...e} />,
+  },
+  article: {
+    tips: '文章',
+    creatCom: e => <ArticleMd {...e} />,
+  },
+  nav: {
+    tips: '导航',
+    creatCom: e => <NavMd {...e} />,
   },
 };
 
