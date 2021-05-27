@@ -277,6 +277,18 @@ export default class ChannelManage extends Component {
                     </Tooltip>     
             },
             {
+                title: '是否小程序可用',
+                key: 'is_applets',
+                dataIndex: 'is_applets',
+                render: (text, record) => text === 0 ? '否' : '是'
+            },
+            {
+                title: '是否网站可用',
+                key: 'is_website',
+                dataIndex: 'is_website',
+                render: (text, record) => text === 0 ? '否' : '是'
+            },
+            {
                 title: '状态',
                 key: 'status',
                 dataIndex: 'status',
