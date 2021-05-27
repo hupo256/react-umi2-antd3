@@ -80,11 +80,6 @@ export function Provider({ children }) {
             pageNum: '1',
             pageSize: '4',
           },
-          {
-            key: 'channel',
-            pageNum: '1',
-            pageSize: '20',
-          },
         ];
         getHomePageEditData(param).then(res => {
           console.log(res);
@@ -104,6 +99,9 @@ export function Provider({ children }) {
           editTemplateJson.jsonData.map(e => {
             if (e.flag === 'article') {
               e.nameListData = dictionaries.filter(i => i.status === '1')
+            }
+            if (e.title) {
+              e.afterName = e.title
             }
           });
           setpageData(addMapToData(editTemplateJson));
