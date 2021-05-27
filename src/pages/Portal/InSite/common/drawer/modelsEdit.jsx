@@ -12,7 +12,7 @@ import { defaultImg } from '../../tools/data';
 import Upload from '@/components/Upload/Upload';
 import LinkChoose from './linkChoose';
 import styles from './drawerEditor.less';
-import example from '../../../../../assets/example.png'
+// import example from '../../../../../assets/example.png'
 
 const { Group } = Radio;
 const maxLen = 6;

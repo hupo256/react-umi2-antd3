@@ -1,10 +1,4 @@
-/*
- * @Author: tdd
- * @Date: 2021-03-23 13:49:12
- * @Last Modified by: tdd
- * @Last Modified time: 2021-03-23 13:49:12
- * 小程序UI模板
- */
+
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import router from 'umi/router';
 import { ctx } from '../common/context';
@@ -67,7 +61,7 @@ const componentMap = {
 
 export default function Preview(props) {
   const { from } = props;
-  const { pageData, touchPageData, templateCode } = useContext(ctx);
+  const { pageData, touchPageData, templateCode, navData } = useContext(ctx);
   const [totopShow, settotopShow] = useState(false);
   const [curTheme, setcurTheme] = useState('WMHPT0001');
   const contentBox = useRef();
@@ -121,51 +115,40 @@ export default function Preview(props) {
             <span>首页</span>
           </div>
         </div>
-
         {/* 循环出主体 */}
         <div className={pageStyle.conBox} ref={contentBox}>
           {pageData?.jsonData?.length > 0 &&
             pageData.jsonData.map((item, ind) => {
               const { flag, list = [] } = item;
-              const { tips, creatCom } = componentMap[flag];
-              return (
-                <HoverMd key={ind} tips={tips} flag={flag} isEmpty={!list?.length}>
-                  {creatCom({ ...item })}
-                </HoverMd>
-              );
+              const model = componentMap[flag];
+              if (model) {
+                const { tips, creatCom } = model
+                return (
+                  <HoverMd key={ind} tips={tips} flag={flag} isEmpty={!list?.length}>
+                    {creatCom({ ...item })}
+                  </HoverMd>
+                );
+              }
             })}
+            <div style={{position: 'absolute', width: '100%', left: 0, bottom: 0, height: 50}}>
+              <HoverMd key={999} tips='导航' flag="nav">
+                <div className={pageStyle.footerBox}>
+                  <ul className={pageStyle.flex}>
+                    {navData?.map(e =>
+                      <li key={e.navModule} className={e.navModule === 'home' ? pageStyle.on : ''}>
+                        <svg className="icon">
+                          <use href={`#${e.icon}`} />
+                        </svg>
+                        <span>{e.name}</span>
+                      </li>
+                    )}
+                  </ul>
+                </div>
+              </HoverMd>
+            </div>
         </div>
 
         {/* footer */}
-        <div className={pageStyle.footerBox}>
-          <ul className={pageStyle.flex}>
-            <li className={pageStyle.on}>
-              <svg className="icon" aria-hidden="true">
-                <use href="#iconic_home_no" />
-              </svg>
-              <span>首页</span>
-            </li>
-            <li>
-              <svg className="icon" aria-hidden="true">
-                <use href="#iconic_case_no" />
-              </svg>
-              <span>案例</span>
-            </li>
-            <li>
-              <svg className="icon" aria-hidden="true">
-                <use href="#iconic_site_no" />
-              </svg>
-              <span>工地</span>
-            </li>
-            <li>
-              <svg className="icon" aria-hidden="true">
-                <use href="#iconic_designer_no" />
-              </svg>
-              <span>设计师</span>
-            </li>
-          </ul>
-        </div>
-
         <div className={`${pageStyle.totopBox} ${totopShow ? pageStyle.show : ''}`}>
           <span>
             <svg className="icon" aria-hidden="true">
