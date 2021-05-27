@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:50:21 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-26 14:05:02
+ * @Last Modified time: 2021-05-27 11:14:01
  * 文章库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -15,6 +15,8 @@ import { paginations, fixedTitle, successIcon, waringInfo, MyIcon } from '@/util
 import imgl from '../../../../assets/banner_left@2x.png';
 import imgr from '../../../../assets/banner_right@2x.png';
 import imgtj from '../../../../assets/tj.png';
+import ic_smile from '../../../../assets/ic_smile.png';
+import ic_arm from '../../../../assets/ic_arm.png';
 import styles from './ArticleLibrary.less';
 const { confirm } = Modal;
 const { Search } = Input;
@@ -81,8 +83,37 @@ class ArticleLibrary extends PureComponent {
         dataIndex: 'articleTitle',
       },
       {
+        title: '文章链接',
+        dataIndex: 'link',
+        render: (t, r) => {
+          const txt = `page/ArticleDetail/ArticleDetail?id=${r.articleUid}`;
+          return (
+            <div className={styles.copy}>
+              <p id="text" style={{ display: 'block' }}>
+                {txt}
+              </p>
+              <textarea id="input" className={styles.ipt} />
+              {txt ? (
+                <span
+                  style={{ marginLeft: 0 }}
+                  onClick={() => {
+                    this.handleCopy(txt);
+                  }}
+                >
+                  <Icon type="copy" />
+                  <span style={{ marginLeft: 5 }}>复制链接</span>
+                </span>
+              ) : (
+                ''
+              )}
+            </div>
+          );
+        },
+      },
+      {
         title: '状态',
         dataIndex: 'articleStatus',
+        width: 100,
         render: (t, r) => {
           return (
             <span style={{ position: 'relative', paddingLeft: 20 }}>
@@ -106,6 +137,7 @@ class ArticleLibrary extends PureComponent {
       {
         title: '更新时间',
         dataIndex: 'updateTime',
+        width: 160,
         render: (t, r) => {
           return (
             <div>
@@ -118,6 +150,7 @@ class ArticleLibrary extends PureComponent {
       {
         title: '操作',
         dataIndex: 'operate',
+        width: 120,
         render: (t, r) => {
           return (
             <div className="operateWrap">
@@ -226,7 +259,7 @@ class ArticleLibrary extends PureComponent {
               <p className={styles.subText}>
                 海量文章库，选完直接用
                 {'  '}
-                <MyIcon type="icon-jiayouaoligei" />
+                <img src={ic_arm} style={{ width: 17, height: 18 }} />
               </p>
               <p
                 onClick={() => this.setState({ ArticleListVisible: true })}
@@ -241,7 +274,7 @@ class ArticleLibrary extends PureComponent {
               <p className={styles.subText}>
                 喜欢自己原创，满满干货
                 {'  '}
-                <MyIcon type="icon-xiaolian" style={{ color: '#f4b058' }} />
+                <img src={ic_smile} style={{ width: 18, height: 18 }} />
               </p>
               <p
                 onClick={() => {
@@ -353,6 +386,14 @@ class ArticleLibrary extends PureComponent {
   handleArticleCancel = () => {
     this.setState({ ArticleListVisible: false });
   };
+
+  handleCopy(t) {
+    let input = document.getElementById('input');
+    input.value = t; // 修改文本框的内容
+    input.select(); // 选中文本
+    document.execCommand('copy'); // 执行浏览器复制命令
+    message.success('复制成功');
+  }
 }
 
 export default ArticleLibrary;
