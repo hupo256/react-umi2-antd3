@@ -239,7 +239,7 @@ class ArticleLibrary extends PureComponent {
               <img src={imgr} style={{ width: 312, height: 157 }} />
               <p className={styles.subTitle}>原创文章库</p>
               <p className={styles.subText}>
-                喜欢自己原创，满满干活
+                喜欢自己原创，满满干货
                 {'  '}
                 <MyIcon type="icon-xiaolian" style={{ color: '#f4b058' }} />
               </p>
