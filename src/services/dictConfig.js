@@ -29,6 +29,14 @@ export async function queryDicForForm(params) {
     body: params,
   });
 }
+// 查询文章栏目字典
+export async function queryArticleTopicDic(params) {
+  return request(baseurl + '/api/v1/wechat/article/queryArticleTopicDic', {
+    method: 'POST',
+    body: params,
+  });
+}
+
 // 查询字典列表
 export async function queryDicListByModule(params) {
   return request(baseurl + '/api/v1/wechat/dic/queryDicListByModule', {
