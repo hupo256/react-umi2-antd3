@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-04-28 17:05:47 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-20 14:42:39
+ * @Last Modified time: 2021-05-27 14:19:07
  * 小程序设置
  */
 
@@ -34,9 +34,6 @@ class Index extends PureComponent {
     const code = localStorage.getItem('auth');
     const saasSellerCode = JSON.parse(code).companyCode;
     dispatch({ type: 'MiniProgram/getAuthInfoModel', payload: { saasSellerCode } }).then(res => {
-      console.log('====================================');
-      console.log(res);
-      console.log('====================================');
       if (res && res.code === 200 && res.data.isAuthedWechatMini) {
         dispatch({ type: 'MiniProgram/formbindmapModel' });
         dispatch({ type: 'MiniProgram/queryWechatMiniGlobalModel' }).then(res => {
