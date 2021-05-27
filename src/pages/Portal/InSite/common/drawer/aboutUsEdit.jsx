@@ -139,7 +139,7 @@ export default function TagsEdit(props) {
                   <img src={url || `${url}ic_Image.png`} alt="" />
                 </div>
                 <div className={styles.inpBox}>
-                  <div style={{marginBottom: 13, marginTop: 13}}>关联页面</div>
+                  <div style={{marginBottom: 7, marginTop: 17}}>关联页面</div>
                   <Select pageData={pageData} defvalue={defvalue} type={type} handleSelect={value => handleSelect(value)} />
                 </div>
               </div>
