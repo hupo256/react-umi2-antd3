@@ -45,13 +45,13 @@ export default function TagsEdit(props) {
     [curFlag]
   );
 
-  useEffect(
-    () => {
-      const hgt = curFlag === 'banner' ? 176 : 85;
-      setHeight(hgt);
-    },
-    [imgHeightType]
-  );
+  // useEffect(
+  //   () => {
+  //     const hgt = curFlag === 'banner' ? 176 : 85;
+  //     setHeight(hgt);
+  //   },
+  //   [imgHeightType]
+  // );
 
   function addNewImgs() {
     if (tagList.length === maxLen) {
