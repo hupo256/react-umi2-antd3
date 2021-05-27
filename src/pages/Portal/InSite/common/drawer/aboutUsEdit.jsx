@@ -38,8 +38,9 @@ export default function TagsEdit(props) {
     const result = newObj?.jsonData?.find(e => e.flag === curFlag);
     let val = e.target.value;
     if (val?.length > 10) {
-      nameObj.vaStatus = 'error';
-      nameObj.errMsg = '最多10个字符';
+      message.error('最多可输入10个字符哦')
+      // nameObj.vaStatus = 'error';
+      // nameObj.errMsg = '最多10个字符';
     } else {
       nameObj.vaStatus = 'success';
       nameObj.errMsg = '';
@@ -54,8 +55,9 @@ export default function TagsEdit(props) {
     const result = newObj?.jsonData?.find(e => e.flag === curFlag);
     let val = e.target.value;
     if (val?.length > 30) {
-      contentObj.vaStatus = 'error';
-      contentObj.errMsg = '最多30个字符';
+      message.error('最多可输入30个字符哦')
+      // contentObj.vaStatus = 'error';
+      // contentObj.errMsg = '最多30个字符';
     } else {
       contentObj.vaStatus = 'success';
       contentObj.errMsg = '';
@@ -113,7 +115,7 @@ export default function TagsEdit(props) {
                     ref={titInp}
                     style={{ width: '100%' }}
                     value={name}
-                    maxLength={10}
+                    // maxLength={10}
                     onBlur={e => tagsTexChange(e)}
                     onChange={e => tagsTexChange(e)}
                     placeholder="请输入主标题"
@@ -122,7 +124,7 @@ export default function TagsEdit(props) {
                 <Item validateStatus={contentObj.vaStatus} help={contentObj.errMsg}>
                   <Input
                     value={content}
-                    maxLength={30}
+                    // maxLength={30}
                     onBlur={e => discTexChange(e)}
                     onChange={e => discTexChange(e)}
                     placeholder="请输入副标题"
