@@ -334,7 +334,7 @@ export default class ChannelManage extends Component {
             },
         ];
         if (isPcPreview) {
-            columns.splice(5 , 1);
+            columns.splice(7, 1);
         }
         const components = {
             body: {
