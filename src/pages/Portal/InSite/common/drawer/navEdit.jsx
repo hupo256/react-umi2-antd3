@@ -103,7 +103,6 @@ export default function TagsEdit(props) {
               href={`#${e.icon}`}
             />
           </svg>
-          <span>{e.name}</span>
         </div>
       },
     },
@@ -146,10 +145,10 @@ export default function TagsEdit(props) {
           ''
         ) : (
           <div className={pageStyle.tbOpration}>
-            <a disabled={index === 1} onClick={() => toMove(index, -1)}>
+            <a className={index === 1 ? pageStyle.disabled : ''} disabled={index === 1} onClick={() => toMove(index, -1)}>
               <Icon type="arrow-up" />
             </a>
-            <a disabled={index === navData.length - 1} onClick={() => toMove(index, 1)}>
+            <a className={index === navData.length - 1 ? pageStyle.disabled : ''} disabled={index === navData.length - 1} onClick={() => toMove(index, 1)}>
               <Icon type="arrow-down" />
             </a>
             <a onClick={() => delImg(text)}>

@@ -84,7 +84,7 @@ export default function editModel(props) {
       render:(text, item) => {
         let result = null
         if (item.flag === 'case' || item.flag === 'site' || item.flag === 'design' || item.flag === 'article' || item.flag === 'aboutUs') {
-          result = <Input value={text} onChange={(e) => changeModelName(item, e)} onBlur={saveName} />
+          result = <Input maxLength={8} value={text} onChange={(e) => changeModelName(item, e)} onBlur={saveName} />
         }
         return result
       }
@@ -97,9 +97,9 @@ export default function editModel(props) {
   )
   return (
     <>
-      <div style={{marginBottom: '1em'}}>&nbsp;&nbsp;<Icon type="info-circle" style={{color: '#fe6a30'}} /> 编辑模块后，【模块标题】将按照您编辑后的展示&nbsp;
+      <div style={{marginBottom: '1em', fontSize: 12, paddingLeft: 17}}><Icon type="info-circle" style={{color: '#c1c1c1'}} /> 编辑模块后，【模块标题】将按照您编辑后的展示&nbsp;
         <Popover content={content} title={null} placement="top" forceRender>
-          <Button type="link" size="small" style={{padding: 0}}>示例</Button>
+          <Button type="link" size="small" style={{padding: 0, fontSize: 12}}>示例</Button>
         </Popover>
       </div>
       <Table

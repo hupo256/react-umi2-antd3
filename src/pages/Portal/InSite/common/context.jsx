@@ -103,6 +103,9 @@ export function Provider({ children }) {
             if (e.flag === 'article') {
               e.nameListData = dictionaries.filter(i => i.status === '1');
             }
+            if (e.title) {
+              e.afterName = e.title
+            }
           });
           setpageData(addMapToData(editTemplateJson));
           settemplateCode(editTemplateCode);

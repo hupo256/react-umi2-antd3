@@ -10,9 +10,9 @@ export const canEditTags = [
 ];
 export const defaultImg = 'http://img.inbase.in-deco.com/crm-saas/img/games/default/';
 export const editText =
-  '编辑模块后，【模块标题】将按照您编辑后的展示。 鼠标悬浮示例，查看示例图片。';
+  '编辑模块后，【模块标题】将按照您编辑后的展示。 ';
 export const tipsText =
-  '您的“案例、工地直播、设计师团队、公司电话/名称”在内容管理维护后，会依据您已有的内容自动生成样式。';
+  '您的“案例、参观工地、设计师团队、公司电话/名称”在内容管理维护后，会依据您已有的内容自动生成样式。';
 export const LinkType = [
   {
     name: '案例',

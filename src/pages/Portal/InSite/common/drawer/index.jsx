@@ -54,10 +54,12 @@ export default function DrawerEditor(props) {
   // 抽屉关闭时获取新的channles
   function drawerClose() {
     const param = {
+      includeDefIndex: false,
       pageNum: 1,
       pageSize: 20,
+      status: 1,
     };
-    appletsMenus(param).then(re => {
+    getList(param).then(re => {
       console.log(re);
       if (!re?.data) return;
       const newObj = { ...pageData };
@@ -81,7 +83,7 @@ export default function DrawerEditor(props) {
           width={900}
           headerStyle={{ border: 'none', marginBottom: '-18px' }}
         >
-          <ChannelManage isPcPreview={true} />
+          <ChannelManage />
         </Drawer>
       ) : (
         <div
