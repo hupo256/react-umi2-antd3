@@ -79,6 +79,12 @@ const Home = () => {
       ;(async () => {
         const res = await getFooter()
         setFooterData(_.get(res, 'data', []))
+
+        // admin独有，请勿删除
+        if (res?.data && document) {
+          const iconUrl = res.data.icon
+          document.head.querySelector('[rel=icon]').href = iconUrl
+        }
       })()
       ;(async () => {
         const res = await getDomain()
