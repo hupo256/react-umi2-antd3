@@ -87,27 +87,6 @@ const Home = () => {
           const iconUrl = res.data.icon
           document.head.querySelector('[rel=icon]').href = iconUrl
         }
-
-        if (document && res?.data) {
-          const data = res.data
-          const string = data.header,
-            temp = document.createElement('div')
-
-          temp.innerHTML = string
-          const elemScripts = temp.querySelectorAll('script')
-
-          _.forEach(elemScripts, async elem => {
-            const src = elem.src
-            if (src) {
-              try {
-                const res = await axios.get(src)
-                eval(res.data)
-              } catch (e) {}
-            } else {
-              eval(elem.text)
-            }
-          })
-        }
       })()
       ;(async () => {
         const res = await getDomain()
