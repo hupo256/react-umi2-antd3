@@ -117,7 +117,7 @@ class Select extends Component {
           <Icon type={show ? 'up' : 'down'} />
         </span>
         {this.state.show && (
-          <div className={styles.selectList} style={{height: textOne === '文章' && step === 2 ? 'auto' : 347, paddingBottom: textOne === '文章' && step === 2 ? 5 : 0}}>
+          <div className={styles.selectList} style={{height: textOne === '文章' && step === 2 ? 'auto' : 426, paddingBottom: textOne === '文章' && step === 2 ? 5 : 0}}>
             <div className={styles.selectListTitle}>
               <span
                 className={step == 1 && styles.cur}
@@ -149,7 +149,7 @@ class Select extends Component {
                   onPressEnter={() => this.handleSrarch()}
                   style={{ width: '100%', marginBottom: 10 }}
                 />
-                {textOne === '文章' && <p style={{paddingBottom: 10}}>
+                {textOne === '文章' && <p>
                   文章栏目：
                   <span
                     onClick={() => this.handleSrarchStatus('')}
@@ -181,7 +181,7 @@ class Select extends Component {
                       }, // 点击行
                     };
                   }}
-                  scroll={{ y: 182 }}
+                  scroll={{ y: textOne === '文章' ? 210 : 270 }}
                   columns={columns}
                   // rowSelection={rowSelection}
                   pagination={false}
