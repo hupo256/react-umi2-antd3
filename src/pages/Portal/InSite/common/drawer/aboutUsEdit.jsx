@@ -39,12 +39,13 @@ export default function TagsEdit(props) {
     let val = e.target.value;
     if (val?.length > 10) {
       message.error('最多可输入10个字符哦')
+      return
       // nameObj.vaStatus = 'error';
       // nameObj.errMsg = '最多10个字符';
-    } else {
-      nameObj.vaStatus = 'success';
-      nameObj.errMsg = '';
     }
+    nameObj.vaStatus = 'success';
+    nameObj.errMsg = '';
+
     result.name = val;
     result.nameObj = nameObj;
     setpageData(newObj);
@@ -56,12 +57,13 @@ export default function TagsEdit(props) {
     let val = e.target.value;
     if (val?.length > 30) {
       message.error('最多可输入30个字符哦')
+      return
       // contentObj.vaStatus = 'error';
       // contentObj.errMsg = '最多30个字符';
-    } else {
-      contentObj.vaStatus = 'success';
-      contentObj.errMsg = '';
     }
+    contentObj.vaStatus = 'success';
+    contentObj.errMsg = '';
+
     result.content = val;
     result.contentObj = contentObj;
     setpageData(newObj);

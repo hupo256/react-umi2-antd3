@@ -23,6 +23,10 @@ export default function editModel(props) {
     setpageData,
   } = useContext(ctx);
   function changeModelName (item, event) {
+    if (event.target.value.length > 8) {
+      message.error('最多可输入8个字符哦')
+      return
+    }
     const newObj = { ...pageData };
     newObj.jsonData.map((e) => {
       if (e.flag === item.flag) {
@@ -84,7 +88,7 @@ export default function editModel(props) {
       render:(text, item) => {
         let result = null
         if (item.flag === 'case' || item.flag === 'site' || item.flag === 'design' || item.flag === 'article' || item.flag === 'aboutUs') {
-          result = <Input maxLength={8} value={text} onChange={(e) => changeModelName(item, e)} onBlur={saveName} />
+          result = <Input value={text} onChange={(e) => changeModelName(item, e)} onBlur={saveName} />
         }
         return result
       }
