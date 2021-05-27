@@ -2,7 +2,7 @@
  * @Author: zqm
  * @Date: 2021-04-30 11:36:34
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-25 15:44:05
+ * @Last Modified time: 2021-05-19 11:15:46
  * 关联设置
  */
 import React, { Component } from 'react';
@@ -59,7 +59,7 @@ class LinkPage extends Component {
             <Input
               value={btnName}
               onChange={e => this.setState({ btnName: e.target.value, isEdit: true })}
-              //disabled={btnType == '1'}
+              disabled={btnType == '1'}
               placeholder="请输入按钮名称"
               style={{ width: 360 }}
             />
@@ -108,8 +108,7 @@ class LinkPage extends Component {
       type: 'MiniProgram/formcollocateModel',
       payload: {
         bindType: saveValue.type == 1 ? 1 : 0,
-        // buttonText: saveValue.type == 1 ? this.props.defvalue.buttonText : btnName,
-        buttonText: btnName,
+        buttonText: saveValue.type == 1 ? this.props.defvalue.buttonText : btnName,
         directType,
         formUid: saveValue.type == 1 ? null : saveValue.record.formUid,
       },
