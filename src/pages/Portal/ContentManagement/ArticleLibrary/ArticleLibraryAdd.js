@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-03-18 11:21:43 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-14 18:22:21
+ * @Last Modified time: 2021-05-28 17:41:43
  * 创建文章
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -165,7 +165,7 @@ class ArticleLibraryAdd extends PureComponent {
                             >
                               <Icon type="eye" />
                             </span>
-                            <span onClick={() => this.setState({ coverImg: null })}>
+                            <span onClick={() => this.handleDeleteImg()}>
                               <Icon type="delete" />
                             </span>
                           </div>
@@ -289,6 +289,13 @@ class ArticleLibraryAdd extends PureComponent {
       </div>
     );
   }
+  handleDeleteImg = () => {
+    this.setState({ coverImg: null }, () => {
+      this.props.form.setFieldsValue({
+        articleCoverImg: '',
+      });
+    });
+  };
   handleEditorCont = cont => {
     this.setState({ editorContent: cont });
   };
