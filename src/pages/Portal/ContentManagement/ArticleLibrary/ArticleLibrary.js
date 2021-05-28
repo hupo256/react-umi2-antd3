@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:50:21 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-20 15:11:51
+ * @Last Modified time: 2021-05-26 14:05:02
  * 文章库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -14,6 +14,7 @@ import ArticleListModel from './ArticleListModel';
 import { paginations, fixedTitle, successIcon, waringInfo, MyIcon } from '@/utils/utils';
 import imgl from '../../../../assets/banner_left@2x.png';
 import imgr from '../../../../assets/banner_right@2x.png';
+import imgtj from '../../../../assets/tj.png';
 import styles from './ArticleLibrary.less';
 const { confirm } = Modal;
 const { Search } = Input;
@@ -218,8 +219,9 @@ class ArticleLibrary extends PureComponent {
           width={730}
         >
           <div className={styles.CreateMode}>
-            <div>
+            <div className={styles.createItem}>
               <img src={imgl} style={{ width: 312, height: 157 }} />
+              <img src={imgtj} className={styles.imgtj} />
               <p className={styles.subTitle}>公有文章库</p>
               <p className={styles.subText}>
                 海量文章库，选完直接用
@@ -233,7 +235,7 @@ class ArticleLibrary extends PureComponent {
                 直接使用
               </p>
             </div>
-            <div>
+            <div className={styles.createItem}>
               <img src={imgr} style={{ width: 312, height: 157 }} />
               <p className={styles.subTitle}>原创文章库</p>
               <p className={styles.subText}>

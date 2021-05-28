@@ -231,8 +231,8 @@ export default class ChannelManage extends Component {
     render() {
         const { isShow, list, pageNum, recordTotal, pageSize } = this.state;
         const { isOver, connectDragSource, connectDropTarget, moveRow, showCreateEdit,  isCreate, currentDetailType, isPcPreview } = this.props;
-        const appTip = <img  src="https://img0.baidu.com/it/u=2568886724,3755935577&fm=26&fmt=auto&gp=0.jpg" alt="" srcset=""/>
-        const webTip = <img  src="https://img0.baidu.com/it/u=2568886724,3755935577&fm=26&fmt=auto&gp=0.jpg" alt="" srcset=""/>
+        const appTip = <img width='160'  src={require('@/assets/wechartNav.png')} alt="" srcset=""/>
+        const webTip = <img height='50' src={require('@/assets/pcNav.png')} alt="" srcset=""/>
 
 
         let columns = [
@@ -244,10 +244,10 @@ export default class ChannelManage extends Component {
                 render: (text, record) => record.isIndex === 0 && <Icon type="fullscreen" rotate={45} style={{fontSize: 20}} />
             },
             {
-                title: <div>
+                title: <div ref='weChartDom'>
                             <span>小程序频道名称</span>
                             {!!!isPcPreview &&
-                            <Popover content={appTip} >
+                            <Popover content={appTip} forceRender={true}>
                                 <Icon type="question-circle" className={styles['table-header-icon']} />
                             </Popover>}
                             
@@ -259,7 +259,7 @@ export default class ChannelManage extends Component {
                 title: <div>
                             <span>网站频道名称</span>
                             {!!!isPcPreview &&
-                            <Popover content={webTip}>
+                            <Popover content={webTip} forceRender={true}>
                                 <Icon type="question-circle" className={styles['table-header-icon']} />
                             </Popover>}
 
@@ -275,6 +275,18 @@ export default class ChannelManage extends Component {
                     <Tooltip placement="topLeft" title={text}>
                         <div style={{maxWidth: 180, overflow:'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis'}}>{text}</div>
                     </Tooltip>     
+            },
+            {
+                title: '是否小程序可用',
+                key: 'isApplets',
+                dataIndex: 'isApplets',
+                render: (text, record) => text === 0 ? '否' : '是'
+            },
+            {
+                title: '是否网站可用',
+                key: 'isWebsite',
+                dataIndex: 'isWebsite',
+                render: (text, record) => text === 0 ? '否' : '是'
             },
             {
                 title: '状态',
@@ -322,7 +334,7 @@ export default class ChannelManage extends Component {
             },
         ];
         if (isPcPreview) {
-            columns.splice(5 , 1);
+            columns.splice(7, 1);
         }
         const components = {
             body: {

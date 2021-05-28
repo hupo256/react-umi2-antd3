@@ -23,6 +23,10 @@ export default function editModel(props) {
     setpageData,
   } = useContext(ctx);
   function changeModelName (item, event) {
+    if (event.target.value.length > 8) {
+      message.error('最多可输入8个字符哦')
+      return
+    }
     const newObj = { ...pageData };
     newObj.jsonData.map((e) => {
       if (e.flag === item.flag) {
@@ -56,7 +60,7 @@ export default function editModel(props) {
             return '案例'
             break;
           case 'site':
-            return '工地直播'
+            return '参观工地'
             break;
           case 'design':
             return '设计师团队'
@@ -97,9 +101,9 @@ export default function editModel(props) {
   )
   return (
     <>
-      <div style={{marginBottom: '1em'}}>&nbsp;&nbsp;<Icon type="info-circle" style={{color: '#fe6a30'}} /> 编辑模块后，【模块标题】将按照您编辑后的展示&nbsp;
+      <div style={{marginBottom: '1em', fontSize: 12, paddingLeft: 17}}><Icon type="info-circle" style={{color: '#c1c1c1'}} /> 编辑模块后，【模块标题】将按照您编辑后的展示&nbsp;
         <Popover content={content} title={null} placement="top" forceRender>
-          <Button type="link" size="small" style={{padding: 0}}>示例</Button>
+          <Button type="link" size="small" style={{padding: 0, fontSize: 12}}>示例</Button>
         </Popover>
       </div>
       <Table
