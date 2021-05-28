@@ -71,7 +71,7 @@ export default function TitleGuid(props) {
           <div className={styles.btnBox}>
             <Button onClick={showConfirm}>放弃更改</Button>
             <a href="#/pc/preview" target="_blank">
-              <Icon type="dribbble" />
+              <Icon type="desktop" />
               <span>网站预览</span>
             </a>
             <Button onClick={toPublish} type="primary">
