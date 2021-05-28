@@ -69,7 +69,7 @@ export default [
       {
         path: '/portal/insite',
         name: 'insite',
-        icon: 'dribbble',
+        icon: 'MyIcon@icon-zhandian',
         code: 'MU90000001',
         routes: [
           {
@@ -125,13 +125,13 @@ export default [
       {
         path: '/portal',
         redirect: '/portal/contentmanagement',
-        icon: 'dashboard',
-        code: 'MU90000001',
+        icon: 'MyIcon@icon-neirong',
+        code: 'MU900000010001',
       },
       {
         path: '/portal/contentmanagement',
         name: 'contentmanagement',
-        icon: 'home',
+        icon: 'MyIcon@icon-neirong',
         code: 'MU900000010001',
         routes: [
           {
@@ -241,7 +241,7 @@ export default [
       {
         path: '/portal/activity',
         name: 'activity',
-        icon: 'smile',
+        icon: 'MyIcon@icon-liwu',
         code: 'MU90000004',
         routes: [
           {
@@ -299,7 +299,7 @@ export default [
       {
         path: '/customer',
         name: 'customer',
-        icon: 'retweet',
+        icon: 'MyIcon@icon-xiansuo',
         code: 'MU90000002',
         component: './Customer/LeadManagement/LeadManagement',
         // routes: [
