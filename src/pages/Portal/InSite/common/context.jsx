@@ -8,12 +8,14 @@
 import React, { useState, createContext } from 'react';
 import { getHomePageEditData, queryNavEditData } from '@/services/miniProgram';
 import { highlightsBgImgs } from '../tools/data';
+import { getauth } from '../../../../utils/authority';
 import {
   queryArticleTopicDic, //其他模块查询字典
 } from '@/services/dictConfig';
 
 export const ctx = createContext();
-export function Provider({ children }) {
+export function Provider({ children}) {
+
   const [pageData, setpageData] = useState({}); // 页面渲染数据
   const [curFlag, setcurFlag] = useState(''); // 当前编辑数据的标签
   const [curInd, setcurInd] = useState(-1); // 当前修改的数据索引值
@@ -85,12 +87,13 @@ export function Provider({ children }) {
           console.log(res);
           if (!res?.data) return;
           console.log(res.data.jsonData)
+          const userInfo = getauth()
           const aboutUs = res.data.editTemplateJson.jsonData.find(e => e.flag === 'aboutUs')
           if (!aboutUs) {
             res.data.editTemplateJson.jsonData.push({
               flag: 'aboutUs',
               title: '关于我们',
-              name: '公司简称',
+              name: userInfo.abbreviateName || '公司简介',
               content: '请用一句简明扼要的话，来描述下您的公司吧',
               url: 'http://img.inbase.in-deco.com/crm-saas/img/banner_about.png'
             })
