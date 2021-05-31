@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-05-28 18:40:04
+ * @Last Modified time: 2021-05-31 17:41:52
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -373,10 +373,10 @@ class ProjectLibrary extends PureComponent {
     const { dispatch } = this.props;
     const that = this;
     confirm({
-      title: status + '' === '1' ? '确认要停用当前专题吗？' : '确认要启用当前专题吗？',
+      title: status + '' == '1' ? '确认要停用当前专题吗？' : '确认要启用当前专题吗？',
       content:
-        status + '' === '1' ? '停用后，将无法看到当前专题界面' : '启用后，将可以查看到当前专题界面',
-      icon: status === '1' ? successIcon : waringInfo,
+        status + '' == '1' ? '停用后，将无法看到当前专题界面' : '启用后，将可以查看到当前专题界面',
+      icon: status == '1' ? waringInfo : successIcon,
       onOk() {
         dispatch({
           type: 'ProjectLibrary/specialStatusModel',
