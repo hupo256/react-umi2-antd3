@@ -153,7 +153,7 @@ export default function Preview(props) {
             </div>
         </div>
 
-        {/* footer */}
+        {/* totopBox */}
         <div className={`${pageStyle.totopBox} ${totopShow ? pageStyle.show : ''}`}>
           <span>
             <svg className="icon" aria-hidden="true">

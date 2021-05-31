@@ -69,14 +69,12 @@ function Templates(props) {
             arr.push(e);
           }
         });
-        saveNavEditData(arr)
-          .then(r => {
-            if (r.code === 200) {
-              const key = `edit?templateCode=${code}`;
-              router.push(`${baseRouteKey}${key}`);
-            }
-          })
-
+        saveNavEditData(arr).then(r => {
+          if (r.code === 200) {
+            const key = `edit?templateCode=${code}`;
+            router.push(`${baseRouteKey}${key}`);
+          }
+        });
       }
     });
   }
