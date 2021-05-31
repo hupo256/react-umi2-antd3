@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-05-31 17:41:52
+ * @Last Modified time: 2021-05-31 18:24:23
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -309,6 +309,7 @@ class ProjectLibrary extends PureComponent {
                   <span
                     className="operateBtn"
                     onClick={() => {
+                      localStorage.setItem('terminalType', 0);
                       router.push(
                         `/portal/contentmanagement/ProjectLibrary/ConfigurationTopic?&uid=${
                           r.specialUid
