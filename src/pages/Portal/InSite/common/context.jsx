@@ -6,6 +6,7 @@
  * mini program 里的store
  */
 import React, { useState, createContext } from 'react';
+import { message } from 'antd';
 import { getHomePageEditData, queryNavEditData } from '@/services/miniProgram';
 import { highlightsBgImgs } from '../tools/data';
 import { getauth } from '../../../../utils/authority';
@@ -51,6 +52,7 @@ export function Provider({ children }) {
   ]); //导航数据
 
   function touchPageData() {
+    message.loading('正在加载，请稍后...');
     queryArticleTopicDic().then(r => {
       if (r && r.code === 200) {
         const dictionaries = r.data;
@@ -88,8 +90,9 @@ export function Provider({ children }) {
           },
         ];
         getHomePageEditData(param).then(res => {
+          message.destroy();
           if (!res?.data) return;
-          const userInfo = getauth()
+          const userInfo = getauth();
           const aboutUs = res.data.editTemplateJson.jsonData.find(e => e.flag === 'aboutUs');
           if (!aboutUs) {
             res.data.editTemplateJson.jsonData.push({
@@ -106,7 +109,7 @@ export function Provider({ children }) {
               e.nameListData = dictionaries.filter(i => i.status === '1');
             }
             if (e.title) {
-              e.afterName = e.title
+              e.afterName = e.title;
             }
           });
           setpageData(addMapToData(editTemplateJson));
