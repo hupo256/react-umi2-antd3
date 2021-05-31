@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-24 15:37:59
+ * @Last Modified time: 2021-05-28 18:35:20
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -140,25 +140,25 @@ class ProjectLibrary extends PureComponent {
         title: '表单标题',
         dataIndex: 'formTitle',
       },
-      {
-        title: '适用终端',
-        dataIndex: 'terminalType',
-        render: (t, r) => {
-          let type;
-          switch (t) {
-            case 0:
-              type = '小程序';
-              break;
-            case 1:
-              type = 'PC';
-              break;
-            default:
-              type = '/';
-              break;
-          }
-          return type;
-        },
-      },
+      // {
+      //   title: '适用终端',
+      //   dataIndex: 'terminalType',
+      //   render: (t, r) => {
+      //     let type;
+      //     switch (t) {
+      //       case 0:
+      //         type = '小程序';
+      //         break;
+      //       case 1:
+      //         type = 'PC';
+      //         break;
+      //       default:
+      //         type = '/';
+      //         break;
+      //     }
+      //     return type;
+      //   },
+      // },
       {
         title: '表单类型',
         dataIndex: 'formType',

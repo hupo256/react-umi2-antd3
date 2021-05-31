@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-09 23:15:29
+ * @Last Modified time: 2021-05-28 16:08:25
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -28,6 +28,13 @@ class CreateStepThree extends PureComponent {
     const {
       ProjectLibrary: { uspecialUrlData },
     } = this.props;
+    let terminalType = localStorage.getItem('terminalType');
+    let url = '';
+    if (terminalType === 0) {
+      url = uspecialUrlData.specialUrl;
+    } else {
+      url = uspecialUrlData.specialUrlPc;
+    }
     let extra = (
       <div>
         <div>专题标题: {uspecialUrlData.specialTitle}</div>
@@ -35,11 +42,11 @@ class CreateStepThree extends PureComponent {
           专题链接:
           <span
             onClick={() => {
-              this.handleCopy(uspecialUrlData.specialUrl);
+              this.handleCopy(url);
             }}
             className={styles.ipb}
           >
-            {uspecialUrlData.specialUrl}
+            {url}
             <Icon type="copy" />
             <span style={{ marginLeft: 5 }}>复制链接</span>
           </span>
