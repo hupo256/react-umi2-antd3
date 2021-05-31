@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-05-28 18:35:20
+ * @Last Modified time: 2021-05-31 17:42:44
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -323,12 +323,12 @@ class ProjectLibrary extends PureComponent {
     const { dispatch } = this.props;
     const that = this;
     confirm({
-      title: status + '' === '1' ? '确认要停用当前表单吗？' : '确认要启用当前表单吗？',
+      title: status + '' == '1' ? '确认要停用当前表单吗？' : '确认要启用当前表单吗？',
       content:
-        status + '' === '1'
+        status + '' == '1'
           ? '停用后，将无法关联当前表单(已关联的不受影响)'
           : '启用后，将可以关联使用表单',
-      icon: status === '1' ? successIcon : waringInfo,
+      icon: status == '1' ? waringInfo : successIcon,
       onOk() {
         dispatch({
           type: 'FormLibrary/formStatusModel',
