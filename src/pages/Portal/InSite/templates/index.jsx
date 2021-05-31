@@ -62,14 +62,12 @@ function Templates(props) {
     };
     updateHomePageEditData(parmas).then(res => {
       if (res.code === 200) {
-        saveNavEditData(navData)
-          .then(r => {
-            if (r.code === 200) {
-              const key = `edit?templateCode=${code}`;
-              router.push(`${baseRouteKey}${key}`);
-            }
-          })
-
+        saveNavEditData(navData).then(r => {
+          if (r.code === 200) {
+            const key = `edit?templateCode=${code}`;
+            router.push(`${baseRouteKey}${key}`);
+          }
+        });
       }
     });
   }

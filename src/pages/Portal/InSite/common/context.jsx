@@ -6,6 +6,7 @@
  * mini program 里的store
  */
 import React, { useState, createContext } from 'react';
+import { message } from 'antd';
 import { getHomePageEditData, queryNavEditData } from '@/services/miniProgram';
 import { highlightsBgImgs } from '../tools/data';
 import {
@@ -50,6 +51,7 @@ export function Provider({ children }) {
   ]); //导航数据
 
   function touchPageData() {
+    message.loading('正在加载，请稍后...');
     queryDicForForm({ dicModuleCodes: 'DM006' }).then(r => {
       if (r && r.code === 200) {
         const dictionaries = r.data['DM006'];
@@ -73,7 +75,7 @@ export function Provider({ children }) {
             key: 'article',
             pageNum: '1',
             pageSize: '2',
-            articleDicCode: dictionaries[0].code,
+            articleDicCode: dictionaries[0]?.code,
           },
           {
             key: 'aboutUs',
@@ -87,6 +89,7 @@ export function Provider({ children }) {
           },
         ];
         getHomePageEditData(param).then(res => {
+          message.destroy();
           console.log(res);
           if (!res?.data) return;
           const { editTemplateCode, editTemplateJson } = res.data;
