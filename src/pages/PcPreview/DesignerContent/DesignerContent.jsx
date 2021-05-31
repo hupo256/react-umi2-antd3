@@ -29,8 +29,8 @@ const DesignerContent = ({ data, domain }) => {
             <div className={index === currentIndex ? '' : styles.inactive} key={index}>
               <div
                 style={{
-                  background: value.caseCoverUrlList[0]
-                    ? `url(${value.caseCoverUrlList[0]}) no-repeat center center`
+                  background: _.get(value, 'caseList.list.0.coverPicUrl', null)
+                    ? `url(${value['caseList']['list'][0].coverPicUrl}) no-repeat center center`
                     : `url(/img/designer/designer-placeholder.png) no-repeat center center`,
                   backgroundSize: 'cover',
                   cursor: 'pointer',
