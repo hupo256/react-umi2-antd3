@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-27 16:50:39
+ * @Last Modified time: 2021-05-28 18:40:04
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -139,16 +139,21 @@ class ProjectLibrary extends PureComponent {
               />
               <div style={{ flex: 1 }}>
                 <p>{t}</p>
-                <span className={`${styles.siteTag} ${styles.siteTag1}`}>小程序</span>
+                {r.specialHasApplets === 1 ? (
+                  <span className={`${styles.siteTag} ${styles.siteTag1}`}>小程序</span>
+                ) : null}
+                {r.specialHasPc === 1 ? (
+                  <span className={`${styles.siteTag} ${styles.siteTag1}`}>网站</span>
+                ) : null}
               </div>
             </div>
           );
         },
       },
       {
-        title: '专题链接',
+        title: '小程序链接',
         dataIndex: 'specialUrl',
-        width: 400,
+        width: 250,
         render: (t, r) => {
           return (
             <div
@@ -159,6 +164,32 @@ class ProjectLibrary extends PureComponent {
             >
               <p id="text">{t}</p>
               <textarea id="input" className={styles.ipt} />
+              {t ? (
+                <div>
+                  <Icon type="copy" />
+                  <span style={{ marginLeft: 5 }}>复制链接</span>
+                </div>
+              ) : (
+                ''
+              )}
+            </div>
+          );
+        },
+      },
+      {
+        title: 'PC端链接',
+        dataIndex: 'specialUrlPc',
+        width: 250,
+        render: (t, r) => {
+          return (
+            <div
+              className={styles.copy}
+              onClick={() => {
+                this.handleCopy(t, 'inputv');
+              }}
+            >
+              <p id="text">{t}</p>
+              <textarea id="inputv" className={styles.ipt} />
               {t ? (
                 <div>
                   <Icon type="copy" />
@@ -420,8 +451,8 @@ class ProjectLibrary extends PureComponent {
       this.getList();
     });
   };
-  handleCopy(t) {
-    let input = document.getElementById('input');
+  handleCopy(t, id) {
+    let input = document.getElementById(id);
     input.value = t; // 修改文本框的内容
     input.select(); // 选中文本
     document.execCommand('copy'); // 执行浏览器复制命令

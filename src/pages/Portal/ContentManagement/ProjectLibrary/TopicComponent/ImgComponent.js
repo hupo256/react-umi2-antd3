@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-27 19:45:15
+ * @Last Modified time: 2021-05-27 18:35:09
  * 创建工地
  */
 import React, { PureComponent } from 'react';
@@ -10,6 +10,7 @@ import { connect } from 'dva';
 import Upload from '@/components/Upload/Upload';
 import { Icon } from 'antd';
 import styles from './index.less';
+import _ from 'lodash';
 @connect(({ ProjectLibrary }) => ({
   ProjectLibrary,
 }))
@@ -31,7 +32,7 @@ class ImgComponent extends PureComponent {
         >
           <div className={data.checked === 1 ? styles.imgWrap : styles.imgWrapt} />
           <img
-            src={data.paramList[0].defaultValue}
+            src={data.paramList[0] && data.paramList[0].defaultValue}
             draggable="false"
             alt="logo"
             style={{ width: '100%' }}
