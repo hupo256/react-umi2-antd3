@@ -7,14 +7,7 @@
  */
 import React, { useState, createContext } from 'react';
 import { message } from 'antd';
-import {
-  getHomePageEditData,
-  updateHomePageEditData,
-  queryNavEditData,
-  saveNavEditData,
-  getAuthInfo,
-  queryWechatMiniGlobal,
-} from '@/services/miniProgram';
+import { getHomePageEditData, queryNavEditData } from '@/services/miniProgram';
 import { highlightsBgImgs } from '../tools/data';
 import { getauth } from '@/utils/authority';
 import {
@@ -61,7 +54,8 @@ export function Provider({ children }) {
   ]); //导航数据
 
   function touchPageData() {
-    queryArticleTopicDic().then(r => {
+    message.loading('正在加载，请稍后...');
+    queryDicForForm({ dicModuleCodes: 'DM006' }).then(r => {
       if (r && r.code === 200) {
         const dictionaries = r.data;
         const param = [
@@ -84,7 +78,7 @@ export function Provider({ children }) {
             key: 'article',
             pageNum: '1',
             pageSize: '2',
-            articleDicCode: dictionaries.length ? dictionaries[0].code : '',
+            articleDicCode: dictionaries[0]?.code,
           },
           {
             key: 'aboutUs',
@@ -93,6 +87,8 @@ export function Provider({ children }) {
           },
         ];
         getHomePageEditData(param).then(res => {
+          message.destroy();
+          console.log(res);
           if (!res?.data) return;
           console.log(res.data.jsonData)
           const aboutUs = res.data.editTemplateJson.jsonData.find(e => e.flag === 'aboutUs')

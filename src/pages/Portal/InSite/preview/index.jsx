@@ -157,14 +157,7 @@ export default function Preview(props) {
         </div>
 
         {/* totopBox */}
-        <div className={pageStyle.totopBox}>
-          {wechatAuthed?.isCompanyAuthWechatMini && (
-            <span>
-              <svg className="icon" aria-hidden="true">
-                <use href="#icon-ic_share" />
-              </svg>
-            </span>
-          )}
+        <div className={`${pageStyle.totopBox} ${totopShow ? pageStyle.show : ''}`}>
           <span>
             <svg className="icon" aria-hidden="true">
               <use href="#icon-ic_call" />
