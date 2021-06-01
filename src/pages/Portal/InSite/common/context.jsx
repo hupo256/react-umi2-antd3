@@ -102,9 +102,8 @@ export function Provider({ children }) {
       }
     });
     queryNavEditData().then(r => {
-      if (r && r.code === 200) {
-        setNavData(r.data);
-      }
+      if (!r?.data) return;
+      setNavData(r.data);
     });
   }
 
