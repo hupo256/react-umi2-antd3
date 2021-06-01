@@ -1,7 +1,7 @@
 import styles from './Regisiter.less'
 import React, { useState, useEffect } from 'react'
 import { Button, Input, message } from 'antd'
-import service from '@/services/pcPreview'
+import { trackCount, trackWebPush } from '@/services/pcPreview'
 import { pushMsgMap } from '../constants.js'
 
 const Regisiter = ({ setRegisiterFromVisiable, type = 'home' }) => {
@@ -11,7 +11,7 @@ const Regisiter = ({ setRegisiterFromVisiable, type = 'home' }) => {
 
   useEffect(() => {
     ;(async () => {
-      const res = await service.trackCount()
+      const res = await trackCount()
       setCount(res?.data)
     })()
   }, [])
@@ -22,7 +22,7 @@ const Regisiter = ({ setRegisiterFromVisiable, type = 'home' }) => {
       return
     }
 
-    const { code, message: msg } = await service.trackWebPush({
+    const { code, message: msg } = await trackWebPush({
       trackName: name || '',
       trackPhone: phone,
       trackSource: pushMsgMap[type],
