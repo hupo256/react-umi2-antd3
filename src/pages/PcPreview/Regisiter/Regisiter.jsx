@@ -1,5 +1,5 @@
 import styles from './Regisiter.less'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button, Input, message } from 'antd'
 import service from '@/services/pcPreview'
 import { pushMsgMap } from '../constants.js'
@@ -7,6 +7,14 @@ import { pushMsgMap } from '../constants.js'
 const Regisiter = ({ setRegisiterFromVisiable, type = 'home' }) => {
   const [name, setName] = useState(null)
   const [phone, setPhone] = useState(null)
+  const [count, setCount] = useState(0)
+
+  useEffect(() => {
+    ;(async () => {
+      const res = await service.trackCount()
+      setCount(res?.data)
+    })()
+  }, [])
 
   const handleSubmit = async e => {
     if (!phone) {
@@ -42,7 +50,11 @@ const Regisiter = ({ setRegisiterFromVisiable, type = 'home' }) => {
         <img src="/img/regisiter_pic.png" alt="" className={styles.first_pic} />
         <div className={styles.textWrapper}>
           <img src="/img/regisiter_title.png" alt="" className={styles.title_pic} />
-          <div className={styles.count}>目前已有386人获取免费报价</div>
+          <div className={styles.count}>
+            目前已有
+            {count}
+            人获取免费报价
+          </div>
         </div>
         <form className={styles.formWrapper} onSubmit={e => e.preventDefault()}>
           <div className={styles.group}>

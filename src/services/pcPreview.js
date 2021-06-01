@@ -33,3 +33,19 @@ export function getDomain(params) {
     body: params,
   });
 }
+
+// track push
+export function trackWebPush(params) {
+  return request(baseurl + '/api/v1/wechat/track/www/push', {
+    method: 'POST',
+    body: params,
+  });
+}
+
+// track count
+export function trackCount(params) {
+  return request(baseurl + '/api/v1/wechat/track/www/count', {
+    method: 'POST',
+    body: params,
+  });
+}
