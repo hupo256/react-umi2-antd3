@@ -1,43 +1,26 @@
 import styles from './Regisiter.less'
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Button, Input, message } from 'antd'
-import { trackCount, trackWebPush } from '@/services/pcPreview'
+import service from '@/services/pcPreview'
 import { pushMsgMap } from '../constants.js'
-import { regExpConfig } from '@/utils/regular.config'
 
 const Regisiter = ({ setRegisiterFromVisiable, type = 'home' }) => {
   const [name, setName] = useState(null)
   const [phone, setPhone] = useState(null)
-  const [count, setCount] = useState(0)
-
-  useEffect(() => {
-    ;(async () => {
-      const res = await trackCount()
-      setCount(res?.data)
-    })()
-  }, [])
 
   const handleSubmit = async e => {
     if (!phone) {
-      message.destroy()
       message.warning('手机号为必填，请填写后提交哦！')
       return
     }
 
-    if (!regExpConfig.phone.test(phone)) {
-      message.destroy()
-      message.warning('手机号输入有误，请重试！')
-      return
-    }
-
-    const { code, message: msg } = await trackWebPush({
+    const { code, message: msg } = await service.trackWebPush({
       trackName: name || '',
       trackPhone: phone,
       trackSource: pushMsgMap[type],
     })
 
     if (msg === '手机号格式不正确，请检查') {
-      message.destroy()
       message.warning('手机号输入有误，请重试！')
       return
     }
@@ -59,11 +42,7 @@ const Regisiter = ({ setRegisiterFromVisiable, type = 'home' }) => {
         <img src="/img/regisiter_pic.png" alt="" className={styles.first_pic} />
         <div className={styles.textWrapper}>
           <img src="/img/regisiter_title.png" alt="" className={styles.title_pic} />
-          <div className={styles.count}>
-            目前已有
-            {count}
-            人获取免费报价
-          </div>
+          <div className={styles.count}>目前已有386人获取免费报价</div>
         </div>
         <form className={styles.formWrapper} onSubmit={e => e.preventDefault()}>
           <div className={styles.group}>

@@ -11,7 +11,6 @@ import Articles from './Articles/Articles.jsx'
 import LiveShow from './LiveShow/LiveShow.jsx'
 import FooterComp from './FooterComp/FooterComp.jsx'
 import Regisiter from './Regisiter/Regisiter.jsx'
-import axios from 'axios'
 
 import { typeMap, paramMap } from './constants.js'
 import WebSetting from './WebSettingOut' // 注意：此处营销站独有
