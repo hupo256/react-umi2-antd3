@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-05-28 16:08:25
+ * @Last Modified time: 2021-06-01 15:43:59
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -30,7 +30,7 @@ class CreateStepThree extends PureComponent {
     } = this.props;
     let terminalType = localStorage.getItem('terminalType');
     let url = '';
-    if (terminalType === 0) {
+    if (terminalType == 0) {
       url = uspecialUrlData.specialUrl;
     } else {
       url = uspecialUrlData.specialUrlPc;
