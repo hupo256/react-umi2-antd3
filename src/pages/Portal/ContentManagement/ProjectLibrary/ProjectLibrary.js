@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-05-31 18:24:23
+ * @Last Modified time: 2021-06-01 11:27:24
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -159,7 +159,7 @@ class ProjectLibrary extends PureComponent {
             <div
               className={styles.copy}
               onClick={() => {
-                this.handleCopy(t);
+                this.handleCopy(t, 'input');
               }}
             >
               <p id="text">{t}</p>
