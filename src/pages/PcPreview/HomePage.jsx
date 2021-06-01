@@ -10,6 +10,7 @@ import DesignerContent from './DesignerContent/DesignerContent.jsx'
 import Articles from './Articles/Articles.jsx'
 import LiveShow from './LiveShow/LiveShow.jsx'
 import FooterComp from './FooterComp/FooterComp.jsx'
+import Regisiter from './Regisiter/Regisiter.jsx'
 
 import { typeMap, paramMap } from './constants.js'
 import WebSetting from './WebSettingOut' // 注意：此处营销站独有
@@ -37,7 +38,7 @@ const Home = () => {
 
   const [publishedData, setPublishedData] = useState([])
   const [totopShow, settotopShow] = useState(false)
-
+  const [regisiterFromVisiable, setRegisiterFromVisiable] = useState(true) //marketing 独有
   const [dynamicDomain, setDynamicDomain] = useState([]) // 注意：此处营销站独有
   const [refresh, setRefresh] = useState(false) // 注意：此处营销站独有
   const [showHeaderDrawer, setShowHeaderDrawer] = useState(false) // 注意：此处营销站独有
@@ -188,6 +189,7 @@ const Home = () => {
         </Content>
 
         <FooterComp data={footerData} setShowFooterDrawer={setShowFooterDrawer} />
+        {regisiterFromVisiable && <Regisiter setRegisiterFromVisiable={setRegisiterFromVisiable} />}
       </Layout>
 
       <Drawer

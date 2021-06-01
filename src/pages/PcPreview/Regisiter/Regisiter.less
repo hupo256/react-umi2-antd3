@@ -1,0 +1,91 @@
+.wrapper {
+  height: 86px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 99;
+  background: rgba(0, 0, 0, 0.8);
+  box-shadow: 0px -8px 16px 0px rgba(0, 0, 0, 0.1);
+
+  display: flex;
+  justify-content: center;
+
+  .closeBtn {
+    background: url(/img/ic_close.png) no-repeat center center;
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    background-size: contain;
+  }
+
+  .widthLimit {
+    width: 1110px;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+
+    .textWrapper {
+      padding: 15px 0 12px;
+      flex: 1;
+      margin-left: 31px;
+      .count {
+        font-size: 14px;
+        font-family: PingFangSC-Medium, PingFang SC;
+        font-weight: 500;
+        color: #ffffff;
+      }
+      img.title_pic {
+        width: 259px;
+        height: 33px;
+      }
+    }
+
+    .formWrapper {
+      display: flex;
+      flex-direction: row;
+      gap: 14px;
+      .group {
+        display: flex;
+        flex-direction: column;
+        padding: 15px 0 12px;
+        gap: 6px;
+        .title {
+          font-size: 14px;
+          font-family: PingFangSC-Medium, PingFang SC;
+          font-weight: 500;
+          color: #ffffff;
+          line-height: 14px;
+        }
+
+        .input {
+          width: 152px;
+
+          &::placeholder {
+            font-size: 14px;
+            font-family: PingFangSC-Regular, PingFang SC;
+            font-weight: 400;
+            color: #999999;
+            line-height: 14px;
+          }
+        }
+      }
+      .submitBtn {
+        width: 180px;
+        margin-top: 35px;
+        background: #ff7300;
+        border: none;
+        color: #fff;
+      }
+    }
+
+    img.first_pic {
+      width: 160px;
+      height: 105px;
+      margin-top: -30px;
+    }
+  }
+}
