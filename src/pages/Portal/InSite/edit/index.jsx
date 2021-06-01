@@ -35,13 +35,13 @@ function TempEdit(props) {
             }}
           >
             <Tooltip placement="topLeft" title={editText}>
-              <Icon type="unordered-list" style={{ fontSize: '16px' }} />
+              <Icon type="appstore" style={{ fontSize: '16px', color: '#fe6a30' }} />
               <b>编辑模块</b>
             </Tooltip>
           </div>
           <div className={styles.tipsBox}>
             <Tooltip placement="topLeft" title={tipsText}>
-              <Icon type="bulb" style={{ fontSize: '16px' }} />
+              <Icon type="bulb" style={{ fontSize: '16px', color: '#fe6a30' }} />
               <b>温馨提示</b>
             </Tooltip>
           </div>
