@@ -3,43 +3,25 @@ import {
   createArticle, //创建文章
   editArticle, //编辑文章
   getArticleDetail, //文章详情
-  getPublicArticleDetail, //公有库文章详情
   articleStatus, //切换文章状态
   publicList, //公有库文章
   publicDetail, //公有库文章详情
-  queryDicModuleList, //公有库文章栏目
 } from '@/services/articleLibrary';
+import { pageList } from '../services/ProjectLibrary';
 
 export default {
-  namespace: 'ArticleLibrary',
+  namespace: 'ArticleSpecial',
 
   state: {
-    ArticleList: {},
-    ArticleListQuery: { pageNum: 1 },
+    formList: {},
+    formListQuery: { pageNum: 1 },
     ArticleDetail: {},
     publicList: {},
     publicListQuery: {},
     publicListDetail: {},
-    DicModuleList: [],
   },
 
   effects: {
-    *resetSearchModel({ payload }, { call, put }) {
-      yield put({ type: 'upData', payload: { ArticleListQuery: { ...payload } } });
-    },
-    // 公有库文章栏目
-    *queryDicModuleList({ payload }, { call, put }) {
-      const response = yield call(queryDicModuleList, {
-        ...payload,
-      });
-      yield put({
-        type: 'upData',
-        payload: {
-          DicModuleList: response?.data?.DM006 || [],
-        },
-      });
-      return response;
-    },
     // 公有库文章列表
     *getPublicListModel({ payload }, { call, put }) {
       const response = yield call(publicList, {
@@ -75,12 +57,27 @@ export default {
       yield put({
         type: 'upData',
         payload: {
-          ArticleList: (response && response.data) || {},
-          ArticleListQuery: { ...payload },
+          formList: (response && response.data) || {},
+          formListQuery: { ...payload },
         },
       });
       return response;
     },
+    // 查询专题列表
+    *getSpecialListModel({ payload }, { call, put }) {
+      const response = yield call(pageList, {
+        ...payload,
+      });
+      yield put({
+        type: 'upData',
+        payload: {
+          formList: (response && response.data) || {},
+          formListQuery: { ...payload },
+        },
+      });
+      return response;
+    },
+
     // 查询文章详情
     *getArticleDetailModel({ payload }, { call, put }) {
       const response = yield call(getArticleDetail, {
@@ -94,20 +91,6 @@ export default {
       });
       return response;
     },
-    // 查询公有库文章详情
-    *getPublicArticleDetailModel({ payload }, { call, put }) {
-      const response = yield call(getPublicArticleDetail, {
-        ...payload,
-      });
-      yield put({
-        type: 'upData',
-        payload: {
-          publicListDetail: (response && response.data) || {},
-        },
-      });
-      return response;
-    },
-
     // 创建文章
     *createArticleModel({ payload }, { call, put }) {
       const response = yield call(createArticle, {

@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:50:21 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-04-15 19:29:10
+ * @Last Modified time: 2021-05-27 11:14:01
  * 文章库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -10,7 +10,13 @@ import { connect } from 'dva';
 import router from 'umi/router';
 import { Card, Button, Icon, Divider, Table, Input, message, Modal, Tabs } from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
-import { paginations, fixedTitle, successIcon, waringInfo } from '@/utils/utils';
+import ArticleListModel from './ArticleListModel';
+import { paginations, fixedTitle, successIcon, waringInfo, MyIcon } from '@/utils/utils';
+import imgl from '../../../../assets/banner_left@2x.png';
+import imgr from '../../../../assets/banner_right@2x.png';
+import imgtj from '../../../../assets/tj.png';
+import ic_smile from '../../../../assets/ic_smile.png';
+import ic_arm from '../../../../assets/ic_arm.png';
 import styles from './ArticleLibrary.less';
 const { confirm } = Modal;
 const { Search } = Input;
@@ -29,6 +35,9 @@ class ArticleLibrary extends PureComponent {
       status: null,
       step: null,
       dictionaries: [],
+
+      CreateModeVisible: false,
+      ArticleListVisible: false,
     };
   }
 
@@ -74,8 +83,37 @@ class ArticleLibrary extends PureComponent {
         dataIndex: 'articleTitle',
       },
       {
+        title: '文章链接',
+        dataIndex: 'link',
+        render: (t, r) => {
+          const txt = `page/ArticleDetail/ArticleDetail?id=${r.articleUid}`;
+          return (
+            <div className={styles.copy}>
+              <p id="text" style={{ display: 'block' }}>
+                {txt}
+              </p>
+              <textarea id="input" className={styles.ipt} />
+              {txt ? (
+                <span
+                  style={{ marginLeft: 0 }}
+                  onClick={() => {
+                    this.handleCopy(txt);
+                  }}
+                >
+                  <Icon type="copy" />
+                  <span style={{ marginLeft: 5 }}>复制链接</span>
+                </span>
+              ) : (
+                ''
+              )}
+            </div>
+          );
+        },
+      },
+      {
         title: '状态',
         dataIndex: 'articleStatus',
+        width: 100,
         render: (t, r) => {
           return (
             <span style={{ position: 'relative', paddingLeft: 20 }}>
@@ -99,6 +137,7 @@ class ArticleLibrary extends PureComponent {
       {
         title: '更新时间',
         dataIndex: 'updateTime',
+        width: 160,
         render: (t, r) => {
           return (
             <div>
@@ -111,6 +150,7 @@ class ArticleLibrary extends PureComponent {
       {
         title: '操作',
         dataIndex: 'operate',
+        width: 120,
         render: (t, r) => {
           return (
             <div className="operateWrap">
@@ -126,7 +166,7 @@ class ArticleLibrary extends PureComponent {
         },
       },
     ];
-    const { status, step, dictionaries } = this.state;
+    const { status, step, dictionaries, ArticleListVisible } = this.state;
     return (
       <div>
         <div
@@ -148,7 +188,7 @@ class ArticleLibrary extends PureComponent {
             <Search
               placeholder="可通过文章标题 / 内容进行搜索"
               value={this.state.searchWord}
-              onChange={e => this.setState({ searchWord: e.target.value })}
+              onChange={e => this.handleChanges(e)}
               onSearch={value => this.handleSrarch()}
               onPressEnter={() => this.handleSrarch()}
               // onBlur={() => this.handleSrarch()}
@@ -181,9 +221,13 @@ class ArticleLibrary extends PureComponent {
           <Card bordered={false} style={{ marginTop: 20 }}>
             <Button
               type="primary"
-              onClick={() => {
-                router.push(`/portal/contentmanagement/articlelibrary/add`);
-              }}
+              onClick={
+                () => this.handleAddArticle()
+                //   {
+                //   const { step } = this.state;
+                //   router.push(`/portal/contentmanagement/articlelibrary/add?step=${step}`);
+                // }
+              }
             >
               <Icon type="plus" />
               创建文章
@@ -191,7 +235,7 @@ class ArticleLibrary extends PureComponent {
             <Table
               loading={Loading}
               style={{ marginTop: 20 }}
-              rowKey={record => record.uid}
+              rowKey={(r, i) => i}
               dataSource={ArticleList.list}
               columns={columns}
               onChange={this.handleTableChange}
@@ -199,19 +243,69 @@ class ArticleLibrary extends PureComponent {
             />
           </Card>
         </PageHeaderWrapper>
+
+        <Modal
+          title="选择创建方式"
+          visible={this.state.CreateModeVisible}
+          onCancel={this.handleCancel}
+          footer={null}
+          width={730}
+        >
+          <div className={styles.CreateMode}>
+            <div className={styles.createItem}>
+              <img src={imgl} style={{ width: 312, height: 157 }} />
+              <img src={imgtj} className={styles.imgtj} />
+              <p className={styles.subTitle}>公有文章库</p>
+              <p className={styles.subText}>
+                海量文章库，选完直接用
+                {'  '}
+                <img src={ic_arm} style={{ width: 17, height: 18 }} />
+              </p>
+              <p
+                onClick={() => this.setState({ ArticleListVisible: true })}
+                className={styles.directuse}
+              >
+                直接使用
+              </p>
+            </div>
+            <div className={styles.createItem}>
+              <img src={imgr} style={{ width: 312, height: 157 }} />
+              <p className={styles.subTitle}>原创文章库</p>
+              <p className={styles.subText}>
+                喜欢自己原创，满满干货
+                {'  '}
+                <img src={ic_smile} style={{ width: 18, height: 18 }} />
+              </p>
+              <p
+                onClick={() => {
+                  const { step } = this.state;
+                  router.push(`/portal/contentmanagement/articlelibrary/add?step=${step}`);
+                }}
+                className={styles.original}
+              >
+                自己原创
+              </p>
+            </div>
+          </div>
+        </Modal>
+        {ArticleListVisible && (
+          <ArticleListModel
+            handleCancel={() => this.handleArticleCancel()}
+            handleOk={uid => this.handleArticleOk(uid)}
+            visible={ArticleListVisible}
+          />
+        )}
       </div>
     );
   }
+  handleChanges = e => {
+    this.setState({ searchWord: e.target.value }, () => {
+      const { searchWord } = this.state;
+      !searchWord && this.getList({ searchText: null, pageNum: 1 });
+    });
+  };
   handleEdit = r => {
-    // const { dispatch } = this.props;
-    // dispatch({
-    //   type: 'ArticleLibrary/getArticleDetailModel',
-    //   payload: {articleUid:r.articleUid },
-    // }).then(res=>{
-    //   if(res&&res.code===200){
     router.push(`/portal/contentmanagement/articlelibrary/edit?uid=${r.articleUid}`);
-    // }
-    // });
   };
   callback = step => {
     this.setState({ step, status: null, searchWord: null }, () => {
@@ -276,6 +370,30 @@ class ArticleLibrary extends PureComponent {
       payload: { ...ArticleListQuery, ...obj },
     });
   };
+  // 新建文章
+  handleAddArticle = () => {
+    this.setState({ CreateModeVisible: true });
+  };
+  handleCancel = () => {
+    this.setState({ CreateModeVisible: false });
+  };
+
+  handleArticleOk = uid => {
+    this.setState({ CreateModeVisible: false });
+    const { step } = this.state;
+    router.push(`/portal/contentmanagement/articlelibrary/add?step=${step}&uid=${uid}`);
+  };
+  handleArticleCancel = () => {
+    this.setState({ ArticleListVisible: false });
+  };
+
+  handleCopy(t) {
+    let input = document.getElementById('input');
+    input.value = t; // 修改文本框的内容
+    input.select(); // 选中文本
+    document.execCommand('copy'); // 执行浏览器复制命令
+    message.success('复制成功');
+  }
 }
 
 export default ArticleLibrary;

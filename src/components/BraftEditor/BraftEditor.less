@@ -2,20 +2,48 @@
   // height: 420px;
   border: 1px solid #ccc;
   border-radius: 6px;
+  p {
+    min-height: 20px;
+  }
+  p,
+  span,
+  img,
+  div {
+    margin: 0;
+    padding: 0;
+  }
+  img {
+    width: 100%;
+    padding-top: 20px;
+  }
 }
 
 .preview {
   padding-bottom: 0px;
-
-  :global {}
-
+  :global {
+  }
   .previewCont {
-
     height: 500px;
     overflow-y: scroll;
+    p {
+      min-height: 20px;
+    }
+    p,
+    span,
+    img,
+    div {
+      margin: 0;
+      padding: 0;
+    }
+    img {
+      max-width: 100% !important;
+      height: auto !important;
+      padding-top: 20px;
+    }
   }
 
   img {
-    width: 100%
+    width: 100%;
+    padding-top: 20px;
   }
 }

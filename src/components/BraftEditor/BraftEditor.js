@@ -2,16 +2,16 @@
  * @Author: zqm 
  * @Date: 2020-04-15 13:37:41 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-04-15 16:07:20
+ * @Last Modified time: 2021-05-20 15:21:49
  */
 import React from 'react';
 // 引入编辑器组件
 import BraftEditor from 'braft-editor';
 import { connect } from 'dva';
 import { ContentUtils } from 'braft-utils';
-import styles from './BraftEditor.less';
 // 引入编辑器样式
 import 'braft-editor/dist/index.css';
+import styles from './BraftEditor.less';
 import { Upload, message, Modal, Icon, Button } from 'antd';
 import { controls, colors, imageControls, fontSizes, accepts } from './utils';
 
@@ -34,19 +34,19 @@ export default class EditorDemo extends React.Component {
       {
         key: 'custom-button',
         type: 'button',
-        text: '预览',
+        text: '电脑预览',
         onClick: () => {
           this.preview();
         },
       },
-      // {
-      //   key: 'custom-button2',
-      //   type: 'button',
-      //   text: '预览移动端',
-      //   onClick: () => {
-      //     this.preview2();
-      //   },
-      // },
+      {
+        key: 'custom-button2',
+        type: 'button',
+        text: '小程序预览',
+        onClick: () => {
+          this.preview2();
+        },
+      },
       {
         key: 'antd-uploader',
         type: 'component',
@@ -95,6 +95,7 @@ export default class EditorDemo extends React.Component {
             visible={previewVisible}
             onCancel={this.handleCancel}
             width={900}
+            zIndex={999999}
             footer={[
               <Button key="submit" type="primary" onClick={this.handleCancel}>
                 关闭
@@ -112,10 +113,11 @@ export default class EditorDemo extends React.Component {
         )}
         {previewphoneVisible && (
           <Modal
-            title="预览"
+            title="小程序预览"
             visible={previewphoneVisible}
             onCancel={this.handleCancel2}
             width={400}
+            zIndex={999999}
             footer={[
               <Button key="submit" type="primary" onClick={this.handleCancel2}>
                 关闭
@@ -224,26 +226,6 @@ export default class EditorDemo extends React.Component {
               resolve(true);
             }
           );
-          // dispatch({
-          //   type: 'base/picData',
-          //   payload: {
-          //     OSSAccessKeyId: data.data.accessKeyId,
-          //     callback: data.data.callBack,
-          //     policy: data.data.policy,
-          //     signature: data.data.signature,
-          //     host: data.data.host,
-          //     key: `${data.data.dir}${filenames}`,
-          //     success_action_status: data.data.successActionStatus,
-          //     'x:subType': subType,
-          //     'x:type': type,
-          //     'x:bsId': bsId,
-          //     'x:f': f, //视频传v
-          //     'x:token': localStorage.getItem('crmtoken'),
-          //   },
-          // }).then(() => {
-          //   resolve(true);
-          // });
-          // }
         } else {
           message.error(data.message);
           return reject();
