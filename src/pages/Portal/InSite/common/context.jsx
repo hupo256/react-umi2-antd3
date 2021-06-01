@@ -6,6 +6,7 @@
  * mini program 里的store
  */
 import React, { useState, createContext } from 'react';
+import { message } from 'antd';
 import { getHomePageEditData, queryNavEditData } from '@/services/miniProgram';
 import { highlightsBgImgs } from '../tools/data';
 import { getauth } from '../../../../utils/authority';
@@ -14,8 +15,7 @@ import {
 } from '@/services/dictConfig';
 
 export const ctx = createContext();
-export function Provider({ children}) {
-
+export function Provider({ children }) {
   const [pageData, setpageData] = useState({}); // 页面渲染数据
   const [curFlag, setcurFlag] = useState(''); // 当前编辑数据的标签
   const [curInd, setcurInd] = useState(-1); // 当前修改的数据索引值
@@ -52,6 +52,7 @@ export function Provider({ children}) {
   ]); //导航数据
 
   function touchPageData() {
+    message.loading('正在加载，请稍后...');
     queryArticleTopicDic().then(r => {
       if (r && r.code === 200) {
         const dictionaries = r.data;
@@ -84,27 +85,28 @@ export function Provider({ children}) {
           },
         ];
         getHomePageEditData(param).then(res => {
+          message.destroy();
           console.log(res);
           if (!res?.data) return;
-          console.log(res.data.jsonData)
-          const userInfo = getauth()
-          const aboutUs = res.data.editTemplateJson.jsonData.find(e => e.flag === 'aboutUs')
+          console.log(res.data.jsonData);
+          const userInfo = getauth();
+          const aboutUs = res.data.editTemplateJson.jsonData.find(e => e.flag === 'aboutUs');
           if (!aboutUs) {
             res.data.editTemplateJson.jsonData.push({
               flag: 'aboutUs',
               title: '关于我们',
               name: userInfo.abbreviateName || '公司简介',
               content: '请用一句简明扼要的话，来描述下您的公司吧',
-              url: 'http://img.inbase.in-deco.com/crm-saas/img/banner_about.png'
-            })
+              url: 'http://img.inbase.in-deco.com/crm-saas/img/banner_about.png',
+            });
           }
           const { editTemplateCode, editTemplateJson } = res.data;
           editTemplateJson.jsonData.map(e => {
             if (e.flag === 'article') {
-              e.nameListData = dictionaries.filter(i => i.status === '1')
+              e.nameListData = dictionaries.filter(i => i.status === '1');
             }
             if (e.title) {
-              e.afterName = e.title
+              e.afterName = e.title;
             }
           });
           setpageData(addMapToData(editTemplateJson));
