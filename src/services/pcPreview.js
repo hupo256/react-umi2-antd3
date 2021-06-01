@@ -20,7 +20,7 @@ export function getFooter(params) {
 
 // PC OTHER INFO
 export function getPublishedData(params) {
-  return request(baseurl + '/api/v1/wechat/homePage/pc/getHomePagePublishedData', {
+  return request(baseurl + '/api/v1/wechat/homePage/pc/getManagerEditData', {
     method: 'POST',
     body: params,
   });
