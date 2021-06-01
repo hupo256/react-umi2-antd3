@@ -26,7 +26,6 @@ const ChapterLayout = ({ children, title, moreStyles }) => (
   <div className={styles.chapterWrapper}>
     <div className={styles.chapterSection} style={moreStyles}>
       <h2 className={styles.title}>{title}</h2>
-      {/* <p className={styles.description}>{description}</p> */}
     </div>
     {children}
   </div>
@@ -176,7 +175,7 @@ const Home = () => {
             </div>
           )}
           {_.isEmpty(publishedData['design']) || (
-            <ChapterLayout title={'首席设计师'}>
+            <ChapterLayout title={'首席设计师'} moreStyles={{ marginBottom: '10px' }}>
               <DesignerContent data={publishedData['design']} domain={dynamicDomain} />
             </ChapterLayout>
           )}
