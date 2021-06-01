@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-06-01 11:27:24
+ * @Last Modified time: 2021-06-01 15:18:11
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -262,6 +262,7 @@ class ProjectLibrary extends PureComponent {
                 <span
                   className="operateBtn"
                   onClick={() => {
+                    localStorage.setItem('terminalType', 0);
                     const { dispatch } = this.props;
                     dispatch({
                       type: 'ProjectLibrary/saveDataModel',

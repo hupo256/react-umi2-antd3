@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-24 17:34:43
+ * @Last Modified time: 2021-06-01 15:16:21
  * 专题库
  */
 import React, { PureComponent } from 'react';
@@ -73,6 +73,7 @@ class ProjectLibrary extends PureComponent {
       dispatch,
       ProjectLibrary: { specialUid },
     } = this.props;
+    localStorage.setItem('terminalType', 0);
     const activeKey = getQueryUrlVal('uid') || specialUid;
     if (activeKey) {
       dispatch({
