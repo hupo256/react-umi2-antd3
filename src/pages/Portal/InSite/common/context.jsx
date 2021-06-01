@@ -91,6 +91,7 @@ export function Provider({ children }) {
           console.log(res.data.jsonData);
           const userInfo = getauth();
           const aboutUs = res.data.editTemplateJson.jsonData.find(e => e.flag === 'aboutUs');
+          const article = res.data.editTemplateJson.jsonData.find(e => e.flag === 'article');
           if (!aboutUs) {
             res.data.editTemplateJson.jsonData.push({
               flag: 'aboutUs',
@@ -98,6 +99,17 @@ export function Provider({ children }) {
               name: userInfo.abbreviateName || '公司简介',
               content: '请用一句简明扼要的话，来描述下您的公司吧',
               url: 'http://img.inbase.in-deco.com/crm-saas/img/banner_about.png',
+            });
+          }
+          if (!article) {
+            res.data.editTemplateJson.jsonData.push({
+              flag: "article",
+              list: [],
+              title: "装修攻略",
+              afterName: "装修攻略",
+              styleType: "",
+              showModule: true,
+              nameListData: []
             });
           }
           const { editTemplateCode, editTemplateJson } = res.data;
