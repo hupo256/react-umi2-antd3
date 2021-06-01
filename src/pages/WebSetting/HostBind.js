@@ -80,7 +80,7 @@ class HostBind extends Component {
     window.open('https://wanwang.aliyun.com/domain/searchresult/#/?keyword=&suffix=com');
   }
   onHost() {
-    window.open('https://help.aliyun.com/document_detail/31836.html');
+    window.open('https://docs.qq.com/doc/DR3FTRnBqWmhOc1RB');
   }
   async onHostBind() {
     const { dispatch } = this.props;
