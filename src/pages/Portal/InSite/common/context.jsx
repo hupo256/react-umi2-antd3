@@ -92,15 +92,6 @@ export function Provider({ children }) {
           const userInfo = getauth();
           const aboutUs = res.data.editTemplateJson.jsonData.find(e => e.flag === 'aboutUs');
           const article = res.data.editTemplateJson.jsonData.find(e => e.flag === 'article');
-          if (!aboutUs) {
-            res.data.editTemplateJson.jsonData.push({
-              flag: 'aboutUs',
-              title: '关于我们',
-              name: userInfo.abbreviateName || '公司简介',
-              content: '请用一句简明扼要的话，来描述下您的公司吧',
-              url: 'http://img.inbase.in-deco.com/crm-saas/img/banner_about.png',
-            });
-          }
           if (!article) {
             res.data.editTemplateJson.jsonData.push({
               flag: "article",
@@ -110,6 +101,15 @@ export function Provider({ children }) {
               styleType: "",
               showModule: true,
               nameListData: []
+            });
+          }
+          if (!aboutUs) {
+            res.data.editTemplateJson.jsonData.push({
+              flag: 'aboutUs',
+              title: '关于我们',
+              name: userInfo.abbreviateName || '公司简介',
+              content: '请用一句简明扼要的话，来描述下您的公司吧',
+              url: 'http://img.inbase.in-deco.com/crm-saas/img/banner_about.png',
             });
           }
           const { editTemplateCode, editTemplateJson } = res.data;
