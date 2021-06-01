@@ -42,7 +42,10 @@ export default function FooterComp({ data, setShowFooterDrawer }) {
             <div className={styles.minImgBox}>
               <img src={storeCover} alt="" />
             </div>
-            <p className={styles.storeAddress}>{storeAddress}</p>
+            <div className={styles.storeAddress}>
+              <img src="/img/add.png" alt="" style={{ height: '20px' }} />
+              <div>{storeAddress}</div>
+            </div>
           </div>
           <div className={styles.editButton} onClick={() => setShowFooterDrawer(true)}>
             编辑
