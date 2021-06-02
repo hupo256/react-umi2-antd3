@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-04-28 17:05:47 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-27 11:05:22
+ * @Last Modified time: 2021-06-02 10:26:26
  * 小程序设置
  */
 
@@ -87,30 +87,47 @@ class Index extends PureComponent {
       {
         title: '已关联页面',
         dataIndex: 'formTitle',
-        render: t => {
-          return <span>{t ? t : '一键授权'}</span>;
+        render: (t, r) => {
+          if (r.name == '文章') {
+            return '/';
+          } else {
+            return <span>{t ? t : '一键授权'}</span>;
+          }
         },
       },
       {
         title: '按钮名称',
         dataIndex: 'buttonText',
+        render: (t, r) => {
+          if (r.name == '文章') {
+            return '/';
+          } else {
+            return <span>{t}</span>;
+          }
+        },
       },
       {
         title: '操作',
         key: 'action',
-        render: (text, record) => (
-          <span>
-            <a
-              onClick={() =>
-                this.setState({ record }, () => {
-                  this.setState({ visible: true });
-                })
-              }
-            >
-              编辑
-            </a>
-          </span>
-        ),
+        render: (text, record) => {
+          if (record.name == '文章') {
+            return '/';
+          } else {
+            return (
+              <span>
+                <a
+                  onClick={() =>
+                    this.setState({ record }, () => {
+                      this.setState({ visible: true });
+                    })
+                  }
+                >
+                  编辑
+                </a>
+              </span>
+            );
+          }
+        },
       },
     ];
     const data = FormDetail
@@ -132,6 +149,11 @@ class Index extends PureComponent {
             name: '设计师',
             link: 'page/Designer/Designer',
             ...FormDetail['3'],
+          },
+          {
+            key: '4',
+            name: '文章',
+            link: 'page/Article/Article',
           },
         ]
       : [];
