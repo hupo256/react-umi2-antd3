@@ -82,7 +82,6 @@ const MenuListComp = ({ menuList, setShowHeaderDrawer, dynamicDomain = '' }) => 
         _.forEach(menuChunkList, (chunk, index) => {
           _.forEach(chunk, (item, i) => {
             if (item.uid === current.uid) {
-              console.log(index)
               setChunkIndex(index)
               return
             }

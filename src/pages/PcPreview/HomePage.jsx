@@ -108,6 +108,7 @@ const Home = () => {
   }
 
   if (_.isEmpty(menuList) || _.isEmpty(publishedData) || _.isEmpty(footerData)) return null
+
   return (
     <div className={styles.container}>
       <Layout className={styles.mainLayout}>
