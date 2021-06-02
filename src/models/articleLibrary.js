@@ -27,6 +27,9 @@ export default {
     *resetSearchModel({ payload }, { call, put }) {
       yield put({ type: 'upData', payload: { ArticleListQuery: { ...payload } } });
     },
+    *resetPublicModel({ payload }, { call, put }) {
+      yield put({ type: 'upData', payload: { publicListQuery: { ...payload } } });
+    },
     // 公有库文章栏目
     *queryDicModuleList({ payload }, { call, put }) {
       const response = yield call(queryDicModuleList, {

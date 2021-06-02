@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:50:21 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-06-02 12:09:48
+ * @Last Modified time: 2021-06-02 14:07:22
  * 文章库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -388,6 +388,11 @@ class ArticleLibrary extends PureComponent {
     router.push(`/portal/contentmanagement/articlelibrary/add?step=${step}&uid=${uid}`);
   };
   handleArticleCancel = () => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'ArticleLibrary/resetPublicModel',
+      payload: {},
+    });
     this.setState({ ArticleListVisible: false });
   };
 
