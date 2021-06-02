@@ -50,12 +50,8 @@ const DesignerContent = ({ data, domain }) => {
                       </div>
                       <div className={styles.right}>
                         <h3 className={styles.titleWrap}>
-                          <p className={styles.name}>
-                            {value.name.length > 4 ? `${value.name.slice(0, 4)}...` : value.name}
-                          </p>
-                          <div className={styles.jobTitle}>
-                            {value.position.length > 6 ? `${value.position.slice(0, 6)}...` : value.position}
-                          </div>
+                          <p className={styles.name}>{value.name}</p>
+                          <div className={styles.jobTitle}>{value.position}</div>
                         </h3>
                         <p className={styles.content}>
                           {value.designConcept
