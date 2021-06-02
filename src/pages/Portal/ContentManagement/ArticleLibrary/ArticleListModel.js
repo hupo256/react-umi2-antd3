@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-04-29 17:47:52 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-24 10:37:52
+ * @Last Modified time: 2021-06-02 14:06:32
  * 公有文章库列表
  */
 import React, { Component } from 'react';
@@ -86,7 +86,9 @@ class ArticleListModel extends Component {
         title="公有文章库"
         visible={this.props.visible}
         onOk={() => this.handleOk()}
-        onCancel={() => this.props.handleCancel()}
+        onCancel={() => {
+          this.props.handleCancel();
+        }}
         width={730}
       >
         <div style={{ minHeight: 500 }}>
