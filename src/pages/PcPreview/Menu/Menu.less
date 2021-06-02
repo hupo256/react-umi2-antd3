@@ -33,10 +33,15 @@
   cursor: pointer;
 }
 
-.menuItemWrapper .active {
-  border-bottom: 2px solid var(--themeColor);
-  color: var(--themeColor);
-  padding-bottom: 9px;
+.menuItemWrapper .active::after {
+  content: '';
+  display: block;
+  height: 2px;
+  background: var(--themeColor);
+  border-radius: 1px;
+  width: 100%;
+  position: absolute;
+  bottom: 6px;
 }
 
 .menuWrapper .left {
