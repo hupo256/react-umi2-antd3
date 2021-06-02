@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:50:21 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-27 11:14:01
+ * @Last Modified time: 2021-06-02 12:09:48
  * 文章库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -61,10 +61,14 @@ class ArticleLibrary extends PureComponent {
         const dictionaries = res.data['DM006'].filter(item => item.status !== '2');
         this.setState({
           dictionaries,
-          step: ArticleListQuery.articleDicCode || dictionaries[0].code,
+          step:
+            ArticleListQuery.articleDicCode ||
+            (dictionaries.length > 0 ? dictionaries[0].code : null),
         });
         this.getList({
-          articleDicCode: ArticleListQuery.articleDicCode || dictionaries[0].code,
+          articleDicCode:
+            ArticleListQuery.articleDicCode ||
+            (dictionaries.length > 0 ? dictionaries[0].code : null),
           ...ArticleListQuery,
           // pageNum: 1,
         });
