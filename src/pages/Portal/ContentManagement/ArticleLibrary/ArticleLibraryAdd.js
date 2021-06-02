@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-03-18 11:21:43 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-28 17:42:57
+ * @Last Modified time: 2021-06-02 12:16:35
  * 创建文章
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -76,7 +76,8 @@ class ArticleLibraryAdd extends PureComponent {
     }).then(res => {
       if (res && res.code === 200) {
         const dictionaries = res.data['DM006'].filter(item => item.status !== '2');
-        this.setState({ dictionaries, step: dictionaries[0].code });
+        const step = dictionaries.length > 0 ? dictionaries[0].code : null;
+        this.setState({ dictionaries, step });
       }
     });
   }
@@ -98,6 +99,10 @@ class ArticleLibraryAdd extends PureComponent {
         sm: { span: 16 },
       },
     };
+    const initvalCode =
+      getQueryUrlVal('step') === 'false' || getQueryUrlVal('step') === 'null'
+        ? null
+        : getQueryUrlVal('step');
     return (
       <div>
         <PageHeaderWrapper>
@@ -121,7 +126,7 @@ class ArticleLibraryAdd extends PureComponent {
               </Form.Item>
               <Form.Item label="所属栏目">
                 {getFieldDecorator('articleDicCode', {
-                  initialValue: getQueryUrlVal('step') || null,
+                  initialValue: initvalCode || null,
                   rules: [
                     {
                       required: true,
