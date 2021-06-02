@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-04-28 17:05:47 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-06-01 17:38:28
+ * @Last Modified time: 2021-06-02 10:26:26
  * 小程序设置
  */
 
@@ -87,13 +87,24 @@ class Index extends PureComponent {
       {
         title: '已关联页面',
         dataIndex: 'formTitle',
-        render: t => {
-          return <span>{t ? t : '一键授权'}</span>;
+        render: (t, r) => {
+          if (r.name == '文章') {
+            return '/';
+          } else {
+            return <span>{t ? t : '一键授权'}</span>;
+          }
         },
       },
       {
         title: '按钮名称',
         dataIndex: 'buttonText',
+        render: (t, r) => {
+          if (r.name == '文章') {
+            return '/';
+          } else {
+            return <span>{t}</span>;
+          }
+        },
       },
       {
         title: '操作',
