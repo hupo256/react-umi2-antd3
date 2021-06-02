@@ -13,16 +13,16 @@ import pageStyle from '../preview.less';
 
 export default function MdTitle(props) {
   const { tips = '', flag, isEmpty, children } = props;
-  const { curFlag, setcurFlag, pageData } = useContext(ctx);
+  const { curFlag, setcurFlag, pageData, setMdTip } = useContext(ctx);
   const canEdit = canEditTags.includes(flag);
   const text = touchTipsCon();
 
   function touchTipsCon() {
-    let tip =''
+    let tip = '';
     if (flag === 'article') {
-      const article = pageData?.jsonData?.find(e => e.flag === 'article')
+      const article = pageData?.jsonData?.find(e => e.flag === 'article');
       if (!article?.showModule) {
-        tip = '请在文章库中添加文章哦'
+        tip = '请在文章库中添加文章哦';
       }
     }
 
@@ -36,10 +36,18 @@ export default function MdTitle(props) {
     );
   }
 
+  function hoverBoxClick() {
+    setcurFlag(flag);
+    setMdTip(tips);
+  }
+
   return (
-    <div className={`${pageStyle.hoverBox} ${flag === curFlag ? pageStyle.curMd : ''}`} style={{padding: flag === 'nav' ? 0 : 16, height: flag === 'nav' ? '100%' : 'auto'}}>
+    <div
+      className={`${pageStyle.hoverBox} ${flag === curFlag ? pageStyle.curMd : ''}`}
+      style={{ padding: flag === 'nav' ? 0 : 16, height: flag === 'nav' ? '100%' : 'auto' }}
+    >
       <span
-        onClick={() => setcurFlag(flag)}
+        onClick={hoverBoxClick}
         className={`${pageStyle.hoverHandle} ${!canEdit ? pageStyle.block : ''}`}
       >
         {text}

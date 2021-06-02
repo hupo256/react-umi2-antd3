@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'dva'
 import { createChannel, getRelatedPage, getDetailApi, editChannelApi,
          siteListApi, designerListApi, caseListApi, articleListApi, articleDicApi, specialListApi  } from '@/services/channelManage'
-import { Form, Input, Select, Button, Cascader, message, Tabs, Table, Radio, Tag, Tooltip   } from 'antd'
+import { Form, Input, Select, Button, Cascader, message, Tabs, Table, Radio, Icon, Tooltip   } from 'antd'
 import styles from '../index.less'
 
 const { TabPane } = Tabs
@@ -34,14 +34,16 @@ export default class CreateEdit extends Component {
         }
     }
     async componentDidMount() {
-        const { isCreate, currentEditUid } = this.props;
+        const { isCreate, currentEditUid, relatedPageOption, relatedPage, form } = this.props;
         if (!isCreate) {
             this.getDetail(currentEditUid)
         }
-        const res = await getRelatedPage({sceneType: 2});
+        // const res = await getRelatedPage({sceneType: 2});
         this.setState({
-            relatedPageOption: this.format(res?.data) 
+            // relatedPageOption: this.format(res?.data) 
+            relatedPageOption: this.format(relatedPageOption) 
         })
+        if(relatedPage) form.setFieldsValue({ relatedPage })
     }
 
     async componentDidUpdate( prevProps ) {
@@ -68,7 +70,8 @@ export default class CreateEdit extends Component {
  * @return {*}
  */    
     getDetail = async uid => {
-        const { form } = this.props;
+        const { form, paths } = this.props;
+        console(paths, linkDisplayName)
         if (!uid) return;
         const res = await getDetailApi({ uid });
         this.setState({
@@ -557,12 +560,13 @@ export default class CreateEdit extends Component {
 
         return (
             // <div className='createEdit' onClick={this.closeHanlde}>
-                <Form labelCol={{ span: 6 }} wrapperCol={{ span: 13 }} onSubmit={this.handleSubmit}>
-                    <Form.Item label="关联页面">
+                // <Form labelCol={{ span: 6 }} wrapperCol={{ span: 13 }} onSubmit={this.handleSubmit}>
+                //     <Form.Item label="关联页面">
+                    <>
                         {getFieldDecorator('relatedPage', {
                             rules: [{ required: true, message: '请选择关联页面!' }],
                         })(
-                            <Input className='targetInput' readOnly placeholder='请选择关联页面' onClick={ this.clickInputHandle} />             
+                            <Input className='targetInput' readOnly placeholder='请选择关联页面' onClick={ this.clickInputHandle} suffix={<Icon type="right" />}/>             
                         )} 
                         {showSelectPanl && <div ref='parentNode'  className={styles['card-container']}>
                             <Tabs type="card" tabBarGutter={0}  activeKey={currentKey} onChange={this.tabChange}>
@@ -611,17 +615,18 @@ export default class CreateEdit extends Component {
                                 </TabPane>}
                             </Tabs>
                         </div>}
-                    </Form.Item>
+                    </>
+                //     </Form.Item>
                     
-                    {/* <Form.Item wrapperCol={{ span:6, offset: 9 }}>
-                        <Button type="primary" loading={btnLoading} htmlType="submit" style={{float: 'left'}}>
-                            确定
-                        </Button>
-                        <Button  style={{float: 'right'}} onClick={this.resetHandle}>
-                            取消
-                        </Button>
-                    </Form.Item> */}
-                </Form>
+                //     <Form.Item wrapperCol={{ span:6, offset: 9 }}>
+                //         <Button type="primary" loading={btnLoading} htmlType="submit" style={{float: 'left'}}>
+                //             确定
+                //         </Button>
+                //         <Button  style={{float: 'right'}} onClick={this.resetHandle}>
+                //             取消
+                //         </Button>
+                //     </Form.Item>
+                // </Form>
             // </div>
         )
     }

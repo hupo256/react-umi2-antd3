@@ -111,7 +111,8 @@ export default function Preview(props) {
     contentBox.current.scrollTop = '0px';
   }
 
-  return <div className={pageStyle.phoneOut}>
+  return (
+    <div className={pageStyle.phoneOut}>
       <div className={`${pageStyle.phoneBox} ${pageStyle[curTheme]} ${from ? pageStyle.min : ''} `}>
         <div className={pageStyle.headerBox}>
           <div className={pageStyle.ptit}>
@@ -120,27 +121,32 @@ export default function Preview(props) {
         </div>
         {/* 循环出主体 */}
         <div className={pageStyle.conBox} ref={contentBox}>
-          {pageData?.jsonData?.length > 0 && pageData.jsonData.map((item, ind) => {
+          {pageData?.jsonData?.length > 0 &&
+            pageData.jsonData.map((item, ind) => {
               const { flag, list = [] } = item;
               const curComponent = componentMap[flag];
               if (!curComponent) return;
               const { tips, creatCom } = curComponent;
-              return <HoverMd key={ind} tips={tips} flag={flag} isEmpty={!list?.length}>
+              return (
+                <HoverMd key={ind} tips={tips} flag={flag} isEmpty={!list?.length}>
                   {creatCom({ ...item })}
-                </HoverMd>;
+                </HoverMd>
+              );
             })}
           <div style={{ position: 'absolute', width: '100%', left: 0, bottom: 0, height: 50 }}>
             <HoverMd key={999} tips="导航" flag="nav">
               <div className={pageStyle.footerBox}>
                 <ul className={pageStyle.flex}>
                   {navData?.map(e => {
-                    const {navModule, icon, name } = e
-                    return <li key={navModule} className={`${navModule === 'home' ? pageStyle.on : ''}`}>
-                      <svg className="icon">
-                        <use href={`#${icon}`} />
-                      </svg>
-                      <span>{name}</span>
-                    </li>;
+                    const { navModule, icon, name } = e;
+                    return (
+                      <li key={navModule} className={`${navModule === 'home' ? pageStyle.on : ''}`}>
+                        <svg className="icon">
+                          <use href={`#${icon}`} />{' '}
+                        </svg>
+                        <span>{name}</span>
+                      </li>
+                    );
                   })}
                 </ul>
               </div>
@@ -162,18 +168,17 @@ export default function Preview(props) {
           </span>
         </div>
 
-        {from && <div className={pageStyle.btnbox}>
-            {permissionsBtn.includes('BTN210422000004') && <a
-                onClick={() => gotoRoute(`edit?templateCode=${curTheme}`)}
-              >
-                继续编辑
-              </a>}
-            {permissionsBtn.includes('BTN210422000005') && <a
-                onClick={() => gotoRoute(`templates?tochange=1`)}
-              >
-                更换模板
-              </a>}
-          </div>}
+        {from && (
+          <div className={pageStyle.btnbox}>
+            {permissionsBtn.includes('BTN210422000004') && (
+              <a onClick={() => gotoRoute(`edit?templateCode=${curTheme}`)}>继续编辑</a>
+            )}
+            {permissionsBtn.includes('BTN210422000005') && (
+              <a onClick={() => gotoRoute(`templates?tochange=1`)}>更换模板</a>
+            )}
+          </div>
+        )}
       </div>
-    </div>;
+    </div>
+  );
 }

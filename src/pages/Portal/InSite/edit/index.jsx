@@ -30,9 +30,7 @@ function TempEdit(props) {
           <div
             className={styles.tipsBox}
             style={{ bottom: '7.5em' }}
-            onClick={() => {
-              setcurFlag('editModel');
-            }}
+            onClick={() => setcurFlag('editModel')}
           >
             <Tooltip placement="topLeft" title={editText}>
               <Icon type="unordered-list" style={{ fontSize: '16px' }} />
