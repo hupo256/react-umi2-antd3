@@ -73,8 +73,8 @@ export default function NavEdit(props) {
     forUpdatePageData();
   }
 
-  function touchPaths(e) {
-    console.log(e);
+  function touchPaths(arr) {
+    console.log(arr);
   }
 
   return (

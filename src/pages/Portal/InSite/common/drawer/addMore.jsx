@@ -14,7 +14,7 @@ export default function NavEdit(props) {
   return (
     <p className={styles.addImg} onClick={props.clickHandle}>
       <span>+</span>
-      <span>{`添加${MdTip}`}</span>
+      <span>{` 添加${MdTip}`}</span>
     </p>
   );
 }

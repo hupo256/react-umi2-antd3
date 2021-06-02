@@ -53,10 +53,6 @@ const componentMap = {
     tips: '文章',
     creatCom: e => <ArticleMd {...e} />,
   },
-  nav: {
-    tips: '导航',
-    creatCom: e => <NavMd {...e} />,
-  },
   channel: {
     tips: '频道',
     creatCom: e => <ChannelMd {...e} />,
@@ -142,7 +138,7 @@ export default function Preview(props) {
                     return (
                       <li key={navModule} className={`${navModule === 'home' ? pageStyle.on : ''}`}>
                         <svg className="icon">
-                          <use href={`#${icon}`} />{' '}
+                          <use href={`#${icon}`} />
                         </svg>
                         <span>{name}</span>
                       </li>
@@ -152,6 +148,8 @@ export default function Preview(props) {
               </div>
             </HoverMd>
           </div>
+
+          {/* <NavMd /> */}
         </div>
 
         {/* totopBox */}

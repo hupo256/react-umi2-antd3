@@ -218,9 +218,7 @@ export default class CreateEdit extends Component {
             this.getDataList({pageNum,  searchText, articleDicCode: currentarticleDicCode});
 
             const {callFun} = this.props
-            if(callFun){
-              callFun(this.formatData().map(item => item.code))
-            }
+            if(callFun) callFun(this.formatData())
         })
     }
 
@@ -347,13 +345,15 @@ export default class CreateEdit extends Component {
     // 格式化回显
     formatData = () => {
         const {currentSelectRelatedPageOpt } = this.state;
+        console.log(currentSelectRelatedPageOpt)
         let arr = [];
         for (const key in currentSelectRelatedPageOpt) {
             if (currentSelectRelatedPageOpt.hasOwnProperty.call(currentSelectRelatedPageOpt, key)) {
                 const item = currentSelectRelatedPageOpt[key];
                 arr.push({
                     text: item.name || item.title || item.articleTitle  || item.gongdiTitle || item.specialTitle,
-                    code: item.uid || item.gongdiUid || item.articleUid || item.specialUid
+                    code: item.uid || item.gongdiUid || item.articleUid || item.specialUid,
+                    icon: item.icon
                 })
             }
         }
