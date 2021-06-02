@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:50:21 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-06-02 14:07:22
+ * @Last Modified time: 2021-06-02 14:26:48
  * 文章库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -383,7 +383,7 @@ class ArticleLibrary extends PureComponent {
   };
 
   handleArticleOk = uid => {
-    this.setState({ CreateModeVisible: false });
+    this.handleArticleCancel();
     const { step } = this.state;
     router.push(`/portal/contentmanagement/articlelibrary/add?step=${step}&uid=${uid}`);
   };
