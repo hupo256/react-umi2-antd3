@@ -8,7 +8,7 @@
 import React, { useState, useEffect } from 'react';
 import SwiperBar from '../../common/swiperBar';
 
-export default function CaseMd(props) {
+export default function AdMd(props) {
   return (
     <div className="adbox">
       <SwiperBar {...props} />

@@ -10,7 +10,7 @@ import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { Provider, ctx } from '../common/context';
 import router from 'umi/router';
 import { baseRouteKey } from '../tools/data';
-import { updateHomePageEditData } from '@/services/miniProgram';
+import { updateHomePageEditData, saveNavEditData } from '@/services/miniProgram';
 import TitleGuid from '../common/titleGuid';
 import { queryTemplate } from '@/services/miniProgram';
 import { imgBaseUrl } from '../tools';

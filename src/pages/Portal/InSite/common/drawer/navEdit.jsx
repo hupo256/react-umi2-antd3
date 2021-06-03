@@ -1,172 +1,140 @@
 /*
  * @Author: tdd
- * @Date: 2021-03-23 13:49:12
+ * @Date: 2021-06-02 13:49:12
  * @Last Modified by: tdd
- * @Last Modified time: 2021-03-23 13:49:12
+ * @Last Modified time: 2021-06-02 15:49:12
  * 编辑亮点
  */
-import React, { useState, useEffect, useContext, useRef } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { ctx } from '../context';
-import { Input, Icon, message, Form, Table, Select } from 'antd';
-import { highlightsBgImgs } from '../../tools/data';
-import pageStyle from '../../preview/preview.less';
+import { Input, Icon, message, Form } from 'antd';
+import AddMore from './addMore';
+import { getRelatedPage } from '@/services/channelManage';
+import RelevanceInp from '@/pages/ChannelManage/components/RelevanceInp';
+import styles from './drawerEditor.less';
 
-const maxLen = 5;
+const maxLen = 6;
 const { Item } = Form;
 
-export default function TagsEdit(props) {
-  const {
-    choiceData,
-    setChoiceData,
-    navData,
-    setNavData,
-    pageData,
-    setpageData,
-    curFlag,
-    setlinkEdtor,
-    setcurInd,
-  } = useContext(ctx);
-  console.log(navData);
-  const [tagList = [], settagList] = useState(() => pageData?.maps?.[curFlag]?.list);
-  const titInp = useRef();
-  function addNewNav() {
+export default function NavEdit(props) {
+  const { navData, setNavData, pageData, curFlag } = useContext(ctx);
+  const [relatedPageOption, setrelatedPageOption] = useState([]);
+
+  useEffect(() => {
+    getRelatedPage({ sceneType: 2 }).then(res => {
+      if (!res?.data) return;
+      setrelatedPageOption(res?.data);
+    });
+  }, []);
+
+  function addNewTag() {
     const len = navData.length;
-    if (len === maxLen) return message.warning(`导航栏添加${maxLen}个效果最佳哦`);
-    const newArr = [...navData];
-    const r = newArr.find(e => e.navModule === '');
-    if (r) {
-      return message.warning(`您有未选择的导航，请设置后再添加`);
-    }
-    newArr.push({
-      icon: '',
+    if (len === maxLen) return message.warning(`最多可添加${maxLen}个导航`);
+    const item = {
+      // 给一个默认的对象
+      icon: 'iconic_site_new',
+      linkDisplayName: '',
       name: '',
-      navModule: '',
-    });
-    setNavData(newArr);
+      navModule: `module${len}`,
+    };
+    setNavData(navData.concat(item));
   }
+
+  function forUpdatePageData() {
+    // const newObj = { ...pageData };
+    // newObj.maps[curFlag].list = tagList;
+    // settagList(tagList.slice());
+    // setpageData(newObj);
+
+    setNavData(navData.slice());
+  }
+
   function delImg(num) {
-    const newArr = [...navData];
-    const arr = [];
-    newArr.map(e => {
-      if (e.navModule !== num) {
-        arr.push(e);
-      }
-    });
-    setNavData(arr);
+    navData.splice(num, 1);
+    forUpdatePageData();
   }
 
   function toMove(ind, num) {
-    console.log(ind);
-    const newArr = [...navData];
-    const rec = newArr.splice(ind, 1)[0];
-    newArr.splice(ind + num, 0, rec);
-    setNavData(newArr);
+    const rec = navData.splice(ind, 1)[0];
+    navData.splice(ind + num, 0, rec);
+    forUpdatePageData();
   }
-  function filterData(navModule) {
-    const newArr = [...choiceData];
-    newArr.map(i => {
-      const r = navData.find(e => {
-        return i.navModule === e.navModule;
-      });
-      if (r) {
-        i.disabled = true;
-      } else {
-        i.disabled = false;
-      }
-    });
-    setChoiceData(newArr);
+
+  function discTexChange(e, rec) {
+    let val = e.target.value;
+    if (val?.length > 4) {
+      rec.desStatus = 'error';
+      rec.desMsg = '最多14个字符';
+    } else {
+      rec.desStatus = 'success';
+      rec.desMsg = '';
+    }
+    rec.name = val;
+    forUpdatePageData();
   }
-  function selectData(navModule, current) {
-    console.log(navModule);
-    const newArr = [...navData];
-    const r = choiceData.find(e => {
-      return navModule === e.navModule;
-    });
-    newArr.map(i => {
-      if (i.navModule === current) {
-        i.navModule = r.navModule;
-        i.name = r.name;
-        i.icon = r.icon;
-      }
-    });
-    setNavData(newArr);
-    filterData();
+
+  function touchPaths(arr) {
+    console.log(arr);
   }
-  const columns = [
-    {
-      title: '导航图标',
-      dataIndex: 'icon',
-      render: (icon, e) => {
-        return <div className={pageStyle.on}>
-          <svg className="icon" aria-hidden="true">
-            <use
-              href={`#${e.icon}`}
-            />
-          </svg>
-        </div>
-      },
-    },
-    {
-      title: '导航名称',
-      dataIndex: 'name',
-      render: (navModule, item) => {
-        return item.navModule === 'home' ? (
-          '首页'
-        ) : (
-          <Select
-            style={{ width: 100 }}
-            value={item.navModule}
-            onFocus={() => filterData()}
-            onSelect={e => {
-              selectData(e, item.navModule);
-            }}
-          >
-            {choiceData.map((e, i) => (
-              <Select.Option key={i} value={e.navModule} disabled={e.disabled}>
-                {e.name}
-              </Select.Option>
-            ))}
-          </Select>
-        );
-      },
-    },
-    {
-      title: '操作',
-      dataIndex: 'navModule',
-      render: (text, item) => {
-        let index = -1;
-        navData.map((e, i) => {
-          if (e.navModule === text) {
-            index = i;
-          }
-        });
-        console.log(index);
-        return item.navModule === 'home' ? (
-          ''
-        ) : (
-          <div className={pageStyle.tbOpration}>
-            <a className={index === 1 ? pageStyle.disabled : ''} disabled={index === 1} onClick={() => toMove(index, -1)}>
-              <Icon type="arrow-up" />
-            </a>
-            <a className={index === navData.length - 1 ? pageStyle.disabled : ''} disabled={index === navData.length - 1} onClick={() => toMove(index, 1)}>
-              <Icon type="arrow-down" />
-            </a>
-            <a onClick={() => delImg(text)}>
-              <Icon type="delete" />
-            </a>
-          </div>
-        );
-      },
-    },
-  ];
 
   return (
-    <div className={pageStyle.navBox}>
-      <Table columns={columns} dataSource={navData || []} rowKey={'navModule'} pagination={false} />
-      <p className={pageStyle.addImg} onClick={addNewNav}>
-        <span>+</span>
-        <span>添加导航</span>
-      </p>
-    </div>
+    <>
+      <ul>
+        {navData?.length > 0 &&
+          navData.map((tag, ind) => {
+            const { linkDisplayName, icon, name, desStatus = 'success', desMsg = '' } = tag;
+            const len = navData.length;
+            return (
+              <li key={ind}>
+                <div className={styles.titBox}>
+                  <span>导航图标</span>
+                  <span>导航名称</span>
+                  <div className={styles.tbOpration}>
+                    <a disabled={ind === 0} onClick={() => toMove(ind, -1)}>
+                      <Icon type="arrow-up" />
+                    </a>
+                    <a disabled={ind === len - 1} onClick={() => toMove(ind, 1)}>
+                      <Icon type="arrow-down" />
+                    </a>
+                    <a disabled={len === 1} onClick={() => delImg(ind)}>
+                      <Icon type="delete" />
+                    </a>
+                  </div>
+                </div>
+                <div className={styles.taginpBox}>
+                  <Form layout="inline">
+                    <Item>
+                      <svg className={`icon ${styles.navIcon}`}>
+                        <use href={`#${icon}`} />
+                      </svg>
+                    </Item>
+
+                    <Item validateStatus={desStatus} help={desMsg}>
+                      <Input
+                        value={name}
+                        maxLength={4}
+                        onBlur={e => discTexChange(e, tag)}
+                        onChange={e => discTexChange(e, tag)}
+                        placeholder="请输入导航名称"
+                      />
+                    </Item>
+                  </Form>
+
+                  <p>关联页面</p>
+                  {relatedPageOption?.length > 0 && (
+                    <RelevanceInp
+                      callFun={touchPaths} // 对外暴露的回调，用来把数据传出去
+                      relatedPageOption={relatedPageOption} // 渲染组件需要的数据
+                      relatedPage={linkDisplayName} // input用来回显的值
+                    />
+                  )}
+                </div>
+              </li>
+            );
+          })}
+      </ul>
+
+      <AddMore clickHandle={addNewTag} />
+    </>
   );
 }

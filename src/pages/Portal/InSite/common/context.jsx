@@ -19,8 +19,9 @@ export function Provider({ children }) {
   const [pageData, setpageData] = useState({}); // 页面渲染数据
   const [curFlag, setcurFlag] = useState(''); // 当前编辑数据的标签
   const [curInd, setcurInd] = useState(-1); // 当前修改的数据索引值
-  const [linkEdtor, setlinkEdtor] = useState(false); //抽屉状态
-  const [imgEdtor, setimgEdtor] = useState(false); //抽屉状态
+  const [linkEdtor, setlinkEdtor] = useState(false); //关联页面弹层状态
+  const [imgEdtor, setimgEdtor] = useState(false); //添加图片弹层状态
+  const [MdTip, setMdTip] = useState(''); //当前编辑模块的tips
   const [templateCode, settemplateCode] = useState(''); //当前模板code
   const [templateName, settemplateName] = useState(''); //当前模板name
   const [navData, setNavData] = useState([]); //导航数据
@@ -173,6 +174,8 @@ export function Provider({ children }) {
     setNavData,
     choiceData,
     setChoiceData,
+    MdTip,
+    setMdTip,
   };
 
   return <ctx.Provider value={value}>{children}</ctx.Provider>;

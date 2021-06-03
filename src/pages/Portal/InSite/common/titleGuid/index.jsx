@@ -10,7 +10,7 @@ import { Button, message, Modal, Icon } from 'antd';
 import router from 'umi/router';
 import { baseRouteKey, themes } from '../../tools/data';
 import { ctx } from '../context';
-import { updateHomePageEditData, publishEditData } from '@/services/miniProgram';
+import { updateHomePageEditData, publishEditData, saveNavEditData } from '@/services/miniProgram';
 import styles from './titleGuid.less';
 import { saveNavEditData } from '../../../../../services/miniProgram';
 
@@ -77,10 +77,10 @@ export default function TitleGuid(props) {
         {isEdit && (
           <div className={styles.btnBox}>
             <Button onClick={showConfirm}>放弃更改</Button>
-            {/*<a href="#/pc/preview" target="_blank">*/}
-            {/*  <Icon type="dribbble" />*/}
-            {/*  <span>网站预览</span>*/}
-            {/*</a>*/}
+            <a href="#/pc/preview" target="_blank">
+              <Icon type="desktop" />
+              <span>网站预览</span>
+            </a>
             <Button onClick={toPublish} type="primary">
               <img
                 src="https://img.inbase.in-deco.com/crm_saas/release/20210511/bb4bd99abc374cae9b1dbe634a6a388c/ic_send.png"

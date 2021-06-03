@@ -15,7 +15,7 @@ const PageHeaderWrapper = ({
   top,
   ...restProps
 }) => (
-  <div style={{ margin: '-24px -12px 0' }} className={wrapperClassName}>
+  <div style={{ margin: '-24px -12px 0', height: '100%' }} className={wrapperClassName}>
     {top}
     <MenuContext.Consumer>
       {value => (

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import router from 'umi/router';
 import { ctx } from '../common/context';
@@ -15,6 +14,7 @@ import AdMd from './components/adMd';
 import AboutUsMd from './components/aboutUsMd';
 import ArticleMd from './components/articleMd';
 import NavMd from './components/navMd';
+import ChannelMd from './components/channelMd';
 
 import './components/fontclass/iconfont.js';
 import pageStyle from './preview.less';
@@ -53,9 +53,9 @@ const componentMap = {
     tips: '文章',
     creatCom: e => <ArticleMd {...e} />,
   },
-  nav: {
-    tips: '导航',
-    creatCom: e => <NavMd {...e} />,
+  channel: {
+    tips: '频道',
+    creatCom: e => <ChannelMd {...e} />,
   },
 };
 
@@ -146,6 +146,8 @@ export default function Preview(props) {
                 </div>
               </HoverMd>
             </div>
+
+            {/* <NavMd /> */}
         </div>
 
         {/* footer */}
