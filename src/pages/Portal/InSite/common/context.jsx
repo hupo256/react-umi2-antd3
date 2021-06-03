@@ -92,15 +92,11 @@ export function Provider({ children }) {
             pageNum: '1',
             pageSize: '4',
           },
-          {
-            key: 'channel',
-            pageNum: '1',
-            pageSize: '20',
-          },
         ];
         getHomePageEditData(param).then(res => {
-          message.destroy();
+          if (res?.code !== 200) return message.error(res?.message || '数据返回出错');
           if (!res?.data) return;
+          message.destroy();
           const userInfo = getauth();
           const aboutUs = res.data.editTemplateJson.jsonData.find(e => e.flag === 'aboutUs');
           const article = res.data.editTemplateJson.jsonData.find(e => e.flag === 'article');
