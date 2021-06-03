@@ -19,6 +19,8 @@ export default function TitleGuid(props) {
   const { pageData, setcurFlag, templateCode, templateName, savePageData } = useContext(ctx);
   const permissionsBtn = getauth();
   function toPublish() {
+    console.log(pageData);
+    if(!pageData?.jsonData) return message.error('数据为空，请稍后再试')
     let { jsonData, themeData } = pageData;
     const { customerService } = JSON.parse(localStorage.getItem('auth'));
     themeData = themes[templateCode];

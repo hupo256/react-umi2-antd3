@@ -87,11 +87,23 @@ export function Provider({ children }) {
           },
         ];
         getHomePageEditData(param).then(res => {
-          message.destroy();
-          console.log(res);
+          if (res?.code !== 200) return message.error(res?.message || '数据返回出错');
           if (!res?.data) return;
-          console.log(res.data.jsonData)
-          const aboutUs = res.data.editTemplateJson.jsonData.find(e => e.flag === 'aboutUs')
+          message.destroy();
+          const userInfo = getauth();
+          const aboutUs = res.data.editTemplateJson.jsonData.find(e => e.flag === 'aboutUs');
+          const article = res.data.editTemplateJson.jsonData.find(e => e.flag === 'article');
+          if (!article) {
+            res.data.editTemplateJson.jsonData.push({
+              flag: "article",
+              list: [],
+              title: "装修攻略",
+              afterName: "装修攻略",
+              styleType: "",
+              showModule: true,
+              nameListData: []
+            });
+          }
           if (!aboutUs) {
             res.data.editTemplateJson.jsonData.push({
               flag: 'aboutUs',
