@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2020-04-15 13:37:41 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-14 15:03:09
+ * @Last Modified time: 2021-05-20 15:21:49
  */
 import React from 'react';
 // 引入编辑器组件
@@ -34,7 +34,7 @@ export default class EditorDemo extends React.Component {
       {
         key: 'custom-button',
         type: 'button',
-        text: '预览',
+        text: '电脑预览',
         onClick: () => {
           this.preview();
         },

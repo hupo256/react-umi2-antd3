@@ -7,7 +7,7 @@
  */
 import React, { Component, useContext } from 'react';
 import { connect } from 'dva';
-import { Table, Input, Pagination, Icon } from 'antd';
+import { Table, Input, Pagination, Icon, Tooltip } from 'antd';
 import styles from './drawerEditor.less';
 import { ctx } from '../context';
 
@@ -33,11 +33,7 @@ class Select extends Component {
   }
 
   componentDidMount() {
-    const {
-      dispatch,
-      defvalue,
-      type,
-    } = this.props;
+    const { dispatch, defvalue, type } = this.props;
     if (defvalue) {
       if (defvalue.split('/').length) {
         // 表单
@@ -47,7 +43,7 @@ class Select extends Component {
               type === 'special'
                 ? 'ArticleSpecial/getSpecialListModel'
                 : 'ArticleSpecial/getArticleListModel',
-            payload: { pageNum: 1, pageSize: 10 },
+            payload: { pageNum: 1, pageSize: 10, articleStatus: 1, specialStatus: 1 },
           });
         });
       }
@@ -61,16 +57,16 @@ class Select extends Component {
     this.setState({ status });
     dispatch({
       type: 'ArticleSpecial/getArticleListModel',
-      payload: { ...formListQuery, articleDicCode: status },
+      payload: { ...formListQuery, articleDicCode: status, pageNum: 1, articleStatus: 1 },
     });
   };
   render() {
-    const { pageData } = this.props
-    console.log(pageData)
-    const article = pageData?.jsonData?.find(e => e.flag === 'article')
-    let nameListData = []
+    const { pageData } = this.props;
+    console.log(pageData);
+    const article = pageData?.jsonData?.find(e => e.flag === 'article');
+    let nameListData = [];
     if (article) {
-      nameListData = article.nameListData
+      nameListData = article.nameListData;
     }
     const { textOne, textTwo, step, searchWord, show, inputVal, status } = this.state;
     const {
@@ -79,7 +75,20 @@ class Select extends Component {
     } = this.props;
 
     const columns = [
-      { title: textOne + '标题', dataIndex: textOne === '文章' ? 'articleTitle' : 'specialTitle' },
+      {
+        title: textOne + '标题',
+        dataIndex: textOne === '文章' ? 'articleTitle' : 'specialTitle',
+        render: t => {
+          console.log(t)
+          return t && t.length > 11 ? (
+            <Tooltip placement="top" title={t}>
+              {t.slice(0, 11)}...
+            </Tooltip>
+          ) : (
+            t
+          );
+        },
+      },
       { title: '发布人', dataIndex: 'creatorName' },
       {
         title: '更新时间',
@@ -96,17 +105,39 @@ class Select extends Component {
     };
     return (
       <div className={styles.selectWrap}>
-        <Input
-          placeholder="请选择关联页面"
-          value={inputVal}
-          onClick={() => this.handleInputTogger()}
-          style={{ width: '100%' }}
-        />
+        {inputVal?.length > 20 ? (
+          <Tooltip
+            placement="top"
+            title={inputVal}
+            style={{ backgroundColor: 'rgba(0, 0, 0, 0.75)' }}
+          >
+            <Input
+              placeholder="请选择关联页面"
+              value={inputVal}
+              onClick={() => this.handleInputTogger()}
+              style={{ width: '100%' }}
+            />
+          </Tooltip>
+        ) : (
+          <Input
+            placeholder="请选择关联页面"
+            value={inputVal}
+            onClick={() => this.handleInputTogger()}
+            style={{ width: '100%' }}
+          />
+        )}
+
         <span className={styles.linkIcon} onClick={() => this.handleInputTogger()}>
           <Icon type={show ? 'up' : 'down'} />
         </span>
         {this.state.show && (
-          <div className={styles.selectList} style={{height: textOne === '文章' && step === 2 ? 'auto' : 347, paddingBottom: textOne === '文章' && step === 2 ? 5 : 0}}>
+          <div
+            className={styles.selectList}
+            style={{
+              height: textOne === '文章' && step === 2 ? 'auto' : 426,
+              paddingBottom: textOne === '文章' && step === 2 ? 5 : 0,
+            }}
+          >
             <div className={styles.selectListTitle}>
               <span
                 className={step == 1 && styles.cur}
@@ -138,22 +169,26 @@ class Select extends Component {
                   onPressEnter={() => this.handleSrarch()}
                   style={{ width: '100%', marginBottom: 10 }}
                 />
-                {textOne === '文章' && <p style={{paddingBottom: 10}}>
-                  文章栏目：
-                  <span
-                    onClick={() => this.handleSrarchStatus(null)}
-                    className={`tagstatus ${!status && 'tagstatusCur'}`}
-                  >
-                全部
-                  </span>
-                  {nameListData.map(e => <span
-                    style={{paddingBottom: 5}}
-                    onClick={() => this.handleSrarchStatus(e.code)}
-                    className={`tagstatus ${e.code === status && 'tagstatusCur'}`}
-                  >
-                    {e.name}
-                  </span>)}
-                </p>}
+                {textOne === '文章' && (
+                  <p>
+                    文章栏目：
+                    <span
+                      onClick={() => this.handleSrarchStatus('')}
+                      className={`tagstatus ${!status && 'tagstatusCur'}`}
+                    >
+                      全部
+                    </span>
+                    {nameListData.map(e => (
+                      <span
+                        style={{ paddingBottom: 5 }}
+                        onClick={() => this.handleSrarchStatus(e.code)}
+                        className={`tagstatus ${e.code === status && 'tagstatusCur'}`}
+                      >
+                        {e.name}
+                      </span>
+                    ))}
+                  </p>
+                )}
                 <Table
                   loading={Loading}
                   className={styles.tablename}
@@ -170,7 +205,7 @@ class Select extends Component {
                       }, // 点击行
                     };
                   }}
-                  scroll={{ y: 182 }}
+                  scroll={{ y: textOne === '文章' ? 210 : 270 }}
                   columns={columns}
                   // rowSelection={rowSelection}
                   pagination={false}
@@ -195,12 +230,15 @@ class Select extends Component {
     this.queryList({ searchText: (searchWord && searchWord.substring(0, 30)) || '', pageNum: 1 });
   };
   handleClickTwo = type => {
-    const {status} = this.state
+    const { status } = this.state;
     const payload = {
-      pageNum: 1, pageSize: 10
-    }
+      pageNum: 1,
+      pageSize: 10,
+      articleStatus: 1,
+      specialStatus: 1,
+    };
     if (type === 'article') {
-      payload.articleDicCode = status
+      payload.articleDicCode = status;
     }
     this.props.dispatch({
       type:
@@ -244,20 +282,31 @@ class Select extends Component {
   };
 
   handleSizeChange = (current, size) => {
-    this.queryList({ pageNum: current });
+    const {
+      dispatch,
+      ArticleSpecial: { formListQuery },
+    } = this.props;
+    const { textOne } = this.state;
+    dispatch({
+      type:
+        textOne === '专题'
+          ? 'ArticleSpecial/getSpecialListModel'
+          : 'ArticleSpecial/getArticleListModel',
+      payload: { ...formListQuery, pageNum: current, articleStatus: 1, specialStatus: 1 },
+    });
   };
   queryList = obj => {
     const {
       dispatch,
       ArticleSpecial: { formListQuery },
-      type,
     } = this.props;
+    const { textOne } = this.state;
     dispatch({
       type:
-        type === 'special'
+        textOne === '专题'
           ? 'ArticleSpecial/getSpecialListModel'
           : 'ArticleSpecial/getArticleListModel',
-      payload: { ...formListQuery, ...obj },
+      payload: { ...formListQuery, ...obj, articleStatus: 1, specialStatus: 1 },
     });
   };
 }

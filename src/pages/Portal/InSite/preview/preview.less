@@ -123,9 +123,9 @@
       padding-left: 16px;
       padding-right: 16px;
     }
-    .hasbg2{
+    .hasbg2 {
       background: rgba(250, 250, 250, 1);
-      width: 110%;
+      width: 109%;
       margin: -16px 0 -16px -16px;
       padding-left: 16px;
       padding-right: 16px;
@@ -213,6 +213,26 @@
       }
     }
 
+    .channelBox {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      > li {
+        flex: 1;
+        width: 20%;
+        text-align: center;
+
+        > img {
+          width: 60%;
+          border-radius: 50%;
+        }
+        > p {
+          padding-top: 0.5em;
+        }
+      }
+    }
+
     .mdBlock {
       padding-top: 2em;
       padding-bottom: 2em;
@@ -249,53 +269,56 @@
           font-size: 14px;
         }
       }
-      .bg{
+      .bg {
         position: absolute;
         right: 0;
         top: 0;
         height: 46px;
       }
-      .nav{
+      .nav {
         white-space: nowrap;
         margin-top: 12px;
         div {
           display: inline-block;
           font-size: 14px;
           margin-right: 32px;
-          &:first-child{
-            color: rgba(254, 96, 28, 1);
+          &:first-child {
             font-weight: bold;
             position: relative;
-            &:after{
-              content: '';
-              width: 26px;
-              height: 2px;
-              border-radius: 5px;
-              position: absolute;
-              bottom: -6px;
-              background: rgba(254, 96, 28, 1);
-              left: 50%;
-              margin-left: -13px;
-            }
+            //&:after {
+            //  content: '';
+            //  width: 26px;
+            //  height: 2px;
+            //  border-radius: 5px;
+            //  position: absolute;
+            //  bottom: -6px;
+            //  background: rgba(254, 96, 28, 1);
+            //  left: 50%;
+            //  margin-left: -13px;
+            //}
           }
-
         }
       }
-      .content{
+      .content {
         margin-top: 32px;
-        .imgsWrapper{
+        .imgsWrapper {
           overflow: hidden;
           margin-bottom: 26px;
-          .imgBox{
+          .imgBox {
             width: 91px;
             height: 91px;
             margin-right: 18px;
             float: left;
             border-radius: 4px;
             overflow: hidden;
-            img{
-              width: 100%;
-              height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            img {
+              max-width: 100%;
+              max-height: 100%;
+              display: table-cell;
+              transform: scale(2);
             }
           }
 
@@ -303,13 +326,14 @@
             float: left;
             width: 230px;
           }
-          .title{
+          .title {
             font-size: 16px;
             color: rgba(34, 34, 34, 1);
             text-overflow: ellipsis;
             white-space: nowrap;
             overflow: hidden;
             width: 100%;
+            font-weight: 500;
           }
           .text {
             overflow: hidden;
@@ -322,21 +346,21 @@
             -webkit-box-orient: vertical;
             /* autoprefixer: on */
             display: -webkit-box; //根据不同标签display，有的不用加。或者设置成别的属性，自己可以随便试试
-            margin: 5px 0;
+            margin: 5px 0 8px;
+            height: 36px;
           }
           .view {
             font-size: 12px;
-            color: rgba(161, 161, 161, 1)
+            color: rgba(161, 161, 161, 1);
           }
         }
-        .noData{
+        .noData {
           text-align: center;
           font-size: 12px;
           color: rgba(161, 161, 161, 1);
           margin: 20px 0;
         }
       }
-
     }
 
     .caseBox {
@@ -570,15 +594,15 @@
       }
     }
     .modelEditBox {
-      .bg{
+      .bg {
         position: absolute;
         right: 15px;
-        top: 26px;
+        top: 37px;
         height: 46px;
       }
       background: url('@{picturePath}img_word_about@2x.png') no-repeat fixed right top;
-      h3{
-        margin: 16px 0;
+      h3 {
+        height: 27px;
       }
       .contentWrapper {
         box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.08);
@@ -685,13 +709,15 @@
   }
 }
 .navBox {
-  .on{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 2px;
-    cursor: pointer;
-    width: 42px;
+  .on {
+    background: #f8f8f8;
+    height: 40px;
+    width: 40px;
+    text-align: center;
+    line-height: 36px;
+    border: 1px solid #ececec;
+    font-size: 20px;
+    border-radius: 2px;
   }
   .addImg {
     line-height: 3;
@@ -700,6 +726,16 @@
     text-align: center;
     margin: 25px 16px 0;
     cursor: pointer;
+  }
+  .tbOpration{
+    a {
+      padding-left: 5px;
+      color: #999;
+      cursor: pointer;
+      &.disabled{
+        color: #dedede;
+      }
+    }
   }
 }
 .btnbox {
@@ -737,6 +773,9 @@
     .mdBlock > h3 > b::after {
       background: linear-gradient(90deg, rgba(223, 64, 53, 1) 0%, rgba(251, 233, 231, 1) 100%);
     }
+    .mdBlock .nav div:first-child {
+      color: @themColor;
+    }
     .tagBox > li > h3 {
       color: @themColor;
     }
@@ -770,6 +809,9 @@
     .mdBlock > h3 > b::after {
       background: linear-gradient(90deg, rgba(255, 117, 22, 1) 0%, rgba(255, 239, 229, 1) 100%);
     }
+    .mdBlock .nav div:first-child {
+      color: @themColor;
+    }
     .tagBox > li > h3 {
       color: @themColor;
     }
@@ -802,6 +844,9 @@
     background: linear-gradient(180deg, rgba(236, 248, 240, 1) 0%, #fff 110px);
     .mdBlock > h3 > b::after {
       background: linear-gradient(90deg, rgba(58, 184, 96, 1) 0%, rgba(231, 246, 236, 1) 100%);
+    }
+    .mdBlock .nav div:first-child {
+      color: @themColor;
     }
     .tagBox > li > h3 {
       color: @themColor;
@@ -837,6 +882,9 @@
     .mdBlock > h3 > b::after {
       background: linear-gradient(90deg, rgba(65, 190, 199, 1) 0%, rgba(229, 246, 247, 1) 100%);
     }
+    .mdBlock .nav div:first-child {
+      color: @themColor;
+    }
     .tagBox > li > h3 {
       color: @themColor;
     }
@@ -869,6 +917,9 @@
     background: linear-gradient(180deg, rgba(234, 243, 251, 1) 0%, #fff 110px);
     .mdBlock > h3 > b::after {
       background: linear-gradient(90deg, rgba(15, 124, 214, 1) 0%, rgba(228, 240, 250, 1) 100%);
+    }
+    .mdBlock .nav div:first-child {
+      color: @themColor;
     }
     .tagBox > li > h3 {
       color: @themColor;
@@ -903,6 +954,9 @@
     .mdBlock > h3 > b::after {
       background: linear-gradient(90deg, rgba(175, 133, 80, 1) 0%, rgba(245, 241, 235, 1) 100%);
     }
+    .mdBlock .nav div:first-child {
+      color: @themColor;
+    }
     .tagBox > li > h3 {
       color: @themColor;
     }
@@ -935,6 +989,9 @@
     background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, #fff 110px);
     .mdBlock > h3 > b::after {
       background: linear-gradient(90deg, rgba(44, 44, 44, 1) 0%, rgba(233, 233, 233, 1) 100%);
+    }
+    .mdBlock .nav div:first-child {
+      color: @themColor;
     }
     .tagBox > li > h3 {
       color: @themColor;

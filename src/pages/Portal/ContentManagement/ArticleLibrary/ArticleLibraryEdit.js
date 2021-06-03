@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-03-18 11:22:23 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-13 16:56:52
+ * @Last Modified time: 2021-05-28 17:08:24
  * 编辑文章
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -164,7 +164,7 @@ class ArticleLibraryEdit extends PureComponent {
               </Form.Item>
               <Form.Item label="封面图">
                 {getFieldDecorator('articleCoverImg', {
-                  initialValue: ArticleDetail.articleCoverImg || '',
+                  initialValue: coverImg || '',
                   rules: [],
                 })(
                   <div className="coverImg">
@@ -185,7 +185,7 @@ class ArticleLibraryEdit extends PureComponent {
                             >
                               <Icon type="eye" />
                             </span>
-                            <span onClick={() => this.setState({ coverImg: null })}>
+                            <span onClick={() => this.handleDeleteImg()}>
                               <Icon type="delete" />
                             </span>
                           </div>
@@ -285,6 +285,14 @@ class ArticleLibraryEdit extends PureComponent {
       </div>
     );
   }
+  handleDeleteImg = () => {
+    this.setState({ coverImg: null }, () => {
+      this.props.form.setFieldsValue({
+        articleCoverImg: '',
+      });
+    });
+  };
+
   handleEditorCont = cont => {
     this.setState({ editorContent: cont });
   };

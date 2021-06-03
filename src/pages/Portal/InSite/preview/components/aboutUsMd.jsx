@@ -16,7 +16,7 @@ export default function CaseMd(props) {
   const { list, title, flag, url, name, content } = props;
 
   return (
-    <div className={pageStyle.modelEditBox}>
+    <div className={`${pageStyle.mdBlock} ${pageStyle.modelEditBox}`}>
       <img className={pageStyle.bg} src={imgWordAbout} alt=''  />
       <h3>
         <b>{title}</b>
