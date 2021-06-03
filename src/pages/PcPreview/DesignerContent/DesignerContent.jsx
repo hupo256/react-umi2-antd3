@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react'
 import ReactCardCarousel from 'react-card-carousel'
 import _ from 'lodash'
 import styles from './DesignerContent.less'
-import { BtnMore } from '../btn'
+import { BtnMore, BtnDetail } from '../btn'
 import cx from 'classnames'
 
 const DesignerContent = ({ data, domain }) => {
@@ -10,10 +10,15 @@ const DesignerContent = ({ data, domain }) => {
 
   const [currentIndex, setCurrentIndex] = useState(0)
   const Carousel = useRef()
+  const toCasePage = (e, uid) => {
+    if (/designer-content-container/.test(e.target.classList[0])) {
+      window.open(`${domain}/cases/details?uid=${uid}`, '页面预览')
+    }
+  }
 
   return (
     <div className={styles.carouselContainer}>
-      <div style={{ height: '500px' }}>
+      <div style={{ height: '500px', marginTop: '60px' }}>
         <ReactCardCarousel
           autoplay={false}
           autoplay_speed={10000}
@@ -24,12 +29,14 @@ const DesignerContent = ({ data, domain }) => {
             <div className={index === currentIndex ? '' : styles.inactive} key={index}>
               <div
                 style={{
-                  background: value.caseCoverUrlList[0]
-                    ? `url(${value.caseCoverUrlList[0]}) no-repeat center center`
-                    : '#e8e8e8',
+                  background: _.get(value, 'caseList.list.0.coverPicUrl', null)
+                    ? `url(${value['caseList']['list'][0].coverPicUrl}) no-repeat center center`
+                    : `url(/img/designer/designer-placeholder.png) no-repeat center center`,
                   backgroundSize: 'cover',
+                  cursor: 'pointer',
                 }}
                 className={styles.container}
+                onClick={e => index === currentIndex && toCasePage(e, value['caseList']['list'][0].uid)}
               >
                 {index === currentIndex && (
                   <div className={styles.designerWrapper}>
@@ -38,10 +45,7 @@ const DesignerContent = ({ data, domain }) => {
                         <img
                           src={value.headPicUrl}
                           className={styles.userImage}
-                          style={{
-                            width: '91px',
-                            height: '91px',
-                          }}
+                          style={{ width: '91px', height: '91px' }}
                         />
                       </div>
                       <div className={styles.right}>
@@ -49,10 +53,16 @@ const DesignerContent = ({ data, domain }) => {
                           <p className={styles.name}>{value.name}</p>
                           <div className={styles.jobTitle}>{value.position}</div>
                         </h3>
-                        <p className={styles.content}>{value.designConcept}</p>
+                        <p className={styles.content}>
+                          {value.designConcept
+                            ? value.designConcept.length > 36
+                              ? `${value.designConcept.slice(0, 36)}...`
+                              : value.designConcept
+                            : null}
+                        </p>
                       </div>
                     </div>
-                    <BtnMore
+                    <BtnDetail
                       text={'查看详情'}
                       solid
                       url={`${domain}/designers/details?uid=${value.uid}`}

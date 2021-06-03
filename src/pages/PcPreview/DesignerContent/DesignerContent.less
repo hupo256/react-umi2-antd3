@@ -33,15 +33,20 @@
   display: flex;
   flex-direction: column;
   margin-left: 8px;
+  max-width: 60%;
 }
 
 .userImageWrapper {
   background: url(/img/designer/frame.png) no-repeat center center;
   margin-right: 8px;
+  margin-top: 10px;
+  height: 115px;
+  background-size: 115px;
 }
 
 .userImage {
-  padding: 12px;
+  margin: 12px;
+  border-radius: 91px;
 }
 
 .titleWrap {
@@ -55,8 +60,14 @@
 .titleWrap .name {
   font-size: 20px;
   font-family: PingFangSC-Medium, PingFang SC;
-  font-weight: 500;
+  font-weight: 600;
   color: #333330;
+
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+
+  max-width: 50%;
 }
 
 .titleWrap .jobTitle {
@@ -67,6 +78,10 @@
   padding: 6px 8px;
   background: #f9f6f1;
   border-radius: 26px;
+
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .right .content {
@@ -76,6 +91,7 @@
   color: #747474;
   line-height: 22px;
   text-align: left;
+  word-break: break-all;
 }
 
 .moreBtn {
@@ -96,7 +112,7 @@
   font-family: sans-serif;
   font-size: 12px;
   text-transform: uppercase;
-  border-radius: 10px;
+  border-radius: 8px;
   box-sizing: border-box;
 }
 
@@ -109,10 +125,11 @@
   position: absolute;
   left: 20px;
   content: '';
-  width: 20px;
-  height: 20px;
+  width: 13.414px;
+  height: 24.39px;
   background: url(/img/designer/ic_next.png) no-repeat center center;
-  top: calc(50% - 10px);
+  background-size: cover;
+  top: calc(50% - 12.2px);
   z-index: 9;
   transform: rotate(180deg);
 }
@@ -121,10 +138,11 @@
   position: absolute;
   right: 20px;
   content: '';
-  width: 20px;
-  height: 20px;
+  width: 13.414px;
+  height: 24.39px;
   background: url(/img/designer/ic_next.png) no-repeat center center;
-  top: calc(50% - 10px);
+  background-size: cover;
+  top: calc(50% - 12.2px);
 }
 
 /* carousel dots */

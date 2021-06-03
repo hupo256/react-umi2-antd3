@@ -20,15 +20,18 @@ const Articles = ({ data, domain }) => {
                   [styles.after]: index === 2,
                 })}
               >
-                {item.name}
+                {`${item.name.length > 12 ? item.name.slice(0, 12) + '...' : item.name}`}
               </div>
               <div className={styles.wrapper}>
                 {_.map(item.articleList, (article, index) => {
                   return (
                     <a
                       key={`${article.articleDicCode}-${index}`}
-                      href={`${domain}/articles/details?articleUid=${article.articleUid}`}
                       className={styles.articleLine}
+                      onClick={() =>
+                        article.articleUid &&
+                        window.open(`${domain}/articles/details?articleUid=${article.articleUid}`, '页面预览')
+                      }
                     >
                       {article.articleTitle}
                     </a>

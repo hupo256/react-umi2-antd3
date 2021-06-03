@@ -2,7 +2,6 @@ import { BtnMore } from '../btn'
 import _ from 'lodash'
 import styles from './LiveShow.less'
 
-const CHN_NUM_CHAR = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九', '拾']
 
 const CaseProjects = ({ data, domain }) => {
   if (_.isEmpty(data)) return null
@@ -11,9 +10,12 @@ const CaseProjects = ({ data, domain }) => {
   const caseStyle = {}
   _.forEach(data, (item, index) => {
     const { bedroom, parlor } = JSON.parse(item.houseType)
-    data[index]['text'] = `${item.buildingName} | ${item.buildingArea}m² | ${CHN_NUM_CHAR[bedroom]}室${
-      CHN_NUM_CHAR[parlor]
-    }厅 | ${item.renovationCosts}万元`
+    data[index]['name'] = `${
+      item.buildingName.length > 10 ? item.buildingName.slice(0, 10) + '...' : item.buildingName
+    }`
+    bedroom
+      ? (data[index]['text'] = `${item.buildingArea}m² | ${bedroom}居室 | ${item.renovationCosts}万元`)
+      : (data[index]['text'] = `${item.buildingArea}m² | ${item.renovationCosts}万元`)
 
     caseStyle[`image${index}`] = {
       background: `url(${item.coverImg}) no-repeat center center`,
@@ -37,7 +39,7 @@ const CaseProjects = ({ data, domain }) => {
           <div
             style={caseStyle.caseItem}
             className={styles.clickableImg}
-            onClick={() => (window.location.href = `${domain}/sites/details?gongdiUid=${data[0].uid}`)}
+            onClick={() => data[0].uid && window.open(`${domain}/sites/details?gongdiUid=${data[0].uid}`, '页面预览')}
           >
             <div className={styles.bgText}>
               <p>{data[0].name}</p>
@@ -64,7 +66,7 @@ const CaseProjects = ({ data, domain }) => {
           <div
             style={caseStyle.caseItem}
             className={styles.clickableImg}
-            onClick={() => (window.location.href = `${domain}/sites/details?gongdiUid=${data[0].uid}`)}
+            onClick={() => data[0].uid && window.open(`${domain}/sites/details?gongdiUid=${data[0].uid}`, '页面预览')}
           >
             <div className={styles.bgText}>
               <p>{data[0].name}</p>
@@ -75,7 +77,7 @@ const CaseProjects = ({ data, domain }) => {
           <div
             style={caseStyle.caseItem}
             className={styles.clickableImg}
-            onClick={() => (window.location.href = `${domain}/sites/details?gongdiUid=${data[1].uid}`)}
+            onClick={() => data[0].uid && window.open(`${domain}/sites/details?gongdiUid=${data[1].uid}`, '页面预览')}
           >
             <div className={styles.bgText}>
               <p>{data[1].name}</p>
@@ -118,7 +120,7 @@ const CaseProjects = ({ data, domain }) => {
           <div
             style={caseStyle.left}
             className={styles.clickableImg}
-            onClick={() => (window.location.href = `${domain}/sites/details?gongdiUid=${data[0].uid}`)}
+            onClick={() => data[0].uid && window.open(`${domain}/sites/details?gongdiUid=${data[0].uid}`, '页面预览')}
           >
             <div className={styles.bgText}>
               <p>{data[0].name}</p>
@@ -130,7 +132,7 @@ const CaseProjects = ({ data, domain }) => {
             <div
               style={caseStyle.caseItem}
               className={styles.clickableImg}
-              onClick={() => (window.location.href = `${domain}/sites/details?gongdiUid=${data[1].uid}`)}
+              onClick={() => data[0].uid && window.open(`${domain}/sites/details?gongdiUid=${data[1].uid}`, '页面预览')}
             >
               <div className={styles.bgText}>
                 <p>{data[1].name}</p>
@@ -141,7 +143,7 @@ const CaseProjects = ({ data, domain }) => {
             <div
               style={caseStyle.caseItem}
               className={styles.clickableImg}
-              onClick={() => (window.location.href = `${domain}/sites/details?gongdiUid=${data[2].uid}`)}
+              onClick={() => data[0].uid && window.open(`${domain}/sites/details?gongdiUid=${data[2].uid}`, '页面预览')}
             >
               <div className={styles.bgText}>
                 <p>{data[2].name}</p>
