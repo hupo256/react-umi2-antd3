@@ -39,7 +39,7 @@ class DynamicList extends Component {
     });
     dispatch({
       type: 'SiteLibrary/dynamicListModel',
-      payload: { gongdiUid: getQueryUrlVal('uid'),pageSize:5 },
+      payload: { gongdiUid: getQueryUrlVal('uid') },
     });
   }
 
@@ -169,7 +169,6 @@ class DynamicList extends Component {
         gongdiUid: getQueryUrlVal('uid'),
         gongdiStage: dicCode,
         pageNum: page,
-        pageSize:5
       },
     });
   };
