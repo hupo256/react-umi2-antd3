@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-27 19:10:26
+ * @Last Modified time: 2021-05-28 18:45:47
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -130,6 +130,7 @@ class ViewFormComponent extends PureComponent {
       visible,
     } = this.state;
     let topSize = JSON.parse(data.elementStyle);
+    let terminalType = localStorage.getItem('terminalType');
     let formDa =
       checkList &&
       checkList.map((item, index) => {
@@ -247,7 +248,10 @@ class ViewFormComponent extends PureComponent {
       checkList.map((item, index) => {
         return (
           <div className={styles.ViewDiv} key={index}>
-            <div style={{ color: data.elementButtonColor }} className={styles.chediv}>
+            <div
+              style={{ color: data.elementButtonColor }}
+              className={terminalType == 1 ? styles.chedivc : styles.chediv}
+            >
               {item.paramExtName}
             </div>
             <Input
