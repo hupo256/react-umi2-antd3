@@ -67,7 +67,7 @@ class HostBind extends Component {
     let payload;
     if (
       !ifDefaultHost ||
-      defaultHostValue.length < 4 ||
+      defaultHostValue.length < 1 ||
       defaultHostValue.length > 20 ||
       ifDefaultHosts
     ) {
@@ -115,11 +115,11 @@ class HostBind extends Component {
                     },
                     {
                       max: 20,
-                      message: '限制5-min20字符长度',
+                      message: '限制1-20字符长度',
                     },
                     {
-                      min: 5,
-                      message: '限制5-20字符长度',
+                      min: 1,
+                      message: '限制1-20字符长度',
                     },
                   ],
                 })(
