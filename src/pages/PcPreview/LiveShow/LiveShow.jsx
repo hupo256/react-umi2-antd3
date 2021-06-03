@@ -1,8 +1,8 @@
 import { BtnMore } from '../btn'
 import _ from 'lodash'
-import styles from './LiveShow.module.scss'
+import styles from './LiveShow.less'
 
-const CHN_NUM_CHAR = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九']
+const CHN_NUM_CHAR = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九', '拾']
 
 const CaseProjects = ({ data, domain }) => {
   if (_.isEmpty(data)) return null
@@ -13,7 +13,7 @@ const CaseProjects = ({ data, domain }) => {
     const { bedroom, parlor } = JSON.parse(item.houseType)
     data[index]['text'] = `${item.buildingName} | ${item.buildingArea}m² | ${CHN_NUM_CHAR[bedroom]}室${
       CHN_NUM_CHAR[parlor]
-    }厅 | ${item.renovationCosts / 10000}万元`
+    }厅 | ${item.renovationCosts}万元`
 
     caseStyle[`image${index}`] = {
       background: `url(${item.coverImg}) no-repeat center center`,
@@ -40,6 +40,7 @@ const CaseProjects = ({ data, domain }) => {
             onClick={() => (window.location.href = `${domain}/sites/details?gongdiUid=${data[0].uid}`)}
           >
             <div className={styles.bgText}>
+              <p>{data[0].name}</p>
               <p>{data[0].text}</p>
             </div>
             <div style={caseStyle.image0} className={styles.bgBlur} />
@@ -66,8 +67,8 @@ const CaseProjects = ({ data, domain }) => {
             onClick={() => (window.location.href = `${domain}/sites/details?gongdiUid=${data[0].uid}`)}
           >
             <div className={styles.bgText}>
+              <p>{data[0].name}</p>
               <p>{data[0].text}</p>
-              {/* <BtnMore text={'查看详情'} solid /> */}
             </div>
             <div style={caseStyle.image0} className={styles.bgBlur} />
           </div>
@@ -77,8 +78,8 @@ const CaseProjects = ({ data, domain }) => {
             onClick={() => (window.location.href = `${domain}/sites/details?gongdiUid=${data[1].uid}`)}
           >
             <div className={styles.bgText}>
+              <p>{data[1].name}</p>
               <p>{data[1].text}</p>
-              {/* <BtnMore text={'查看详情'} solid /> */}
             </div>
             <div style={caseStyle.image1} className={styles.bgBlur} />
           </div>
@@ -120,7 +121,8 @@ const CaseProjects = ({ data, domain }) => {
             onClick={() => (window.location.href = `${domain}/sites/details?gongdiUid=${data[0].uid}`)}
           >
             <div className={styles.bgText}>
-              <p>{data[1].text}</p>
+              <p>{data[0].name}</p>
+              <p>{data[0].text}</p>
             </div>
             <div style={caseStyle.image0} className={styles.bgBlur} />
           </div>
@@ -131,6 +133,7 @@ const CaseProjects = ({ data, domain }) => {
               onClick={() => (window.location.href = `${domain}/sites/details?gongdiUid=${data[1].uid}`)}
             >
               <div className={styles.bgText}>
+                <p>{data[1].name}</p>
                 <p>{data[1].text}</p>
               </div>
               <div style={caseStyle.image1} className={styles.bgBlur} />
@@ -141,6 +144,7 @@ const CaseProjects = ({ data, domain }) => {
               onClick={() => (window.location.href = `${domain}/sites/details?gongdiUid=${data[2].uid}`)}
             >
               <div className={styles.bgText}>
+                <p>{data[2].name}</p>
                 <p>{data[2].text}</p>
               </div>
               <div style={caseStyle.image2} className={styles.bgBlur} />

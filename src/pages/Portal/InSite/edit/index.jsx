@@ -13,7 +13,6 @@ import { tipsText, canEditTags, editText } from '../tools/data';
 import Preview from '../preview';
 import TitleGuid from '../common/titleGuid';
 import DrawerEditor from '../common/drawer';
-import EditModel from '../common/drawer/modelsEdit'
 import Prompt from './prompt';
 import styles from './edit.less';
 
@@ -28,15 +27,19 @@ function TempEdit(props) {
         <Preview />
 
         <div className={styles.tipsOut}>
-          <div className={styles.tipsBox} style={{bottom: '7.5em'}} onClick={() => {setcurFlag('editModel')}}>
+          <div
+            className={styles.tipsBox}
+            style={{ bottom: '15.5em' }}
+            onClick={() => setcurFlag('editModel')}
+          >
             <Tooltip placement="topLeft" title={editText}>
-              <Icon type="unordered-list" style={{ fontSize: '16px' }} />
+              <Icon type="appstore" style={{ fontSize: '16px', color: '#fe6a30' }} />
               <b>编辑模块</b>
             </Tooltip>
           </div>
           <div className={styles.tipsBox}>
             <Tooltip placement="topLeft" title={tipsText}>
-              <Icon type="bulb" style={{ fontSize: '16px' }} />
+              <Icon type="bulb" style={{ fontSize: '16px', color: '#fe6a30' }} />
               <b>温馨提示</b>
             </Tooltip>
           </div>

@@ -10,9 +10,8 @@ import { Button, message, Modal, Icon } from 'antd';
 import router from 'umi/router';
 import { baseRouteKey, themes } from '../../tools/data';
 import { ctx } from '../context';
-import { updateHomePageEditData, publishEditData } from '@/services/miniProgram';
+import { updateHomePageEditData, publishEditData, saveNavEditData } from '@/services/miniProgram';
 import styles from './titleGuid.less';
-import { saveNavEditData } from '../../../../../services/miniProgram';
 
 const { confirm } = Modal;
 
@@ -31,18 +30,24 @@ export default function TitleGuid(props) {
     };
     updateHomePageEditData(parmas).then(res => {
       if (res.code === 200) {
-        saveNavEditData(navData)
-          .then(r => {
-            if (r.code === 200) {
-              publishEditData().then(() => {
-                setcurFlag(''); // 置空
-                message.success('发布成功');
-                setTimeout(() => {
-                  router.push(`${baseRouteKey}home`);
-                }, 1000);
-              });
-            }
-          })
+        const newArr = [...navData];
+        const arr = [];
+        newArr.map(e => {
+          if (e.navModule) {
+            arr.push(e);
+          }
+        });
+        saveNavEditData(arr).then(r => {
+          if (r.code === 200) {
+            publishEditData().then(() => {
+              setcurFlag(''); // 置空
+              message.success('发布成功');
+              setTimeout(() => {
+                router.push(`${baseRouteKey}home`);
+              }, 1000);
+            });
+          }
+        });
       }
     });
   }
@@ -71,11 +76,8 @@ export default function TitleGuid(props) {
         {isEdit && (
           <div className={styles.btnBox}>
             <Button onClick={showConfirm}>放弃更改</Button>
-            {/* <Button onClick={toPreview} icon="dribbble">
-              网站预览
-            </Button> */}
             <a href="#/pc/preview" target="_blank">
-              <Icon type="dribbble" />
+              <Icon type="desktop" />
               <span>网站预览</span>
             </a>
             <Button onClick={toPublish} type="primary">

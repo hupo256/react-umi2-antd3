@@ -97,3 +97,31 @@
     max-width: 100% !important;
   }
 }
+.createItem {
+  position: relative;
+  transition: all 0.3s linear;
+  &:hover {
+    -moz-box-shadow: 0px 2px 20px rgba(0, 0, 0, 0.1);
+    -webkit-box-shadow: 0px 2px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 2px 20px rgba(0, 0, 0, 0.1);
+    transform: scale(1.02);
+  }
+}
+.imgtj {
+  position: absolute;
+  top: 170px;
+  right: 50px;
+  width: 59px;
+  height: 26px;
+}
+
+.copy {
+  cursor: pointer;
+}
+.ipt {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  z-index: -10;
+}

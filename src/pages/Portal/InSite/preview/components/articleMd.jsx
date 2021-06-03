@@ -34,7 +34,7 @@ export default function CaseMd(props) {
       <div className={pageStyle.content}>
         {showModule ? (
           <>
-            {list.map(i => (
+            {list?.map(i => (
               <div>
                 <div className={pageStyle.imgsWrapper}>
                   <div className={pageStyle.imgBox}>
@@ -54,9 +54,7 @@ export default function CaseMd(props) {
             ))}
           </>
         ) : (
-          <div className={pageStyle.noData}>
-            发布后若该模块无任何一篇文章，该模块在小程序内不展示。
-          </div>
+          <EmptyMd flag={flag} />
         )}
       </div>
     </div>

@@ -1,4 +1,4 @@
-import styles from './KeyPoints.module.scss'
+import styles from './KeyPoints.less'
 import _ from 'lodash'
 
 import { typeMap, paramMap } from '../constants.js'

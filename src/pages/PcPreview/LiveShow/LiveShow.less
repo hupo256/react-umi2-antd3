@@ -1,5 +1,7 @@
 .clickableImg {
   position: relative;
+  border-radius: 5px;
+  overflow: hidden;
 }
 
 .bgText {
@@ -15,12 +17,14 @@
   font-family: PingFangSC-Semibold, PingFang SC;
   font-weight: 600;
 
+  padding: 20px 30px;
+
   cursor: pointer;
-  p {
-    position: absolute;
-    left: 30px;
-    bottom: 20px;
-  }
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
 }
 
 .bgBlur {

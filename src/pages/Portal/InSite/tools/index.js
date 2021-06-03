@@ -23,3 +23,8 @@ export function urlParamHash(url) {
   }
   return params;
 }
+
+const CHN_NUM_CHAR = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九', '十'];
+export function roomType(bedroom) {
+  return `${!!bedroom ? CHN_NUM_CHAR[bedroom] + '居室 | ' : ''}`;
+}

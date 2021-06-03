@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react'
 import ReactCardCarousel from 'react-card-carousel'
 import _ from 'lodash'
-import styles from './DesignerContent.module.scss'
+import styles from './DesignerContent.less'
 import { BtnMore } from '../btn'
 import cx from 'classnames'
 

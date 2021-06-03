@@ -9,6 +9,7 @@ import React, { useState, useEffect, useContext, useRef } from 'react';
 import { ctx } from '../context';
 import { Input, Icon, message, Form } from 'antd';
 import { highlightsBgImgs } from '../../tools/data';
+import AddMore from './addMore';
 import LinkChoose from './linkChoose';
 import styles from './drawerEditor.less';
 
@@ -152,11 +153,7 @@ export default function TagsEdit(props) {
           })}
       </ul>
 
-      <p className={styles.addImg} onClick={addNewTag}>
-        <span>+</span>
-        <span>添加亮点</span>
-      </p>
-
+      <AddMore clickHandle={addNewTag} />
       <LinkChoose dList={tagList} />
     </>
   );
