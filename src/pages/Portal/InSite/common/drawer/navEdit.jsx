@@ -73,8 +73,12 @@ export default function NavEdit(props) {
     forUpdatePageData();
   }
 
-  function touchPaths(arr) {
-    console.log(arr);
+  function touchRelece(arr, num) {
+    const len = arr.length
+    navData[num].icon = arr[len-1]?.icon
+    navData[num].navModule = arr[len-1]?.appletsLink
+    navData[num].paths = arr.map(p => p.code)
+    forUpdatePageData()
   }
 
   return (
@@ -123,7 +127,7 @@ export default function NavEdit(props) {
                   <p>关联页面</p>
                   {relatedPageOption?.length > 0 && (
                     <RelevanceInp
-                      callFun={touchPaths} // 对外暴露的回调，用来把数据传出去
+                      callFun={(arr) => touchRelece(arr, ind)} // 对外暴露的回调，用来把数据传出去
                       relatedPageOption={relatedPageOption} // 渲染组件需要的数据
                       relatedPage={linkDisplayName} // input用来回显的值
                     />
