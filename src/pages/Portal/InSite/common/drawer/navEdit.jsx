@@ -13,11 +13,11 @@ import { getRelatedPage } from '@/services/channelManage';
 import RelevanceInp from '@/pages/ChannelManage/components/RelevanceInp';
 import styles from './drawerEditor.less';
 
-const maxLen = 6;
+const maxLen = 5;
 const { Item } = Form;
 
 export default function NavEdit(props) {
-  const { navData, setNavData, pageData, curFlag } = useContext(ctx);
+  const { navData, setNavData } = useContext(ctx);
   const [relatedPageOption, setrelatedPageOption] = useState([]);
 
   useEffect(() => {
@@ -64,7 +64,7 @@ export default function NavEdit(props) {
     let val = e.target.value;
     if (val?.length > 4) {
       rec.desStatus = 'error';
-      rec.desMsg = '最多14个字符';
+      rec.desMsg = '最多4个字符';
     } else {
       rec.desStatus = 'success';
       rec.desMsg = '';
