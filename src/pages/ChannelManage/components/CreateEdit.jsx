@@ -579,7 +579,9 @@ export default class CreateEdit extends Component {
                     </Form.Item>
                     <Form.Item label="适用频道">
                         {getFieldDecorator('usageScene', {
+                            initialValue: [2, 1],
                             rules: [{ required: true, message: '请选择适用频道!' }],
+                            
                         })(<Checkbox.Group options={[{label: '小程序', value: 2}, {label: '网站', value: 1}]}/>)}
                     </Form.Item>
                     <Form.Item label="频道介绍">
