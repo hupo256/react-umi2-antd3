@@ -54,6 +54,7 @@ function Templates(props) {
   }
 
   function routerOut(code, name) {
+    if(!pageData?.jsonData) return message.error('数据为空，请稍后再试')
     settemplateName(name);
     pageData.templateName = name;
     const parmas = {
@@ -69,12 +70,14 @@ function Templates(props) {
             arr.push(e);
           }
         });
-        saveNavEditData(arr).then(r => {
-          if (r.code === 200) {
-            const key = `edit?templateCode=${code}`;
-            router.push(`${baseRouteKey}${key}`);
-          }
-        });
+        saveNavEditData(arr)
+          .then(r => {
+            if (r.code === 200) {
+              const key = `edit?templateCode=${code}`;
+              router.push(`${baseRouteKey}${key}`);
+            }
+          })
+
       }
     });
   }

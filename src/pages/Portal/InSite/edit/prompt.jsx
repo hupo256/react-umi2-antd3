@@ -24,6 +24,7 @@ export default function ForPrompt(props) {
     if (!bool) {
       router.push(key);
     } else {
+      if(!pageData?.jsonData) return message.error('数据为空，请稍后再试')
       const parmas = {
         editTemplateCode: templateCode,
         editTemplateJson: pageData,
