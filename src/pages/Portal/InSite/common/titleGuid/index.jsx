@@ -22,6 +22,7 @@ export default function TitleGuid(props) {
 
   function toPublish() {
     console.log(pageData);
+    if(!pageData?.jsonData) return message.error('数据为空，请稍后再试')
     let { jsonData, themeData } = pageData;
     const { customerService } = JSON.parse(localStorage.getItem('auth'));
     themeData = themes[templateCode];
@@ -77,10 +78,10 @@ export default function TitleGuid(props) {
         {isEdit && (
           <div className={styles.btnBox}>
             <Button onClick={showConfirm}>放弃更改</Button>
-            {/*<a href="#/pc/preview" target="_blank">*/}
-            {/*  <Icon type="dribbble" />*/}
-            {/*  <span>网站预览</span>*/}
-            {/*</a>*/}
+            <a href="#/pc/preview" target="_blank">
+              <Icon type="desktop" />
+              <span>网站预览</span>
+            </a>
             <Button onClick={toPublish} type="primary">
               <img
                 src="https://img.inbase.in-deco.com/crm_saas/release/20210511/bb4bd99abc374cae9b1dbe634a6a388c/ic_send.png"
