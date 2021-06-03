@@ -15,8 +15,6 @@ import TitleGuid from '../common/titleGuid';
 import { queryTemplate } from '@/services/miniProgram';
 import { imgBaseUrl } from '../tools';
 import styles from './templates.less';
-import { message } from 'antd';
-import { saveNavEditData } from '../../../../services/miniProgram';
 
 function Templates(props) {
   const { pageData, touchPageData, settemplateName, navData } = useContext(ctx);
