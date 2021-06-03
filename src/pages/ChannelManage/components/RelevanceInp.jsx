@@ -345,20 +345,18 @@ export default class CreateEdit extends Component {
     // 格式化回显
     formatData = () => {
         const {currentSelectRelatedPageOpt } = this.state;
-        console.log(currentSelectRelatedPageOpt)
         let arr = [];
         for (const key in currentSelectRelatedPageOpt) {
             if (currentSelectRelatedPageOpt.hasOwnProperty.call(currentSelectRelatedPageOpt, key)) {
-                const item = currentSelectRelatedPageOpt[key];
+                const {name, uid, icon, appletsLink} = currentSelectRelatedPageOpt[key];
                 arr.push({
-                    text: item.name || item.title || item.articleTitle  || item.gongdiTitle || item.specialTitle,
-                    code: item.uid || item.gongdiUid || item.articleUid || item.specialUid,
-                    icon: item.icon
+                    text: name,
+                    code: uid,
+                    icon, appletsLink,
                 })
             }
         }
         return arr;
-            
     }
 
     // 切换选择页面面板显示

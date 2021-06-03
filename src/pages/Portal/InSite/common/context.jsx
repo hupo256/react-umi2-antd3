@@ -87,9 +87,7 @@ export function Provider({ children }) {
         ];
         getHomePageEditData(param).then(res => {
           message.destroy();
-          console.log(res);
           if (!res?.data) return;
-          console.log(res.data.jsonData);
           const userInfo = getauth();
           const aboutUs = res.data.editTemplateJson.jsonData.find(e => e.flag === 'aboutUs');
           const article = res.data.editTemplateJson.jsonData.find(e => e.flag === 'article');

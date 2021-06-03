@@ -3,7 +3,7 @@
  * @Date: 2021-04-01 09:53:12
  * @Last Modified by: tdd
  * @Last Modified time: 2021-06-03 13:23:12
- * 设计师
+ * 底部导航
  */
 import React, { useContext } from 'react';
 import { ctx } from '../../common/context';
@@ -18,9 +18,9 @@ export default function CaseMd(props) {
       <HoverMd tips="导航" flag="nav">
         <ul className={pageStyle.flex}>
           {navData?.map(nav => {
-            const { navModule, icon, name } = nav;
+            const { icon, name } = nav;
             return (
-              <li key={navModule} className={`${navModule === 'home' ? pageStyle.on : ''}`}>
+              <li key={name} className={`${icon === 'iconic_home_no' ? pageStyle.on : ''}`}>
                 <svg className="icon">
                   <use href={`#${icon}`} />
                 </svg>
