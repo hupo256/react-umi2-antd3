@@ -10,17 +10,21 @@ import { Button, message, Modal, Icon } from 'antd';
 import router from 'umi/router';
 import { baseRouteKey, themes } from '../../tools/data';
 import { ctx } from '../context';
+<<<<<<< HEAD
 import { updateHomePageEditData, publishEditData, saveNavEditData } from '@/services/miniProgram';
 import styles from './titleGuid.less';
 
 const { confirm } = Modal;
+=======
+import { publishEditData } from '@/services/miniProgram';
+import styles from './titleGuid.less';
+>>>>>>> feature/updatePageData
 
 export default function TitleGuid(props) {
   const { title = '标题', disc, isEdit } = props;
-  const { pageData, setcurFlag, templateCode, templateName, navData } = useContext(ctx);
+  const { pageData, setcurFlag, templateCode, templateName, savePageData } = useContext(ctx);
 
   function toPublish() {
-    console.log(pageData);
     let { jsonData, themeData } = pageData;
     const { customerService } = JSON.parse(localStorage.getItem('auth'));
     themeData = themes[templateCode];
@@ -28,32 +32,20 @@ export default function TitleGuid(props) {
       editTemplateCode: templateCode,
       editTemplateJson: { jsonData, themeData, templateName, globalInfor: { customerService } },
     };
-    updateHomePageEditData(parmas).then(res => {
-      if (res.code === 200) {
-        const newArr = [...navData];
-        const arr = [];
-        newArr.map(e => {
-          if (e.navModule) {
-            arr.push(e);
-          }
-        });
-        saveNavEditData(arr).then(r => {
-          if (r.code === 200) {
-            publishEditData().then(() => {
-              setcurFlag(''); // 置空
-              message.success('发布成功');
-              setTimeout(() => {
-                router.push(`${baseRouteKey}home`);
-              }, 1000);
-            });
-          }
-        });
-      }
+
+    savePageData(parmas, () => {
+      publishEditData().then(() => {
+        setcurFlag(''); // 置空
+        message.success('发布成功');
+        setTimeout(() => {
+          router.push(`${baseRouteKey}home`);
+        }, 1000);
+      });
     });
   }
 
   function showConfirm() {
-    confirm({
+    Modal.confirm({
       title: '确认要放弃更改吗？',
       content: '放弃更改后，将不保留当前编辑的内容',
       onOk() {
