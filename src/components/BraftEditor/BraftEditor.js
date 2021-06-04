@@ -194,6 +194,15 @@ export default class EditorDemo extends React.Component {
     let self = this;
     return new Promise(function(resolve, reject) {
       let filenames = file.name;
+      filenames = filenames
+        .replace(/\#/gi, '')
+        .replace(/\$/gi, '')
+        .replace(/\+/gi, '')
+        .replace(/\*/gi, '')
+        .replace(/\%/gi, '')
+        .replace(/\!/gi, '')
+        .replace(/\=/gi, '')
+        .replace(/\&/gi, '');
       let index1 = filenames.lastIndexOf('.');
       let index2 = filenames.length;
       let fiename = filenames.substring(index1 + 1, index2);
