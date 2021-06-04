@@ -22,7 +22,7 @@ export default function TitleGuid(props) {
 
   function toPublish() {
     console.log(pageData);
-    if(!pageData?.jsonData) return message.error('数据为空，请稍后再试')
+    if(!pageData?.jsonData) return message.error('访问过于频繁，请稍后再试')
     let { jsonData, themeData } = pageData;
     const { customerService } = JSON.parse(localStorage.getItem('auth'));
     themeData = themes[templateCode];
