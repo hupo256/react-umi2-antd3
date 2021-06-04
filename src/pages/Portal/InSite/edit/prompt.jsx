@@ -9,12 +9,11 @@ import React, { useState, useContext } from 'react';
 import { Prompt } from 'react-router-dom';
 import router from 'umi/router';
 import { ctx } from '../common/context';
-import { updateHomePageEditData, saveNavEditData  } from '@/services/miniProgram';
 import { Modal, message } from 'antd';
 import styles from './edit.less';
 
 export default function ForPrompt(props) {
-  const { curFlag, setcurFlag, pageData, templateCode, navData } = useContext(ctx);
+  const { curFlag, setcurFlag, pageData, templateCode, savePageData } = useContext(ctx);
 
   // flag为editing，表示还有未保存的数据
   let isPrompt = curFlag === 'editing';
@@ -29,25 +28,11 @@ export default function ForPrompt(props) {
         editTemplateJson: pageData,
       };
       if (parmas.editTemplateJson.maps) {
-        delete parmas.editTemplateJson.maps
+        delete parmas.editTemplateJson.maps;
       }
       // 保存后再跳转
-      updateHomePageEditData(parmas).then(res => {
-        if (res.code === 200) {
-          const newArr = [...navData];
-          const arr = [];
-          newArr.map(e => {
-            if (e.navModule) {
-              arr.push(e);
-            }
-          });
-          saveNavEditData(arr)
-            .then(r => {
-              if (r.code === 200) {
-                message.success('保存成功', () => router.push(key));
-              }
-            })
-        }
+      savePageData(parmas, () => {
+        message.success('保存成功', () => router.push(key));
       });
     }
   }
