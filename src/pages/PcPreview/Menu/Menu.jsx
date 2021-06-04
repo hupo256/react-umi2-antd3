@@ -4,7 +4,7 @@ import styles from './Menu.less'
 import { useState, useEffect } from 'react'
 import cx from 'classnames'
 
-const MAX_CHUNK_SIZE = 40
+const MAX_CHUNK_SIZE = 25
 const MIN_CHUNK_SIZE = 20
 
 const isCurrentMenu = (item, current) => {
@@ -23,7 +23,7 @@ const findParent = (menuList, url) => {
     return _.find(menuList, { linkUrl: '/designers' })
   }
   if (/articles/.test(url)) {
-    return _.find(menuList, { linkUrl: '/articles' })
+    return _.find(menuList, { linkUrl: '/articles?uid=' })
   }
   return null
 }
@@ -56,9 +56,9 @@ const MenuListComp = ({ menuList, setShowHeaderDrawer, dynamicDomain = '' }) => 
 
         while (charCount <= MAX_CHUNK_SIZE && !_.isNil(menuListClone[index])) {
           oneChunk.push(menuListClone[index])
-          const websiteName = _.get(menuListClone, `${index}.websiteName`, '')
-          if (websiteName) {
-            charCount += websiteName.length
+          const webViewName = _.get(menuListClone, `${index}.webViewName`, '')
+          if (webViewName) {
+            charCount += webViewName.length
           }
           index++
         }
@@ -82,7 +82,6 @@ const MenuListComp = ({ menuList, setShowHeaderDrawer, dynamicDomain = '' }) => 
         _.forEach(menuChunkList, (chunk, index) => {
           _.forEach(chunk, (item, i) => {
             if (item.uid === current.uid) {
-              console.log(index)
               setChunkIndex(index)
               return
             }
@@ -95,6 +94,10 @@ const MenuListComp = ({ menuList, setShowHeaderDrawer, dynamicDomain = '' }) => 
   useEffect(
     () => {
       if (_.isEmpty(menuList)) return
+      if (location.pathname === '/') {
+        setCurrent(_.find(menuList, { linkKey: 'home' }))
+        return
+      }
 
       const url = new URL(location.href)
       const [uid] = url.searchParams.values()
@@ -120,7 +123,7 @@ const MenuListComp = ({ menuList, setShowHeaderDrawer, dynamicDomain = '' }) => 
         return
       }
 
-      const res = _.find(menuList, { linkUrl: location.pathname })
+      const res = findParent(menuList, location.href)
       if (res) {
         setCurrent(res)
         return
@@ -159,7 +162,7 @@ const MenuListComp = ({ menuList, setShowHeaderDrawer, dynamicDomain = '' }) => 
                 className={isCurrentMenu(item, current) ? styles.active : undefined}
                 onClick={e => clickMenuItem(item)}
               >
-                {item.websiteName}
+                {item.webViewName}
               </a>
               {index + 1 === menuChunkList[chunkIndex].length &&
                 hasNext() && (

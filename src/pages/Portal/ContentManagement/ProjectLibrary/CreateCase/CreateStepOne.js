@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-27 17:07:22
+ * @Last Modified time: 2021-05-26 17:53:08
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -91,7 +91,7 @@ class CreateStepOne extends PureComponent {
               ],
             })(<Input style={{ width: 400 }} placeholder="请输入专题标题" />)}
           </Form.Item>
-          <Form.Item label="适用终端">
+          {/*<Form.Item label="适用终端">
             {getFieldDecorator('terminalType', {
               initialValue: 0,
               rules: [
@@ -105,7 +105,7 @@ class CreateStepOne extends PureComponent {
                 <Radio value={0}>小程序</Radio>
               </Radio.Group>
             )}
-          </Form.Item>
+            </Form.Item>*/}
           {istrue === 1 ? (
             <Form.Item label="封面图">
               {getFieldDecorator('specialCoverImg', {

@@ -98,14 +98,16 @@ export async function queryHomePageData(params) {
 }
 // 查询导航编辑中数据
 export async function queryNavEditData(params) {
-  return request(baseurl + '/api/v1/wechat/wechat-mini/navigation/queryEditData', {
+  // return request(baseurl + '/api/v1/wechat/wechat-mini/navigation/queryEditData', {
+  return request(baseurl + '/api/v1/wechat/navigation/queryEditData', {
     method: 'POST',
     body: params,
   });
 }
 // 保存编辑数据
 export async function saveNavEditData(params) {
-  return request(baseurl + '/api/v1/wechat/wechat-mini/navigation/saveEditData', {
+  // return request(baseurl + '/api/v1/wechat/wechat-mini/navigation/saveEditData', {
+  return request(baseurl + '/api/v1/wechat/navigation/saveEditData', {
     method: 'POST',
     body: params,
   });
