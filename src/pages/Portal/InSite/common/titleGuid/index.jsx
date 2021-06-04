@@ -10,9 +10,8 @@ import { Button, message, Modal, Icon } from 'antd';
 import router from 'umi/router';
 import { baseRouteKey, themes } from '../../tools/data';
 import { ctx } from '../context';
-import { updateHomePageEditData, publishEditData } from '@/services/miniProgram';
+import { updateHomePageEditData, publishEditData, saveNavEditData } from '@/services/miniProgram';
 import styles from './titleGuid.less';
-import { saveNavEditData } from '../../../../../services/miniProgram';
 
 const { confirm } = Modal;
 

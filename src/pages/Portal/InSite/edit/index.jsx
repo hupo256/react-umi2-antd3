@@ -1,8 +1,8 @@
 /*
  * @Author: tdd
  * @Date: 2021-03-23 13:49:12
- * @Last Modified by: zqm
- * @Last Modified time: 2021-05-28 18:36:27
+ * @Last Modified by: tdd
+ * @Last Modified time: 2021-03-23 13:49:12
  * 编辑模板
  */
 import React, { useState, useContext } from 'react';
@@ -30,9 +30,7 @@ function TempEdit(props) {
           <div
             className={styles.tipsBox}
             style={{ bottom: '15.5em' }}
-            onClick={() => {
-              setcurFlag('editModel');
-            }}
+            onClick={() => setcurFlag('editModel')}
           >
             <Tooltip placement="topLeft" title={editText}>
               <Icon type="appstore" style={{ fontSize: '16px', color: '#fe6a30' }} />

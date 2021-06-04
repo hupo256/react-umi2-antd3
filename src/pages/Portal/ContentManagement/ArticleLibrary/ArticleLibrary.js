@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:50:21 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-06-02 14:26:48
+ * @Last Modified time: 2021-06-02 21:54:41
  * 文章库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -18,6 +18,7 @@ import imgtj from '../../../../assets/tj.png';
 import ic_smile from '../../../../assets/ic_smile.png';
 import ic_arm from '../../../../assets/ic_arm.png';
 import styles from './ArticleLibrary.less';
+import { getauth } from '@/utils/authority';
 const { confirm } = Modal;
 const { Search } = Input;
 const { TabPane } = Tabs;
@@ -80,6 +81,7 @@ class ArticleLibrary extends PureComponent {
       Loading,
       ArticleLibrary: { ArticleList, ArticleListQuery },
     } = this.props;
+    const permissionsBtn = getauth().permissions || [];
 
     const columns = [
       {
@@ -158,13 +160,18 @@ class ArticleLibrary extends PureComponent {
         render: (t, r) => {
           return (
             <div className="operateWrap">
-              <span className="operateBtn" onClick={() => this.handleEdit(r)}>
-                编辑
-              </span>
-              <span className="operateLine" />
-              <span className="operateBtn" onClick={() => this.handleChangeStatus(r)}>
-                {r.articleStatus + '' === '1' ? '停用' : '启用'}{' '}
-              </span>
+              {permissionsBtn.includes('BTN210602000009') && (
+                <span className="operateBtn" onClick={() => this.handleEdit(r)}>
+                  编辑
+                </span>
+              )}
+              {permissionsBtn.includes('BTN210602000009') &&
+                permissionsBtn.includes('BTN210602000010') && <span className="operateLine" />}
+              {permissionsBtn.includes('BTN210602000010') && (
+                <span className="operateBtn" onClick={() => this.handleChangeStatus(r)}>
+                  {r.articleStatus + '' === '1' ? '停用' : '启用'}{' '}
+                </span>
+              )}
             </div>
           );
         },
@@ -223,19 +230,21 @@ class ArticleLibrary extends PureComponent {
           </Card>
 
           <Card bordered={false} style={{ marginTop: 20 }}>
-            <Button
-              type="primary"
-              onClick={
-                () => this.handleAddArticle()
-                //   {
-                //   const { step } = this.state;
-                //   router.push(`/portal/contentmanagement/articlelibrary/add?step=${step}`);
-                // }
-              }
-            >
-              <Icon type="plus" />
-              创建文章
-            </Button>
+            {permissionsBtn.includes('BTN210602000008') && (
+              <Button
+                type="primary"
+                onClick={
+                  () => this.handleAddArticle()
+                  //   {
+                  //   const { step } = this.state;
+                  //   router.push(`/portal/contentmanagement/articlelibrary/add?step=${step}`);
+                  // }
+                }
+              >
+                <Icon type="plus" />
+                创建文章
+              </Button>
+            )}
             <Table
               loading={Loading}
               style={{ marginTop: 20 }}
