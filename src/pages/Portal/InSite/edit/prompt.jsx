@@ -9,7 +9,6 @@ import React, { useState, useContext } from 'react';
 import { Prompt } from 'react-router-dom';
 import router from 'umi/router';
 import { ctx } from '../common/context';
-import { updateHomePageEditData, saveNavEditData } from '@/services/miniProgram';
 import { Modal, message } from 'antd';
 import styles from './edit.less';
 
@@ -28,6 +27,9 @@ export default function ForPrompt(props) {
         editTemplateCode: templateCode,
         editTemplateJson: pageData,
       };
+      if (parmas.editTemplateJson.maps) {
+        delete parmas.editTemplateJson.maps;
+      }
       // 保存后再跳转
       savePageData(parmas, () => {
         message.success('保存成功', () => router.push(key));

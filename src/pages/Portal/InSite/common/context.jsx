@@ -14,7 +14,7 @@ import {
   saveNavEditData,
 } from '@/services/miniProgram';
 import { highlightsBgImgs } from '../tools/data';
-import { getauth } from '../../../../utils/authority';
+import { getauth } from '@/utils/authority';
 import {
   queryArticleTopicDic, //其他模块查询字典
 } from '@/services/dictConfig';
@@ -193,8 +193,6 @@ export function Provider({ children }) {
     setNavData,
     choiceData,
     setChoiceData,
-    MdTip,
-    setMdTip,
     savePageData,
   };
 
