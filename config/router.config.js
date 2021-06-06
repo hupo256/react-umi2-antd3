@@ -195,7 +195,6 @@ export default [
           {
             path: '/portal/contentmanagement/articlelibrary',
             name: 'articlelibrary',
-            code: 'MU9000000100010008',
             component: './Portal/ContentManagement/ArticleLibrary/ArticleLibrary',
           },
           {
