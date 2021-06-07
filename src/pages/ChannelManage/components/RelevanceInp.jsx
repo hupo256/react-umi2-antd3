@@ -91,7 +91,6 @@ export default class RelevanceInp extends Component {
      */    
     format = data => {
         if (!Array.isArray(data)) return;
-        const { curNavs } = this.props
         let newArr = [];
         for (const item of data) {            
             newArr.push ({
@@ -99,16 +98,20 @@ export default class RelevanceInp extends Component {
                 children: item.children.length ? this.format(item.children) : []
             })
         } 
-        newArr = this.touchSelcOpts(newArr, curNavs)
-        console.log(newArr)
+        newArr = this.touchSelcOpts(newArr)
+        // console.log(newArr)
         return newArr
     }
 
     // 过滤掉已经有的nav
-    touchSelcOpts = (opts, curNavs) => {
+    touchSelcOpts = (opts) => {
+      const { curNavs, curUid } = this.props
+      let tempNavs = [...curNavs]
+      const ind = tempNavs.indexOf(curUid)
+      tempNavs.splice(ind, 1)  // 当前的那个选项应该排除在外
       const arr = []
       opts.forEach(opt => {
-        if(!curNavs.includes(opt?.uid)) arr.push(opt)
+        if(!tempNavs.includes(opt?.uid)) arr.push(opt)
       })
       return arr
     }
@@ -433,7 +436,7 @@ export default class RelevanceInp extends Component {
     }
 
     render() {
-        const { form, isCreate  } = this.props;
+        const { form, isCreate, inpDisabled  } = this.props;
         const { relatedPageOption, currentSelectRelatedPageOpt, currentKey, dataList,detailType, 
             articleDicOpts, currentarticleDicCode, searchText, showSelectPanl,
             pageNum, pageSize, recordTotal, btnLoading
@@ -578,7 +581,7 @@ export default class RelevanceInp extends Component {
                         {getFieldDecorator('relatedPage', {
                             rules: [{ required: true, message: '请选择关联页面!' }],
                         })(
-                            <Input className='targetInput' readOnly placeholder='请选择关联页面' onClick={ this.clickInputHandle} suffix={<Icon type="right" />}/>             
+                            <Input className='targetInput' disabled={inpDisabled} readOnly placeholder='请选择关联页面' onClick={ this.clickInputHandle} suffix={<Icon type="right" />}/>             
                         )} 
                         {showSelectPanl && <div ref='parentNode'  className={styles['card-container']}>
                             <Tabs type="card" tabBarGutter={0}  activeKey={currentKey} onChange={this.tabChange}>
