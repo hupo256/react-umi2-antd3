@@ -53,11 +53,6 @@ export default function NavEdit(props) {
   }
 
   function forUpdatePageData() {
-    // const newObj = { ...pageData };
-    // newObj.maps[curFlag].list = tagList;
-    // settagList(tagList.slice());
-    // setpageData(newObj);
-
     setNavData(navData.slice());
   }
 
@@ -99,7 +94,8 @@ export default function NavEdit(props) {
         {navData?.length > 0 &&
           navData.map((tag, ind) => {
             const len = navData.length;
-            let { linkDisplayName, icon, name, desStatus = 'success', desMsg = '' } = tag;
+            let { linkDisplayName, icon, name, navModule, paths, desStatus = 'success', desMsg = '' } = tag;
+            const isHome = navModule === 'index'
             icon = 'icon-' + icon?.split('icon')[1]; // 兼容iconfont在生成时加的前辍
             return (
               <li key={ind}>
@@ -110,10 +106,10 @@ export default function NavEdit(props) {
                     <a disabled={ind === 0} onClick={() => toMove(ind, -1)}>
                       <Icon type="arrow-up" />
                     </a>
-                    <a disabled={ind === len - 1} onClick={() => toMove(ind, 1)}>
+                    <a disabled={ind === len - 1 || isHome} onClick={() => toMove(ind, 1)}>
                       <Icon type="arrow-down" />
                     </a>
-                    <a disabled={len === 1} onClick={() => delImg(ind)}>
+                    <a disabled={len === 1 || isHome} onClick={() => delImg(ind)}>
                       <Icon type="delete" />
                     </a>
                   </div>
@@ -133,6 +129,7 @@ export default function NavEdit(props) {
                         onBlur={e => discTexChange(e, tag)}
                         onChange={e => discTexChange(e, tag)}
                         placeholder="请输入导航名称"
+                        disabled={isHome}
                       />
                     </Item>
                   </Form>
@@ -144,6 +141,8 @@ export default function NavEdit(props) {
                       relatedPageOption={relatedPageOption} // 渲染组件需要的数据
                       relatedPage={linkDisplayName} // input用来回显的值
                       curNavs={curNavs} // 当前已经有的nav -- 禁用重复选择
+                      inpDisabled={isHome}
+                      curUid={paths[0]}
                     />
                   )}
                 </div>
