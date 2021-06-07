@@ -10,6 +10,7 @@
     "prod:build": "ENV=prod umi build",
     "pre:build": "ENV=pre umi build",
     "pre:start": "ENV=pre umi dev",
+    "pre1:start": "ENV=pre umi dev1",
     "rc:build": "ENV=rc umi build",
     "rc:start": "ENV=rc umi dev",
     "auto:build": "ENV=auto umi build",
