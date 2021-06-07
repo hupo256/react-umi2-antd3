@@ -193,6 +193,8 @@ export function Provider({ children }) {
     setNavData,
     choiceData,
     setChoiceData,
+    MdTip,
+    setMdTip,
     savePageData,
   };
 

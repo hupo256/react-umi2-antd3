@@ -10,7 +10,7 @@ import { ctx } from '../../common/context';
 import HoverMd from './hoverMd';
 import pageStyle from '../preview.less';
 
-export default function CaseMd(props) {
+export default function NavMd(props) {
   const { navData } = useContext(ctx);
 
   return (
@@ -18,9 +18,10 @@ export default function CaseMd(props) {
       <HoverMd tips="导航" flag="nav">
         <ul className={pageStyle.flex}>
           {navData?.map(nav => {
-            const { icon, name } = nav;
+            let { icon, name } = nav;
+            icon = 'icon-' + icon?.split('icon')[1]; // 兼容iconfont在生成时加的前辍
             return (
-              <li key={name} className={`${icon === 'iconic_home_no' ? pageStyle.on : ''}`}>
+              <li key={name} className={`${icon === 'icon-ic_home_no' ? pageStyle.on : ''}`}>
                 <svg className="icon">
                   <use href={`#${icon}`} />
                 </svg>

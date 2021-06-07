@@ -11,7 +11,7 @@ import MdTitle from './common/mdTitle';
 import EmptyMd from './common/emptyMd';
 import pageStyle from '../preview.less';
 
-export default function CaseMd(props) {
+export default function SiteMd(props) {
   const { list, title, flag } = props;
 
   return (

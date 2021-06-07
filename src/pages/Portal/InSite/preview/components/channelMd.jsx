@@ -8,7 +8,7 @@
 import React, { useState, useEffect } from 'react';
 import pageStyle from '../preview.less';
 
-export default function CaseMd(props) {
+export default function ChannelMd(props) {
   const { list } = props;
 
   return (

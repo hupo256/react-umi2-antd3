@@ -17,7 +17,7 @@ const bgImgs = [
   'https://test.img.inbase.in-deco.com/crm_saas/dev/20210408/8f8b1e6ce303458bb72764b7ba235a0f/img_designer_4.png',
 ];
 
-export default function CaseMd(props) {
+export default function DesignMd(props) {
   const { list, title, flag } = props;
 
   return (
