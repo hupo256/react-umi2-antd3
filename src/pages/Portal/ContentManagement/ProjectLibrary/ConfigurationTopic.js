@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-27 19:44:45
+ * @Last Modified time: 2021-05-31 11:20:43
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -10,7 +10,7 @@ import { connect } from 'dva';
 import router from 'umi/router';
 import Link from 'umi/link';
 import _ from 'lodash';
-import { Button, Icon, message, Menu } from 'antd';
+import { Button, Icon, message, Menu, Modal } from 'antd';
 import { DraggableArea } from 'react-draggable-tags';
 import { getQueryUrlVal } from '@/utils/utils';
 import { getauth } from '@/utils/authority';
@@ -22,6 +22,7 @@ import styles from './index.less';
 import logo from '../../../../assets/whiteLog.png';
 import logoImg from '../../../../assets/logoImg.png';
 const { SubMenu } = Menu;
+const { confirm } = Modal;
 let pointX, pointY;
 @connect(({ ProjectLibrary }) => ({
   ProjectLibrary,
@@ -35,6 +36,7 @@ class ProjectLibrary extends PureComponent {
       tags: [],
       title: '',
       Left: -80,
+      terminalType: 1,
     };
     /*定义两个值用来存放鼠标按下的地方距离元素上侧和左侧边界的值*/
     this.disX = 0;
@@ -44,12 +46,16 @@ class ProjectLibrary extends PureComponent {
   componentDidMount() {
     let activeKey;
     const { dispatch } = this.props;
+    let terminalType = localStorage.getItem('terminalType')
+      ? Number(localStorage.getItem('terminalType'))
+      : 0;
     if (getQueryUrlVal('copy')) {
       activeKey = getQueryUrlVal('copy');
       dispatch({
         type: 'ProjectLibrary/getCollocationModels',
         payload: {
           specialUid: activeKey,
+          terminalType,
         },
       }).then(res => {
         if (res && res.code === 200) {
@@ -67,6 +73,7 @@ class ProjectLibrary extends PureComponent {
           });
           this.setState({
             title: res.data.specialTitle,
+            terminalType: terminalType,
           });
         }
       });
@@ -76,6 +83,7 @@ class ProjectLibrary extends PureComponent {
         type: 'ProjectLibrary/getCollocationModel',
         payload: {
           specialUid: activeKey,
+          terminalType,
         },
       }).then(res => {
         if (res && res.code === 200) {
@@ -93,6 +101,7 @@ class ProjectLibrary extends PureComponent {
           });
           this.setState({
             title: res.data.specialTitle,
+            terminalType: terminalType,
           });
         }
       });
@@ -130,7 +139,7 @@ class ProjectLibrary extends PureComponent {
     const {
       ProjectLibrary: { elementTree, compentList },
     } = this.props;
-    const { collapsed, istrue, title, Left } = this.state;
+    const { collapsed, istrue, title, Left, terminalType } = this.state;
     const auth = JSON.parse(localStorage.getItem('auth'));
     const bigLogo = (auth && auth.companyLogoBig) || logo;
     const smallLogo = (auth && auth.companyLogoSmall) || logoImg;
@@ -197,19 +206,6 @@ class ProjectLibrary extends PureComponent {
               ),
             });
             break;
-          // case 'TEXT':
-          //   tags.push({
-          //     id: index,
-          //     content: (
-          //       <TextComponent
-          //         data={item}
-          //         index={index}
-          //         handleCheck={data => this.handleCheck(data)}
-          //         handleDeletePic={data => this.handleDeletePic(data)}
-          //       />
-          //     ),
-          //   });
-          //   break;
           case 'FORM':
             ViewForm.push({ data: item, idx: index });
             break;
@@ -224,6 +220,7 @@ class ProjectLibrary extends PureComponent {
                 handleWidth={data => this.handleWidth(data)}
                 handleCheck={data => this.handleCheck(data)}
                 companyPhone={companyPhone}
+                terminalType={terminalType}
                 handleColor={(data, index, code) => this.handleColor(data, index, code)}
                 handleDeleteFoot={data => this.handleDeletePic(data)}
               />
@@ -263,6 +260,7 @@ class ProjectLibrary extends PureComponent {
         />
       );
     });
+
     const permissionsBtn = getauth();
     return (
       <div className={styles.topicWrap}>
@@ -286,6 +284,29 @@ class ProjectLibrary extends PureComponent {
             ) : (
               ''
             )}
+          </div>
+          <div className={styles.fixedWrap}>
+            <span
+              className={styles.fixedSpan}
+              onClick={() => {
+                this.handleTerminalType(0);
+              }}
+            >
+              <div className={terminalType === 0 ? styles.colos : null}>
+                <Icon type="mobile" /> 小程序
+              </div>
+            </span>
+            <span className={styles.aline} />
+            <span
+              className={styles.fixedSpan}
+              onClick={() => {
+                this.handleTerminalType(1);
+              }}
+            >
+              <div className={terminalType === 1 ? styles.colos : null}>
+                <Icon type="desktop" /> 电脑端
+              </div>
+            </span>
           </div>
           {/*<div className={styles.fixedWrap}>
             {permissionsBtn.permissions.includes('BTN210326000048') ? (
@@ -318,6 +339,25 @@ class ProjectLibrary extends PureComponent {
           <div className={styles.thead}>
             <span className={styles.fontHead}>编辑专题</span>
             <div className={styles.bth}>
+              <Button
+                style={{ borderRadius: 2, marginRight: 10, width: 80 }}
+                onClick={() => {
+                  confirm({
+                    title: '确认要放弃更改？',
+                    content: '放弃更改后，将会当前专题恢复至上一次发布的版本',
+                    okText: '确定',
+                    cancelText: '取消',
+                    onOk() {
+                      window.location.reload();
+                    },
+                    onCancel() {
+                      console.log('Cancel');
+                    },
+                  });
+                }}
+              >
+                放弃更改
+              </Button>
               {permissionsBtn.permissions.includes('BTN210326000048') ? (
                 <Button
                   style={{ borderRadius: 2, marginRight: 10, width: 80 }}
@@ -354,29 +394,56 @@ class ProjectLibrary extends PureComponent {
               this.handleCanle();
             }}
           />
-          <div className={styles.phone} style={{ marginLeft: Left }}>
-            <div className={styles.phoneHead}>{title}</div>
-            <div className={styles.phoneCont}>
-              <div
-                className={styles.phoneBox}
-                ref="submitf"
-                id="phoneCont"
-                onMouseMove={() => {
-                  this.get_canvas(event);
-                }}
-              >
-                <DraggableArea
-                  isList
-                  tags={tags}
-                  render={({ tag, index }) => <div className={styles.tag}>{tag.content}</div>}
-                  onChange={index => this.handleDragg(index)}
-                />
-                <div className={styles.vieT}>{vie}</div>
-                <div className={styles.txCont}>{textCont}</div>
-                {foot}
+          {terminalType === 0 ? (
+            <div className={styles.phone} style={{ marginLeft: Left }}>
+              <div className={styles.phoneHead}>{title}</div>
+              <div className={styles.phoneCont}>
+                <div
+                  className={styles.phoneBox}
+                  ref="submitf"
+                  id="phoneCont"
+                  onMouseMove={() => {
+                    this.get_canvas(event);
+                  }}
+                >
+                  <DraggableArea
+                    isList
+                    tags={tags}
+                    render={({ tag, index }) => <div className={styles.tag}>{tag.content}</div>}
+                    onChange={index => this.handleDragg(index)}
+                  />
+                  <div className={styles.vieT}>{vie}</div>
+                  <div className={styles.txCont}>{textCont}</div>
+                  {foot}
+                </div>
               </div>
             </div>
-          </div>
+          ) : (
+            <div className={styles.phonev}>
+              <div className={styles.phoneCont}>
+                <div
+                  className={styles.phoneBoxs}
+                  ref="submitf"
+                  id="phoneCont"
+                  onMouseMove={() => {
+                    this.get_canvas(event);
+                  }}
+                >
+                  <div id="phoneHeight">
+                    <DraggableArea
+                      isList
+                      tags={tags}
+                      render={({ tag, index }) => <div className={styles.tag}>{tag.content}</div>}
+                      onChange={index => this.handleDragg(index)}
+                    />
+                    <div className={styles.vieT}>{vie}</div>
+                    <div className={styles.txCont}>{textCont}</div>
+                    {foot}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     );
@@ -390,10 +457,10 @@ class ProjectLibrary extends PureComponent {
     let left = 0;
     let top = 0;
     let textTop = 0;
-    const { tags } = this.state;
+    const { tags, terminalType } = this.state;
     let iscroll = document.getElementById('phoneCont').scrollTop + 285;
-    textTop = iscroll;
     let iscroll2 = document.getElementById('phoneCont').scrollTop + 250;
+    textTop = iscroll;
     compentList &&
       compentList.map((item, index) => {
         if (item.elementType === 'MODAL' && ite.elementType === 'MODAL') {
@@ -406,7 +473,7 @@ class ProjectLibrary extends PureComponent {
             top = aStyle.top + 360;
           }
         }
-        // if (item.elementType === 'MODAL_TEXT') {
+        // if (item.elementType === "MODAL_TEXT") {
         //   if (item.elementStyle) {
         //     let aStyle = JSON.parse(item.elementStyle);
         //     textTop = aStyle.top + 43;
@@ -415,7 +482,10 @@ class ProjectLibrary extends PureComponent {
       });
     if (ishow === 0) {
       ite.isEdit = false;
-      ite.elementStyle = JSON.stringify({ top: iscroll2, left: left });
+      ite.elementStyle = JSON.stringify({
+        top: iscroll2,
+        left: terminalType === 0 ? left : 485,
+      });
       if (ite.elementType === 'FORM') {
         ite.elementButtonColor = '#fe6a30';
         ite.elementButtonTextColor = '#fff';
@@ -427,7 +497,7 @@ class ProjectLibrary extends PureComponent {
       } else if (ite.elementType === 'MODAL_TEXT') {
         ite.elementStyle = JSON.stringify({
           top: textTop,
-          left: 113,
+          left: terminalType === 0 ? 113 : 597,
           fontSize: 14,
           color: '#000',
           lineHeight: 1.5,
@@ -443,8 +513,10 @@ class ProjectLibrary extends PureComponent {
       // if (ite.elementType === 'IMG' || ite.elementType === 'TEXT') {
       //   tags.push(_.cloneDeep(ite));
       // }
+
       compentList.push(_.cloneDeep(ite));
     }
+
     dispatch({
       type: 'ProjectLibrary/saveDataModel',
       payload: {
@@ -537,32 +609,23 @@ class ProjectLibrary extends PureComponent {
       dispatch,
       ProjectLibrary: { compentList },
     } = this.props;
+    let width = this.refs.submitf.offsetWidth;
     let height = this.refs.submitf.scrollHeight;
     let aStyle = JSON.parse(compentList[indx].elementStyle);
+    if (event.clientX - this.disX < 0) {
+      aStyle.left = 0;
+    } else if (event.clientX - this.disX > width) {
+      aStyle.left = width;
+    } else {
+      aStyle.left = event.clientX - this.disX;
+    }
     if (event.clientY - this.disY < 0) {
-      aStyle = 0;
+      aStyle.top = 0;
     } else if (event.clientY - this.disY > height) {
       aStyle.top = height;
     } else {
       aStyle.top = event.clientY - this.disY;
     }
-    // if (compentList[indx].elementType === 'MODAL_TEXT') {
-    //   compentList[indx].elementStyle = JSON.stringify({
-    //     top: aStyle.top,
-    //     left: aStyle.left,
-    //     fontSize: aStyle.fontSize,
-    //     color: aStyle.color,
-    //     lineHeight: aStyle.lineHeight,
-    //     letterSpacing: aStyle.letterSpacing,
-    //     textAlign: aStyle.textAlign,
-    //     fontStyle: aStyle.fontStyle,
-    //     textDecorationLine: aStyle.textDecorationLine,
-    //     width: 150,
-    //     height: 43,
-    //   });
-    // } else {
-    //   compentList[indx].elementStyle = JSON.stringify({ top: aStyle.top, left: aStyle.left });
-    // }
     compentList[indx].elementStyle = JSON.stringify({ top: aStyle.top, left: aStyle.left });
     dispatch({
       type: 'ProjectLibrary/saveDataModel',
@@ -606,6 +669,7 @@ class ProjectLibrary extends PureComponent {
       dispatch,
       ProjectLibrary: { compentList },
     } = this.props;
+    const { terminalType } = this.state;
     if (compentList.length > 0) {
       let isTrue = 0;
       let isTrueM = 0;
@@ -670,6 +734,7 @@ class ProjectLibrary extends PureComponent {
             elementList: compentList,
             specialUid: getQueryUrlVal('uid'),
             saveType: 1,
+            terminalType: terminalType,
           },
         }).then(res => {
           if (res && res.code === 200) {
@@ -695,12 +760,13 @@ class ProjectLibrary extends PureComponent {
       message.error('请添加组件');
     }
   }
-  logoutSave() {
+  logoutSave(codet) {
     const {
       dispatch,
       ProjectLibrary: { compentList },
     } = this.props;
     let formUid = '';
+    const { terminalType } = this.state;
     compentList.map((item, index) => {
       if (item.elementType === 'MODAL') {
         if (item.formUid) {
@@ -724,11 +790,16 @@ class ProjectLibrary extends PureComponent {
         elementList: compentList,
         specialUid: getQueryUrlVal('uid'),
         saveType: 2,
+        terminalType,
       },
     }).then(res => {
       if (res && res.code === 200) {
-        message.success('保存成功');
-        router.push('/portal/contentmanagement/ProjectLibrary');
+        if (codet === 1) {
+          window.location.reload();
+        } else {
+          message.success('保存成功');
+          router.push('/portal/contentmanagement/ProjectLibrary');
+        }
       }
     });
   }
@@ -780,6 +851,10 @@ class ProjectLibrary extends PureComponent {
     this.setState({
       Left: -80,
     });
+  }
+  handleTerminalType(code) {
+    localStorage.setItem('terminalType', code);
+    this.logoutSave(1);
   }
 }
 

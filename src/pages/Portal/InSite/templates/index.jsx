@@ -10,16 +10,13 @@ import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { Provider, ctx } from '../common/context';
 import router from 'umi/router';
 import { baseRouteKey } from '../tools/data';
-import { updateHomePageEditData } from '@/services/miniProgram';
 import TitleGuid from '../common/titleGuid';
 import { queryTemplate } from '@/services/miniProgram';
 import { imgBaseUrl } from '../tools';
 import styles from './templates.less';
-import { message } from 'antd';
-import { saveNavEditData } from '../../../../services/miniProgram';
 
 function Templates(props) {
-  const { pageData, touchPageData, settemplateName, navData } = useContext(ctx);
+  const { pageData, touchPageData, settemplateName, savePageData } = useContext(ctx);
   const [isChange, setisChange] = useState(false);
   const [tepList, settepList] = useState([]);
 
@@ -60,17 +57,9 @@ function Templates(props) {
       editTemplateCode: code,
       editTemplateJson: pageData,
     };
-    updateHomePageEditData(parmas).then(res => {
-      if (res.code === 200) {
-        saveNavEditData(navData)
-          .then(r => {
-            if (r.code === 200) {
-              const key = `edit?templateCode=${code}`;
-              router.push(`${baseRouteKey}${key}`);
-            }
-          })
-
-      }
+    savePageData(parmas, () => {
+      const key = `edit?templateCode=${code}`;
+      router.push(`${baseRouteKey}${key}`);
     });
   }
 

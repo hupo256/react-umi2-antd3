@@ -1,7 +1,7 @@
 // 注：此文件与marketing版有大量不同，整合的时候需特别注意
 import React from 'react'
 import cx from 'classnames'
-import styles from './FooterComp.module.scss'
+import styles from './FooterComp.less'
 
 export default function FooterComp({ data, setShowFooterDrawer }) {
   if (!data) return null
@@ -33,16 +33,19 @@ export default function FooterComp({ data, setShowFooterDrawer }) {
           </div>
           <div className={styles.contactUs}>
             <b>联系我们</b>
-            <p>{customerService}</p>
-            <p>{email}</p>
-            <p>{wechatNumber}</p>
+            <p className={styles.customerService}>{customerService}</p>
+            <p className={styles.email}>{email}</p>
+            <p className={styles.wechat}>{wechatNumber}</p>
           </div>
           <div className={styles.companyAddressWrapper}>
             <b>门店地址</b>
             <div className={styles.minImgBox}>
-              <img src={storeCover} alt={storeAddress} />
+              <img src={storeCover} alt="" />
             </div>
-            <p>{storeAddress}</p>
+            <div className={styles.storeAddress}>
+              <img src="/img/add.png" alt="" style={{ height: '20px', width: '13px' }} />
+              <div>{storeAddress}</div>
+            </div>
           </div>
           <div className={styles.editButton} onClick={() => setShowFooterDrawer(true)}>
             编辑

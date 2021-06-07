@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
 import { createChannel, getRelatedPage, getDetailApi, editChannelApi,
-         siteListApi, designerListApi, caseListApi, articleListApi, articleDicApi, specialListApi  } from '@/services/channelManage'
-import { Form, Input, Select, Button, Cascader, message, Tabs, Table, Radio, Tag, Tooltip   } from 'antd'
+         siteListApi, designerListApi, caseListApi, articleListApi, articleDicApi, specialListApi, activeListApi  } from '@/services/channelManage'
+import { Form, Input, Select, Button, Cascader, message, Tabs, Table, Radio, Tag, Tooltip, Checkbox   } from 'antd'
 import styles from '../index.less'
 
 
@@ -113,8 +113,7 @@ export default class CreateEdit extends Component {
            
             let detailUid2;
             let arr = optArr.map(item => item.code);
-            console.log({arr})
-            if (optArr[0]?.text === '专题') {
+            if (optArr[0]?.text === '专题' || optArr[0]?.text === '小游戏') {
                 detailUid2 = optArr[1].code;
                 arr = optArr.map(item => item.code).slice(0, arr.length - 1)
             }
@@ -275,8 +274,14 @@ export default class CreateEdit extends Component {
 
         }
         detailType === 5 && (res = await specialListApi({
-            specialStatus: 0,
+            specialStatus: status,
             searchText,
+            pageNum,
+            pageSize
+        }));
+        detailType === 6 && (res = await activeListApi({
+            state: '',
+            activityTitle: searchText,
             pageNum,
             pageSize
         }));
@@ -349,7 +354,7 @@ export default class CreateEdit extends Component {
             if (currentSelectRelatedPageOpt.hasOwnProperty.call(currentSelectRelatedPageOpt, key)) {
                 const item = currentSelectRelatedPageOpt[key];
                 arr.push({
-                    text: item.name || item.title || item.articleTitle  || item.gongdiTitle || item.specialTitle,
+                    text: item.name || item.title || item.articleTitle  || item.gongdiTitle || item.specialTitle || item.activityTitle,
                     code: item.uid || item.gongdiUid || item.articleUid || item.specialUid
                 })
             }
@@ -361,12 +366,15 @@ export default class CreateEdit extends Component {
     // 切换选择页面面板显示
     toggleSelectPanlHandle = ( isShow ) => {
         const { currentSelectRelatedPageOpt } = this.state;
-        if ( (currentSelectRelatedPageOpt[1]?.linkType === 2 && !!!currentSelectRelatedPageOpt[2]) || (currentSelectRelatedPageOpt[0]?.linkType === 2 && !!!currentSelectRelatedPageOpt[1] )) {
+        console.log({ currentSelectRelatedPageOpt})
+        if ((currentSelectRelatedPageOpt[1]?.linkType === 2 && !!!currentSelectRelatedPageOpt[2]) || 
+            (currentSelectRelatedPageOpt[0]?.linkType === 2 && !!!currentSelectRelatedPageOpt[1] ) ||
+            currentSelectRelatedPageOpt[currentSelectRelatedPageOpt.length - 1]?.children?.length) {
             
             this.setState(prevState => {
                 
                 return ({
-                    currentSelectRelatedPageOpt: prevState.currentSelectRelatedPageOpt.slice(0, prevState.currentSelectRelatedPageOpt.length - 1)
+                    currentSelectRelatedPageOpt: []
                 })
             }, () => {
                 this.props.form.setFieldsValue({
@@ -554,7 +562,40 @@ export default class CreateEdit extends Component {
                     key: 'updateTime',
                     dataIndex: 'updateTime'
                 },
+            ],
+            // 小游戏表头
+            columns_6: [
+                {
+                    title: <span style={{fontWeight: 300}}>游戏标题</span>,
+                    key: 'activityTitle',
+                    dataIndex: 'activityTitle',
+                    render: (text, r) => <Tooltip placement='topLeft' title={text}>
+                        <div style={{maxWidth: 120,  display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>{text}</div>
+                    </Tooltip> 
+                },
+                {
+                    title: <span style={{fontWeight: 300}}>状态</span>,
+                    key: 'status',
+                    dataIndex: 'status',
+                    render: (text, r) => {
+                        let tex = '未开始';
+                        text === 1 && (tex = '进行中');
+                        text === 2 && (tex = '已结束');
+                        return tex;
+                    }
+                },
+                {
+                    title: <span style={{fontWeight: 300}}>创建人</span>,
+                    key: 'creater',
+                    dataIndex: 'creater',
+                    render: (text, r) => <Tooltip placement='topLeft' title={text}>
+                        <div style={{maxWidth: 120,  display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>{text}</div>
+                    </Tooltip> 
+                },
+               
+               
             ]
+
         }
 
         return (
@@ -574,6 +615,13 @@ export default class CreateEdit extends Component {
                                 { max: 6, message: '限制0-6字符长度' }
                             ],
                         })(<Input  placeholder='请输入网站频道名称' />)}
+                    </Form.Item>
+                    <Form.Item label="适用频道">
+                        {getFieldDecorator('usageScene', {
+                            initialValue: [2, 1],
+                            rules: [{ required: true, message: '请选择适用频道!' }],
+                            
+                        })(<Checkbox.Group options={[{label: '小程序', value: 2}, {label: '网站', value: 1}]}/>)}
                     </Form.Item>
                     <Form.Item label="频道介绍">
                         {getFieldDecorator('brief', {

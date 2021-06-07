@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-27 19:10:07
+ * @Last Modified time: 2021-05-28 18:43:51
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -46,7 +46,7 @@ class FootComponent extends PureComponent {
   }
 
   render() {
-    const { data, companyPhone } = this.props;
+    const { data, companyPhone, terminalType } = this.props;
     const {
       show,
       showFont,
@@ -78,32 +78,60 @@ class FootComponent extends PureComponent {
             this.handleCheck();
           }}
         >
-          <div className="clearfix">
-            <div className={styles.phoneWrap}>
-              <div>
+          {terminalType === 0 ? (
+            <div className="clearfix">
+              <div className={styles.phoneWrap}>
+                <div>
+                  <img
+                    src="https://img.inbase.in-deco.com/crm_saas/release/20210426/7f28e9b033204fc2bd628d0f82fbdfc8/ic_call.png"
+                    width="25"
+                    height="25"
+                  />
+                </div>
+                <div>{companyPhone}</div>
+              </div>
+              <div className={styles.btnWrap}>
+                <Button
+                  type="primary"
+                  style={{
+                    width: '100%',
+                    background: data.elementButtonColor,
+                    borderColor: data.elementButtonColor,
+                    color: data.elementButtonTextColor,
+                    height: 42,
+                  }}
+                >
+                  {data.elementButtonText}
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <div className="clearfix" style={{ textAlign: 'center' }}>
+              <div className={styles.pcphoneWrap}>
                 <img
                   src="https://img.inbase.in-deco.com/crm_saas/release/20210426/7f28e9b033204fc2bd628d0f82fbdfc8/ic_call.png"
                   width="25"
                   height="25"
                 />
+                <span className={styles.pcPg}>{companyPhone}</span>
               </div>
-              <div>{companyPhone}</div>
+              <div className={styles.pcbtnWrap}>
+                <Button
+                  type="primary"
+                  style={{
+                    width: '100%',
+                    background: data.elementButtonColor,
+                    borderColor: data.elementButtonColor,
+                    color: data.elementButtonTextColor,
+                    height: 42,
+                    fontSize: 18,
+                  }}
+                >
+                  {data.elementButtonText}
+                </Button>
+              </div>
             </div>
-            <div className={styles.btnWrap}>
-              <Button
-                type="primary"
-                style={{
-                  width: '100%',
-                  background: data.elementButtonColor,
-                  borderColor: data.elementButtonColor,
-                  color: data.elementButtonTextColor,
-                  height: 42,
-                }}
-              >
-                {data.elementButtonText}
-              </Button>
-            </div>
-          </div>
+          )}
           <div className={data.checked === 1 ? styles.roundLeftTop : ''} />
           <div className={data.checked === 1 ? styles.roundRightTop : ''} />
           <div className={data.checked === 1 ? styles.roundLeftBottom : ''} />

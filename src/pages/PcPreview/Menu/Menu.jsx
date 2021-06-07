@@ -1,25 +1,39 @@
 // 注：此文件与marketing版有大量不同，整合的时候需特别注意
 import _ from 'lodash'
-import styles from './Menu.module.scss'
+import styles from './Menu.less'
 import { useState, useEffect } from 'react'
 import cx from 'classnames'
+import { message } from 'antd'
 
-const MAX_CHUNK_SIZE = 40
+const MAX_CHUNK_SIZE = 25
 const MIN_CHUNK_SIZE = 20
 
-const isCurrentMenu = ({ uid, linkKey }) => {
-  const currentMenuUid = localStorage.getItem('currentMenu')
-  if (currentMenuUid) {
-    return currentMenuUid === uid
-  }
-
-  return linkKey === 'home'
+const isCurrentMenu = (item, current) => {
+  if (!current || !item) return false
+  return item.uid === current.uid
 }
 
-const MenuListComp = ({ menuList, setShowHeaderDrawer }) => {
+const findParent = (menuList, url) => {
+  if (/cases/.test(url)) {
+    return _.find(menuList, { linkUrl: '/cases' })
+  }
+  if (/sites/.test(url)) {
+    return _.find(menuList, { linkUrl: '/sites' })
+  }
+  if (/designers/.test(url)) {
+    return _.find(menuList, { linkUrl: '/designers' })
+  }
+  if (/articles/.test(url)) {
+    return _.find(menuList, { linkUrl: '/articles?uid=' })
+  }
+  return null
+}
+
+const MenuListComp = ({ menuList, setShowHeaderDrawer, dynamicDomain = '' }) => {
   const [menuChunkList, setMenuChunkList] = useState([])
   const [chunkIndex, setChunkIndex] = useState(0)
   const [extraCharCount, setExtraCharCount] = useState([])
+  const [current, setCurrent] = useState(0)
 
   const hasPrevious = () => {
     return !Boolean(chunkIndex - 1 < 0)
@@ -43,9 +57,9 @@ const MenuListComp = ({ menuList, setShowHeaderDrawer }) => {
 
         while (charCount <= MAX_CHUNK_SIZE && !_.isNil(menuListClone[index])) {
           oneChunk.push(menuListClone[index])
-          const websiteName = _.get(menuListClone, `${index}.websiteName`, '')
-          if (websiteName) {
-            charCount += websiteName.length
+          const webViewName = _.get(menuListClone, `${index}.webViewName`, '')
+          if (webViewName) {
+            charCount += webViewName.length
           }
           index++
         }
@@ -65,12 +79,10 @@ const MenuListComp = ({ menuList, setShowHeaderDrawer }) => {
     () => {
       if (_.isEmpty(menuChunkList)) return
 
-      const currentMenu = localStorage.getItem('currentMenu')
-      if (currentMenu) {
+      if (current) {
         _.forEach(menuChunkList, (chunk, index) => {
           _.forEach(chunk, (item, i) => {
-            if (item.uid === currentMenu) {
-              console.log(index)
+            if (item.uid === current.uid) {
               setChunkIndex(index)
               return
             }
@@ -80,10 +92,55 @@ const MenuListComp = ({ menuList, setShowHeaderDrawer }) => {
     },
     [menuChunkList],
   )
+  useEffect(
+    () => {
+      if (_.isEmpty(menuList)) return
+      if (location.pathname === '/') {
+        setCurrent(_.find(menuList, { linkKey: 'home' }))
+        return
+      }
 
-  const clickMenuItem = ({ uid, linkUrl }) => {
-    localStorage.setItem('currentMenu', uid)
-    window.location.href = linkUrl
+      const url = new URL(location.href)
+      const [uid] = url.searchParams.values()
+
+      if (uid) {
+        // 详情页
+
+        const res = _.find(menuList, value => {
+          const urlObj = new URL(location.origin + value.linkUrl)
+          const [urlCompare] = urlObj.searchParams.values()
+
+          return urlCompare === uid
+        })
+
+        if (!res) {
+          // 去除当前状态
+          const parentMenu = findParent(menuList, location.href)
+          setCurrent(parentMenu)
+          return
+        }
+        // 设置此为当前
+        setCurrent(res)
+        return
+      }
+
+      const res = findParent(menuList, location.href)
+      if (res) {
+        setCurrent(res)
+        return
+      }
+
+      setCurrent(null)
+    },
+    [menuList],
+  )
+  const clickMenuItem = ({ linkUrl, uid, linkKey }) => {
+    if (!uid) return
+    if (linkKey === 'games') {
+      message.warning('网站端暂不支持打开小游戏，请在小程序中打开！')
+      return
+    }
+    window.open(`${dynamicDomain}${linkUrl}`, '页面预览')
   }
 
   return (
@@ -108,10 +165,10 @@ const MenuListComp = ({ menuList, setShowHeaderDrawer }) => {
                 )}
               <a
                 key={index}
-                className={isCurrentMenu(item) ? styles.active : undefined}
+                className={isCurrentMenu(item, current) ? styles.active : undefined}
                 onClick={e => clickMenuItem(item)}
               >
-                {item.websiteName}
+                {item.webViewName}
               </a>
               {index + 1 === menuChunkList[chunkIndex].length &&
                 hasNext() && (
