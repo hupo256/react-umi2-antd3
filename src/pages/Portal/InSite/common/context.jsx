@@ -7,9 +7,14 @@
  */
 import React, { useState, createContext } from 'react';
 import { message } from 'antd';
-import { getHomePageEditData, queryNavEditData } from '@/services/miniProgram';
+import {
+  getHomePageEditData,
+  updateHomePageEditData,
+  queryNavEditData,
+  saveNavEditData,
+} from '@/services/miniProgram';
 import { highlightsBgImgs } from '../tools/data';
-import { getauth } from '../../../../utils/authority';
+import { getauth } from '@/utils/authority';
 import {
   queryArticleTopicDic, //其他模块查询字典
 } from '@/services/dictConfig';
@@ -93,13 +98,13 @@ export function Provider({ children }) {
           const article = res.data.editTemplateJson.jsonData.find(e => e.flag === 'article');
           if (!article) {
             res.data.editTemplateJson.jsonData.push({
-              flag: "article",
+              flag: 'article',
               list: [],
-              title: "装修攻略",
-              afterName: "装修攻略",
-              styleType: "",
+              title: '装修攻略',
+              afterName: '装修攻略',
+              styleType: '',
               showModule: true,
-              nameListData: []
+              nameListData: [],
             });
           }
           if (!aboutUs) {
@@ -152,6 +157,22 @@ export function Provider({ children }) {
     });
   }
 
+  function savePageData(params, callBack) {
+    if (!pageData?.jsonData) return message.error('访问过于频繁，请稍后再试');
+    updateHomePageEditData(params).then(res => {
+      if (res.code === 200) {
+        const newArr = [...navData];
+        const arr = [];
+        newArr.forEach(e => {
+          e.navModule && arr.push(e);
+        });
+        saveNavEditData(arr).then(r => {
+          r.code === 200 && callBack && callBack();
+        });
+      }
+    });
+  }
+
   const value = {
     curFlag,
     setcurFlag,
@@ -174,6 +195,7 @@ export function Provider({ children }) {
     setChoiceData,
     MdTip,
     setMdTip,
+    savePageData,
   };
 
   return <ctx.Provider value={value}>{children}</ctx.Provider>;
