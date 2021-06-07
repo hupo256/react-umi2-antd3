@@ -4,9 +4,17 @@ switch (APP_ENVIRONMENT) {
     console.log = function() {};
     url = 'https://gateway.ingongdi.com';
     break;
+    case 'pre1': // 灰度
+    console.log = function() {};
+    url = 'https://pre1gw.ingongdi.com';
+    break;
   case 'pre': // 灰度
     console.log = function() {};
     url = 'https://pregw.ingongdi.com';
+    break;
+    case 'test1': // 测试
+    console.log = function() {};
+    url = 'http://test1gw.ingongdi.com';
     break;
   case 'test': // 测试
     console.log = function() {};
