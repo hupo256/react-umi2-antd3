@@ -27,8 +27,8 @@ export default function ArticleMd(props) {
       <div className={pageStyle.content}>
         {showModule ? (
           <>
-            {list?.map((i, n) => (
-              <div key={n}>
+            {list?.map(i => (
+              <div>
                 <div className={pageStyle.imgsWrapper}>
                   <div className={pageStyle.imgBox}>
                     <img src={i.articleCoverImg} alt="" />
