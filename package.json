@@ -7,6 +7,7 @@
     "start": "cross-env ENV=local APP_TYPE=site umi dev",
     "start:no-mock": "cross-env MOCK=none umi dev",
     "test:build": "ENV=test umi build",
+    "test1:build": "ENV=test umi build1",
     "prod:build": "ENV=prod umi build",
     "pre:build": "ENV=pre umi build",
     "pre:start": "ENV=pre umi dev",
