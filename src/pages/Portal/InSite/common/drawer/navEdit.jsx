@@ -81,7 +81,6 @@ export default function NavEdit(props) {
   }
 
   function touchRelece(arr, num) {
-    console.log(arr)
     const len = arr.length;
     navData[num].icon = arr[len - 1]?.icon;
     navData[num].navModule = arr[len - 1]?.appletsLink;
