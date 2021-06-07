@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-05-31 11:19:29
+ * @Last Modified time: 2021-06-07 18:55:57
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -214,8 +214,12 @@ class CreateStepTwo extends PureComponent {
           >
             <div style={{ textAlign: 'center' }}>
               <RadioGroup value={terminalType} onChange={this.handleSizeChange}>
-                <RadioButton value={0}>小程序</RadioButton>
-                <RadioButton value={1}>网站</RadioButton>
+                <RadioButton value={0} style={{ width: 80 }}>
+                  小程序
+                </RadioButton>
+                <RadioButton value={1} style={{ width: 80 }}>
+                  网站
+                </RadioButton>
               </RadioGroup>
             </div>
             {terminalType === 0 ? (
