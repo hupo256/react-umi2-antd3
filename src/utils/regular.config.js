@@ -60,6 +60,6 @@ export const regExpConfig = {
   numNegativePoint: /^(-?)[0-9]+(.[0-9]{0,2})?$/, // 只能输入数字，小数点保留2位
   greaterZero: /^(?!(0[0-9]{0,}$))[0-9]{1,}[.]{0,}[0-9]{0,}$/, //大于0数可以是小数
   // hostType: /^([a-zA-Z0-9][\\u4e00-\\u9fa5]\.)+([a-zA-Z0-9][\\u4e00-\\u9fa5]+)*$/, //域名判断
-  customHostType: /^([A-Za-z0-9-.]{1,}\.)+([A-Za-z0-9-.]{2,})$/,//自定义域名判断
-  defalutHostType: /^[A-Za-z0-9-.]{5,20}$/,//域名判断
+  // customHostType: /^([A-Za-z0-9-.]{1,}\.)+([A-Za-z0-9-.]{2,})$/,//自定义域名判断
+  defalutHostType: /^[A-Za-z0-9-.]{1,20}$/,//域名判断
 };

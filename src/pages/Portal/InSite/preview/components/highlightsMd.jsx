@@ -9,7 +9,7 @@ import React, { useState, useEffect } from 'react';
 import { highlightsBgImgs } from '../../tools/data';
 import pageStyle from '../preview.less';
 
-export default function CaseMd(props) {
+export default function HighlightsMd(props) {
   const { list } = props;
 
   return (

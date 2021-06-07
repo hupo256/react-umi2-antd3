@@ -1,15 +1,17 @@
 /*
  * @Author: tdd
- * @Date: 2021-03-23 13:49:12
+ * @Date: 2021-06-02 13:49:12
  * @Last Modified by: tdd
- * @Last Modified time: 2021-03-23 13:49:12
+ * @Last Modified time: 2021-06-02 15:49:12
  * 编辑亮点
  */
-import React, { useState, useEffect, useContext, useRef } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { ctx } from '../context';
-import { Input, Icon, message, Form, Table, Select } from 'antd';
-import { highlightsBgImgs } from '../../tools/data';
-import pageStyle from '../../preview/preview.less';
+import { Input, Icon, message, Form } from 'antd';
+import AddMore from './addMore';
+import { getRelatedPage } from '@/services/channelManage';
+import RelevanceInp from '@/pages/ChannelManage/components/RelevanceInp';
+import styles from './drawerEditor.less';
 
 const maxLen = 5;
 const { Item } = Form;
@@ -40,10 +42,20 @@ export default function TagsEdit(props) {
     newArr.push({
       icon: '',
       name: '',
-      navModule: '',
+      navModule: `module${len}`,
     });
-    setNavData(newArr);
+    setNavData(navData.concat(item));
   }
+
+  function forUpdatePageData() {
+    // const newObj = { ...pageData };
+    // newObj.maps[curFlag].list = tagList;
+    // settagList(tagList.slice());
+    // setpageData(newObj);
+
+    setNavData(navData.slice());
+  }
+
   function delImg(num) {
     const newArr = [...navData];
     const arr = [];

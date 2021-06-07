@@ -13,7 +13,6 @@ import { tipsText, canEditTags, editText } from '../tools/data';
 import Preview from '../preview';
 import TitleGuid from '../common/titleGuid';
 import DrawerEditor from '../common/drawer';
-import EditModel from '../common/drawer/modelsEdit'
 import Prompt from './prompt';
 import styles from './edit.less';
 
@@ -31,9 +30,7 @@ function TempEdit(props) {
           <div
             className={styles.tipsBox}
             style={{ bottom: '15.5em' }}
-            onClick={() => {
-              setcurFlag('editModel');
-            }}
+            onClick={() => setcurFlag('editModel')}
           >
             <Tooltip placement="topLeft" title={editText}>
               <Icon type="appstore" style={{ fontSize: '16px', color: '#fe6a30' }} />

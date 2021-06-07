@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-09 18:39:46
+ * @Last Modified time: 2021-05-28 16:04:56
  * 专题库
  */
 import React, { PureComponent } from 'react';
@@ -52,21 +52,6 @@ class FormAdd extends PureComponent {
                   },
                 ],
               })(<Input placeholder="请输入表单标题" />)}
-            </Form.Item>
-            <Form.Item label="适用终端">
-              {getFieldDecorator('terminalType', {
-                initialValue: 0,
-                rules: [
-                  {
-                    required: true,
-                    message: '请选择适用终端',
-                  },
-                ],
-              })(
-                <Radio.Group>
-                  <Radio value={0}>小程序</Radio>
-                </Radio.Group>
-              )}
             </Form.Item>
             <Form.Item label="表单类型">
               {getFieldDecorator('formType', {

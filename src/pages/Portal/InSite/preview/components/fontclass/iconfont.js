@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-04-27 17:42:53
- * @LastEditTime: 2021-06-03 16:42:10
- * @LastEditors: your name
+ * @LastEditTime: 2021-06-07 13:57:25
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-wechat-saas\src\pages\Portal\InSite\preview\components\fontclass\iconfont.js
  */
