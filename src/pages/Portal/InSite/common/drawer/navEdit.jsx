@@ -16,39 +16,34 @@ import styles from './drawerEditor.less';
 const maxLen = 5;
 const { Item } = Form;
 
-export default function NavEdit(props) {
-  const { navData, setNavData } = useContext(ctx);
-  const [relatedPageOption, setrelatedPageOption] = useState([]);
-  const [curNavs, setcurNavs] = useState([]);
-
-  useEffect(() => {
-    getRelatedPage({ sceneType: 2 }).then(res => {
-      if (!res?.data) return;
-      touchCurNavs()
-      setrelatedPageOption(res?.data);
-    });
-  }, []);
-
-  useEffect(() => {
-    touchCurNavs()
-  }, [navData])
-
-  // 过滤掉已经有的nav
-  function touchCurNavs(){
-    const arr = navData.map(nav => nav?.paths?.[0])
-    setcurNavs(arr)
-  }
-
-  function addNewTag() {
+export default function TagsEdit(props) {
+  const {
+    choiceData,
+    setChoiceData,
+    navData,
+    setNavData,
+    pageData,
+    setpageData,
+    curFlag,
+    setlinkEdtor,
+    setcurInd,
+  } = useContext(ctx);
+  console.log(navData);
+  const [tagList = [], settagList] = useState(() => pageData?.maps?.[curFlag]?.list);
+  const titInp = useRef();
+  function addNewNav() {
     const len = navData.length;
-    if (len === maxLen) return message.warning(`最多可添加${maxLen}个导航`);
-    const item = {
-      // 给一个默认的对象
-      icon: 'iconic_site_new',
-      linkDisplayName: '',
+    if (len === maxLen) return message.warning(`导航栏添加${maxLen}个效果最佳哦`);
+    const newArr = [...navData];
+    const r = newArr.find(e => e.navModule === '');
+    if (r) {
+      return message.warning(`您有未选择的导航，请设置后再添加`);
+    }
+    newArr.push({
+      icon: '',
       name: '',
       navModule: `module${len}`,
-    };
+    });
     setNavData(navData.concat(item));
   }
 
@@ -62,97 +57,128 @@ export default function NavEdit(props) {
   }
 
   function delImg(num) {
-    navData.splice(num, 1);
-    forUpdatePageData();
+    const newArr = [...navData];
+    const arr = [];
+    newArr.map(e => {
+      if (e.navModule !== num) {
+        arr.push(e);
+      }
+    });
+    setNavData(arr);
   }
 
   function toMove(ind, num) {
-    const rec = navData.splice(ind, 1)[0];
-    navData.splice(ind + num, 0, rec);
-    forUpdatePageData();
+    console.log(ind);
+    const newArr = [...navData];
+    const rec = newArr.splice(ind, 1)[0];
+    newArr.splice(ind + num, 0, rec);
+    setNavData(newArr);
   }
-
-  function discTexChange(e, rec) {
-    let val = e.target.value;
-    if (val?.length > 4) {
-      rec.desStatus = 'error';
-      rec.desMsg = '最多4个字符';
-    } else {
-      rec.desStatus = 'success';
-      rec.desMsg = '';
-    }
-    rec.name = val;
-    forUpdatePageData();
+  function filterData(navModule) {
+    const newArr = [...choiceData];
+    newArr.map(i => {
+      const r = navData.find(e => {
+        return i.navModule === e.navModule;
+      });
+      if (r) {
+        i.disabled = true;
+      } else {
+        i.disabled = false;
+      }
+    });
+    setChoiceData(newArr);
   }
-
-  function touchRelece(arr, num) {
-    const len = arr.length;
-    navData[num].icon = arr[len - 1]?.icon;
-    navData[num].navModule = arr[len - 1]?.appletsLink;
-    navData[num].paths = arr.map(p => p.code);
-    forUpdatePageData();
+  function selectData(navModule, current) {
+    console.log(navModule);
+    const newArr = [...navData];
+    const r = choiceData.find(e => {
+      return navModule === e.navModule;
+    });
+    newArr.map(i => {
+      if (i.navModule === current) {
+        i.navModule = r.navModule;
+        i.name = r.name;
+        i.icon = r.icon;
+      }
+    });
+    setNavData(newArr);
+    filterData();
   }
+  const columns = [
+    {
+      title: '导航图标',
+      dataIndex: 'icon',
+      render: (icon, e) => {
+        return <div className={pageStyle.on}>
+          <svg className="icon" aria-hidden="true">
+            <use
+              href={`#${e.icon}`}
+            />
+          </svg>
+        </div>
+      },
+    },
+    {
+      title: '导航名称',
+      dataIndex: 'name',
+      render: (navModule, item) => {
+        return item.navModule === 'home' ? (
+          '首页'
+        ) : (
+          <Select
+            style={{ width: 100 }}
+            value={item.navModule}
+            onFocus={() => filterData()}
+            onSelect={e => {
+              selectData(e, item.navModule);
+            }}
+          >
+            {choiceData.map((e, i) => (
+              <Select.Option key={i} value={e.navModule} disabled={e.disabled}>
+                {e.name}
+              </Select.Option>
+            ))}
+          </Select>
+        );
+      },
+    },
+    {
+      title: '操作',
+      dataIndex: 'navModule',
+      render: (text, item) => {
+        let index = -1;
+        navData.map((e, i) => {
+          if (e.navModule === text) {
+            index = i;
+          }
+        });
+        console.log(index);
+        return item.navModule === 'home' ? (
+          ''
+        ) : (
+          <div className={pageStyle.tbOpration}>
+            <a className={index === 1 ? pageStyle.disabled : ''} disabled={index === 1} onClick={() => toMove(index, -1)}>
+              <Icon type="arrow-up" />
+            </a>
+            <a className={index === navData.length - 1 ? pageStyle.disabled : ''} disabled={index === navData.length - 1} onClick={() => toMove(index, 1)}>
+              <Icon type="arrow-down" />
+            </a>
+            <a onClick={() => delImg(text)}>
+              <Icon type="delete" />
+            </a>
+          </div>
+        );
+      },
+    },
+  ];
 
   return (
-    <>
-      <ul>
-        {navData?.length > 0 &&
-          navData.map((tag, ind) => {
-            const len = navData.length;
-            let { linkDisplayName, icon, name, desStatus = 'success', desMsg = '' } = tag;
-            icon = 'icon-' + icon?.split('icon')[1]; // 兼容iconfont在生成时加的前辍
-            return (
-              <li key={ind}>
-                <div className={styles.titBox}>
-                  <span>导航图标</span>
-                  <span>导航名称</span>
-                  <div className={styles.tbOpration}>
-                    <a disabled={ind === 0} onClick={() => toMove(ind, -1)}>
-                      <Icon type="arrow-up" />
-                    </a>
-                    <a disabled={ind === len - 1} onClick={() => toMove(ind, 1)}>
-                      <Icon type="arrow-down" />
-                    </a>
-                    <a disabled={len === 1} onClick={() => delImg(ind)}>
-                      <Icon type="delete" />
-                    </a>
-                  </div>
-                </div>
-                <div className={styles.taginpBox}>
-                  <Form layout="inline">
-                    <Item>
-                      <svg className={`icon ${styles.navIcon}`}>
-                        <use href={`#${icon}`} />
-                      </svg>
-                    </Item>
-
-                    <Item validateStatus={desStatus} help={desMsg}>
-                      <Input
-                        value={name}
-                        maxLength={4}
-                        onBlur={e => discTexChange(e, tag)}
-                        onChange={e => discTexChange(e, tag)}
-                        placeholder="请输入导航名称"
-                      />
-                    </Item>
-                  </Form>
-
-                  <p>关联页面</p>
-                  {relatedPageOption?.length > 0 && (
-                    <RelevanceInp
-                      callFun={arr => touchRelece(arr, ind)} // 对外暴露的回调，用来把数据传出去
-                      relatedPageOption={relatedPageOption} // 渲染组件需要的数据
-                      relatedPage={linkDisplayName} // input用来回显的值
-                      curNavs={curNavs} // 当前已经有的nav -- 禁用重复选择
-                    />
-                  )}
-                </div>
-              </li>
-            );
-          })}
-      </ul>
-
-      <AddMore clickHandle={addNewTag} />
-    </>
+    <div className={pageStyle.navBox}>
+      <Table columns={columns} dataSource={navData || []} rowKey={'navModule'} pagination={false} />
+      <p className={pageStyle.addImg} onClick={addNewNav}>
+        <span>+</span>
+        <span>添加导航</span>
+      </p>
+    </div>
   );
 }

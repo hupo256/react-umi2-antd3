@@ -129,12 +129,25 @@ export default function Preview(props) {
                 );
               }
             })}
-
-          {/* 底部导航 */}
-          <NavMd />
+            <div style={{position: 'absolute', width: '100%', left: 0, bottom: 0, height: 50}}>
+              <HoverMd key={999} tips='导航' flag="nav">
+                <div className={pageStyle.footerBox}>
+                  <ul className={pageStyle.flex}>
+                    {navData?.map(e =>
+                      <li key={e.navModule} className={e.navModule === 'home' ? pageStyle.on : ''}>
+                        <svg className="icon">
+                          <use href={`#${e.icon}`} />
+                        </svg>
+                        <span>{e.name}</span>
+                      </li>
+                    )}
+                  </ul>
+                </div>
+              </HoverMd>
+            </div>
         </div>
 
-        {/* totopBox */}
+        {/* footer */}
         <div className={`${pageStyle.totopBox} ${totopShow ? pageStyle.show : ''}`}>
           <span>
             <svg className="icon" aria-hidden="true">
