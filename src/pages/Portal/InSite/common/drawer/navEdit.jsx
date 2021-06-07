@@ -81,10 +81,12 @@ export default function NavEdit(props) {
   }
 
   function touchRelece(arr, num) {
+    console.log(arr)
     const len = arr.length;
     navData[num].icon = arr[len - 1]?.icon;
     navData[num].navModule = arr[len - 1]?.appletsLink;
     navData[num].paths = arr.map(p => p.code);
+    navData[num].linkDisplayName = arr.map(p => p.text).join('/');
     forUpdatePageData();
   }
 
@@ -134,16 +136,19 @@ export default function NavEdit(props) {
                     </Item>
                   </Form>
 
-                  <p>关联页面</p>
+                  
                   {relatedPageOption?.length > 0 && (
+                    <>
+                    <p>关联页面</p>
                     <RelevanceInp
                       callFun={arr => touchRelece(arr, ind)} // 对外暴露的回调，用来把数据传出去
                       relatedPageOption={relatedPageOption} // 渲染组件需要的数据
                       relatedPage={linkDisplayName} // input用来回显的值
                       curNavs={curNavs} // 当前已经有的nav -- 禁用重复选择
                       inpDisabled={isHome}
-                      curUid={paths[0]}
+                      curUid={paths?.[0]}
                     />
+                    </>
                   )}
                 </div>
               </li>
