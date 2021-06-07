@@ -76,6 +76,7 @@ export default function NavEdit(props) {
   }
 
   function touchRelece(arr, num) {
+    console.log(arr);
     const len = arr.length;
     const paths = arr.map(p => p.code);
     const nav = navData[num];
