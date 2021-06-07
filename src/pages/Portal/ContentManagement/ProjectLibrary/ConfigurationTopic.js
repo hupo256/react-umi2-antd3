@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-05-31 11:20:43
+ * @Last Modified time: 2021-06-07 18:53:43
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -340,7 +340,7 @@ class ProjectLibrary extends PureComponent {
             <span className={styles.fontHead}>编辑专题</span>
             <div className={styles.bth}>
               <Button
-                style={{ borderRadius: 2, marginRight: 10, width: 80 }}
+                style={{ borderRadius: 2, marginRight: 10 }}
                 onClick={() => {
                   confirm({
                     title: '确认要放弃更改？',
