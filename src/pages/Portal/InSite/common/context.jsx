@@ -193,12 +193,9 @@ export function Provider({ children }) {
     setNavData,
     choiceData,
     setChoiceData,
-<<<<<<< HEAD
     MdTip,
     setMdTip,
-=======
     savePageData,
->>>>>>> feature/updatePageData
   };
 
   return <ctx.Provider value={value}>{children}</ctx.Provider>;

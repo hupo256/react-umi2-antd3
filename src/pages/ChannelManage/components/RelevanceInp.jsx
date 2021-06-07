@@ -11,7 +11,7 @@ const { Search } = Input;
     ...state.channelManage
 }))
 @Form.create()
-export default class CreateEdit extends Component {
+export default class RelevanceInp extends Component {
     constructor(props){
         super(props)
         this.state ={
@@ -91,14 +91,26 @@ export default class CreateEdit extends Component {
      */    
     format = data => {
         if (!Array.isArray(data)) return;
-        const newArr = [];
+        const { curNavs } = this.props
+        let newArr = [];
         for (const item of data) {            
             newArr.push ({
                 ...item.node,
                 children: item.children.length ? this.format(item.children) : []
             })
         } 
+        newArr = this.touchSelcOpts(newArr, curNavs)
+        console.log(newArr)
         return newArr
+    }
+
+    // 过滤掉已经有的nav
+    touchSelcOpts = (opts, curNavs) => {
+      const arr = []
+      opts.forEach(opt => {
+        if(!curNavs.includes(opt?.uid)) arr.push(opt)
+      })
+      return arr
     }
  
     handleSubmit =  e => {
@@ -398,10 +410,12 @@ export default class CreateEdit extends Component {
     }
 
     clickInputHandle = () => {
+        const { relatedPageOption } = this.props
         this.toggleSelectPanlHandle(true);
         this.setState({
             currentSelectRelatedPageOpt: [],
             currentKey: '0',
+            relatedPageOption: this.format(relatedPageOption) 
         }, () => {
             this.props.form.setFieldsValue({
                 relatedPage:  this.formatData().map(item =>item.text).join(' / ')

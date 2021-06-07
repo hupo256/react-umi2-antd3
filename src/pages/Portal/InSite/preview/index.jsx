@@ -121,7 +121,7 @@ export default function Preview(props) {
               const { flag, list = [] } = item;
               const model = componentMap[flag];
               if (model) {
-                const { tips, creatCom } = model
+                const { tips, creatCom } = model;
                 return (
                   <HoverMd key={ind} tips={tips} flag={flag} isEmpty={!list?.length}>
                     {creatCom({ ...item })}
@@ -130,20 +130,20 @@ export default function Preview(props) {
               }
             })}
 
-            {/* 底部导航 */}
-            <NavMd />
+          {/* 底部导航 */}
+          <NavMd />
         </div>
 
         {/* totopBox */}
         <div className={`${pageStyle.totopBox} ${totopShow ? pageStyle.show : ''}`}>
           <span>
             <svg className="icon" aria-hidden="true">
-              <use href="#iconic_call" />
+              <use href="#icon-ic_call" />
             </svg>
           </span>
           <span onClick={gotoTop}>
             <svg className="icon" aria-hidden="true">
-              <use href="#iconic_top" />
+              <use href="#icon-ic_top" />
             </svg>
           </span>
         </div>

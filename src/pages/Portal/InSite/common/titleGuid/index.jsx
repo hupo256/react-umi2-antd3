@@ -10,15 +10,8 @@ import { Button, message, Modal, Icon } from 'antd';
 import router from 'umi/router';
 import { baseRouteKey, themes } from '../../tools/data';
 import { ctx } from '../context';
-<<<<<<< HEAD
-import { updateHomePageEditData, publishEditData, saveNavEditData } from '@/services/miniProgram';
-import styles from './titleGuid.less';
-
-const { confirm } = Modal;
-=======
 import { publishEditData } from '@/services/miniProgram';
 import styles from './titleGuid.less';
->>>>>>> feature/updatePageData
 
 export default function TitleGuid(props) {
   const { title = '标题', disc, isEdit } = props;
