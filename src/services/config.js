@@ -4,7 +4,7 @@ switch (APP_ENVIRONMENT) {
     console.log = function() {};
     url = 'https://gateway.ingongdi.com';
     break;
-    case 'pre1': // 灰度
+  case 'pre1': // 灰度
     console.log = function() {};
     url = 'https://pre1gw.ingongdi.com';
     break;
@@ -12,7 +12,7 @@ switch (APP_ENVIRONMENT) {
     console.log = function() {};
     url = 'https://pregw.ingongdi.com';
     break;
-    case 'test1': // 测试
+  case 'test1': // 测试
     console.log = function() {};
     url = 'http://test1gw.ingongdi.com';
     break;
@@ -34,5 +34,4 @@ switch (APP_ENVIRONMENT) {
     console.log('环境配置出错，请检查！！==', APP_ENVIRONMENT);
     break;
 }
-
 export const baseurl = url;
