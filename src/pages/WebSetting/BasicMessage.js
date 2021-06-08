@@ -112,7 +112,7 @@ class BasicMessage extends Component {
     } = this.state;
     return (
       <div>
-        <div style={{ color: '#101010', fontSize: '26px', marginBottom: '20px' }}>基本信息</div>
+        <div style={{ color: '#101010', fontSize: '22px', marginBottom: '20px' }}>基本信息</div>
         <Form className="basicMessageFrom" onSubmit={this.onBasicForm}>
           <FormItem label="网站标题（业主有可能通过您输入的关键词，搜索到您的网站哦！）">
             {getFieldDecorator('basicTitle', {
