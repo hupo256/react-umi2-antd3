@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-04-28 17:05:47 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-06-02 10:26:26
+ * @Last Modified time: 2021-06-08 14:30:37
  * 小程序设置
  */
 
@@ -15,6 +15,7 @@ import { MyIcon } from '@/utils/utils';
 import styles from './index.less';
 import { getauth } from '@/utils/authority';
 import LinkPage from './LinkPage';
+import NotBound from '../MiniProgram/NotBound';
 const { SubMenu } = Menu;
 
 @connect(({ MiniProgram }) => ({ MiniProgram }))
@@ -48,7 +49,7 @@ class Index extends PureComponent {
   render() {
     const { FormDetail, AuthInfo } = this.props.MiniProgram;
     const title = (
-      <div>
+      <div style={{ display: 'none' }}>
         <h3 style={{ marginTop: 10 }}>关联页面设置</h3>
       </div>
     );
@@ -194,6 +195,7 @@ class Index extends PureComponent {
                 </div>
                 {selectedKeys[0] === '2' && (
                   <div className={styles.appleRight}>
+                    <p style={{ fontWeight: 500, fontSize: 22, color: '#333' }}>关联页面设置</p>
                     <p style={{ fontWeight: 400, fontSize: 13, color: '#666' }}>
                       <MyIcon
                         type="icon-tips"
@@ -222,7 +224,7 @@ class Index extends PureComponent {
               </div>
             )}
             {!AuthInfo.isAuthedWechatMini && (
-              <div style={{ fontSize: 24, padding: 20 }}>请先进行小程序授权</div>
+              <NotBound jumpUrl={`/#/portal/insite/appletsetting`} />
             )}
           </Card>
         </PageHeaderWrapper>
