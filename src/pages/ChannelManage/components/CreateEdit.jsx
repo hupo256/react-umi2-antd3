@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'dva'
 import { createChannel, getRelatedPage, getDetailApi, editChannelApi,
          siteListApi, designerListApi, caseListApi, articleListApi, articleDicApi, specialListApi, activeListApi  } from '@/services/channelManage'
-import { Form, Input, Select, Button, Cascader, message, Tabs, Table, Radio, Tag, Tooltip, Checkbox   } from 'antd'
+import { Form, Input, Select, Button, Cascader, message, Tabs, Table, Radio, Tag, Tooltip, Checkbox, Icon   } from 'antd'
 import styles from '../index.less'
 
 
@@ -366,7 +366,6 @@ export default class CreateEdit extends Component {
     // 切换选择页面面板显示
     toggleSelectPanlHandle = ( isShow ) => {
         const { currentSelectRelatedPageOpt } = this.state;
-        console.log({ currentSelectRelatedPageOpt})
         if ((currentSelectRelatedPageOpt[1]?.linkType === 2 && !!!currentSelectRelatedPageOpt[2]) || 
             (currentSelectRelatedPageOpt[0]?.linkType === 2 && !!!currentSelectRelatedPageOpt[1] ) ||
             currentSelectRelatedPageOpt[currentSelectRelatedPageOpt.length - 1]?.children?.length) {
@@ -399,7 +398,7 @@ export default class CreateEdit extends Component {
 
     closeHanlde = e => {
         const parent = this.refs.parentNode;
-        if (!parent?.contains(e.target) && !e.target.className.includes('targetInput')) {
+        if (!parent?.contains(e.target) && (e.target?.id !== 'relatedPage')) {
             this.toggleSelectPanlHandle(false)
         }
     }
@@ -575,8 +574,8 @@ export default class CreateEdit extends Component {
                 },
                 {
                     title: <span style={{fontWeight: 300}}>状态</span>,
-                    key: 'status',
-                    dataIndex: 'status',
+                    key: 'state',
+                    dataIndex: 'state',
                     render: (text, r) => {
                         let tex = '未开始';
                         text === 1 && (tex = '进行中');
@@ -630,11 +629,18 @@ export default class CreateEdit extends Component {
                             ],
                         })(<Input  placeholder='请输入频道介绍' />)}
                     </Form.Item>
-                    <Form.Item label="关联页面">
+                    <Form.Item label="关联页面">                      
                         {getFieldDecorator('relatedPage', {
                             rules: [{ required: true, message: '请选择关联页面!' }],
                         })(
-                            <Input className='targetInput' readOnly placeholder='请选择关联页面' onClick={ this.clickInputHandle} />             
+                            <Input 
+                                className='targetInpu'
+                                readOnly placeholder='请选择关联页面' 
+                                onClick={ this.clickInputHandle}
+                                suffix={
+                                    <Icon type="down" id= 'icon' />
+                                }
+                            />              
                         )} 
                         {showSelectPanl && <div ref='parentNode'  className={styles['card-container']}>
                             <Tabs type="card" tabBarGutter={0}  activeKey={currentKey} onChange={this.tabChange}>
