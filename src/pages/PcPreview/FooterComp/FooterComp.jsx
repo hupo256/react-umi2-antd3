@@ -48,6 +48,10 @@ export default function FooterComp({ data, setShowFooterDrawer }) {
             </div>
           </div>
           <div className={styles.editButton} onClick={() => setShowFooterDrawer(true)}>
+            <img
+              src={'/img/ic_edit@2x.png'}
+              style={{ width: '14px', height: '14px', marginRight: '5px', marginTop: '-3px' }}
+            />
             编辑
           </div>
         </div>
