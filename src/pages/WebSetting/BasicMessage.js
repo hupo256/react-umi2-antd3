@@ -117,14 +117,14 @@ class BasicMessage extends Component {
           <Popover
             placement="right"
             className="ContentHint uploadHints"
-            content="业主有可能通过您输入的关键词，搜索到您的网站哦！"
+            content="业主有可能通过您输入的网站描述，搜索到您的网站哦！"
           >
             <Icon type="question-circle" />
           </Popover>
           <Popover
             placement="right"
             className="TitleHint uploadHints"
-            content="业主有可能通过您输入的关键词，搜索到您的网站哦！"
+            content="业主有可能通过您输入的网站标题，搜索到您的网站哦！"
           >
             <Icon type="question-circle" />
           </Popover>
@@ -236,7 +236,7 @@ class BasicMessage extends Component {
                     <Popover
                       placement="right"
                       className="uploadHint"
-                      content="浏览器标签上的全站页面图标"
+                      content="将会用于频道栏的企业LOGO显示"
                     >
                       <Icon type="question-circle" />
                     </Popover>
