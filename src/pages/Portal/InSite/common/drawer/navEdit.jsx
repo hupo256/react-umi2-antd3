@@ -24,19 +24,22 @@ export default function NavEdit(props) {
   useEffect(() => {
     getRelatedPage({ sceneType: 2 }).then(res => {
       if (!res?.data) return;
-      touchCurNavs()
+      touchCurNavs();
       setrelatedPageOption(res?.data);
     });
   }, []);
 
-  useEffect(() => {
-    touchCurNavs()
-  }, [navData])
+  useEffect(
+    () => {
+      touchCurNavs();
+    },
+    [navData]
+  );
 
   // 过滤掉已经有的nav
-  function touchCurNavs(){
-    const arr = navData.map(nav => nav?.paths?.[0])
-    setcurNavs(arr)
+  function touchCurNavs() {
+    const arr = navData.map(nav => nav?.paths?.[0]);
+    setcurNavs(arr);
   }
 
   function addNewTag() {
@@ -81,7 +84,6 @@ export default function NavEdit(props) {
   }
 
   function touchRelece(arr, num) {
-    console.log(arr)
     const len = arr.length;
     navData[num].icon = arr[len - 1]?.icon;
     navData[num].navModule = arr[len - 1]?.appletsLink;
@@ -96,8 +98,16 @@ export default function NavEdit(props) {
         {navData?.length > 0 &&
           navData.map((tag, ind) => {
             const len = navData.length;
-            let { linkDisplayName, icon, name, navModule, paths, desStatus = 'success', desMsg = '' } = tag;
-            const isHome = navModule === 'index'
+            let {
+              linkDisplayName,
+              icon,
+              name,
+              navModule,
+              paths,
+              desStatus = 'success',
+              desMsg = '',
+            } = tag;
+            const isHome = navModule === 'index';
             icon = 'icon-' + icon?.split('icon')[1]; // 兼容iconfont在生成时加的前辍
             return (
               <li key={ind}>
@@ -136,18 +146,17 @@ export default function NavEdit(props) {
                     </Item>
                   </Form>
 
-                  
                   {relatedPageOption?.length > 0 && (
                     <>
-                    <p>关联页面</p>
-                    <RelevanceInp
-                      callFun={arr => touchRelece(arr, ind)} // 对外暴露的回调，用来把数据传出去
-                      relatedPageOption={relatedPageOption} // 渲染组件需要的数据
-                      relatedPage={linkDisplayName} // input用来回显的值
-                      curNavs={curNavs} // 当前已经有的nav -- 禁用重复选择
-                      inpDisabled={isHome}
-                      curUid={paths?.[0]}
-                    />
+                      <p>关联页面</p>
+                      <RelevanceInp
+                        callFun={arr => touchRelece(arr, ind)} // 对外暴露的回调，用来把数据传出去
+                        relatedPageOption={relatedPageOption} // 渲染组件需要的数据
+                        relatedPage={linkDisplayName} // input用来回显的值
+                        curNavs={curNavs} // 当前已经有的nav -- 禁用重复选择
+                        inpDisabled={isHome}
+                        curUid={paths?.[0]}
+                      />
                     </>
                   )}
                 </div>
