@@ -279,6 +279,7 @@ export default class ChannelManage extends Component {
             {
                 title: '是否小程序可用',
                 key: 'isApplets',
+                align: 'left',
                 dataIndex: 'isApplets',
                 render: (text, record) => text === 0 ? '否' : '是'
             },

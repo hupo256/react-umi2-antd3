@@ -94,7 +94,7 @@ class HostBind extends Component {
     } = this.props;
     return (
       <div className="hostBindContent">
-        <div style={{ color: '#101010', fontSize: '26px', marginBottom: '10px' }}>
+        <div style={{ color: '#101010', fontSize: '22px', marginBottom: '10px' }}>
           域名绑定
           <Icon
             type="question-circle"
