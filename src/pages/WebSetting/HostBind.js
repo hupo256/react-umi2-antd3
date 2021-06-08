@@ -8,7 +8,7 @@ class HostBind extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      hostSuffix: '',
+      hostSuffix: '-site.ingongdi.com',
       defaultHostValue: '',
     };
   }
@@ -19,7 +19,7 @@ class HostBind extends Component {
     let defaultDomain = '';
     dispatch({ type: 'WebSettingStroe/hostSettingModel' }).then(res => {
       if (res && res.code === 200) {
-        const { isBind, type, domain, randomDomain, suffix } = res.data;
+        const { isBind, domain, randomDomain, suffix } = res.data;
         if (isBind) {
           const resIndex = domain.indexOf(suffix);
           if (resIndex == -1) {
@@ -94,7 +94,7 @@ class HostBind extends Component {
     } = this.props;
     return (
       <div className="hostBindContent">
-        <div style={{ color: '#101010', fontSize: '26px', marginBottom: '10px' }}>
+        <div style={{ color: '#101010', fontSize: '22px', marginBottom: '10px' }}>
           域名绑定
           <Icon
             type="question-circle"
