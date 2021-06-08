@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:47:07 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-08 10:15:42
+ * @Last Modified time: 2021-06-08 14:08:05
  * 工地库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -100,8 +100,28 @@ class SiteLibrary extends PureComponent {
       {
         title: '状态',
         dataIndex: 'gongdiStatus',
+        // render: (t, r) => {
+        //   return t === 1 ? '停用' : '正常';
+        // },
+
         render: (t, r) => {
-          return t === 1 ? '停用' : '正常';
+          return (
+            <span style={{ position: 'relative', paddingLeft: 20 }}>
+              <span
+                style={{
+                  fontSize: 48,
+                  position: 'absolute',
+                  left: 0,
+                  top: -20,
+                  lineHeight: 1,
+                  color: t + '' !== '1' ? '#52c41a' : '#bfbfbf',
+                }}
+              >
+                ·
+              </span>
+              {t + '' !== '1' ? '正常' : '停用'}
+            </span>
+          );
         },
       },
       {
