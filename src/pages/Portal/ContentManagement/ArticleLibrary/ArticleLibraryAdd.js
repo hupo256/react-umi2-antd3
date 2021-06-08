@@ -22,11 +22,9 @@ import {
   Select,
   Row,
   Col,
-  Checkbox,
 } from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { paginations, getQueryUrlVal } from '@/utils/utils';
-import ImgUploads from '@/components/Upload/ImgUploads';
 import TagGroup from '@/components/TagSelect/TagGroup';
 import BraftEditor from '@/components/BraftEditor/BraftEditor';
 import styles from './ArticleLibrary.less';
@@ -249,7 +247,22 @@ class ArticleLibraryAdd extends PureComponent {
                   </div>
                 )}
               </Form.Item>
-              <Form.Item label={this.title('文章说明')}>
+
+              <Form.Item
+                label={
+                  <span>
+                    文章说明
+                    {'  '}
+                    <Tooltip
+                      placement="right"
+                      title="业主有可能通过您输入的关键词，搜索到您的网站哦！"
+                    >
+                      <Icon type="question-circle" />
+                    </Tooltip>
+                    {'  '}
+                  </span>
+                }
+              >
                 {getFieldDecorator('articleDescription', {
                   initialValue: (isCopy && publicListDetail.articleDescription) || '',
                   rules: [

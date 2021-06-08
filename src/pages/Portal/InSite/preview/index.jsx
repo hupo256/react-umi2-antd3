@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import router from 'umi/router';
 import { ctx } from '../common/context';
@@ -15,6 +14,7 @@ import AdMd from './components/adMd';
 import AboutUsMd from './components/aboutUsMd';
 import ArticleMd from './components/articleMd';
 import NavMd from './components/navMd';
+import ChannelMd from './components/channelMd';
 
 import './components/fontclass/iconfont.js';
 import pageStyle from './preview.less';
@@ -53,9 +53,9 @@ const componentMap = {
     tips: '文章',
     creatCom: e => <ArticleMd {...e} />,
   },
-  nav: {
-    tips: '导航',
-    creatCom: e => <NavMd {...e} />,
+  channel: {
+    tips: '频道',
+    creatCom: e => <ChannelMd {...e} />,
   },
 };
 
@@ -94,7 +94,6 @@ export default function Preview(props) {
     const { target } = e;
     const clientHeight = target.clientHeight; //可视区域高度
     const scrollTop = target.scrollTop; //滚动条滚动高度
-    const scrollHeight = target.scrollHeight; //滚动内容高度
     settotopShow(scrollTop > clientHeight / 3);
   }
 
@@ -122,7 +121,7 @@ export default function Preview(props) {
               const { flag, list = [] } = item;
               const model = componentMap[flag];
               if (model) {
-                const { tips, creatCom } = model
+                const { tips, creatCom } = model;
                 return (
                   <HoverMd key={ind} tips={tips} flag={flag} isEmpty={!list?.length}>
                     {creatCom({ ...item })}
@@ -130,34 +129,21 @@ export default function Preview(props) {
                 );
               }
             })}
-            <div style={{position: 'absolute', width: '100%', left: 0, bottom: 0, height: 50}}>
-              <HoverMd key={999} tips='导航' flag="nav">
-                <div className={pageStyle.footerBox}>
-                  <ul className={pageStyle.flex}>
-                    {navData?.map(e =>
-                      <li key={e.navModule} className={e.navModule === 'home' ? pageStyle.on : ''}>
-                        <svg className="icon">
-                          <use href={`#${e.icon}`} />
-                        </svg>
-                        <span>{e.name}</span>
-                      </li>
-                    )}
-                  </ul>
-                </div>
-              </HoverMd>
-            </div>
+
+          {/* 底部导航 */}
+          <NavMd />
         </div>
 
-        {/* footer */}
+        {/* totopBox */}
         <div className={`${pageStyle.totopBox} ${totopShow ? pageStyle.show : ''}`}>
           <span>
             <svg className="icon" aria-hidden="true">
-              <use href="#iconic_call" />
+              <use href="#icon-ic_call" />
             </svg>
           </span>
           <span onClick={gotoTop}>
             <svg className="icon" aria-hidden="true">
-              <use href="#iconic_top" />
+              <use href="#icon-ic_top" />
             </svg>
           </span>
         </div>

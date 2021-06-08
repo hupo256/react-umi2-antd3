@@ -9,10 +9,9 @@ export const canEditTags = [
   'channel',
 ];
 export const defaultImg = 'http://img.inbase.in-deco.com/crm-saas/img/games/default/';
-export const editText =
-  '编辑模块后，【模块标题】将按照您编辑后的展示。 ';
+export const editText = '编辑模块后，【模块标题】将按照您编辑后的展示。 ';
 export const tipsText =
-  '您的“案例、参观工地、设计师团队、公司电话/名称”在内容管理维护后，会依据您已有的内容自动生成样式。';
+  '您的“案例、工地直播、设计师团队、公司电话/名称”在内容管理维护后，会依据您已有的内容自动生成样式。';
 export const LinkType = [
   {
     name: '案例',
@@ -48,7 +47,7 @@ export const emptyMdText = {
   case: '请在案例库中添加案例',
   site: '请在工地库中添加工地',
   design: '请在设计师库中添加设计师',
-  article: '请在文章库中添加文章哦'
+  article: '请在文章库中添加文章哦',
 };
 
 const highlightsImgBase = 'https://img.inbase.in-deco.com/crm-saas/img/highlights/';

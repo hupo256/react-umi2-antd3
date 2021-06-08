@@ -59,7 +59,7 @@ class LinkPage extends Component {
             <Input
               value={btnName}
               onChange={e => this.setState({ btnName: e.target.value, isEdit: true })}
-              //disabled={btnType == '1'}
+              disabled={btnType == '1'}
               placeholder="请输入按钮名称"
               style={{ width: 360 }}
             />
@@ -108,8 +108,7 @@ class LinkPage extends Component {
       type: 'MiniProgram/formcollocateModel',
       payload: {
         bindType: saveValue.type == 1 ? 1 : 0,
-        // buttonText: saveValue.type == 1 ? this.props.defvalue.buttonText : btnName,
-        buttonText: btnName,
+        buttonText: saveValue.type == 1 ? this.props.defvalue.buttonText : btnName,
         directType,
         formUid: saveValue.type == 1 ? null : saveValue.record.formUid,
       },

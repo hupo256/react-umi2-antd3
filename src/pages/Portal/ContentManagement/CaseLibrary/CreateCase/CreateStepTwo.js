@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-14 09:54:07
+ * @Last Modified time: 2021-06-08 14:34:13
  * 创建工地
  */
 import React, { PureComponent, Fragment, Component } from 'react';
@@ -251,6 +251,8 @@ class CreateStepTwo extends Component {
                         onClick={() => this.handleAddDic(r)}
                       >
                         <Icon type="plus-circle" />
+                        {'    '}
+                        {'    '}
                         添加选项
                       </span>
                     </div>
@@ -466,7 +468,7 @@ class CreateStepTwo extends Component {
       CaseLibrary: { stepOne },
     } = this.props;
     if (DicList.length == 0) {
-      message.info('请先上传案例图片');
+      message.warning('请先上传案例图片');
     } else {
       if (this.props.type === 'edit') {
         dispatch({
@@ -626,13 +628,13 @@ class CreateStepTwo extends Component {
     const { name } = this.state;
     const { dispatch } = this.props;
     if (!name) {
-      message.info('请输入风格名称');
+      message.warning('请输入风格名称');
       return false;
     } else if (name && name.trim().length == 0) {
-      message.info('请输入风格名称');
+      message.warning('请输入风格名称');
       return false;
     } else if (name && name.length > 20) {
-      message.info('最多输入20位字符');
+      message.warning('最多输入20位字符');
       return false;
     } else {
       dispatch({

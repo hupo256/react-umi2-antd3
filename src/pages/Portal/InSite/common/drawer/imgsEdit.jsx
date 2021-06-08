@@ -9,6 +9,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { ctx } from '../context';
 import { Input, Radio, InputNumber, Icon, message } from 'antd';
 import { defaultImg } from '../../tools/data';
+import AddMore from './addMore';
 import Upload from '@/components/Upload/Upload';
 import LinkChoose from './linkChoose';
 import styles from './drawerEditor.less';
@@ -30,6 +31,8 @@ export default function TagsEdit(props) {
   const [tagList = [], settagList] = useState(() => pageData?.maps?.[curFlag]?.list);
   const [height, setHeight] = useState(176);
   const [imgHeightType, setimgHeightType] = useState(1);
+
+  console.log(tagList);
 
   useEffect(
     () => {
@@ -177,10 +180,7 @@ export default function TagsEdit(props) {
           })}
       </ul>
 
-      <p className={styles.addImg} onClick={addNewImgs}>
-        <span>+</span>
-        <span>添加图片广告</span>
-      </p>
+      <AddMore clickHandle={addNewImgs} />
 
       <Upload
         visible={imgEdtor}

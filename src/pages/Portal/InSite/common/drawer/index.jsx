@@ -8,7 +8,7 @@
 import React, { useContext, useEffect } from 'react';
 import { ctx } from '../context';
 import { Drawer } from 'antd';
-// import { getList } from '@/services/channelManage';
+import { appletsMenus } from '@/services/channelManage';
 import { canEditTags } from '../../tools/data';
 import ImgsEdit from './imgsEdit';
 import TagsEdit from './tagsEdit';
@@ -16,10 +16,12 @@ import styles from './drawerEditor.less';
 import ModelsEdit from './modelsEdit';
 import AboutUsEdit from './aboutUsEdit';
 import NavEdit from './navEdit';
-// import ChannelManage from '@/pages/ChannelManage';
+import ChannelManage from '@/pages/ChannelManage';
 
 export default function DrawerEditor(props) {
-  const { curFlag, setcurFlag, pageData, setpageData, navData, setNavData } = useContext(ctx);
+  const { curFlag, setcurFlag, MdTip, pageData, setpageData, navData, setNavData } = useContext(
+    ctx
+  );
   const isShow = canEditTags.includes(curFlag);
 
   function blockPropagation(e) {
@@ -51,21 +53,17 @@ export default function DrawerEditor(props) {
     setcurFlag('editing');
   }
 
-  // 抽屉关闭时获取新的channles
-  function drawerClose() {
+   // 抽屉关闭时获取新的channles
+   function drawerClose() {
     const param = {
-      includeDefIndex: false,
       pageNum: 1,
       pageSize: 20,
-      status: 1,
     };
-    getList(param).then(re => {
+    appletsMenus(param).then(re => {
       console.log(re);
       if (!re?.data) return;
       const newObj = { ...pageData };
-      const { list = [] } = re.data;
-      // list.shift();
-      newObj.maps[curFlag].list = list;
+      newObj.maps[curFlag].list = re.data?.list;
       setpageData(newObj);
       setTimeout(() => setcurFlag(''));
     });
@@ -83,7 +81,7 @@ export default function DrawerEditor(props) {
           width={900}
           headerStyle={{ border: 'none', marginBottom: '-18px' }}
         >
-          {/*<ChannelManage />*/}
+          <ChannelManage isPcPreview={true} />
         </Drawer>
       ) : (
         <div
@@ -91,21 +89,10 @@ export default function DrawerEditor(props) {
           onClick={dealWithEditAndNav}
         >
           <div className={styles.drawerBox} onClick={blockPropagation}>
-            <h3>{`编辑${
-              curFlag === 'highlights'
-                ? '亮点'
-                : curFlag === 'editModel'
-                  ? '模块'
-                  : curFlag === 'aboutUs'
-                    ? '关于我们'
-                    : curFlag === 'nav'
-                      ? '导航'
-                      : '图片广告'
-            }`}</h3>
+            <h3>{`编辑${MdTip}`}</h3>
             {curFlag === 'editModel' && <ModelsEdit />}
-            {curFlag === 'banner' && <ImgsEdit />}
+            {(curFlag === 'banner' || curFlag === 'advertising') && <ImgsEdit />}
             {curFlag === 'highlights' && <TagsEdit />}
-            {curFlag === 'advertising' && <ImgsEdit />}
             {curFlag === 'aboutUs' && <AboutUsEdit />}
             {curFlag === 'nav' && <NavEdit />}
           </div>

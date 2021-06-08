@@ -2,13 +2,13 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-29 18:05:33
+ * @Last Modified time: 2021-06-07 18:55:57
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
 import router from 'umi/router';
-import { Modal, Button, Input, Pagination, Spin } from 'antd';
+import { Modal, Button, Input, Pagination, Spin, Radio } from 'antd';
 import { getQueryUrlVal } from '@/utils/utils';
 import img from '@/assets/bgimg.png';
 import img1 from '@/assets/bannerleft.png';
@@ -16,6 +16,8 @@ import img2 from '@/assets/bannerright.png';
 import img3 from '@/assets/tj.png';
 import styles from '../index.less';
 const Search = Input.Search;
+const RadioGroup = Radio.Group;
+const RadioButton = Radio.Button;
 @connect(({ ProjectLibrary, loading }) => ({
   ProjectLibrary,
   loading: loading.effects['ProjectLibrary/pageListModels'],
@@ -28,6 +30,7 @@ class CreateStepTwo extends PureComponent {
       visibles: false,
       searchWord: '',
       dataPre: '',
+      terminalType: 0,
     };
   }
 
@@ -38,7 +41,7 @@ class CreateStepTwo extends PureComponent {
       loading,
     } = this.props;
     const activeKey = getQueryUrlVal('uid') || specialUid;
-    const { visible, visibles, dataPre } = this.state;
+    const { visible, visibles, dataPre, terminalType } = this.state;
     let arr =
       siteLists &&
       siteLists.list &&
@@ -76,6 +79,7 @@ class CreateStepTwo extends PureComponent {
                   type="primary"
                   className={styles.abtng}
                   onClick={() => {
+                    localStorage.setItem('terminalType', 0);
                     router.push(
                       `/portal/contentmanagement/ProjectLibrary/ConfigurationTopic?uid=${activeKey}&copy=${
                         item.specialUid
@@ -130,6 +134,7 @@ class CreateStepTwo extends PureComponent {
                     fontSize: 18,
                   }}
                   onClick={() => {
+                    localStorage.setItem('terminalType', 0);
                     router.push(
                       `/portal/contentmanagement/ProjectLibrary/ConfigurationTopic?&uid=${activeKey}`
                     );
@@ -202,44 +207,93 @@ class CreateStepTwo extends PureComponent {
             visible={visibles}
             maskClosable={false}
             footer={null}
-            width={800}
+            width={848}
             onCancel={() => {
               this.handleModelCancels();
             }}
           >
-            <div className="clearfix">
-              <div className={styles.iframe}>
-                <iframe
-                  src={dataPre && dataPre.specialUrl}
-                  width="375"
-                  height="600"
-                  frameborder="no"
-                  border="0"
-                />
-              </div>
-              <div className={styles.modeqr}>
-                <img src={dataPre && dataPre.specialQr} className={styles.qrs} />
-                <p>请使用微信扫一扫查看</p>
-                <Button
-                  type="primary"
-                  style={{
-                    width: 150,
-                    height: 48,
-                    lineHeight: '48px',
-                    marginTop: 18,
-                    fontSize: 18,
-                  }}
-                  onClick={() => {
-                    router.push(
-                      `/portal/contentmanagement/ProjectLibrary/ConfigurationTopic?uid=${activeKey}&copy=${dataPre &&
-                        dataPre.specialUid}`
-                    );
-                  }}
-                >
-                  使用
-                </Button>
-              </div>
+            <div style={{ textAlign: 'center' }}>
+              <RadioGroup value={terminalType} onChange={this.handleSizeChange}>
+                <RadioButton value={0} style={{ width: 80 }}>
+                  小程序
+                </RadioButton>
+                <RadioButton value={1} style={{ width: 80 }}>
+                  网站
+                </RadioButton>
+              </RadioGroup>
             </div>
+            {terminalType === 0 ? (
+              <div className={styles.iboder}>
+                <div className="clearfix">
+                  <div className={styles.iframe}>
+                    <iframe
+                      src={dataPre && dataPre.specialUrl}
+                      width="375"
+                      height="600"
+                      frameborder="no"
+                      border="0"
+                    />
+                  </div>
+                  <div className={styles.modeqr}>
+                    <img src={dataPre && dataPre.specialQr} className={styles.qrs} />
+                    <p>请使用微信扫一扫查看</p>
+                    <Button
+                      type="primary"
+                      style={{
+                        width: 150,
+                        height: 48,
+                        lineHeight: '48px',
+                        marginTop: 18,
+                        fontSize: 18,
+                      }}
+                      onClick={() => {
+                        router.push(
+                          `/portal/contentmanagement/ProjectLibrary/ConfigurationTopic?uid=${activeKey}&copy=${dataPre &&
+                            dataPre.specialUid}`
+                        );
+                      }}
+                    >
+                      使用
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className={styles.iboder}>
+                <div className="clearfix">
+                  <div className={styles.iframePcv}>
+                    <iframe
+                      src={dataPre && dataPre.specialUrlPc}
+                      frameborder="no"
+                      border="0"
+                      width="700"
+                      height="400"
+                    />
+                  </div>
+                  <div className={styles.mod}>
+                    <Button
+                      type="primary"
+                      style={{
+                        width: 150,
+                        height: 48,
+                        lineHeight: '48px',
+                        marginTop: 18,
+                        fontSize: 18,
+                      }}
+                      onClick={() => {
+                        localStorage.setItem('terminalType', terminalType);
+                        router.push(
+                          `/portal/contentmanagement/ProjectLibrary/ConfigurationTopic?uid=${activeKey}&copy=${dataPre &&
+                            dataPre.specialUid}`
+                        );
+                      }}
+                    >
+                      使用
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            )}
           </Modal>
         ) : null}
       </div>
@@ -290,6 +344,11 @@ class CreateStepTwo extends PureComponent {
     dispatch({
       type: 'ProjectLibrary/pageListModels',
       payload: { pageNum: 1, pageSize: 10, specialStatus: 1 },
+    });
+  };
+  handleSizeChange = e => {
+    this.setState({
+      terminalType: e.target.value,
     });
   };
 }

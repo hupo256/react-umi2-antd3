@@ -6,8 +6,8 @@
  * 从已有工地选择
  */
 import React, { Component } from 'react';
-import { Modal, Button, Table, ConfigProvider, Empty, Icon,message } from 'antd';
-import { connect } from 'dva'; 
+import { Modal, Button, Table, ConfigProvider, Empty, Icon, message } from 'antd';
+import { connect } from 'dva';
 import router from 'umi/router';
 import empty from '../../../../assets/empty.png';
 import styles from './SiteLibrary.less';
@@ -66,7 +66,7 @@ class FromProjectModel extends Component {
       type: 'radio',
       onChange: (selectedRowKeys, selectedRows) => {
         console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-      this.setState({selectedRowKeys, selectedRows})
+        this.setState({ selectedRowKeys, selectedRows });
       },
     };
     const {
@@ -105,7 +105,6 @@ class FromProjectModel extends Component {
               current: FromProjectList && FromProjectList.curPage,
               total: FromProjectList && FromProjectList.recordTotal,
             }}
-            
             scroll={{ y: 430 }}
             onChange={this.handleTableChange}
           />
@@ -128,22 +127,22 @@ class FromProjectModel extends Component {
     });
   };
 
-  handleOk=()=>{
-    const {selectedRowKeys, selectedRows}=this.state
+  handleOk = () => {
+    const { selectedRowKeys, selectedRows } = this.state;
     console.log(selectedRows);
     console.log(selectedRowKeys);
-    if(!selectedRowKeys){
-      message.info('请先选择项目')
-    }else{
-      const {dispatch } = this.props;
+    if (!selectedRowKeys) {
+      message.warning('请先选择项目');
+    } else {
+      const { dispatch } = this.props;
       dispatch({
         type: 'SiteLibrary/setSiteDetailModel',
-        payload: {...selectedRows[0] },
-      }).then(res=>{
-        router.push(`/portal/contentmanagement/sitelibrary/edit?uid=${selectedRows[0].gongdiUid}`);                
+        payload: { ...selectedRows[0] },
+      }).then(res => {
+        router.push(`/portal/contentmanagement/sitelibrary/edit?uid=${selectedRows[0].gongdiUid}`);
       });
     }
-  }
+  };
 }
 
 export default FromProjectModel;

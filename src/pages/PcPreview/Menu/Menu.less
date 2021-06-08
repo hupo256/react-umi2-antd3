@@ -1,0 +1,130 @@
+.menuWrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+  height: 58px;
+  overflow: hidden;
+  padding: 0 35px;
+}
+
+.editMode:hover {
+  border: 1px dashed #ff7300;
+}
+
+.editMode:hover .editButton {
+  display: block;
+}
+
+.editButton {
+  display: none;
+  font-size: 14px;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #ffffff;
+  background-color: #515151;
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 3px 15px;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 26px;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.menuItemWrapper .active::after {
+  content: '';
+  display: block;
+  height: 2px;
+  background: var(--themeColor);
+  border-radius: 1px;
+  width: 100%;
+  position: absolute;
+  bottom: 6px;
+}
+
+.menuWrapper .left {
+  position: absolute;
+  left: 0;
+  background: linear-gradient(-90deg, rgba(255, 255, 255, 0.36), #ffffff);
+  height: 100%;
+  color: #333;
+  padding-left: 0;
+}
+
+.menuWrapper .right {
+  position: absolute;
+  right: 0;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.36), #ffffff);
+  height: 100%;
+  color: #333;
+  padding-right: 0;
+}
+
+.menuRoot {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.menuRoot a {
+  line-height: 58px;
+  font-size: 15px;
+  font-weight: 400;
+  color: #1d1d1d;
+  font-family: PingFangSC-Regular, PingFang SC;
+}
+.menuRoot a img {
+  margin-right: 6px;
+}
+
+.menuRoot a:last-child {
+  gap: unset;
+}
+
+.menuItemWrapper {
+  position: relative;
+  height: 58px;
+}
+.menuItemWrapper a {
+  font-size: 15px;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #1d1d1d;
+}
+
+.arrowWrapperPrev {
+  height: 100%;
+  width: 50%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: linear-gradient(90deg, #ffffff, rgba(255, 255, 255, 0.36));
+}
+
+.prevArrow {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: url('/img/ic_more_slices/ic_more.png') no-repeat right center;
+  transform: scaleX(-1);
+  margin-top: 2px;
+}
+
+.nextArrow {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: url('/img/ic_more_slices/ic_more.png') no-repeat right center;
+  margin-top: 2px;
+}
+
+.arrowWrapperNext {
+  height: 100%;
+  width: 50%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.36), #ffffff);
+}

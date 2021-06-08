@@ -1,3 +1,5 @@
+@hightColor: #fe6a30;
+
 .drawerOut {
   position: absolute;
   width: 100%;
@@ -99,6 +101,11 @@
         input:nth-child(3) {
           width: 100%;
         }
+        .navIcon {
+          font-size: 25px;
+          color: @hightColor;
+          margin-left: 15px;
+        }
         :global {
           .ant-form-inline {
             display: flex;
@@ -119,6 +126,13 @@
           }
           .ant-form-item-with-help {
             margin-bottom: 5px;
+          }
+          .ant-tabs-top{
+            padding-top: 5px;
+
+            p{
+              line-height: 1.8;
+            }
           }
         }
       }

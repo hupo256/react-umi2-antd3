@@ -1,0 +1,125 @@
+.companyOut {
+  background: rgba(44, 44, 44, 1);
+  color: rgba(174, 174, 174, 1);
+}
+.copyRightOut {
+  background: rgba(6, 6, 6, 1);
+  color: rgba(101, 101, 101, 1);
+}
+.companyBox,
+.copyRightBox {
+  width: 1100px;
+  margin: 0 auto;
+  padding: 1.5em 0;
+}
+
+.companyBox {
+  display: flex;
+  gap: 20px;
+  position: relative;
+}
+.wechatWrapper,
+.contactUs,
+.companyAddressWrapper {
+  width: 30%;
+  padding-right: 1em;
+
+  & > b {
+    color: rgba(244, 243, 244, 1);
+    display: block;
+    font-size: 16px;
+    padding-bottom: 25px;
+  }
+}
+
+.companyBox > div .qrCodeImg {
+  width: 78px;
+  height: 78px;
+  border: 3px solid #fff;
+}
+.companyBox > div .minImgBox {
+  width: 156px;
+  height: 78px;
+  border-radius: 2px;
+  margin-right: 16px;
+  overflow: hidden;
+}
+.companyBox > div .minImgBox img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+}
+
+.companyBox > .companyAddressWrapper {
+  width: 33%;
+}
+.copyRightBox {
+  font-size: 12px;
+}
+.copyRightBox p {
+  display: flex;
+  justify-content: space-between;
+}
+
+.contactUs {
+  p {
+    text-indent: 29px;
+  }
+
+  .customerService {
+    background: url(/img/phone.png) no-repeat left center;
+  }
+
+  .email {
+    background: url(/img/mail-fill.png) no-repeat left center;
+  }
+  .wechat {
+    background: url(/img/wechat.png) no-repeat left center;
+  }
+
+  .customerService,
+  .email,
+  .wechat {
+    margin-bottom: 12px;
+    background-size: 19px;
+  }
+}
+
+.wechatName {
+  margin-top: 12px;
+}
+.storeAddress {
+  margin-top: 12px;
+  display: flex;
+  justify-content: left;
+  align-items: flex-start;
+  gap: 9px;
+  line-height: 24px;
+}
+
+.editButton {
+  display: none;
+  font-size: 14px;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #ffffff;
+  background-color: #515151;
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 3px 15px;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 26px;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.editMode:hover {
+  border: 1px dashed #ff7300;
+}
+
+.editMode:hover .editButton {
+  display: block;
+}

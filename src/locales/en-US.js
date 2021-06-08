@@ -1,6 +1,6 @@
 export default {
   'navbar.lang': 'English',
-  menu: '个人菜单',
+  menu: '首页',
   'menu.account.audit': '财务审核',
   'menu.account.Settlement': '结算管理',
   'menu.account.targetment': '目标管理',

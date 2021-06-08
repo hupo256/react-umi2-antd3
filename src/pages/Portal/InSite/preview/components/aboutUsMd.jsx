@@ -10,9 +10,9 @@ import { Icon } from 'antd';
 import MdTitle from './common/mdTitle';
 import EmptyMd from './common/emptyMd';
 import pageStyle from '../preview.less';
-import imgWordAbout from '../../../../../assets/img_word_about@2x.png'
+import imgWordAbout from '../../../../../assets/img_word_about@2x.png';
 
-export default function CaseMd(props) {
+export default function AboutUsMd(props) {
   const { list, title, flag, url, name, content } = props;
 
   return (
@@ -22,7 +22,7 @@ export default function CaseMd(props) {
         <b>{title}</b>
       </h3>
       <div className={pageStyle.contentWrapper}>
-        <img src={url} alt='' width="100%" />
+        <img src={url} alt="" width="100%" />
         <h4>{name}</h4>
         <p>{content}</p>
       </div>

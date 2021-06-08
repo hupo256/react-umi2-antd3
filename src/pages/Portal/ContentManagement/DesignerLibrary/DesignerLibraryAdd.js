@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-18 16:39:42 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-04-07 16:46:29
+ * @Last Modified time: 2021-04-29 09:39:52
  * 创建设计师
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -26,6 +26,7 @@ import {
 } from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { paginations, getUrl } from '@/utils/utils';
+import TagGroup from '@/components/TagSelect/TagGroup';
 import ImgUploads from '@/components/Upload/ImgUploads';
 import { regExpConfig } from '../../../../utils/regular.config';
 import styles from './DesignerLibrary.less';
@@ -47,6 +48,7 @@ class DesignerLibraryAdd extends PureComponent {
       coverImg: null,
       uploadVisible: false,
       styleDicCodes: [],
+      tags: [],
     };
   }
 
@@ -60,7 +62,7 @@ class DesignerLibraryAdd extends PureComponent {
   }
 
   render() {
-    const { status, coverImg, uploadVisible, styleDicCodes } = this.state;
+    const { status, coverImg, uploadVisible, styleDicCodes, tags } = this.state;
     const { getFieldDecorator } = this.props.form;
     const {
       DictConfig: { dicData },
@@ -81,6 +83,7 @@ class DesignerLibraryAdd extends PureComponent {
         <PageHeaderWrapper>
           <Card bordered={false}>
             <Form {...formItemLayout} onSubmit={this.handleSubmit}>
+              <h4 className={styles.title}>基本信息</h4>
               <Form.Item label="设计师姓名">
                 {getFieldDecorator('name', {
                   rules: [
@@ -240,6 +243,33 @@ class DesignerLibraryAdd extends PureComponent {
                   ],
                 })(<TextArea rows={4} style={{ width: 400 }} placeholder="请输入设计理念" />)}
               </Form.Item>
+              <h4 className={styles.title}>TDK设置（用于搜索引擎收录）</h4>
+              <Form.Item label={this.title('设计师标题')}>
+                {getFieldDecorator('title', {
+                  rules: [
+                    {
+                      max: 10,
+                      message: '限制1-30字符长度',
+                    },
+                  ],
+                })(<Input style={{ width: 400 }} placeholder="请输入设计师标题" />)}
+              </Form.Item>
+              <Form.Item label={this.title('关键词')}>
+                {getFieldDecorator('keywords', {
+                  initialValue: null,
+                  rules: [],
+                })(<TagGroup tags={tags} handleSave={tags => this.handleTagSave(tags)} />)}
+              </Form.Item>
+              <Form.Item label={this.title('设计师说明')}>
+                {getFieldDecorator('description', {
+                  rules: [
+                    {
+                      max: 200,
+                      message: '限制0-200字符长度',
+                    },
+                  ],
+                })(<TextArea rows={4} style={{ width: 400 }} placeholder="请输入设计师说明" />)}
+              </Form.Item>
               <Row>
                 <Col span={8} />
                 <Col span={16}>
@@ -280,7 +310,7 @@ class DesignerLibraryAdd extends PureComponent {
         styleDicCodes: value,
       });
     } else {
-      message.info('最多支持选择3个');
+      message.warning('最多支持选择3个');
       this.props.form.setFieldsValue({
         styleDicCodes: value,
       });
@@ -294,7 +324,7 @@ class DesignerLibraryAdd extends PureComponent {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (err) throw err;
       console.log(values);
-      const { headPicUrl } = this.state;
+      const { tags } = this.state;
       const { dispatch } = this.props;
       // createDesignerModel
       if (values.styleDicCodes.length > 3) {
@@ -305,6 +335,7 @@ class DesignerLibraryAdd extends PureComponent {
         type: 'DesignerLibrary/createDesignerModel',
         payload: {
           ...values,
+          keywords: JSON.stringify(tags || []),
         },
       }).then(res => {
         if (res && res.code === 200) {
@@ -327,6 +358,22 @@ class DesignerLibraryAdd extends PureComponent {
       headPicUrl: data[0].path,
     });
     this.handleUploadCancel();
+  };
+  // 关键词
+  handleTagSave = tags => {
+    this.setState({ tags });
+  };
+  title = title => {
+    return (
+      <span>
+        {title}
+        {'  '}
+        <Tooltip placement="right" title="业主有可能通过您输入的关键词，搜索到您的网站哦！">
+          <Icon type="question-circle" />
+        </Tooltip>
+        {'  '}
+      </span>
+    );
   };
 }
 

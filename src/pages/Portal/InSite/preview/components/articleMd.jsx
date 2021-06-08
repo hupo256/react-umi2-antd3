@@ -12,19 +12,12 @@ import pageStyle from '../preview.less';
 import { Icon, Tabs } from 'antd';
 import imgBG from '../../../../../assets/img_bg@2x.png';
 
-const bgImgs = [
-  'https://test.img.inbase.in-deco.com/crm_saas/dev/20210408/3c485acbe81f42f1ac621b34496ebf51/img_designer_1.png',
-  'https://test.img.inbase.in-deco.com/crm_saas/dev/20210408/17159e292290401cb324c1175ccfe11f/img_designer_2.png',
-  'https://test.img.inbase.in-deco.com/crm_saas/dev/20210408/87382388c88646cb914ef521c9f58036/img_designer_3.png',
-  'https://test.img.inbase.in-deco.com/crm_saas/dev/20210408/8f8b1e6ce303458bb72764b7ba235a0f/img_designer_4.png',
-];
-
-export default function CaseMd(props) {
+export default function ArticleMd(props) {
   const { list, title, flag, nameListData, showModule } = props;
 
   return (
     <div className={`${pageStyle.mdBlock} ${pageStyle.hasbg2}`}>
-      <img className={pageStyle.bg} src={imgBG} alt=''  />
+      <img className={pageStyle.bg} src={imgBG} alt="" />
       <MdTitle title={title} />
       <div className={pageStyle.nav}>
         {nameListData.map(e => (

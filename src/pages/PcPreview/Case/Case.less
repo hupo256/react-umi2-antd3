@@ -1,0 +1,46 @@
+.clickableImg {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.clickableImg:hover .bgText {
+  display: flex;
+  z-index: 9;
+}
+
+.clickableImg .bgBlur {
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: all 0.5s;
+  background-size: cover;
+  background-origin: content-box;
+  height: 100%;
+}
+.clickableImg:hover .bgBlur {
+  filter: brightness(0.7);
+  transform: scale(1.1);
+}
+
+.bgText {
+  display: none;
+  align-items: center;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  /* top: 0; */
+  flex-direction: column;
+  font-size: 18px;
+  color: #fff;
+  p {
+    font-size: 18px;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+  }
+}
+
+.bgBlur {
+  width: 100%;
+  height: 100%;
+}

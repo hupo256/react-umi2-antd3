@@ -50,12 +50,8 @@ function AddNewGoods(props) {
 
   useEffect(
     () => {
-      console.log(curType);
-      console.log(formDatas);
-      console.log(formDatas[curType]);
       if (formDatas[curType]) {
         const curFormDt = formDatas[curType];
-        console.log(curFormDt);
         const { activityRule = '', actvityConvertRule = '' } = curFormDt;
         curFormDt.activityRule = htmlToStr(activityRule);
         curFormDt.actvityConvertRule = htmlToStr(actvityConvertRule);
