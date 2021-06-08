@@ -52,7 +52,7 @@ export default function FooterComp({ data, setShowFooterDrawer }) {
               src={'/img/ic_edit@2x.png'}
               style={{ width: '14px', height: '14px', marginRight: '5px', marginTop: '-3px' }}
             />
-            编辑频道
+            编辑企业信息
           </div>
         </div>
       </div>
