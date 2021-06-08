@@ -119,6 +119,7 @@ export default function Preview(props) {
           {pageData?.jsonData?.length > 0 &&
             pageData.jsonData.map((item, ind) => {
               const { flag, list = [] } = item;
+              if (flag === 'channel' && list.length === 0) return;
               const model = componentMap[flag];
               if (model) {
                 const { tips, creatCom } = model;
