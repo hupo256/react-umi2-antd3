@@ -48,21 +48,11 @@ export default class CreateEdit extends Component {
     }
 
     async componentDidUpdate( prevProps ) {
-        const { form, isCreate } = this.props;
+        const { form, relatedPage } = this.props;
 
-        // 编辑回填默认数据
-        if ( this.props.currentEditUid && this.props.showCreateEdit !== prevProps.showCreateEdit &&  this.props.showCreateEdit) {
-            this.getDetail(this.props.currentEditUid)
+        if ( relatedPage !== prevProps.relatedPage ) {
+            form.setFieldsValue({ relatedPage })
         }
-
-        // 关闭重置表单组件数据
-        if (  this.props.showCreateEdit !== prevProps.showCreateEdit  ) {
-            form.resetFields()
-            this.setState({
-                showSelectPanl: false
-            })
-        }
-
     }
 
 /**
@@ -84,11 +74,7 @@ export default class CreateEdit extends Component {
         })
     }
 
-    /**
-     * @description: 解构重组后台数据
-     * @param {*}
-     * @return {*}
-     */    
+    // 解构重组后台数据 
     format = data => {
         if (!Array.isArray(data)) return;
         const newArr = [];
