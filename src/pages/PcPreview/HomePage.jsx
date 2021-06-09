@@ -143,6 +143,10 @@ const Home = () => {
                   message.warning('PC端不允许跳转到小游戏')
                   return
                 }
+                if (item.type === 'special') {
+                  window.open(`${dynamicDomain}/img/PublicLibraryPc/special.html#/?uid=${item.uid}`, '页面预览')
+                  return
+                }
                 window.open(
                   `${dynamicDomain}/${typeMap[item.type]}/details?${paramMap[item.type]}=${item.uid}`,
                   '页面预览',

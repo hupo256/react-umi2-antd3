@@ -26,9 +26,9 @@ switch (APP_ENVIRONMENT) {
     break;
   case 'local': // 本地开发
     console.warn = function() {};
-    url = 'http://devgw.ingongdi.com';
-    // url = 'http://testgw.ingongdi.com';
-    //url = 'http://pre.gateway.ingongdi.com';
+    // url = 'http://devgw.ingongdi.com';
+    url = 'http://testgw.ingongdi.com';
+    // url = 'http://pre.gateway.ingongdi.com';
     break;
   default:
     console.log('环境配置出错，请检查！！==', APP_ENVIRONMENT);
