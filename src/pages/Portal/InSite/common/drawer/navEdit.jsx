@@ -36,21 +36,6 @@ export default function NavEdit(props) {
     [navData]
   );
 
-  // 收集已经有的nav
-  function touchCurNavs() {
-    // const arr = navData.map(nav => nav?.paths?.[0]);
-    const arr = ['fd8d01f1a35111eb999e00505694ddf5']  // 首页
-    navData.map(nav => {
-      const { paths = [] } = nav;
-      // const len = paths.length;
-      // const num = len === 2 ? 1 : 0;  // 取末级的uid,去重时也从末级开始
-      // return paths?.[num];
-      const id = paths?.[1]
-      !!id && arr.push(id)  // 取末级的uid,去重时也从末级开始
-    });
-    setcurNavs(arr);
-  }
-
   function addNewTag() {
     const len = navData.length;
     const empty = navData.find(nav => !nav.paths);
@@ -66,19 +51,19 @@ export default function NavEdit(props) {
     setNavData(navData.concat(item));
   }
 
-  function forUpdatePageData() {
+  function updateNavData() {
     setNavData(navData.slice());
   }
 
   function delImg(num) {
     navData.splice(num, 1);
-    forUpdatePageData();
+    updateNavData();
   }
 
   function toMove(ind, num) {
     const rec = navData.splice(ind, 1)[0];
     navData.splice(ind + num, 0, rec);
-    forUpdatePageData();
+    updateNavData();
   }
 
   function discTexChange(e, rec) {
@@ -91,7 +76,18 @@ export default function NavEdit(props) {
       rec.desMsg = '';
     }
     rec.name = val;
-    forUpdatePageData();
+    updateNavData();
+  }
+
+  // 收集已经有的nav
+  function touchCurNavs() {
+    const arr = ['fd8d01f1a35111eb999e00505694ddf5']  // 首页
+    navData.map(nav => {
+      const { paths = [] } = nav;
+      const id = paths?.[1]
+      !!id && arr.push(id)  // 取末级的uid,去重时也从末级开始
+    });
+    setcurNavs(arr);
   }
 
   function touchRelece(arr, num) {
@@ -99,15 +95,14 @@ export default function NavEdit(props) {
     const len = arr.length;
     navData[num].icon = arr[len - 1]?.icon;
     navData[num].navModule = arr[len - 1]?.appletsLink;
-    navData[num].linkKey = arr[len - 1]?.linkKey;
     navData[num].paths = arr.map(p => p.code);
     navData[num].linkDisplayName = arr.map(p => p.text).join('/');
-    forUpdatePageData();
+    updateNavData();
   }
 
   return (
     <>
-      <ul>
+      <ul className={styles.navEditBox}>
         {navData?.length > 0 &&
           navData.map((tag, ind) => {
             const len = navData.length;
@@ -168,7 +163,7 @@ export default function NavEdit(props) {
                         relatedPage={linkDisplayName} // input用来回显的值
                         curNavs={curNavs} // 当前已经有的nav -- 禁用重复选择
                         inpDisabled={isHome}
-                        curUid={paths?.[0]}
+                        curUid={paths?.[1] || ''}
                       />
                     </>
                   )}
