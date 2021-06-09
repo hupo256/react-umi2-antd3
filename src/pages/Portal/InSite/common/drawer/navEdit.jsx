@@ -36,15 +36,24 @@ export default function NavEdit(props) {
     [navData]
   );
 
-  // 过滤掉已经有的nav
+  // 收集已经有的nav
   function touchCurNavs() {
-    const arr = navData.map(nav => nav?.paths?.[0]);
+    // const arr = navData.map(nav => nav?.paths?.[0]);
+    const arr = ['fd8d01f1a35111eb999e00505694ddf5']  // 首页
+    navData.map(nav => {
+      const { paths = [] } = nav;
+      // const len = paths.length;
+      // const num = len === 2 ? 1 : 0;  // 取末级的uid,去重时也从末级开始
+      // return paths?.[num];
+      const id = paths?.[1]
+      !!id && arr.push(id)  // 取末级的uid,去重时也从末级开始
+    });
     setcurNavs(arr);
   }
 
   function addNewTag() {
     const len = navData.length;
-    const empty = navData.find(nav => !nav.paths)
+    const empty = navData.find(nav => !nav.paths);
     if (len === maxLen) return message.warning(`最多可添加${maxLen}个导航`);
     if (empty) return message.warning(`请先编辑完成上一个`);
     const item = {
@@ -86,10 +95,11 @@ export default function NavEdit(props) {
   }
 
   function touchRelece(arr, num) {
-    console.log(arr)
+    console.log(arr);
     const len = arr.length;
     navData[num].icon = arr[len - 1]?.icon;
     navData[num].navModule = arr[len - 1]?.appletsLink;
+    navData[num].linkKey = arr[len - 1]?.linkKey;
     navData[num].paths = arr.map(p => p.code);
     navData[num].linkDisplayName = arr.map(p => p.text).join('/');
     forUpdatePageData();

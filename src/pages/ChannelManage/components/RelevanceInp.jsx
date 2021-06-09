@@ -34,14 +34,13 @@ export default class RelevanceInp extends Component {
         }
     }
     async componentDidMount() {
-        const { isCreate, currentEditUid, relatedPageOption, relatedPage, form } = this.props;
+        const { isCreate, currentEditUid, relatedPage, form } = this.props;
         if (!isCreate) {
             this.getDetail(currentEditUid)
         }
         // const res = await getRelatedPage({sceneType: 2});
         this.setState({
-            // relatedPageOption: this.format(res?.data) 
-            relatedPageOption: this.format(relatedPageOption) 
+            relatedPageOption: this.filterLevelOps()
         })
         if(relatedPage) form.setFieldsValue({ relatedPage })
     }
@@ -103,7 +102,13 @@ export default class RelevanceInp extends Component {
         return newArr
     }
 
-    // 过滤掉已经有的nav
+    // 过滤一级nav
+    filterLevelOps = () => {
+        const { relatedPageOption } = this.props
+        return this.format(relatedPageOption).filter(ar => ar?.children?.length > 0)
+    }
+
+    // 过滤掉已有的nav
     touchSelcOpts = (opts) => {
       const { curNavs, curUid } = this.props
       let tempNavs = [...curNavs]
@@ -369,11 +374,11 @@ export default class RelevanceInp extends Component {
         let arr = [];
         for (const key in currentSelectRelatedPageOpt) {
             if (currentSelectRelatedPageOpt.hasOwnProperty.call(currentSelectRelatedPageOpt, key)) {
-                const {name, uid, icon, appletsLink} = currentSelectRelatedPageOpt[key];
+                const {name, uid, icon, appletsLink, linkKey} = currentSelectRelatedPageOpt[key];
                 arr.push({
                     text: name,
                     code: uid,
-                    icon, appletsLink,
+                    icon, linkKey, appletsLink,
                 })
             }
         }
@@ -419,12 +424,11 @@ export default class RelevanceInp extends Component {
     }
 
     clickInputHandle = () => {
-        const { relatedPageOption } = this.props
         this.toggleSelectPanlHandle(true);
         this.setState({
             currentSelectRelatedPageOpt: [],
             currentKey: '0',
-            relatedPageOption: this.format(relatedPageOption) 
+            relatedPageOption: this.filterLevelOps()
         }, () => {
             this.props.form.setFieldsValue({
                 relatedPage:  this.formatData().map(item =>item.text).join(' / ')
