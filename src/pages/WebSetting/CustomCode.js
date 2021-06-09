@@ -50,7 +50,7 @@ class CustomCode extends Component {
     const { headerValue } = this.state;
     return (
       <div>
-        <div style={{ color: '#101010', fontSize: '26px', marginBottom: '20px' }}>自定义代码</div>
+        <div style={{ color: '#101010', fontSize: '22px', marginBottom: '20px' }}>自定义代码</div>
         <Form className="customCodeForm" onSubmit={e => this.onSave(e)}>
           <FormItem>
             {getFieldDecorator('headerValue', {

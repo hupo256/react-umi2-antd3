@@ -25,7 +25,6 @@ export default function TitleGuid(props) {
       editTemplateCode: templateCode,
       editTemplateJson: { jsonData, themeData, templateName, globalInfor: { customerService } },
     };
-
     savePageData(parmas, () => {
       publishEditData().then(() => {
         setcurFlag(''); // 置空
@@ -61,10 +60,10 @@ export default function TitleGuid(props) {
         {isEdit && (
           <div className={styles.btnBox}>
             <Button onClick={showConfirm}>放弃更改</Button>
-            {/* <a href="#/pc/preview" target="_blank">
+            <a href="#/pc/preview" target="_blank">
               <Icon type="desktop" />
               <span>网站预览</span>
-            </a> */}
+            </a>
             <Button onClick={toPublish} type="primary">
               <img
                 src="https://img.inbase.in-deco.com/crm_saas/release/20210511/bb4bd99abc374cae9b1dbe634a6a388c/ic_send.png"

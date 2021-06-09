@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-04-28 10:38:31
+ * @Last Modified time: 2021-06-08 14:12:15
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -89,7 +89,21 @@ class SiteLibraryAdd extends PureComponent {
           <Card bordered={false}>
             <Form {...formItemLayout} onSubmit={this.handleSubmit}>
               <h4 className={styles.title}>基本信息</h4>
-              <Form.Item label="工地标题">
+              <Form.Item
+                label={
+                  <span>
+                    工地标题
+                    {'  '}
+                    <Tooltip
+                      placement="right"
+                      title="业主有可能通过您输入的关键词，搜索到您的网站哦！"
+                    >
+                      <Icon type="question-circle" />
+                    </Tooltip>
+                    {'  '}
+                  </span>
+                }
+              >
                 {getFieldDecorator('gongdiTitle', {
                   rules: [
                     {
