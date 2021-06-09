@@ -116,7 +116,7 @@ class EnterpriseMessage extends Component {
     const prpoverImg = <img src='https://img.inbase.in-deco.com/crm_saas/release/20210519/b0bd7f64b276409dbb22deb8bf88ea05/企业信息.png' />;
     return (
       <div>
-        <div style={{ color: '#101010', fontSize: '26px', marginBottom: '20px' }}>
+        <div style={{ color: '#101010', fontSize: '22px', marginBottom: '20px' }}>
           企业信息
           <Popover placement="right" className="titleIcon" content={prpoverImg}>
             <Icon type="question-circle" />

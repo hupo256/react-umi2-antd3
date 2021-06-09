@@ -24,24 +24,29 @@ export default function NavEdit(props) {
   useEffect(() => {
     getRelatedPage({ sceneType: 2 }).then(res => {
       if (!res?.data) return;
-      touchCurNavs()
+      touchCurNavs();
       setrelatedPageOption(res?.data);
     });
   }, []);
 
-  useEffect(() => {
-    touchCurNavs()
-  }, [navData])
+  useEffect(
+    () => {
+      touchCurNavs();
+    },
+    [navData]
+  );
 
   // 过滤掉已经有的nav
-  function touchCurNavs(){
-    const arr = navData.map(nav => nav?.paths?.[0])
-    setcurNavs(arr)
+  function touchCurNavs() {
+    const arr = navData.map(nav => nav?.paths?.[0]);
+    setcurNavs(arr);
   }
 
   function addNewTag() {
     const len = navData.length;
+    const empty = navData.find(nav => !nav.paths)
     if (len === maxLen) return message.warning(`最多可添加${maxLen}个导航`);
+    if (empty) return message.warning(`请先编辑完成上一个`);
     const item = {
       // 给一个默认的对象
       icon: 'iconic_site_new',
@@ -96,8 +101,16 @@ export default function NavEdit(props) {
         {navData?.length > 0 &&
           navData.map((tag, ind) => {
             const len = navData.length;
-            let { linkDisplayName, icon, name, navModule, paths, desStatus = 'success', desMsg = '' } = tag;
-            const isHome = navModule === 'index'
+            let {
+              linkDisplayName,
+              icon,
+              name,
+              navModule,
+              paths,
+              desStatus = 'success',
+              desMsg = '',
+            } = tag;
+            const isHome = navModule === 'index';
             icon = 'icon-' + icon?.split('icon')[1]; // 兼容iconfont在生成时加的前辍
             return (
               <li key={ind}>
@@ -105,7 +118,7 @@ export default function NavEdit(props) {
                   <span>导航图标</span>
                   <span>导航名称</span>
                   <div className={styles.tbOpration}>
-                    <a disabled={ind === 0} onClick={() => toMove(ind, -1)}>
+                    <a disabled={ind === 0 || ind === 1} onClick={() => toMove(ind, -1)}>
                       <Icon type="arrow-up" />
                     </a>
                     <a disabled={ind === len - 1 || isHome} onClick={() => toMove(ind, 1)}>
@@ -136,18 +149,17 @@ export default function NavEdit(props) {
                     </Item>
                   </Form>
 
-                  
                   {relatedPageOption?.length > 0 && (
                     <>
-                    <p>关联页面</p>
-                    <RelevanceInp
-                      callFun={arr => touchRelece(arr, ind)} // 对外暴露的回调，用来把数据传出去
-                      relatedPageOption={relatedPageOption} // 渲染组件需要的数据
-                      relatedPage={linkDisplayName} // input用来回显的值
-                      curNavs={curNavs} // 当前已经有的nav -- 禁用重复选择
-                      inpDisabled={isHome}
-                      curUid={paths?.[0]}
-                    />
+                      <p>关联页面</p>
+                      <RelevanceInp
+                        callFun={arr => touchRelece(arr, ind)} // 对外暴露的回调，用来把数据传出去
+                        relatedPageOption={relatedPageOption} // 渲染组件需要的数据
+                        relatedPage={linkDisplayName} // input用来回显的值
+                        curNavs={curNavs} // 当前已经有的nav -- 禁用重复选择
+                        inpDisabled={isHome}
+                        curUid={paths?.[0]}
+                      />
                     </>
                   )}
                 </div>
