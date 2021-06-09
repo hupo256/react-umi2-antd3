@@ -16,31 +16,46 @@ import styles from './drawerEditor.less';
 const maxLen = 5;
 const { Item } = Form;
 
-export default function TagsEdit(props) {
-  const {
-    choiceData,
-    setChoiceData,
-    navData,
-    setNavData,
-    pageData,
-    setpageData,
-    curFlag,
-    setlinkEdtor,
-    setcurInd,
-  } = useContext(ctx);
-  console.log(navData);
-  const [tagList = [], settagList] = useState(() => pageData?.maps?.[curFlag]?.list);
-  const titInp = useRef();
-  function addNewNav() {
+export default function NavEdit(props) {
+  const { navData, setNavData } = useContext(ctx);
+  const [relatedPageOption, setrelatedPageOption] = useState([]);
+  const [curNavs, setcurNavs] = useState([]);
+
+  useEffect(() => {
+    getRelatedPage({ sceneType: 2 }).then(res => {
+      if (!res?.data) return;
+      touchCurNavs()
+      setrelatedPageOption(res?.data);
+    });
+  }, []);
+
+  useEffect(() => {
+    touchCurNavs()
+  }, [navData])
+
+  // 收集已经有的nav
+  function touchCurNavs() {
+    // const arr = navData.map(nav => nav?.paths?.[0]);
+    const arr = ['fd8d01f1a35111eb999e00505694ddf5']  // 首页
+    navData.map(nav => {
+      const { paths = [] } = nav;
+      // const len = paths.length;
+      // const num = len === 2 ? 1 : 0;  // 取末级的uid,去重时也从末级开始
+      // return paths?.[num];
+      const id = paths?.[1]
+      !!id && arr.push(id)  // 取末级的uid,去重时也从末级开始
+    });
+    setcurNavs(arr);
+  }
+
+  function addNewTag() {
     const len = navData.length;
-    if (len === maxLen) return message.warning(`导航栏添加${maxLen}个效果最佳哦`);
-    const newArr = [...navData];
-    const r = newArr.find(e => e.navModule === '');
-    if (r) {
-      return message.warning(`您有未选择的导航，请设置后再添加`);
-    }
-    newArr.push({
-      icon: '',
+    const empty = navData.find(nav => !nav.paths);
+    if (len === maxLen) return message.warning(`最多可添加${maxLen}个导航`);
+    const item = {
+      // 给一个默认的对象
+      icon: 'iconic_site_new',
+      linkDisplayName: '',
       name: '',
       navModule: '',
     });
@@ -79,21 +94,16 @@ export default function TagsEdit(props) {
     });
     setChoiceData(newArr);
   }
-  function selectData(navModule, current) {
-    console.log(navModule);
-    const newArr = [...navData];
-    const r = choiceData.find(e => {
-      return navModule === e.navModule;
-    });
-    newArr.map(i => {
-      if (i.navModule === current) {
-        i.navModule = r.navModule;
-        i.name = r.name;
-        i.icon = r.icon;
-      }
-    });
-    setNavData(newArr);
-    filterData();
+
+  function touchRelece(arr, num) {
+    console.log(arr);
+    const len = arr.length;
+    navData[num].icon = arr[len - 1]?.icon;
+    navData[num].navModule = arr[len - 1]?.appletsLink;
+    navData[num].linkKey = arr[len - 1]?.linkKey;
+    navData[num].paths = arr.map(p => p.code);
+    navData[num].linkDisplayName = arr.map(p => p.text).join('/');
+    forUpdatePageData();
   }
   const columns = [
     {
