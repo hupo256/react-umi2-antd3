@@ -98,12 +98,9 @@
           display: inline-block;
           vertical-align: top;
         }
-        input:nth-child(3) {
-          width: 100%;
-        }
         .navIcon {
           font-size: 25px;
-          color: @hightColor;
+          color: #666;
           margin-left: 15px;
         }
         :global {
@@ -144,6 +141,30 @@
       }
       .ant-pagination-item-active {
         border-color: #fe6a30;
+      }
+    }
+  }
+
+
+  .navEditBox{
+    .titBox {
+      > span:nth-child(1) {
+        width: 17%;
+      }
+      > span:nth-child(2) {
+        width: 55%;
+      }
+    }
+    .taginpBox {
+      :global {
+        .ant-form-inline {
+          > div:nth-child(1) {
+            width: 20%;
+          }
+          > div:nth-child(2) {
+            width: 77%;
+          }
+        }
       }
     }
   }

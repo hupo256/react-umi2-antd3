@@ -164,6 +164,7 @@ export function Provider({ children }) {
 
   function savePageData(params, callBack) {
     if (!pageData?.jsonData) return message.error('访问过于频繁，请稍后再试');
+    message.loading('正在提交，请稍后...');
     updateHomePageEditData(params).then(res => {
       if(res.code !== 200) return message.error(res.message || '请稍后再试');
       const arr = navData.filter(nav => nav?.paths)
