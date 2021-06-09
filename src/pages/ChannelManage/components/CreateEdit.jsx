@@ -269,7 +269,8 @@ export default class CreateEdit extends Component {
                 searchText,
                 articleDicCode: articleDicCode ||  this.state.currentarticleDicCode,
                 pageNum,
-                pageSize
+                pageSize,
+                articleStatus: status
             });
 
         }
