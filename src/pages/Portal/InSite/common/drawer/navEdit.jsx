@@ -95,6 +95,7 @@ export default function NavEdit(props) {
     const len = arr.length;
     navData[num].icon = arr[len - 1]?.icon;
     navData[num].navModule = arr[len - 1]?.appletsLink;
+    navData[num].linkKey = arr[len - 1]?.linkKey;
     navData[num].paths = arr.map(p => p.code);
     navData[num].linkDisplayName = arr.map(p => p.text).join('/');
     updateNavData();
