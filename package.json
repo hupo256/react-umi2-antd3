@@ -60,6 +60,7 @@
     "omit.js": "^1.0.0",
     "path-to-regexp": "^2.4.0",
     "prop-types": "^15.5.10",
+    "qrcode.react": "^1.0.1",
     "qs": "^6.5.2",
     "rc-animate": "^2.4.4",
     "rc-viewer": "0.0.9",
