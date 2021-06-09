@@ -165,16 +165,11 @@ export function Provider({ children }) {
   function savePageData(params, callBack) {
     if (!pageData?.jsonData) return message.error('访问过于频繁，请稍后再试');
     updateHomePageEditData(params).then(res => {
-      if (res.code === 200) {
-        const newArr = [...navData];
-        const arr = [];
-        newArr.forEach(e => {
-          e.navModule && arr.push(e);
-        });
-        saveNavEditData(arr).then(r => {
-          r.code === 200 && callBack && callBack();
-        });
-      }
+      if(res.code !== 200) return message.error(res.message || '请稍后再试');
+      const arr = navData.filter(nav => nav?.paths)
+      saveNavEditData(arr).then(r => {
+        r.code === 200 && callBack && callBack();
+      });
     });
   }
 
