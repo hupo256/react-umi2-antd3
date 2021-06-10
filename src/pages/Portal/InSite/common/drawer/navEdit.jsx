@@ -115,6 +115,7 @@ export default function NavEdit(props) {
               paths,
               desStatus = 'success',
               desMsg = '',
+              showSec,
             } = tag;
             const isHome = navModule === 'index';
             icon = 'icon-' + icon?.split('icon')[1]; // 兼容iconfont在生成时加的前辍
@@ -165,6 +166,7 @@ export default function NavEdit(props) {
                         curNavs={curNavs} // 当前已经有的nav -- 禁用重复选择
                         inpDisabled={isHome}
                         curUid={paths?.[1] || ''}
+                        showSec={showSec}
                       />
                     </>
                   )}
