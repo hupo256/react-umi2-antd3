@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-04-28 17:05:47 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-06-10 21:07:29
+ * @Last Modified time: 2021-06-10 21:33:19
  * 小程序设置
  */
 
@@ -199,7 +199,7 @@ class Index extends PureComponent {
                   </Menu>
                 </div>
                 {selectedKeys[0] === '2' &&
-                  permissionsBtn.permissions.includes('BTN210610000006') && (
+                  permissionsBtn.permissions.includes('BTN210610000007') && (
                     <div className={styles.appleRight}>
                       <p style={{ fontWeight: 500, fontSize: 22, color: '#333' }}>关联页面设置</p>
                       <p style={{ fontWeight: 400, fontSize: 13, color: '#666' }}>
@@ -213,7 +213,7 @@ class Index extends PureComponent {
                     </div>
                   )}
                 {selectedKeys[0] === '1' &&
-                  permissionsBtn.permissions.includes('BTN210610000007') && (
+                  permissionsBtn.permissions.includes('BTN210610000006') && (
                     <div className={styles.appleRight}>
                       <p style={{ fontWeight: 500, fontSize: 22, color: '#333' }}>通用设置</p>
                       <p>
