@@ -299,10 +299,7 @@ export default [
         routes: [
           {
             path: '/customer/detail',
-            name: 'customer',
-            icon: 'retweet',
-            type: 'project_status',
-            PageHeaderName: '详情',
+            name: 'customerdetail',
             code: 'MU900000020001',
             component: './Customer/LeadManagement/LeadManageDetail',
           },
