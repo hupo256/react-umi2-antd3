@@ -340,7 +340,12 @@ export default class CreateEdit extends Component {
        
         this.setState(prevState => {
             let arr = prevState.currentSelectRelatedPageOpt;
-            arr.push( record );
+            if (arr[arr.length - 1]?.linkKey) {
+                arr.push( record );
+            } else {
+                arr[arr.length - 1] = record
+            }
+            
             return ({
                 currentSelectRelatedPageOpt: arr,
                 // currentKey: 2,
@@ -518,7 +523,7 @@ export default class CreateEdit extends Component {
                     dataIndex: 'title',
                     render: (text, r) => 
                         <div  style={{maxWidth: 120,  display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>
-                            <Tooltip placement='topLeft' title={text} getPopupContainer={() => document.querySelector('.createEdit')}>
+                            <Tooltip placement='topLeft' title={text}>
                                 {text}
                             </Tooltip>
                         </div>
@@ -614,7 +619,7 @@ export default class CreateEdit extends Component {
                     title: <span style={{fontWeight: 600}}>创建人</span>,
                     key: 'creater',
                     dataIndex: 'creater',
-                    render: (text, r) => <Tooltip placement='topLeft' title={text} getPopupContainer={document.querySelector('.createEdit')}>
+                    render: (text, r) => <Tooltip placement='topLeft' title={text}>
                         <div style={{maxWidth: 120,  display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>{text}</div>
                     </Tooltip> 
                 },
