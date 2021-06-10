@@ -483,7 +483,6 @@ export default class RelevanceInp extends Component {
         }
 
         return (
-        // <Form labelCol={{ span: 6 }} wrapperCol={{ span: 13 }}>
         <Form style={{width: '100%'}}>
             <Form.Item>   
             {getFieldDecorator('relatedPage', {
@@ -495,7 +494,7 @@ export default class RelevanceInp extends Component {
                     placeholder='请选择关联页面' 
                     onClick={this.clickInputHandle}
                     // onBlur={this.releInpBlur}
-                    suffix={<Icon type="right" />}
+                    suffix={<Icon type="down" />}
                 />             
             )} 
             {showSelectPanl && <div ref='parentNode'  className={styles['card-container']}>
