@@ -137,21 +137,21 @@ export default function Preview(props) {
 
         {/* totopBox */}
         <div className={pageStyle.totopBox}>
-          <span>
+          {/* <span>
             <svg className="icon" aria-hidden="true">
               <use href="#icon-ic_share" />
             </svg>
-          </span>
+          </span> */}
           <span>
             <svg className="icon" aria-hidden="true">
               <use href="#icon-ic_call" />
             </svg>
           </span>
-          <span>
+          {/* <span>
             <svg className="icon" aria-hidden="true">
               <use href="#icon-ic_more" />
             </svg>
-          </span>
+          </span> */}
           <span onClick={gotoTop} className={`${totopShow ? pageStyle.show : ''}`}>
             <svg className="icon" aria-hidden="true">
               <use href="#icon-ic_top" />
