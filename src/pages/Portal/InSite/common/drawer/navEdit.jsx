@@ -81,11 +81,11 @@ export default function NavEdit(props) {
 
   // 收集已经有的nav
   function touchCurNavs() {
-    const arr = ['fd8d01f1a35111eb999e00505694ddf5']  // 首页
+    const arr = ['fd8d01f1a35111eb999e00505694ddf5']; // 首页
     navData.map(nav => {
       const { paths = [] } = nav;
-      const id = paths?.[1]
-      !!id && arr.push(id)  // 取末级的uid,去重时也从末级开始
+      const id = paths?.[1];
+      !!id && arr.push(id); // 取末级的uid,去重时也从末级开始
     });
     setcurNavs(arr);
   }
@@ -137,11 +137,11 @@ export default function NavEdit(props) {
                 </div>
                 <div className={styles.taginpBox}>
                   <Form layout="inline">
-                    <Item>
-                      <svg className={`icon ${styles.navIcon}`}>
+                    <span className={styles.navIcon}>
+                      <svg className="icon">
                         <use href={`#${icon}`} />
                       </svg>
-                    </Item>
+                    </span>
 
                     <Item validateStatus={desStatus} help={desMsg}>
                       <Input
