@@ -49,6 +49,8 @@
       width: 90.5%;
       bottom: 40px;
       left: 4.7%;
+      background: #fff;
+      height: 52px;
 
       ul {
         border-radius: 0 0 3px 3px;
@@ -682,25 +684,29 @@
     width: 40px;
     display: flex;
     flex-direction: column;
-    // transition: all 0.2s ease;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    padding: 5px;
+    box-sizing: content-box;
 
     span {
-      width: 100%;
+      width: 40px;
       height: 40px;
       border-radius: 20px;
       background: #fff;
       box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.2);
       text-align: center;
       line-height: 40px;
-      margin-bottom: 15px;
     }
 
     span:nth-child(2) {
       transition: all 0.4s ease;
-      opacity: 0;
+      margin-top: 15px;
+      height: 0;
+      // opacity: 0;
 
       &.show {
-        opacity: 1;
+        height: 40px;
       }
     }
   }

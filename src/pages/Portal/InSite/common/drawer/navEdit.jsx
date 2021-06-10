@@ -137,11 +137,11 @@ export default function NavEdit(props) {
                 </div>
                 <div className={styles.taginpBox}>
                   <Form layout="inline">
-                    <Item>
-                      <svg className={`icon ${styles.navIcon}`}>
+                    <span className={styles.navIcon}>
+                      <svg className="icon">
                         <use href={`#${icon}`} />
                       </svg>
-                    </Item>
+                    </span>
 
                     <Item validateStatus={desStatus} help={desMsg}>
                       <Input
