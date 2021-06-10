@@ -151,10 +151,10 @@ class CaseLibrary extends PureComponent {
                   {r.status === '1' ? '停用' : '启用'}{' '}
                 </span>
               )}
-              <span className="operateLine" />
-              <span className="operateBtn" onClick={() => this.openWechatCode(r)}>
+              {/* <span className="operateLine" /> */}
+              {/* <span className="operateBtn" onClick={() => this.openWechatCode(r)}>
                   {r.status === '1' && '小程序码'}
-                </span>
+                </span> */}
             </div>
           );
         },
