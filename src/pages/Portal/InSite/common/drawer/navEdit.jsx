@@ -39,7 +39,7 @@ export default function NavEdit(props) {
   function addNewTag() {
     const len = navData.length;
     const empty = navData.find(nav => !nav.paths);
-    if (len === maxLen) return message.warning(`最多可添加${maxLen}个导航`);
+    if (len === maxLen) return message.warning(`导航栏添加${maxLen}个效果最佳哦`);
     if (empty) return message.warning(`请先编辑完成上一个`);
     const item = {
       // 给一个默认的对象
