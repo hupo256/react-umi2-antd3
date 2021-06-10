@@ -198,13 +198,20 @@ export default class CreateEdit extends Component {
 
     // 选择关联页面
     selectedHandle =  ( item, step ) => {
-        const { pageNum, searchText, currentarticleDicCode } = this.state
+        if (step === '0') {
+            this.setState({
+                currentSelectRelatedPageOpt: [],
+                currentKey: 0
+            })
+        }
+
+        const { pageNum, searchText, currentarticleDicCode, currentSelectRelatedPageOpt } = this.state
         this.setState(prevState => {
             let arr = prevState.currentSelectRelatedPageOpt;
             arr[+step] = item;
             return ({
                 currentSelectRelatedPageOpt: arr,
-                currentKey: +step + 1 + '',
+                currentKey: (arr[+step].linkType == '1' && !arr[+step].children.length) ?  step : +step + 1 + ''  ,
                 detailType: item.detailType,
 
             })
@@ -300,6 +307,7 @@ export default class CreateEdit extends Component {
             this.setState({
                 articleDicOpts: res.data.DM006,
                 currentarticleDicCode: res.data.DM006[0].code
+                
             })
         }
         
@@ -374,7 +382,8 @@ export default class CreateEdit extends Component {
             this.setState(prevState => {
                 
                 return ({
-                    currentSelectRelatedPageOpt: []
+                    currentSelectRelatedPageOpt: [],
+                    currentKey: '0'
                 })
             }, () => {
                 this.props.form.setFieldsValue({
@@ -388,7 +397,7 @@ export default class CreateEdit extends Component {
         })
         if (!isShow ) {
             this.setState({
-                currentKey: '0',
+                // currentKey: '0',
                 searchText: '',
                 pageNum: 1,
                 pageSize: 10,
@@ -405,15 +414,20 @@ export default class CreateEdit extends Component {
     }
 
     clickInputHandle = e => {
-        this.toggleSelectPanlHandle(true);
-        this.setState({
-            currentSelectRelatedPageOpt: [],
-            currentKey: '0',
-        }, () => {
-            this.props.form.setFieldsValue({
-                relatedPage:  this.formatData().map(item =>item.text).join(' / ')
-            })
-        })
+        const { showSelectPanl } = this.state;
+        if (!showSelectPanl) {
+            this.toggleSelectPanlHandle(true);
+            return;
+        } 
+        this.toggleSelectPanlHandle(false);
+        // this.setState({
+        //     currentSelectRelatedPageOpt: [],
+        //     currentKey: '0',
+        // }, () => {
+        //     this.props.form.setFieldsValue({
+        //         relatedPage:  this.formatData().map(item =>item.text).join(' / ')
+        //     })
+        // })
     }
 
     // 页码变换
@@ -428,6 +442,7 @@ export default class CreateEdit extends Component {
     
 
     render() {
+        
         const { form, isCreate  } = this.props;
         const { relatedPageOption, currentSelectRelatedPageOpt, currentKey, dataList,detailType, 
             articleDicOpts, currentarticleDicCode, searchText, showSelectPanl,
@@ -438,7 +453,7 @@ export default class CreateEdit extends Component {
             // 工地详情页表头
             columns_1: [
                 {
-                    title: <span style={{fontWeight: 300}}>工地</span>,
+                    title: <span style={{fontWeight: 600}}>工地</span>,
                     key: 'gongdiTitle',
                     dataIndex: 'gongdiTitle',
                     // width: '30%',
@@ -447,7 +462,7 @@ export default class CreateEdit extends Component {
                     </Tooltip> 
                 },
                 {
-                    title: <span style={{fontWeight: 300}}>工地信息</span>,
+                    title: <span style={{fontWeight: 600}}>工地信息</span>,
                     key: 'buildingName',
                     dataIndex: 'buildingName',
                     // width: 200,
@@ -457,7 +472,7 @@ export default class CreateEdit extends Component {
                         </Tooltip> 
                 },
                 {
-                    title: <span style={{fontWeight: 300}}>阶段</span>,
+                    title: <span style={{fontWeight: 600}}>阶段</span>,
                     key: 'gongdiStageName',
                     dataIndex: 'gongdiStageName',
                 }
@@ -466,7 +481,7 @@ export default class CreateEdit extends Component {
             // 设计师表头
             columns_2: [
                 {
-                    title: <span style={{fontWeight: 300}}>设计师</span>,
+                    title: <span style={{fontWeight: 600}}>设计师</span>,
                     key: 'name',
                     dataIndex: 'name',
                     // align: 'left',
@@ -476,12 +491,12 @@ export default class CreateEdit extends Component {
                     </div>
                 },
                 {
-                    title: <span style={{fontWeight: 300}}>职级</span>,
+                    title: <span style={{fontWeight: 600}}>职级</span>,
                     key: 'position',
                     dataIndex: 'position',
                 },
                 {
-                    title: <span style={{fontWeight: 300}}>案例数</span>,
+                    title: <span style={{fontWeight: 600}}>案例数</span>,
                     key: 'caseNum',
                     dataIndex: 'caseNum'
                 },
@@ -490,7 +505,7 @@ export default class CreateEdit extends Component {
             // 案例表头
             columns_3: [
                 {
-                    title: <span style={{fontWeight: 300}}>案例</span>,
+                    title: <span style={{fontWeight: 600}}>案例</span>,
                     key: 'titleInfo',
                     dataIndex: 'title',
                     render: (text, r) => 
@@ -501,7 +516,7 @@ export default class CreateEdit extends Component {
                         </div>
                 },
                 {
-                    title: <span style={{fontWeight: 300}}>案例信息</span>,
+                    title: <span style={{fontWeight: 600}}>案例信息</span>,
                     key: 'buildingName',
                     dataIndex: 'buildingName',
                     render: (text, r) => <Tooltip placement='topLeft' title={text}>
@@ -509,7 +524,7 @@ export default class CreateEdit extends Component {
                     </Tooltip> 
                 },
                 {
-                    title: <span style={{fontWeight: 300}}>设计师</span>,
+                    title: <span style={{fontWeight: 600}}>设计师</span>,
                     key: 'designerName',
                     dataIndex: 'designerName',
                     render: (text, r) => <Tooltip placement='topLeft' title={text}>
@@ -521,7 +536,7 @@ export default class CreateEdit extends Component {
             // 文章表头
             columns_4: [
                 {
-                    title: <span style={{fontWeight: 300}}>文章标题</span>,
+                    title: <span style={{fontWeight: 600}}>文章标题</span>,
                     key: 'articleTitle',
                     dataIndex: 'articleTitle',
                     render: (text, r) => <Tooltip placement='topLeft' title={text}>
@@ -529,7 +544,7 @@ export default class CreateEdit extends Component {
                     </Tooltip> 
                 },
                 {
-                    title: <span style={{fontWeight: 300}}>发布人</span>,
+                    title: <span style={{fontWeight: 600}}>发布人</span>,
                     key: 'creatorName',
                     dataIndex: 'creatorName',
                     render: (text, r) => <Tooltip placement='topLeft' title={text}>
@@ -537,7 +552,7 @@ export default class CreateEdit extends Component {
                     </Tooltip> 
                 },
                 {
-                    title: <span style={{fontWeight: 300}}>更新时间</span>,
+                    title: <span style={{fontWeight: 600}}>更新时间</span>,
                     key: 'updateTime',
                     dataIndex: 'updateTime'
                 },
@@ -545,7 +560,7 @@ export default class CreateEdit extends Component {
             // 专题表头
             columns_5: [
                 {
-                    title: <span style={{fontWeight: 300}}>专题标题</span>,
+                    title: <span style={{fontWeight: 600}}>专题标题</span>,
                     key: 'specialTitle',
                     dataIndex: 'specialTitle',
                     render: (text, r) => <Tooltip placement='topLeft' title={text}>
@@ -553,7 +568,7 @@ export default class CreateEdit extends Component {
                     </Tooltip> 
                 },
                 {
-                    title: <span style={{fontWeight: 300}}>创建人</span>,
+                    title: <span style={{fontWeight: 600}}>创建人</span>,
                     key: 'creatorName',
                     dataIndex: 'creatorName',
                     render: (text, r) => <Tooltip placement='topLeft' title={text}>
@@ -561,7 +576,7 @@ export default class CreateEdit extends Component {
                     </Tooltip> 
                 },
                 {
-                    title: <span style={{fontWeight: 300}}>更新时间</span>,
+                    title: <span style={{fontWeight: 600}}>更新时间</span>,
                     key: 'updateTime',
                     dataIndex: 'updateTime'
                 },
@@ -569,7 +584,7 @@ export default class CreateEdit extends Component {
             // 小游戏表头
             columns_6: [
                 {
-                    title: <span style={{fontWeight: 300}}>游戏标题</span>,
+                    title: <span style={{fontWeight: 600}}>游戏标题</span>,
                     key: 'activityTitle',
                     dataIndex: 'activityTitle',
                     render: (text, r) => <Tooltip placement='topLeft' title={text}>
@@ -577,7 +592,7 @@ export default class CreateEdit extends Component {
                     </Tooltip> 
                 },
                 {
-                    title: <span style={{fontWeight: 300}}>状态</span>,
+                    title: <span style={{fontWeight: 600}}>状态</span>,
                     key: 'state',
                     dataIndex: 'state',
                     render: (text, r) => {
@@ -588,7 +603,7 @@ export default class CreateEdit extends Component {
                     }
                 },
                 {
-                    title: <span style={{fontWeight: 300}}>创建人</span>,
+                    title: <span style={{fontWeight: 600}}>创建人</span>,
                     key: 'creater',
                     dataIndex: 'creater',
                     render: (text, r) => <Tooltip placement='topLeft' title={text} getPopupContainer={document.querySelector('.createEdit')}>
@@ -643,7 +658,7 @@ export default class CreateEdit extends Component {
                                 onClick={ this.clickInputHandle}
                                 suffix={
                                     <span id= 'icon'>
-                                        <Icon type="down"  onClick={ this.clickInputHandle} />
+                                        <Icon type="down"  onClick={ this.clickInputHandle} style={{transform: showSelectPanl ? 'rotate(180deg)' : 'rotate(0deg)'}} />
                                     </span>
                                     
                                 }
@@ -654,14 +669,14 @@ export default class CreateEdit extends Component {
                                 <TabPane tab={currentSelectRelatedPageOpt[0]?.name || '请选择'} key='0'>
                                     {
                                         relatedPageOption?.map(item => 
-                                            <p className={styles['card-item']} key={item.uid} onClick={() => this.selectedHandle(item, '0')}>{item.name}</p>
+                                            <div className={styles['card-item']} key={item.uid} onClick={() => this.selectedHandle(item, '0')}>{item.name}</div>
                                         )
                                     }
                                 </TabPane>
                                 {currentSelectRelatedPageOpt[0]?.children.length && <TabPane tab={currentSelectRelatedPageOpt[1]?.name || '请选择'} key='1'>
                                     {
                                         currentSelectRelatedPageOpt[0].children.map(item => 
-                                            <p className={styles['card-item']} key={item.uid} onClick={() => this.selectedHandle(item, '1')}>{item.name}</p>)
+                                            <div className={styles['card-item']} key={item.uid} onClick={() => this.selectedHandle(item, '1')}>{item.name}</div>)
                                     }
                                 </TabPane>}
                                 {(currentSelectRelatedPageOpt[1]?.linkType === 2 || currentSelectRelatedPageOpt[0]?.linkType === 2 ) && <TabPane tab='请选择' key= {currentSelectRelatedPageOpt[0]?.linkType === 2 ? '1' : '2'}>

@@ -35,10 +35,10 @@
     overflow: hidden;
     .card-item {
         cursor: pointer;
-        // padding: 6px 8px;
-        // &:hover {
-        //     background: #efefef ;
-        // }
+        padding: 6px 8px;
+        &:hover {
+            background: #efefef ;
+        }
     }
     :global {
         .ant-tabs-nav-container {
@@ -49,7 +49,7 @@
         }
         .ant-tabs-card{
             .ant-tabs-content {
-                height: 120px;
+                // height: 120px;
                 margin-top: -16px;
                 .ant-tabs-tabpane {
                     background: #fff;
@@ -69,6 +69,10 @@
                     border-color: #fff;
                     background: #fff;
                 }
+            }
+            .ant-table-pagination {
+                margin: 0px;
+                margin-top: 8px;
             }
         }
     }
