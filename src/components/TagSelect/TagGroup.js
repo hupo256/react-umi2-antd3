@@ -36,12 +36,16 @@ class TagGroup extends Component {
     e.preventDefault();
     const { inputValue } = this.state;
     let { tags } = this.state;
+    if (inputValue && inputValue.trim().length == 0) {
+      message.warning('请输入关键词');
+      return false;
+    }
     if (inputValue && inputValue.length > 10) {
       message.warning('最多输入10位字符');
       return false;
     }
     if (inputValue && tags.indexOf(inputValue) === -1) {
-      tags = [...tags, inputValue];
+      tags = [...tags, inputValue.trim()];
     }
     console.log(tags);
     this.setState(
