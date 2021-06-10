@@ -500,7 +500,7 @@ export default class RelevanceInp extends Component {
                     readOnly 
                     placeholder='请选择关联页面' 
                     onClick={this.clickInputHandle}
-                    onBlur={this.releInpBlur}
+                    // onBlur={this.releInpBlur}
                     suffix={<Icon type="down" />}
                 />             
             )} 
