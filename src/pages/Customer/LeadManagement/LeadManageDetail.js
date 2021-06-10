@@ -123,6 +123,9 @@ class LeadManageDetail extends Component {
   };
 
   getDetail = () => {
+    console.log('====================================');
+    console.log(111111);
+    console.log('====================================');
     const { dispatch } = this.props;
     dispatch({
       type: 'LeadManage/trackGetModel',

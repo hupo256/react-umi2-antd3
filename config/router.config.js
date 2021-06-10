@@ -299,27 +299,50 @@ export default [
       // },
       // v1.1
       // 客户
+      // {
+      //   path: '/customer',
+      //   name: 'customer',
+      //   icon: 'retweet',
+      //   code: 'MU90000002',
+      //   component: './Customer/LeadManagement/LeadManagement',
+      //   routes: [
+      //     // 线索管理
+      //     {
+      //       path: '/customer/detail',
+      //       PageHeaderName: '线索详情',
+      //       //code: 'P2020010110015',
+      //       component: './Customer/LeadManagement/LeadManageDetail',
+      //     },
+      //   ],
+      // },
+      // 线索管理
       {
         path: '/customer',
         name: 'customer',
         icon: 'MyIcon@icon-xiansuo',
         code: 'MU90000002',
         component: './Customer/LeadManagement/LeadManagement',
-        // routes: [
-        //   {
-        //     path: '/customer',
-        //     redirect: '/customer/companyinformation',
-        //   },
-        //   // 线索管理
-        //   {
-        //     path: '/customer/leadmanagement',
-        //     name: 'leadmanagement',
-        //     icon: 'retweet',
-        //     //code: 'P2020010110015',
-        //     component: './Customer/LeadManagement/LeadManagement',
-        //   },
-        // ],
       },
+      // 线索管理
+      {
+        path: '/customer',
+        name: 'customer',
+        icon: 'retweet',
+        code: 'MU90000002',
+        hideInMenu: true,
+        routes: [
+          {
+            path: '/customer/detail',
+            name: 'customer',
+            // icon: 'project',
+            type: 'project_status',
+            PageHeaderName: '详情',
+            code: 'MU900000020001',
+            component: './Customer/LeadManagement/LeadManageDetail',
+          },
+        ],
+      },
+
       // 配置
       {
         path: '/setting',
