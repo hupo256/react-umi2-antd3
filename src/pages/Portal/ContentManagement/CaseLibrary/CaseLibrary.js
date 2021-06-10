@@ -13,7 +13,8 @@ import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { paginations, getUrl, successIcon, waringInfo } from '@/utils/utils';
 import styles from './CaseLibrary.less';
 import { getauth } from '@/utils/authority';
-const { confirm } = Modal;
+import QRCode from 'qrcode.react'
+const { confirm, info } = Modal;
 const { Search } = Input;
 
 @connect(({ CaseLibrary, loading }) => ({
@@ -150,6 +151,10 @@ class CaseLibrary extends PureComponent {
                   {r.status === '1' ? '停用' : '启用'}{' '}
                 </span>
               )}
+              <span className="operateLine" />
+              <span className="operateBtn" onClick={() => this.openWechatCode(r)}>
+                  {r.status === '1' && '小程序码'}
+                </span>
             </div>
           );
         },
@@ -218,9 +223,31 @@ class CaseLibrary extends PureComponent {
               pagination={(CaseList && paginations(CaseList)) || false}
             />
           </Card>
+          <Modal
+            title='小程序码'
+            visible={this.state.visible}
+            onCancel={this.handleCancel}
+            width='360px'
+            footer={null}
+          >
+            <div style={{display: 'flex', justifyContent: 'center', padding: 20}}>
+              <QRCode style={{width: 200, height: 200}} value="http://facebook.github.io/react/" />,
+            </div>
+          </Modal>
         </PageHeaderWrapper>
       </div>
     );
+  }
+  handleCancel = () => {
+    this.setState({
+      visible: false
+    })
+  }
+  // 打开小程序码
+  openWechatCode = record => {
+    this.setState({
+      visible: true
+    })
   }
   handleSrarchStatus = status => {
     this.setState({ status }, () => {

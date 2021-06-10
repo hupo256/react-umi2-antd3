@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-05-28 18:43:51
+ * @Last Modified time: 2021-06-10 14:44:38
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -25,7 +25,7 @@ class FootComponent extends PureComponent {
     istruev: false,
     formList: [],
     visible: false,
-    title: '',
+    title: '创建表单',
     visibleForm: false,
     formUid: '',
     visibleDrawer: false,

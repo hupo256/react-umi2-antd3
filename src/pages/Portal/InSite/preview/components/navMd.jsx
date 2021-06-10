@@ -18,10 +18,10 @@ export default function NavMd(props) {
       <HoverMd tips="导航" flag="nav">
         <ul className={pageStyle.flex}>
           {navData?.map(nav => {
-            let { icon, name } = nav;
+            let { icon, name, navModule } = nav;
             icon = 'icon-' + icon?.split('icon')[1]; // 兼容iconfont在生成时加的前辍
             return (
-              <li key={name} className={`${icon === 'icon-ic_home_no' ? pageStyle.on : ''}`}>
+              <li key={navModule} className={`${icon === 'icon-ic_home_no' ? pageStyle.on : ''}`}>
                 <svg className="icon">
                   <use href={`#${icon}`} />
                 </svg>

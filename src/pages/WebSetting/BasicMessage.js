@@ -112,9 +112,23 @@ class BasicMessage extends Component {
     } = this.state;
     return (
       <div>
-        <div style={{ color: '#101010', fontSize: '26px', marginBottom: '20px' }}>基本信息</div>
-        <Form className="basicMessageFrom" onSubmit={this.onBasicForm}>
-          <FormItem label="网站标题（业主有可能通过您输入的关键词，搜索到您的网站哦！）">
+        <div style={{ color: '#101010', fontSize: '22px', marginBottom: '20px' }}>基本信息</div>
+        <Form className="basicMessageFrom" onSubmit={this.onBasicForm} style={{position: 'relative'}}>
+          <Popover
+            placement="right"
+            className="ContentHint uploadHints"
+            content="业主有可能通过您输入的网站描述，搜索到您的网站哦！"
+          >
+            <Icon type="question-circle" />
+          </Popover>
+          <Popover
+            placement="right"
+            className="TitleHint uploadHints"
+            content="业主有可能通过您输入的网站标题，搜索到您的网站哦！"
+          >
+            <Icon type="question-circle" />
+          </Popover>
+          <FormItem label="网站标题">
             {getFieldDecorator('basicTitle', {
               initialValue: basicTitle,
               rules: [
@@ -136,7 +150,7 @@ class BasicMessage extends Component {
               />
             )}
           </FormItem>
-          <FormItem label="网站描述（业主有可能通过您输入的关键词，搜索到您的网站哦！）">
+          <FormItem label="网站描述">
             {getFieldDecorator('basicContent', {
               initialValue: basicContent,
               rules: [
@@ -159,14 +173,21 @@ class BasicMessage extends Component {
               />
             )}
           </FormItem>
-          <FormItem label="关键词（业主有可能通过您输入的关键词，搜索到您的网站哦！）">
+          <FormItem label="关键词">
             {getFieldDecorator('basicKeyWords', {})(
-              <div style={{width: 400}}>
+              <div style={{ width: 400 }}>
                 {showtag && (
                   <TagGroup tags={basicKeyWords} handleSave={tags => this.handleTagSave(tags)} />
                 )}
               </div>
             )}
+            <Popover
+              placement="right"
+              className="keyWordHint uploadHints"
+              content="业主有可能通过您输入的关键词，搜索到您的网站哦！"
+            >
+              <Icon type="question-circle" />
+            </Popover>
           </FormItem>
           <FormItem label="网站图标">
             {getFieldDecorator('basicIcon', {
@@ -215,7 +236,7 @@ class BasicMessage extends Component {
                     <Popover
                       placement="right"
                       className="uploadHint"
-                      content="浏览器标签上的全站页面图标"
+                      content="将会用于频道栏的企业LOGO显示"
                     >
                       <Icon type="question-circle" />
                     </Popover>
@@ -335,7 +356,7 @@ class BasicMessage extends Component {
   // icon图片选择
   iconUploadOk = data => {
     // console.log(data);
-    const sizes = '?x-oss-process=image/crop,w_32,h_32,g_center'
+    const sizes = '?x-oss-process=image/crop,w_32,h_32,g_center';
     this.setState({ basicIcon: data[0].path + sizes });
     this.props.form.setFieldsValue({
       basicIcon: data[0].path + sizes,

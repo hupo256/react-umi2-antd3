@@ -89,6 +89,11 @@ export function Provider({ children }) {
             pageNum: '1',
             pageSize: '4',
           },
+          {
+            key: 'channel',
+            pageNum: '1',
+            pageSize: '20',
+          },
         ];
         getHomePageEditData(param).then(res => {
           message.destroy();
@@ -159,18 +164,31 @@ export function Provider({ children }) {
 
   function savePageData(params, callBack) {
     if (!pageData?.jsonData) return message.error('访问过于频繁，请稍后再试');
+    message.loading('正在提交，请稍后...');
     updateHomePageEditData(params).then(res => {
-      if (res.code === 200) {
-        const newArr = [...navData];
-        const arr = [];
-        newArr.forEach(e => {
-          e.navModule && arr.push(e);
-        });
-        saveNavEditData(arr).then(r => {
-          r.code === 200 && callBack && callBack();
-        });
+      if(res.code !== 200) return message.error(res.message || '请稍后再试');
+
+      const navObj = validationData() 
+      if(navObj) {
+        navObj.paths = [, -1]
+        setcurFlag('nav')
+        setNavData(navData.slice())
+        return message.error('关联页面必须选到末节点');
       }
+
+      const arr = navData.filter(nav => nav?.paths)
+      saveNavEditData(arr).then(r => {
+        r.code === 200 && callBack && callBack();
+      });
     });
+  }
+
+  function validationData(){
+    return navData.find(nav => {
+      const {paths, navModule} = nav
+      const len = paths?.length
+      return navModule !== 'index' && len === 1
+    })
   }
 
   const value = {

@@ -98,12 +98,9 @@
           display: inline-block;
           vertical-align: top;
         }
-        input:nth-child(3) {
-          width: 100%;
-        }
         .navIcon {
           font-size: 25px;
-          color: @hightColor;
+          color: #666;
           margin-left: 15px;
         }
         :global {
@@ -123,7 +120,7 @@
               width: 61%;
               margin-right: 0;
             }
-          }
+          } 
           .ant-form-item-with-help {
             margin-bottom: 5px;
           }
@@ -144,6 +141,36 @@
       }
       .ant-pagination-item-active {
         border-color: #fe6a30;
+      }
+    }
+  }
+
+
+  .navEditBox{
+    .titBox {
+      > span:nth-child(1) {
+        width: 17%;
+      }
+      > span:nth-child(2) {
+        width: 55%;
+      }
+    }
+    .taginpBox {
+      p:nth-child(2){
+        margin-bottom: -3px;
+      }
+      :global {
+        .ant-form-inline {
+          > div:nth-child(1) {
+            width: 20%;
+          }
+          > div:nth-child(2) {
+            width: 77%;
+          }
+        }
+        .ant-form-item{
+          margin-bottom: 0;
+        }
       }
     }
   }
