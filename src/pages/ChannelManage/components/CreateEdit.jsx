@@ -303,10 +303,10 @@ export default class CreateEdit extends Component {
      // 查询文章栏目选项
      getArticleDic = async () => {
         const res = await articleDicApi({dicModuleCodes: 'DM006'});
-        if (res?.data?.DM006) {
+        if (res?.data.length) {
             this.setState({
-                articleDicOpts: res.data.DM006,
-                currentarticleDicCode: res.data.DM006[0].code
+                articleDicOpts: res.data,
+                currentarticleDicCode: res.data[0].code
                 
             })
         }
@@ -665,7 +665,7 @@ export default class CreateEdit extends Component {
                             />              
                         )} 
                         {showSelectPanl && <div ref='parentNode'  className={styles['card-container']}>
-                            <Tabs type="card" tabBarGutter={0}  activeKey={currentKey} onChange={this.tabChange}>
+                            <Tabs size='small' animated={false} type="card" tabBarGutter={0}  activeKey={currentKey} onChange={this.tabChange}>
                                 <TabPane tab={currentSelectRelatedPageOpt[0]?.name || '请选择'} key='0'>
                                     {
                                         relatedPageOption?.map(item => 
@@ -692,10 +692,10 @@ export default class CreateEdit extends Component {
                                         }
                                     </Radio.Group>}
                                     <Table
-                                        size='small'
+                                        size='middle'
                                         style={{marginTop: 8, cursor: 'pointer'}}
                                         columns={ ColumnsObj[`columns_${detailType}`] }
-                                        scroll={{ y: 180 }}
+                                        scroll={{ y: 240 }}
                                         dataSource={dataList}
                                         onRow={record => {
                                             return {
