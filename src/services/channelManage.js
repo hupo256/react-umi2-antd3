@@ -87,9 +87,9 @@ export const articleListApi = body =>
 
 // 文章栏目列表信息接口
 export const articleDicApi = body =>
-  request(`${baseurl}/api/v1/wechat/dic/queryDicForForm`, {
-    method: 'POST',
-    body,
+  // request(`${baseurl}/api/v1/wechat/dic/queryDicForForm`, {
+    request(`${baseurl}/api/v1/wechat/dic/queryArticleDic`, {
+    method: 'GET',
   });
 
 // 专题列表接口
