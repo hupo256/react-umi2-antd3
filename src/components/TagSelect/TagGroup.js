@@ -63,12 +63,9 @@ class TagGroup extends Component {
   saveInputRef = input => (this.input = input);
   render() {
     const { tags, inputVisible, inputValue } = this.state;
-    console.log('====================================');
-    console.log(tags);
-    console.log('====================================');
     return (
       <div>
-        {tags.length > 0 &&
+        {Array.isArray(tags) &&
           tags.map((tag, index) => {
             const isLongTag = tag.length > 20;
             const tagElem = (
