@@ -32,7 +32,7 @@ class WebSetting extends Component {
   }
   async changeTabs(key) {
     console.log('234', key, this.state.hintIf);
-  
+
     if (this.state.hintIf) {
       this.setState({
         temporaryKey: key,
@@ -41,36 +41,36 @@ class WebSetting extends Component {
       return;
     } else {
       if (key == '1') {
-        if(this.state.oneChange){
+        if (this.state.oneChange) {
           await this.HostBindRef.dispatchValue();
-        }else{
+        } else {
           this.setState({
-            oneChange:true,
-          })
+            oneChange: true,
+          });
         }
-      }else if (key == '2' && this.state.oneChange) {
-        if(this.state.oneChange){
+      } else if (key == '2') {
+        if (this.state.oneChange) {
           await this.BasicMessageRef.dispatchValue();
-        }else{
+        } else {
           this.setState({
-            oneChange:true,
-          })
+            oneChange: true,
+          });
         }
-      }else if (key == '3'&& this.state.oneChange) {
-        if(this.state.oneChange){
+      } else if (key == '3') {
+        if (this.state.oneChange) {
           await this.EnterpriseMessageRef.dispatchValue();
-        }else{
+        } else {
           this.setState({
-            oneChange:true,
-          })
+            oneChange: true,
+          });
         }
-      }else if (key == '4'&& this.state.oneChange) {
-        if(this.state.oneChange){
+      } else if (key == '4') {
+        if (this.state.oneChange) {
           await this.CustomCodeRef.dispatchValue();
-        }else{
+        } else {
           this.setState({
-            oneChange:true,
-          })
+            oneChange: true,
+          });
         }
       }
       this.setState({
