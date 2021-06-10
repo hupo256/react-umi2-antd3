@@ -172,16 +172,16 @@ class HostBind extends Component {
               </FormItem>
             </Form>
             <div style={{ marginTop: '49px' }}>{hostSuffix}</div>
+            <CopyToClipboard
+              text={defaultHostValue + hostSuffix}
+              onCopy={() => message.success('复制成功')}
+            >
+              <div className="defaultHostCopyDiv">
+                <Icon type="copy" />
+                复制链接
+              </div>
+            </CopyToClipboard>
           </div>
-          <CopyToClipboard
-            text={defaultHostValue + hostSuffix}
-            onCopy={() => message.success('复制成功')}
-          >
-            <div className="defaultHostCopyDiv">
-              <Icon type="copy" />
-              复制链接
-            </div>
-          </CopyToClipboard>
           {permissionsBtn.includes('BTN210610000001') && (
             <Button className="defaultHostButton" onClick={this.onHostBind.bind(this)}>
               保存

@@ -22,12 +22,12 @@ switch (APP_ENVIRONMENT) {
     break;
   case 'dev': // 开发环境
     console.warn = function() {};
-    url = 'http://devgw.ingongdi.com';
+    url = 'http://testgw.ingongdi.com';
     break;
   case 'local': // 本地开发
     console.warn = function() {};
     // url = 'http://testgw.ingongdi.com';
-    url = 'http://devgw.ingongdi.com';
+    url = 'http://testgw.ingongdi.com';
     //url = 'http://pre.gateway.ingongdi.com';
     break;
   default:

@@ -371,7 +371,7 @@ class BasicMessage extends Component {
                         <Popover
                           placement="top"
                           className="uploadHint"
-                          content="将会用于频道栏的企业LOGO显示"
+                          content="logo现在最大支持：250x30 （我们会等比将 logo高度缩到30px，如果此时宽度还大于250px，我们就把右边的裁剪了）"
                         >
                           <Icon type="question-circle" />
                         </Popover>
