@@ -101,6 +101,7 @@ export default [
             name: 'channelmanage',
             path: '/portal/insite/channelmanage',
             component: './ChannelManage',
+            code: 'MU900000011001',
           },
           {
             path: '/portal/insite/websetting',
