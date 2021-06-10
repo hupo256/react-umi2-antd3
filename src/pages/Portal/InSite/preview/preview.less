@@ -214,17 +214,19 @@
     }
 
     .channelBox {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
       padding-top: 0.5em;
       margin-bottom: -2.5em;
-      justify-content: space-between;
 
       > li {
-        width: 17%;
+        width: 58px;
         text-align: center;
+        margin-right: 12.5px;
+        display: inline-block;
         padding-bottom: 2em;
+
+        &:nth-child(5n){
+          margin-right: 0;
+        }
 
         > img {
           width: 46px;
@@ -679,7 +681,6 @@
     width: 40px;
     display: flex;
     flex-direction: column;
-    transition: all 0.2s ease;
 
     span {
       width: 100%;
@@ -693,6 +694,7 @@
     }
 
     span:nth-child(2){
+      transition: all 0.4s ease;
       opacity: 0;
 
       &.show {
