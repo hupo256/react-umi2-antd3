@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-06-01 15:43:59
+ * @Last Modified time: 2021-06-10 11:33:11
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -72,7 +72,7 @@ class CreateStepThree extends PureComponent {
               this.addNew();
             }}
           >
-            在创建一个
+            再创建一个
           </Button>
           <Button
             style={{ marginLeft: 10 }}
