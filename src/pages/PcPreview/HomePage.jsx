@@ -11,6 +11,7 @@ import Articles from './Articles/Articles.jsx'
 import LiveShow from './LiveShow/LiveShow.jsx'
 import FooterComp from './FooterComp/FooterComp.jsx'
 import Regisiter from './Regisiter/Regisiter.jsx'
+import axios from 'axios'
 
 import { typeMap, paramMap } from './constants.js'
 import WebSetting from './WebSettingOut' // 注意：此处营销站独有
@@ -84,6 +85,27 @@ const Home = () => {
         if (res?.data && document) {
           const iconUrl = res.data.icon
           document.head.querySelector('[rel=icon]').href = iconUrl
+        }
+
+        if (document && res?.data) {
+          const data = res.data
+          const string = data.header,
+            temp = document.createElement('div')
+
+          temp.innerHTML = string
+          const elemScripts = temp.querySelectorAll('script')
+
+          _.forEach(elemScripts, async elem => {
+            const src = elem.src
+            if (src) {
+              try {
+                const res = await axios.get(src)
+                eval(res.data)
+              } catch (e) {}
+            } else {
+              eval(elem.text)
+            }
+          })
         }
       })()
       ;(async () => {
