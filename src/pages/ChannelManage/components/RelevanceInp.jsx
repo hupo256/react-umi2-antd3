@@ -17,8 +17,6 @@ export default class RelevanceInp extends Component {
             relatedPageOption: [],
             currentSelectRelatedPageOpt: [],
             currentKey: '0',
-            detailUid: undefined,
-            modifyPaths: [],
             recordTotal: 0,
             detailType: 0,
             dataList: [],
@@ -28,21 +26,17 @@ export default class RelevanceInp extends Component {
             pageNum: 1,
             pageSize: 10,
             showSelectPanl: false,
-            btnLoading: false,
-
         }
     }
     async componentDidMount() {
-        const { relatedPage, form } = this.props;
-        if(relatedPage) form.setFieldsValue({ relatedPage })
+        const { form, relatedPage, curUid } = this.props;
+        relatedPage && form.setFieldsValue({ relatedPage })
+        curUid === -1 && this.clickInputHandle()  // 为-1则校验没通过
     }
 
     async componentDidUpdate( prevProps ) {
         const { form, relatedPage } = this.props;
-
-        if ( relatedPage !== prevProps.relatedPage ) {
-            form.setFieldsValue({ relatedPage })
-        }
+        relatedPage !== prevProps.relatedPage && form.setFieldsValue({ relatedPage })
     }
 
     // 格式化回显
@@ -79,7 +73,7 @@ export default class RelevanceInp extends Component {
 
     // 过滤一级nav, 当children为空，则认为不应出现
     filterLevelOps = () => {
-        const { relatedPageOption, curUid, curNavs } = this.props
+        const { relatedPageOption} = this.props
         const optArr = this.format(relatedPageOption)
         const arr = optArr.filter(ar => ar.children?.length > 0)
         return arr
@@ -291,6 +285,24 @@ export default class RelevanceInp extends Component {
         })
     }
 
+    releInpBlur = () => {
+        setTimeout(() => {
+            const { form, curNavs, curUid } = this.props
+            console.log(curUid)
+            if(!curUid) {
+                this.clickInputHandle()
+            }
+        }, 400)
+        
+        return
+
+        form.validateFields( (err, values) => {  
+            console.log(values)     
+            if (err) return
+            console.log(11)
+        })
+    }
+
     // 页码变换
     pageChange = page => {
         const { searchText,  currentarticleDicCode } = this.state
@@ -304,7 +316,7 @@ export default class RelevanceInp extends Component {
         const { form, isCreate, inpDisabled  } = this.props;
         const { relatedPageOption, currentSelectRelatedPageOpt, currentKey, dataList,detailType, 
             articleDicOpts, currentarticleDicCode, searchText, showSelectPanl,
-            pageNum, pageSize, recordTotal, btnLoading
+            pageNum, pageSize, recordTotal,
         } = this.state
         const { getFieldDecorator } = form
         const ColumnsObj = {
@@ -471,11 +483,20 @@ export default class RelevanceInp extends Component {
         }
 
         return (
-        <>
+        // <Form labelCol={{ span: 6 }} wrapperCol={{ span: 13 }}>
+        <Form style={{width: '100%'}}>
+            <Form.Item>   
             {getFieldDecorator('relatedPage', {
                 rules: [{ required: true, message: '请选择关联页面!' }],
             })(
-                <Input className='targetInput' disabled={inpDisabled} readOnly placeholder='请选择关联页面' onClick={ this.clickInputHandle} suffix={<Icon type="right" />}/>             
+                <Input  
+                    disabled={inpDisabled} 
+                    readOnly 
+                    placeholder='请选择关联页面' 
+                    onClick={this.clickInputHandle}
+                    // onBlur={this.releInpBlur}
+                    suffix={<Icon type="right" />}
+                />             
             )} 
             {showSelectPanl && <div ref='parentNode'  className={styles['card-container']}>
                 <Tabs type="card" tabBarGutter={0}  activeKey={currentKey} onChange={this.tabChange}>
@@ -524,7 +545,8 @@ export default class RelevanceInp extends Component {
                     </TabPane>}
                 </Tabs>
             </div>}
-        </>
+            </Form.Item>
+        </Form>
         )
     }
 }
