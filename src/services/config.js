@@ -34,5 +34,4 @@ switch (APP_ENVIRONMENT) {
     console.log('环境配置出错，请检查！！==', APP_ENVIRONMENT);
     break;
 }
-
 export const baseurl = url;

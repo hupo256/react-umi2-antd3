@@ -1,8 +1,8 @@
 /*
  * @Author: tdd
  * @Date: 2021-06-02 13:49:12
- * @Last Modified by: tdd
- * @Last Modified time: 2021-06-02 15:49:12
+ * @Last Modified by: zqm
+ * @Last Modified time: 2021-06-10 14:18:53
  * 编辑亮点
  */
 import React, { useState, useEffect, useContext } from 'react';
@@ -81,17 +81,17 @@ export default function NavEdit(props) {
 
   // 收集已经有的nav
   function touchCurNavs() {
-    const arr = ['fd8d01f1a35111eb999e00505694ddf5']  // 首页
+    const arr = ['fd8d01f1a35111eb999e00505694ddf5']; // 首页
     navData.map(nav => {
       const { paths = [] } = nav;
-      const id = paths?.[1]
-      !!id && arr.push(id)  // 取末级的uid,去重时也从末级开始
+      const id = paths?.[1];
+      !!id && arr.push(id); // 取末级的uid,去重时也从末级开始
     });
     setcurNavs(arr);
   }
 
   function touchRelece(arr, num) {
-    console.log(arr);
+    // console.log(arr);
     const len = arr.length;
     navData[num].icon = arr[len - 1]?.icon;
     navData[num].navModule = arr[len - 1]?.appletsLink;
