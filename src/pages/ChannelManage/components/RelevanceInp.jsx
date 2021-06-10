@@ -273,6 +273,9 @@ export default class RelevanceInp extends Component {
     }
 
     clickInputHandle = () => {
+        const { form, showSec, curUid, callFun } = this.props
+        // callFun
+
         this.toggleSelectPanlHandle(true);
         this.setState({
             currentSelectRelatedPageOpt: [],
@@ -286,13 +289,17 @@ export default class RelevanceInp extends Component {
     }
 
     releInpBlur = () => {
+        const { form, showSec, curUid, callFun } = this.props
+
         setTimeout(() => {
             const { form, curNavs, curUid } = this.props
             console.log(curUid)
             if(!curUid) {
                 this.clickInputHandle()
+            }else {
+                this.toggleSelectPanlHandle(false);
             }
-        }, 400)
+        }, 200)
         
         return
 
@@ -493,7 +500,7 @@ export default class RelevanceInp extends Component {
                     readOnly 
                     placeholder='请选择关联页面' 
                     onClick={this.clickInputHandle}
-                    // onBlur={this.releInpBlur}
+                    onBlur={this.releInpBlur}
                     suffix={<Icon type="down" />}
                 />             
             )} 
