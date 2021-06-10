@@ -194,7 +194,7 @@ const Home = () => {
             </ChapterLayout>
           )}
           {_.isEmpty(publishedData['site']) || (
-            <div className={styles.designerSectionWiderBackground}>
+            <div className={styles.liveShowSectionWiderBackground}>
               <ChapterLayout title={publishedData['site']['title']}>
                 <LiveShow data={publishedData['site']['list']} domain={dynamicDomain} />
               </ChapterLayout>
