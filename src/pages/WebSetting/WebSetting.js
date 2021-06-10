@@ -19,7 +19,10 @@ class WebSetting extends Component {
       hintIf: false,
       tabsKey: '1',
       temporaryKey: '',
-      oneChange: false,
+      oneHostChange: false,
+      oneBaiscChange: false,
+      oneEnterChange: false,
+      oneCodeChange: false,
     };
     this.changeHintIf = this.changeHintIf.bind(this);
     this.openConfirm = this.openConfirm.bind(this);
@@ -41,50 +44,50 @@ class WebSetting extends Component {
       return;
     } else {
       if (key == '1') {
-        if (this.state.oneChange) {
+        if (this.state.oneHostChange) {
           await this.HostBindRef.dispatchValue();
           this.setState({
             tabsKey: key,
           });
         } else {
           this.setState({
-            oneChange: true,
+            oneHostChange: true,
             tabsKey: key,
           });
         }
       } else if (key == '2') {
-        if (this.state.oneChange) {
+        if (this.state.oneBaiscChange) {
           await this.BasicMessageRef.dispatchValue();
           this.setState({
             tabsKey: key,
           });
         } else {
           this.setState({
-            oneChange: true,
+            oneBaiscChange: true,
             tabsKey: key,
           });
         }
       } else if (key == '3') {
-        if (this.state.oneChange) {
+        if (this.state.oneEnterChange) {
           await this.EnterpriseMessageRef.dispatchValue();
           this.setState({
             tabsKey: key,
           });
         } else {
           this.setState({
-            oneChange: true,
+            oneEnterChange: true,
             tabsKey: key,
           });
         }
       } else if (key == '4') {
-        if (this.state.oneChange) {
+        if (this.state.oneCodeChange) {
           await this.CustomCodeRef.dispatchValue();
           this.setState({
             tabsKey: key,
           });
         } else {
           this.setState({
-            oneChange: true,
+            oneCodeChange: true,
             tabsKey: key,
           });
         }
