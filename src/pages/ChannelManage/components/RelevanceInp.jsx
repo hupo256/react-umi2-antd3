@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
-import { createChannel, getRelatedPage, getDetailApi, editChannelApi,
-         siteListApi, designerListApi, caseListApi, articleListApi, articleDicApi, specialListApi, activeListApi  } from '@/services/channelManage'
-import { Form, Input, Select, Button, Cascader, message, Tabs, Table, Radio, Icon, Tooltip   } from 'antd'
+import { siteListApi, designerListApi, caseListApi, articleListApi, articleDicApi, specialListApi, activeListApi  } from '@/services/channelManage'
+import { Form, Input, Tabs, Table, Radio, Icon, Tooltip   } from 'antd'
 import styles from '../index.less'
 
 const { TabPane } = Tabs
@@ -18,8 +17,6 @@ export default class RelevanceInp extends Component {
             relatedPageOption: [],
             currentSelectRelatedPageOpt: [],
             currentKey: '0',
-            detailUid: undefined,
-            modifyPaths: [],
             recordTotal: 0,
             detailType: 0,
             dataList: [],
@@ -29,66 +26,37 @@ export default class RelevanceInp extends Component {
             pageNum: 1,
             pageSize: 10,
             showSelectPanl: false,
-            btnLoading: false,
-
         }
     }
     async componentDidMount() {
-        const { isCreate, currentEditUid, relatedPageOption, relatedPage, form } = this.props;
-        if (!isCreate) {
-            this.getDetail(currentEditUid)
-        }
-        // const res = await getRelatedPage({sceneType: 2});
-        this.setState({
-            // relatedPageOption: this.format(res?.data) 
-            relatedPageOption: this.format(relatedPageOption) 
-        })
-        if(relatedPage) form.setFieldsValue({ relatedPage })
+        const { form, relatedPage, curUid } = this.props;
+        relatedPage && form.setFieldsValue({ relatedPage })
+        curUid === -1 && this.clickInputHandle()  // 为-1则校验没通过
     }
 
     async componentDidUpdate( prevProps ) {
-        const { form, isCreate } = this.props;
-
-        // 编辑回填默认数据
-        if ( this.props.currentEditUid && this.props.showCreateEdit !== prevProps.showCreateEdit &&  this.props.showCreateEdit) {
-            this.getDetail(this.props.currentEditUid)
-        }
-
-        // 关闭重置表单组件数据
-        if (  this.props.showCreateEdit !== prevProps.showCreateEdit  ) {
-            form.resetFields()
-            this.setState({
-                showSelectPanl: false
-            })
-        }
-
+        const { form, relatedPage } = this.props;
+        relatedPage !== prevProps.relatedPage && form.setFieldsValue({ relatedPage })
     }
 
-/**
- * @description: 获取频道详情 
- * @param {*}
- * @return {*}
- */    
-    getDetail = async uid => {
-        const { form, paths } = this.props;
-        console(paths, linkDisplayName)
-        if (!uid) return;
-        const res = await getDetailApi({ uid });
-        this.setState({
-            detailUid: res.data.detailUid,
-            modifyPaths: res.data.paths
-        })
-        form.setFieldsValue({
-            ...res?.data,
-            relatedPage: res?.data?.linkDisplayName
-        })
+    // 格式化回显
+    formatData = () => {
+        const {currentSelectRelatedPageOpt } = this.state;
+        let arr = [];
+        for (const key in currentSelectRelatedPageOpt) {
+            if (currentSelectRelatedPageOpt.hasOwnProperty.call(currentSelectRelatedPageOpt, key)) {
+                const {name, uid, icon, appletsLink, linkKey} = currentSelectRelatedPageOpt[key];
+                arr.push({
+                    text: name,
+                    code: uid,
+                    icon, linkKey, appletsLink,
+                })
+            }
+        }
+        return arr;
     }
 
-    /**
-     * @description: 解构重组后台数据
-     * @param {*}
-     * @return {*}
-     */    
+    // 解构重组后台数据 
     format = data => {
         if (!Array.isArray(data)) return;
         let newArr = [];
@@ -103,112 +71,22 @@ export default class RelevanceInp extends Component {
         return newArr
     }
 
-    // 过滤掉已经有的nav
+    // 过滤一级nav, 当children为空，则认为不应出现
+    filterLevelOps = () => {
+        const { relatedPageOption} = this.props
+        const optArr = this.format(relatedPageOption)
+        const arr = optArr.filter(ar => ar.children?.length > 0)
+        return arr
+    }
+
+    // 过滤二级掉已有的nav
     touchSelcOpts = (opts) => {
       const { curNavs, curUid } = this.props
-      let tempNavs = [...curNavs]
+      const tempNavs = [...curNavs]
       const ind = tempNavs.indexOf(curUid)
-      tempNavs.splice(ind, 1)  // 当前的那个选项应该排除在外
-      const arr = []
-      opts.forEach(opt => {
-        if(!tempNavs.includes(opt?.uid)) arr.push(opt)
-      })
-      return arr
-    }
- 
-    handleSubmit =  e => {
-        const { form, isCreate, selectDetailData } = this.props
-        const { currentSelectRelatedPageOpt, modifyPaths, detailUid } = this.state;
-        const optArr = this.formatData();
-        e.preventDefault();
-        form.validateFields( (err, values) => {       
-            if (err) {
-              return
-            }
-           
-            let detailUid2;
-            let arr = optArr.map(item => item.code);
-            if (optArr[0].text === '专题' || optArr[0].text === '小游戏') {
-                detailUid2 = optArr[1].code;
-                arr = optArr.map(item => item.code).slice(0, arr.length - 1)
-            }
-
-            if(arr.length === 3) {
-                detailUid2 = arr.pop()
-            }
-        
-            this.setState({
-                btnLoading: true
-            })
-            if (isCreate) {
-                let {   relatedPage, ...params } = { ...values, paths: arr, detailUid: detailUid2 }
-                
-                createChannel(params).then(res => {
-                    if (res?.code === 200) {
-                        this.resetHandle();
-                        message.success('频道创建成功!')
-                    }
-                    this.setState({
-                        btnLoading: false
-                    })
-                })
-
-            
-            } else {
-                const { currentEditUid } = this.props;
-                let {   relatedPage, ...params } = { ...values, paths: arr.length > 0 ?  arr : modifyPaths, detailUid: detailUid2, uid: currentEditUid }
-                editChannelApi(params).then(res => {
-                    if (res?.code === 200) {
-                        this.resetHandle();
-                        message.success('编辑已保存，发布后生效 !')
-                    }
-                    this.setState({
-                        btnLoading: false
-                    })
-                })
-            }
-            
-
-        });
-    }
-
-    /**
-     * @description: 重置状态框
-     * @param {*}
-     * @return {*}
-     */
-    resetHandle = () => {
-        const { dispatch, showCreateEdit, form } = this.props;
-        dispatch({
-            type: 'channelManage/save',
-            payload: {
-                showCreateEdit: !showCreateEdit,
-                currentDetailType: 0,
-                selectDetailData: []
-            }
-        }) 
-
-    }
-    /**
-     * @description: 选取关联页面
-     * @param {*}
-     * @return {*}
-     */
-     onChangeHandle = async (val, opt) => {
-        const { form, dispatch } = this.props;
-
-        // 进入详情页选择
-        if (opt[opt.length - 1].linkType === 2) {
-            dispatch({
-                type: 'channelManage/save',
-                payload: {
-                    selectDetailData: [],
-                    currentDetailType: opt[opt.length - 1].detailType,
-                }
-            })
-
-        }
-
+      ind > -1 && tempNavs.splice(ind, 1)  // 当前的那个选项应该排除在外，如果有的话
+      const newOpts = opts.filter(opt => !tempNavs.includes(opt?.uid))
+      return newOpts
     }
 
     // 选择关联页面
@@ -363,23 +241,6 @@ export default class RelevanceInp extends Component {
         
     }
 
-    // 格式化回显
-    formatData = () => {
-        const {currentSelectRelatedPageOpt } = this.state;
-        let arr = [];
-        for (const key in currentSelectRelatedPageOpt) {
-            if (currentSelectRelatedPageOpt.hasOwnProperty.call(currentSelectRelatedPageOpt, key)) {
-                const item = currentSelectRelatedPageOpt[key];
-                arr.push({
-                    text: item.name || item.title || item.articleTitle  || item.gongdiTitle || item.specialTitle || item.activityTitle,
-                    code: item.uid || item.gongdiUid || item.articleUid || item.specialUid
-                })
-            }
-        }
-        return arr;
-            
-    }
-
     // 切换选择页面面板显示
     toggleSelectPanlHandle = ( isShow ) => {
         const { currentSelectRelatedPageOpt } = this.state;
@@ -411,24 +272,34 @@ export default class RelevanceInp extends Component {
         }
     }
 
-    closeHanlde = e => {
-        const parent = this.refs.parentNode;
-        if (!parent?.contains(e.target) && !e.target.className.includes('targetInput')) {
-            this.toggleSelectPanlHandle(false)
-        }
-    }
-
     clickInputHandle = () => {
-        const { relatedPageOption } = this.props
         this.toggleSelectPanlHandle(true);
         this.setState({
             currentSelectRelatedPageOpt: [],
             currentKey: '0',
-            relatedPageOption: this.format(relatedPageOption) 
+            relatedPageOption: this.filterLevelOps()
         }, () => {
             this.props.form.setFieldsValue({
                 relatedPage:  this.formatData().map(item =>item.text).join(' / ')
             })
+        })
+    }
+
+    releInpBlur = () => {
+        setTimeout(() => {
+            const { form, curNavs, curUid } = this.props
+            console.log(curUid)
+            if(!curUid) {
+                this.clickInputHandle()
+            }
+        }, 400)
+        
+        return
+
+        form.validateFields( (err, values) => {  
+            console.log(values)     
+            if (err) return
+            console.log(11)
         })
     }
 
@@ -445,7 +316,7 @@ export default class RelevanceInp extends Component {
         const { form, isCreate, inpDisabled  } = this.props;
         const { relatedPageOption, currentSelectRelatedPageOpt, currentKey, dataList,detailType, 
             articleDicOpts, currentarticleDicCode, searchText, showSelectPanl,
-            pageNum, pageSize, recordTotal, btnLoading
+            pageNum, pageSize, recordTotal,
         } = this.state
         const { getFieldDecorator } = form
         const ColumnsObj = {
@@ -612,75 +483,69 @@ export default class RelevanceInp extends Component {
         }
 
         return (
-            // <div className='createEdit' onClick={this.closeHanlde}>
-                // <Form labelCol={{ span: 6 }} wrapperCol={{ span: 13 }} onSubmit={this.handleSubmit}>
-                //     <Form.Item label="关联页面">
-                    <>
-                        {getFieldDecorator('relatedPage', {
-                            rules: [{ required: true, message: '请选择关联页面!' }],
-                        })(
-                            <Input className='targetInput' disabled={inpDisabled} readOnly placeholder='请选择关联页面' onClick={ this.clickInputHandle} suffix={<Icon type="right" />}/>             
-                        )} 
-                        {showSelectPanl && <div ref='parentNode'  className={styles['card-container']}>
-                            <Tabs type="card" tabBarGutter={0}  activeKey={currentKey} onChange={this.tabChange}>
-                                <TabPane tab={currentSelectRelatedPageOpt[0]?.name || '请选择'} key='0'>
-                                    {
-                                        relatedPageOption?.map(item => 
-                                            <p style={{cursor: 'pointer'}} key={item.uid} onClick={() => this.selectedHandle(item, '0')}>{item.name}</p>
-                                        )
-                                    }
-                                </TabPane>
-                                {currentSelectRelatedPageOpt[0]?.children.length && <TabPane tab={currentSelectRelatedPageOpt[1]?.name || '请选择'} key='1'>
-                                    {
-                                        currentSelectRelatedPageOpt[0].children.map(item => 
-                                            <p style={{cursor: 'pointer'}} key={item.uid} onClick={() => this.selectedHandle(item, '1')}>{item.name}</p>)
-                                    }
-                                </TabPane>}
-                                {(currentSelectRelatedPageOpt[1]?.linkType === 2 || currentSelectRelatedPageOpt[0]?.linkType === 2 ) && <TabPane tab='请选择' key= {currentSelectRelatedPageOpt[0]?.linkType === 2 ? '1' : '2'}>
-                                    <Search
-                                        value={searchText}
-                                        placeholder='可输入关键字进行检索'
-                                        onChange={  e => { const value = e.target.value; this.setState({searchText: value, pageNum: 1}); this.handleChange(value) }}
-                                    />
-                                    {detailType === 4 && <Radio.Group style={{marginTop: 8}} buttonStyle='solid'  size='small' value={currentarticleDicCode} buttonStyle="solid"  onChange={this.radioGroupChange}>
-                                        {
-                                            articleDicOpts.map(item => <Radio.Button key={item.code} value={item.code}>{item.name}</Radio.Button>)
-                                        }
-                                    </Radio.Group>}
-                                    <Table
-                                        size='small'
-                                        style={{marginTop: 8, cursor: 'pointer'}}
-                                        columns={ ColumnsObj[`columns_${detailType}`] }
-                                        dataSource={dataList}
-                                        onRow={record => {
-                                            return {
-                                                onClick: e => this.rowClick(e, record)
-                                            }
-                                        }}
-                                        pagination={{
-                                            current: pageNum,
-                                            pageSize,
-                                            total: recordTotal,
-                                            onChange: this.pageChange
+        <Form style={{width: '100%'}}>
+            <Form.Item>   
+            {getFieldDecorator('relatedPage', {
+                rules: [{ required: true, message: '请选择关联页面!' }],
+            })(
+                <Input  
+                    disabled={inpDisabled} 
+                    readOnly 
+                    placeholder='请选择关联页面' 
+                    onClick={this.clickInputHandle}
+                    // onBlur={this.releInpBlur}
+                    suffix={<Icon type="down" />}
+                />             
+            )} 
+            {showSelectPanl && <div ref='parentNode'  className={styles['card-container']}>
+                <Tabs type="card" tabBarGutter={0}  activeKey={currentKey} onChange={this.tabChange}>
+                    <TabPane tab={currentSelectRelatedPageOpt[0]?.name || '请选择'} key='0'>
+                        {
+                            relatedPageOption?.map(item => 
+                                <p style={{cursor: 'pointer'}} key={item.uid} onClick={() => this.selectedHandle(item, '0')}>{item.name}</p>
+                            )
+                        }
+                    </TabPane>
+                    {currentSelectRelatedPageOpt[0]?.children.length && <TabPane tab={currentSelectRelatedPageOpt[1]?.name || '请选择'} key='1'>
+                        {
+                            currentSelectRelatedPageOpt[0].children.map(item => 
+                                <p style={{cursor: 'pointer'}} key={item.uid} onClick={() => this.selectedHandle(item, '1')}>{item.name}</p>)
+                        }
+                    </TabPane>}
+                    {(currentSelectRelatedPageOpt[1]?.linkType === 2 || currentSelectRelatedPageOpt[0]?.linkType === 2 ) && <TabPane tab='请选择' key= {currentSelectRelatedPageOpt[0]?.linkType === 2 ? '1' : '2'}>
+                        <Search
+                            value={searchText}
+                            placeholder='可输入关键字进行检索'
+                            onChange={  e => { const value = e.target.value; this.setState({searchText: value, pageNum: 1}); this.handleChange(value) }}
+                        />
+                        {detailType === 4 && <Radio.Group style={{marginTop: 8}} buttonStyle='solid'  size='small' value={currentarticleDicCode} buttonStyle="solid"  onChange={this.radioGroupChange}>
+                            {
+                                articleDicOpts.map(item => <Radio.Button key={item.code} value={item.code}>{item.name}</Radio.Button>)
+                            }
+                        </Radio.Group>}
+                        <Table
+                            size='small'
+                            style={{marginTop: 8, cursor: 'pointer'}}
+                            columns={ ColumnsObj[`columns_${detailType}`] }
+                            dataSource={dataList}
+                            onRow={record => {
+                                return {
+                                    onClick: e => this.rowClick(e, record)
+                                }
+                            }}
+                            pagination={{
+                                current: pageNum,
+                                pageSize,
+                                total: recordTotal,
+                                onChange: this.pageChange
 
-                                        }}
-                                    />
-                                </TabPane>}
-                            </Tabs>
-                        </div>}
-                    </>
-                //     </Form.Item>
-                    
-                //     <Form.Item wrapperCol={{ span:6, offset: 9 }}>
-                //         <Button type="primary" loading={btnLoading} htmlType="submit" style={{float: 'left'}}>
-                //             确定
-                //         </Button>
-                //         <Button  style={{float: 'right'}} onClick={this.resetHandle}>
-                //             取消
-                //         </Button>
-                //     </Form.Item>
-                // </Form>
-            // </div>
+                            }}
+                        />
+                    </TabPane>}
+                </Tabs>
+            </div>}
+            </Form.Item>
+        </Form>
         )
     }
 }

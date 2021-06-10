@@ -341,6 +341,23 @@ class CreateStepOne extends PureComponent {
               />
             )}
           </Form.Item>
+          {/* <Form.Item label="VR链接">
+            {getFieldDecorator('vrLink', {
+              initialValue: stepOne.vrLink || 'https://vr.realsee.cn/vr/',
+              rules: [
+                {
+                  max: 200,
+                  message: '请输入VR链接',
+                },
+              ],
+            })(
+              <Input
+                className="depFormInputAfter"
+                style={{ width: 400 }}
+                placeholder="请输入VR链接"
+              />
+            )}
+          </Form.Item> */}
           <h4 className={styles.title}>TDK设置（用于搜索引擎收录）</h4>
           <Form.Item
             label={
