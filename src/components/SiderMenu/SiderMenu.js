@@ -186,6 +186,15 @@ export default class SiderMenu extends PureComponent {
       </Sider>
     );
   }
+  link = name => {
+    return APP_ENVIRONMENT === 'prod'
+      ? `http://${name}.ingongdi.com/#/user/login?token=${token}`
+      : APP_ENVIRONMENT === 'pre'
+        ? `http://pre-${name}.ingongdi.com/#/user/login?token=${token}`
+        : APP_ENVIRONMENT === 'test'
+          ? `http://test-${name}.ingongdi.com/#/user/login?token=${token}`
+          : `http://dev-${name}.ingongdi.com/#/user/login?token=${token}`;
+  };
   handleSystemRoute = systemCode => {
     let token = localStorage.getItem('crmtoken');
     let targetUrl = '';
