@@ -43,39 +43,52 @@ class WebSetting extends Component {
       if (key == '1') {
         if (this.state.oneChange) {
           await this.HostBindRef.dispatchValue();
+          this.setState({
+            tabsKey: key,
+          });
         } else {
           this.setState({
             oneChange: true,
+            tabsKey: key,
           });
         }
       } else if (key == '2') {
         if (this.state.oneChange) {
           await this.BasicMessageRef.dispatchValue();
+          this.setState({
+            tabsKey: key,
+          });
         } else {
           this.setState({
             oneChange: true,
+            tabsKey: key,
           });
         }
       } else if (key == '3') {
         if (this.state.oneChange) {
           await this.EnterpriseMessageRef.dispatchValue();
+          this.setState({
+            tabsKey: key,
+          });
         } else {
           this.setState({
             oneChange: true,
+            tabsKey: key,
           });
         }
       } else if (key == '4') {
         if (this.state.oneChange) {
           await this.CustomCodeRef.dispatchValue();
+          this.setState({
+            tabsKey: key,
+          });
         } else {
           this.setState({
             oneChange: true,
+            tabsKey: key,
           });
         }
       }
-      this.setState({
-        tabsKey: key,
-      });
     }
   }
   openConfirm() {
