@@ -13,7 +13,7 @@ import AddMore from './addMore';
 import LinkChoose from './linkChoose';
 import styles from './drawerEditor.less';
 
-const maxLen = 6;
+const maxLen = 8;
 const { Item } = Form;
 
 export default function TagsEdit(props) {
