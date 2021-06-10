@@ -315,7 +315,7 @@ class BasicMessage extends Component {
                         <Popover
                           placement="right"
                           className="uploadHint"
-                          content="浏览器标签上的全站页面图标"
+                          content="将会用于浏览器标签上的图标，建议尺寸：32px*32px"
                         >
                           <Icon type="question-circle" />
                         </Popover>
@@ -334,7 +334,8 @@ class BasicMessage extends Component {
                     <Popover
                       placement="right"
                       className="uploadHint"
-                      content="将会用于频道栏的企业LOGO显示"
+                      
+                      content="将会用于浏览器标签上的图标，建议尺寸：32px*32px"
                     >
                       <Icon type="question-circle" />
                     </Popover>
@@ -371,7 +372,7 @@ class BasicMessage extends Component {
                         <Popover
                           placement="top"
                           className="uploadHint"
-                          content="logo现在最大支持：250x30 （我们会等比将 logo高度缩到30px，如果此时宽度还大于250px，我们就把右边的裁剪了）"
+                          content="将会用于频道栏的企业LOGO显示: 建议尺寸：250px*30px"
                         >
                           <Icon type="question-circle" />
                         </Popover>
@@ -390,7 +391,7 @@ class BasicMessage extends Component {
                     <Popover
                       placement="top"
                       className="uploadHint"
-                      content="将会用于频道栏的企业LOGO显示"
+                      content="将会用于频道栏的企业LOGO显示: 建议尺寸：250px*30px"
                     >
                       <Icon type="question-circle" />
                     </Popover>
