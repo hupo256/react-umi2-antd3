@@ -306,7 +306,7 @@ class EnterpriseMessage extends Component {
                         <span onClick={() => this.setState({ storeCover: null })}>
                           <Icon type="delete" />
                         </span>
-                        <Popover placement="rightTop" className="uploadHint" content="门店封面图,用于底部栏显示，建议尺寸156px*78px">
+                        <Popover placement="rightTop" className="uploadHint" content="门店封面图，用于底部栏显示，建议尺寸156px*78px">
                           <Icon type="question-circle" />
                         </Popover>
                       </div>
@@ -321,7 +321,7 @@ class EnterpriseMessage extends Component {
                       <Icon type="plus" />
                     </p>
                     <p>点击上传</p>
-                    <Popover placement="rightTop" className="uploadHint" content="门店封面图,用于底部栏显示，建议尺寸156px*78px">
+                    <Popover placement="rightTop" className="uploadHint" content="门店封面图，用于底部栏显示，建议尺寸156px*78px">
                       <Icon type="question-circle" />
                     </Popover>
                   </div>
