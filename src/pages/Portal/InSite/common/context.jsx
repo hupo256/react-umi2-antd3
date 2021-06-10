@@ -167,11 +167,28 @@ export function Provider({ children }) {
     message.loading('正在提交，请稍后...');
     updateHomePageEditData(params).then(res => {
       if(res.code !== 200) return message.error(res.message || '请稍后再试');
+
+      const navObj = validationData() 
+      if(navObj) {
+        navObj.paths = [, -1]
+        setcurFlag('nav')
+        setNavData(navData.slice())
+        return message.error('关联页面必须选到末节点');
+      }
+
       const arr = navData.filter(nav => nav?.paths)
       saveNavEditData(arr).then(r => {
         r.code === 200 && callBack && callBack();
       });
     });
+  }
+
+  function validationData(){
+    return navData.find(nav => {
+      const {paths, navModule} = nav
+      const len = paths?.length
+      return navModule !== 'index' && len === 1
+    })
   }
 
   const value = {
