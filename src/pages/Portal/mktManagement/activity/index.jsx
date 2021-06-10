@@ -93,7 +93,7 @@ export default function Activityer(props) {
           {permissionsBtn.includes('BTN210422000002') && (
             <>
               <a onClick={() => toEdit(record.uid)}>编辑</a>
-              <span>|</span>
+              {/* <span>|</span> */}
             </>
           )}
           {permissionsBtn.includes('BTN210422000003') && (
