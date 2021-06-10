@@ -41,6 +41,14 @@
         }
     }
     :global {
+        .ant-radio-button-wrapper {
+            border: none;
+            border-radius: 2px;
+            margin: 2px 6px;
+            &:not(:first-child)::before {
+                width: 0;
+            }
+        }
         .ant-tabs-nav-container {
             background: #efefef;
         }

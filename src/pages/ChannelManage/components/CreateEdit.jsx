@@ -449,6 +449,14 @@ export default class CreateEdit extends Component {
             pageNum, pageSize, recordTotal, btnLoading
         } = this.state
         const { getFieldDecorator } = form
+        const placeholderArr = [
+            '工地标题',
+            '设计师姓名',
+            '案例标题',
+            '文章标题/内容',
+            '专题标题',
+            '小游戏标题'
+        ]
         const ColumnsObj = {
             // 工地详情页表头
             columns_1: [
@@ -683,14 +691,17 @@ export default class CreateEdit extends Component {
                                     <Search
                                         style={{marginTop: 8}}
                                         value={searchText}
-                                        placeholder='可输入关键字进行检索'
+                                        placeholder={placeholderArr[+detailType] ? `可通过${placeholderArr[(+detailType) - 1]}进行搜索` : '可输入关键字进行检索'}
                                         onChange={  e => { const value = e.target.value; this.setState({searchText: value, pageNum: 1}); this.handleChange(value) }}
                                     />
-                                    {detailType === 4 && <Radio.Group style={{marginTop: 8}} buttonStyle='solid'  size='small' value={currentarticleDicCode} buttonStyle="solid"  onChange={this.radioGroupChange}>
-                                        {
-                                            articleDicOpts.map(item => <Radio.Button key={item.code} value={item.code}>{item.name}</Radio.Button>)
-                                        }
-                                    </Radio.Group>}
+                                    {detailType === 4 && <div>
+                                        <span style={{ display: 'inline-block', marginTop: 8}}>文章栏目:</span>
+                                        <Radio.Group style={{margin: 8}}   size='small' value={currentarticleDicCode} buttonStyle="solid"  onChange={this.radioGroupChange}>
+                                            {
+                                                articleDicOpts.map(item => <Radio.Button key={item.code} style={{marginTop: 4}} value={item.code}>{item.name}</Radio.Button>)
+                                            }
+                                        </Radio.Group>
+                                    </div>   }
                                     <Table
                                         size='middle'
                                         style={{marginTop: 8, cursor: 'pointer'}}
