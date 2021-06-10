@@ -2,11 +2,11 @@
  * @Author: zqm 
  * @Date: 2021-01-28 17:56:05 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-02-02 10:13:01
+ * @Last Modified time: 2021-05-25 11:38:06
  * 状态变更
  */
 import React, { Component } from 'react';
-import { Modal, message, Input } from 'antd';
+import { Modal, message, Input, InputNumber } from 'antd';
 import styles from '../LeadManage.less';
 import { regExpConfig } from '../../../../utils/regular.config';
 const { TextArea } = Input;
@@ -66,6 +66,31 @@ class CluesEdit extends Component {
           <span style={{ flex: 1 }}>{record.referrerName}</span>
         </div>
         <div className={styles.CluesEdit}>
+          <span>楼盘/楼宇：</span>
+          <span style={{ flex: 1 }}>
+            <Input
+              placeholder="请输入楼盘/楼宇"
+              value={record.address}
+              onChange={e =>
+                this.setState({ record: { ...this.state.record, address: e.target.value } })
+              }
+            />
+          </span>
+        </div>
+        <div className={styles.CluesEdit}>
+          <span>面积：</span>
+          <span style={{ flex: 1 }}>
+            <InputNumber
+              placeholder="请输入面积"
+              value={record.area}
+              precision={2}
+              style={{ width: '90%', marginRight: 8 }}
+              onChange={e => this.setState({ record: { ...this.state.record, area: e } })}
+            />
+            m²
+          </span>
+        </div>
+        <div className={styles.CluesEdit}>
           <span>线索描述：</span>
           <span style={{ flex: 1 }}>
             <TextArea
@@ -98,6 +123,15 @@ class CluesEdit extends Component {
       return false;
     } else if (!regExpConfig.phone.test(record.mobile)) {
       message.error('手机号格式不正确');
+      return false;
+    } else if (record.address && record.address.length > 30) {
+      message.error('楼盘/楼宇限制1-30字符长度');
+      return false;
+    } else if (record.area && parseFloat(record.area) + '' === 'NaN') {
+      message.error('面积限制输入0.01-99999范围内的数字（含两位小数）');
+      return false;
+    } else if (record.area && (parseFloat(record.area) < 0.01 || parseInt(record.area) > 99999)) {
+      message.error('面积限制输入0.01-99999范围内的数字（含两位小数）');
       return false;
     } else if (record.trackDesc && record.trackDesc.length > 100) {
       message.error('线索描述限制0-100字符长度');

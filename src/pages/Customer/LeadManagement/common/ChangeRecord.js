@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-01-28 17:56:05 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-15 11:48:01
+ * @Last Modified time: 2021-05-19 21:51:07
  * 状态变更记录
  */
 import React, { Component } from 'react';
@@ -25,19 +25,25 @@ class ChangeRecord extends Component {
   render() {
     const columns = [
       {
-        title: '变更时间',
+        title: '跟进时间',
         dataIndex: 'updateTime',
+        width: 200,
+        render: (t, r) => {
+          return (
+            <div>
+              <p style={{ marginBottom: 6 }}>{t}</p>
+              <p style={{ marginBottom: 0 }}>{r.creatorName}</p>
+            </div>
+          );
+        },
       },
       {
-        title: '变更后状态',
+        title: '跟进状态',
         dataIndex: 'status',
+        width: 120,
       },
       {
-        title: '变更前',
-        dataIndex: 'statusOld',
-      },
-      {
-        title: '变更原因',
+        title: '跟进内容',
         dataIndex: 'changeReason',
         width: 300,
         render: text => {
@@ -54,21 +60,17 @@ class ChangeRecord extends Component {
           );
         },
       },
-      {
-        title: '变更用户',
-        dataIndex: 'creatorName',
-      },
     ];
     const {
       LeadManage: { trackLogData },
     } = this.props;
     return (
       <Modal
-        title={<span style={{ fontWeight: 600 }}>变更记录</span>}
+        title={<span style={{ fontWeight: 600 }}>跟进记录</span>}
         visible={this.props.visible}
         onCancel={this.props.handleCancel}
         maskClosable={false}
-        width={850}
+        width={880}
         footer={null}
       >
         <Table
