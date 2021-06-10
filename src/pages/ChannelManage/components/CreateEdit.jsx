@@ -399,12 +399,12 @@ export default class CreateEdit extends Component {
 
     closeHanlde = e => {
         const parent = this.refs.parentNode;
-        if (!parent?.contains(e.target) && (e.target?.id !== 'relatedPage')) {
+        if (!parent?.contains(e.target) && (e.target?.id !== 'relatedPage' && e.target.tagName !== 'svg')) {
             this.toggleSelectPanlHandle(false)
         }
     }
 
-    clickInputHandle = () => {
+    clickInputHandle = e => {
         this.toggleSelectPanlHandle(true);
         this.setState({
             currentSelectRelatedPageOpt: [],
@@ -493,9 +493,12 @@ export default class CreateEdit extends Component {
                     title: <span style={{fontWeight: 300}}>案例</span>,
                     key: 'titleInfo',
                     dataIndex: 'title',
-                    render: (text, r) => <Tooltip placement='topLeft' title={text} >
-                        <div style={{maxWidth: 120,  display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>{text}</div>
-                    </Tooltip> 
+                    render: (text, r) => 
+                        <div  style={{maxWidth: 120,  display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>
+                            <Tooltip placement='topLeft' title={text} getPopupContainer={() => document.querySelector('.createEdit')}>
+                                {text}
+                            </Tooltip>
+                        </div>
                 },
                 {
                     title: <span style={{fontWeight: 300}}>案例信息</span>,
@@ -588,7 +591,7 @@ export default class CreateEdit extends Component {
                     title: <span style={{fontWeight: 300}}>创建人</span>,
                     key: 'creater',
                     dataIndex: 'creater',
-                    render: (text, r) => <Tooltip placement='topLeft' title={text}>
+                    render: (text, r) => <Tooltip placement='topLeft' title={text} getPopupContainer={document.querySelector('.createEdit')}>
                         <div style={{maxWidth: 120,  display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>{text}</div>
                     </Tooltip> 
                 },
@@ -639,7 +642,10 @@ export default class CreateEdit extends Component {
                                 readOnly placeholder='请选择关联页面' 
                                 onClick={ this.clickInputHandle}
                                 suffix={
-                                    <Icon type="down" id= 'icon' />
+                                    <span id= 'icon'>
+                                        <Icon type="down"  onClick={ this.clickInputHandle} />
+                                    </span>
+                                    
                                 }
                             />              
                         )} 
@@ -648,18 +654,19 @@ export default class CreateEdit extends Component {
                                 <TabPane tab={currentSelectRelatedPageOpt[0]?.name || '请选择'} key='0'>
                                     {
                                         relatedPageOption?.map(item => 
-                                            <p style={{cursor: 'pointer'}} key={item.uid} onClick={() => this.selectedHandle(item, '0')}>{item.name}</p>
+                                            <p className={styles['card-item']} key={item.uid} onClick={() => this.selectedHandle(item, '0')}>{item.name}</p>
                                         )
                                     }
                                 </TabPane>
                                 {currentSelectRelatedPageOpt[0]?.children.length && <TabPane tab={currentSelectRelatedPageOpt[1]?.name || '请选择'} key='1'>
                                     {
                                         currentSelectRelatedPageOpt[0].children.map(item => 
-                                            <p style={{cursor: 'pointer'}} key={item.uid} onClick={() => this.selectedHandle(item, '1')}>{item.name}</p>)
+                                            <p className={styles['card-item']} key={item.uid} onClick={() => this.selectedHandle(item, '1')}>{item.name}</p>)
                                     }
                                 </TabPane>}
                                 {(currentSelectRelatedPageOpt[1]?.linkType === 2 || currentSelectRelatedPageOpt[0]?.linkType === 2 ) && <TabPane tab='请选择' key= {currentSelectRelatedPageOpt[0]?.linkType === 2 ? '1' : '2'}>
                                     <Search
+                                        style={{marginTop: 8}}
                                         value={searchText}
                                         placeholder='可输入关键字进行检索'
                                         onChange={  e => { const value = e.target.value; this.setState({searchText: value, pageNum: 1}); this.handleChange(value) }}
@@ -673,6 +680,7 @@ export default class CreateEdit extends Component {
                                         size='small'
                                         style={{marginTop: 8, cursor: 'pointer'}}
                                         columns={ ColumnsObj[`columns_${detailType}`] }
+                                        scroll={{ y: 180 }}
                                         dataSource={dataList}
                                         onRow={record => {
                                             return {

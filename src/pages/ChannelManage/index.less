@@ -29,25 +29,48 @@
     background: #BFBFBF;
 }
 .card-container {
-    .ant-tabs-card{
-        .ant-tabs-content {
-            height: 120px;
-            margin-top: -16px;
-            .ant-tabs-tabpane {
-                background: #fff;
-                padding: 16px;
-            }
+    border: 1px solid #efefef;
+    border-radius: 4px;
+    box-sizing: border-box;
+    overflow: hidden;
+    .card-item {
+        cursor: pointer;
+        // padding: 6px 8px;
+        // &:hover {
+        //     background: #efefef ;
+        // }
+    }
+    :global {
+        .ant-tabs-nav-container {
+            background: #efefef;
         }
-        .ant-tabs-bar {
-            border-color: #fff;
-            .ant-tabs-tab {
-                border-color: transparent;
-                background: transparent;
+        .ant-table-small {
+            border: none;
+        }
+        .ant-tabs-card{
+            .ant-tabs-content {
+                height: 120px;
+                margin-top: -16px;
+                .ant-tabs-tabpane {
+                    background: #fff;
+                    padding: 16px 8px;
+                }
+                .ant-table-body {
+                    margin: 0
+                }
             }
-            .ant-tabs-tab-active {
+            .ant-tabs-bar {
                 border-color: #fff;
-                background: #fff;
+                .ant-tabs-tab {
+                    background: #efefef;
+                    border-color: transparent;
+                }
+                .ant-tabs-tab-active {
+                    border-color: #fff;
+                    background: #fff;
+                }
             }
         }
     }
+    
 }  
