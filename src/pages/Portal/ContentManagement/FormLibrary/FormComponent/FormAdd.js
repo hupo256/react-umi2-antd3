@@ -2,13 +2,14 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-05-28 16:04:56
+ * @Last Modified time: 2021-06-10 14:10:26
  * 专题库
  */
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 import { Modal, Form, Button, Input, message, Radio } from 'antd';
 const { TextArea } = Input;
+import styles from './index.less';
 @connect(({ FormLibrary, loading }) => ({
   FormLibrary,
 }))
@@ -21,22 +22,22 @@ class FormAdd extends PureComponent {
 
   componentDidMount() {}
   render() {
-    const { visible, data, formUid } = this.props;
+    const { visible, data, title } = this.props;
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
-        sm: { span: 8 },
+        sm: { span: 5 },
       },
       wrapperCol: {
         xs: { span: 24 },
         sm: { span: 16 },
       },
     };
-    console.log('formUid', formUid);
+    let tit = <div className={styles.agModel}>{title}</div>;
     return (
       <div>
-        <Modal title={'创建表单'} visible={visible} footer={null} width={600} closable={false}>
+        <Modal title={tit} visible={visible} footer={null} width={600} closable={false}>
           <Form {...formItemLayout} onSubmit={this.handleSubmit}>
             <Form.Item label="表单标题">
               {getFieldDecorator('formTitle', {
