@@ -15,7 +15,7 @@ class WebsettingIndex extends Component {
     return (
       <div style={{ height: '100%' }}>
         <PageHeaderWrapper>
-          <WebSetting />
+          <WebSetting changeHintIf={() => null} />
         </PageHeaderWrapper>
       </div>
     )
