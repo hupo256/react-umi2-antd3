@@ -298,6 +298,13 @@ export default [
         hideInMenu: true,
         routes: [
           {
+            path: '/customer',
+            name: 'customer',
+            icon: 'retweet',
+            code: 'MU90000002',
+            component: './Customer/LeadManagement/LeadManagement',
+          },
+          {
             path: '/customer/detail',
             name: 'customerdetail',
             code: 'MU900000020001',
