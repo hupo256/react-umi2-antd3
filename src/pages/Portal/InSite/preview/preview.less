@@ -680,7 +680,7 @@
     z-index: 3;
     color: @hightColor;
     font-size: 24px;
-    width: 40px;
+    width: 38px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -689,23 +689,30 @@
     box-sizing: content-box;
 
     span {
-      width: 40px;
-      height: 40px;
+      width: 38px;
+      height: 38px;
       border-radius: 20px;
       background: #fff;
       box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.2);
       text-align: center;
-      line-height: 40px;
+      line-height: 38px;
+      margin-top: 14px;
+      font-size: 22px;
     }
 
-    span:nth-child(2) {
+    span:first-child {
+      font-size: 20px;
+      // background: @hightColor;
+      // color: #fff;
+    }
+
+    span:last-child {
       transition: all 0.4s ease;
       margin-top: 15px;
       height: 0;
-      // opacity: 0;
 
       &.show {
-        height: 40px;
+        height: 38px;
       }
     }
   }
