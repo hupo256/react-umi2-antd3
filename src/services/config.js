@@ -18,7 +18,7 @@ switch (APP_ENVIRONMENT) {
     break;
   case 'test': // 测试
     console.log = function() {};
-    url = 'http://test1gw.ingongdi.com';
+    url = 'http://testgw.ingongdi.com';
     break;
   case 'dev': // 开发环境
     console.warn = function() {};
