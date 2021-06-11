@@ -29,23 +29,28 @@ export default class RelevanceInp extends Component {
         }
     }
     async componentDidMount() {
-        const { form, relatedPage, curUid } = this.props;
-        relatedPage && form.setFieldsValue({ relatedPage })
-        curUid === -1 && this.clickInputHandle()  // 为-1则校验没通过
+        this.clickInputHandle()
     }
 
     async componentDidUpdate( prevProps ) {
-        const { form, relatedPage } = this.props;
-        relatedPage !== prevProps.relatedPage && form.setFieldsValue({ relatedPage })
+        // const { form, relatedPage, showSec } = this.props;
+    }
+
+    clickInputHandle = () => {
+        this.toggleSelectPanlHandle(true);
+        this.setState({
+            currentSelectRelatedPageOpt: [],
+            currentKey: '0',
+            relatedPageOption: this.filterLevelOps()
+        })
     }
 
     // 格式化回显
-    formatData = () => {
-        const {currentSelectRelatedPageOpt } = this.state;
+    formatData = (opts) => {
         let arr = [];
-        for (const key in currentSelectRelatedPageOpt) {
-            if (currentSelectRelatedPageOpt.hasOwnProperty.call(currentSelectRelatedPageOpt, key)) {
-                const {name, uid, icon, appletsLink, linkKey} = currentSelectRelatedPageOpt[key];
+        for (const key in opts) {
+            if (opts.hasOwnProperty.call(opts, key)) {
+                const {name, uid, icon, appletsLink, linkKey} = opts[key];
                 arr.push({
                     text: name,
                     code: uid,
@@ -73,28 +78,27 @@ export default class RelevanceInp extends Component {
 
     // 过滤一级nav, 当children为空，则认为不应出现
     filterLevelOps = () => {
-        const { relatedPageOption} = this.props
-        const optArr = this.format(relatedPageOption)
+        const { optsArr } = this.props
+        const optArr = this.format(optsArr)
         const arr = optArr.filter(ar => ar.children?.length > 0)
         return arr
     }
 
     // 过滤二级掉已有的nav
     touchSelcOpts = (opts) => {
-      const { curNavs, curUid } = this.props
+      const { curNavs } = this.props
       const tempNavs = [...curNavs]
-      const ind = tempNavs.indexOf(curUid)
-      ind > -1 && tempNavs.splice(ind, 1)  // 当前的那个选项应该排除在外，如果有的话
+    //   const ind = tempNavs.indexOf(curUid)
+    //   ind > -1 && tempNavs.splice(ind, 1)  // 当前的那个选项应该排除在外，如果有的话
       const newOpts = opts.filter(opt => !tempNavs.includes(opt?.uid))
       return newOpts
     }
 
     // 选择关联页面
     selectedHandle =  ( item, step ) => {
-        const { pageNum, searchText, currentarticleDicCode } = this.state
+        const { pageNum, searchText, currentarticleDicCode, currentSelectRelatedPageOpt } = this.state
+        const arr = [...currentSelectRelatedPageOpt, item]
         this.setState(prevState => {
-            let arr = prevState.currentSelectRelatedPageOpt;
-            arr[+step] = item;
             return ({
                 currentSelectRelatedPageOpt: arr,
                 currentKey: +step + 1 + '',
@@ -102,17 +106,14 @@ export default class RelevanceInp extends Component {
 
             })
         }, () => {
-            this.props.form.setFieldsValue({
-                relatedPage:  this.formatData().map(item => {if(item){return item.text}}).join(' / ')
-            })
             if (!item.children.length && item.linkType === 1) {
                 this.toggleSelectPanlHandle(false)
             }
             this.getDataList({pageNum,  searchText, articleDicCode: currentarticleDicCode});
-
-            const {callFun} = this.props
-            if(callFun) callFun(this.formatData())
         })
+
+        const {callFun} = this.props
+        if(callFun) callFun(this.formatData(arr))
     }
 
     // tab面板切换
@@ -123,10 +124,6 @@ export default class RelevanceInp extends Component {
                 currentKey: key,
                 currentSelectRelatedPageOpt: arr,
             }       
-        }, () => {
-            this.props.form.setFieldsValue({
-                relatedPage: this.state.currentSelectRelatedPageOpt?.slice(0, +key).map(item => item.name).join(' / ')
-            })
         })
        
     } 
@@ -229,34 +226,21 @@ export default class RelevanceInp extends Component {
             arr.push( record );
             return ({
                 currentSelectRelatedPageOpt: arr,
-                // currentKey: 2,
             })
         }, () => {
-            this.props.form.setFieldsValue({
-                relatedPage:  this.formatData().map(item =>item.text).join(' / ')
-            })
            this.toggleSelectPanlHandle(false)
-            
         })
-        
     }
 
     // 切换选择页面面板显示
     toggleSelectPanlHandle = ( isShow ) => {
         const { currentSelectRelatedPageOpt } = this.state;
         if ( (currentSelectRelatedPageOpt[1]?.linkType === 2 && !!!currentSelectRelatedPageOpt[2]) || (currentSelectRelatedPageOpt[0]?.linkType === 2 && !!!currentSelectRelatedPageOpt[1] )) {
-            
             this.setState(prevState => {
-                
                 return ({
                     currentSelectRelatedPageOpt: prevState.currentSelectRelatedPageOpt.slice(0, prevState.currentSelectRelatedPageOpt.length - 1)
                 })
-            }, () => {
-                this.props.form.setFieldsValue({
-                    relatedPage: this.state.currentSelectRelatedPageOpt?.slice(0, this.state.currentSelectRelatedPageOpt.length).map(item => item.name).join(' / ')
-                })
             })
-           
         }
         this.setState({
             showSelectPanl: isShow
@@ -268,46 +252,7 @@ export default class RelevanceInp extends Component {
                 pageNum: 1,
                 pageSize: 10,
             })
-
         }
-    }
-
-    clickInputHandle = () => {
-        const { form, showSec, curUid, callFun } = this.props
-        // callFun
-
-        this.toggleSelectPanlHandle(true);
-        this.setState({
-            currentSelectRelatedPageOpt: [],
-            currentKey: '0',
-            relatedPageOption: this.filterLevelOps()
-        }, () => {
-            this.props.form.setFieldsValue({
-                relatedPage:  this.formatData().map(item =>item.text).join(' / ')
-            })
-        })
-    }
-
-    releInpBlur = () => {
-        const { form, showSec, curUid, callFun } = this.props
-
-        setTimeout(() => {
-            const { form, curNavs, curUid } = this.props
-            console.log(curUid)
-            if(!curUid) {
-                this.clickInputHandle()
-            }else {
-                this.toggleSelectPanlHandle(false);
-            }
-        }, 200)
-        
-        return
-
-        form.validateFields( (err, values) => {  
-            console.log(values)     
-            if (err) return
-            console.log(11)
-        })
     }
 
     // 页码变换
@@ -325,7 +270,6 @@ export default class RelevanceInp extends Component {
             articleDicOpts, currentarticleDicCode, searchText, showSelectPanl,
             pageNum, pageSize, recordTotal,
         } = this.state
-        const { getFieldDecorator } = form
         const ColumnsObj = {
             // 工地详情页表头
             columns_1: [
@@ -490,20 +434,7 @@ export default class RelevanceInp extends Component {
         }
 
         return (
-        <Form style={{width: '100%'}}>
-            <Form.Item>   
-            {getFieldDecorator('relatedPage', {
-                rules: [{ required: true, message: '请选择关联页面!' }],
-            })(
-                <Input  
-                    disabled={inpDisabled} 
-                    readOnly 
-                    placeholder='请选择关联页面' 
-                    onClick={this.clickInputHandle}
-                    onBlur={this.releInpBlur}
-                    suffix={<Icon type="down" />}
-                />             
-            )} 
+        <>  
             {showSelectPanl && <div ref='parentNode'  className={styles['card-container']}>
                 <Tabs type="card" tabBarGutter={0}  activeKey={currentKey} onChange={this.tabChange}>
                     <TabPane tab={currentSelectRelatedPageOpt[0]?.name || '请选择'} key='0'>
@@ -551,8 +482,7 @@ export default class RelevanceInp extends Component {
                     </TabPane>}
                 </Tabs>
             </div>}
-            </Form.Item>
-        </Form>
+            </>
         )
     }
 }

@@ -20,9 +20,21 @@ export default {
     treeData: [],
     ReferrerData: [], //推荐人列表
     trackLogData: {}, //变更记录
+    trackDetail: {},
   },
 
   effects: {
+    // 线索详情
+    *trackGetModel({ payload }, { call, put }) {
+      const response = yield call(trackGet, {
+        ...payload,
+      });
+      yield put({
+        type: 'upData',
+        payload: { trackDetail: (response && response.data) || {} },
+      });
+      return response;
+    },
     // 导出线索
     *trackExportCriteriaModel({ payload }, { call, put }) {
       const response = yield call(trackExportCriteria, {

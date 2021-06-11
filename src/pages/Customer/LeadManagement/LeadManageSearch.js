@@ -2,12 +2,13 @@
  * @Author: zqm 
  * @Date: 2021-01-22 13:30:02 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-04-08 15:35:00
+ * @Last Modified time: 2021-05-26 18:50:56
  * 线索搜索 
  */
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import router from 'umi/router';
+import moment from 'moment';
 import { Card, Divider, Button, Icon, Select, DatePicker, Input, message, Tag } from 'antd';
 import styles from './LeadManage.less';
 import Cascaderselect from '@/components/Cascaderselect/Cascaderselecthover';
@@ -26,33 +27,62 @@ class LeadManageSearch extends Component {
       isExpanded: false,
       checked: null,
       referrerName: null, //推荐人
-      codes: ['TSC000'],
+      codes: ['TSC002'],
+      sourcetag: [],
+      createTimeStart: null,
+      createTimeEnd: null,
     };
   }
   componentDidMount() {
     // 获取所有渠道
-    const { dispatch } = this.props;
+    const {
+      dispatch,
+      LeadManage: { trackDataSearch },
+    } = this.props;
     dispatch({ type: 'LeadManage/getTreeModel' });
+    this.setState({
+      searchVal: trackDataSearch.searchKeys || '',
+      checked: trackDataSearch.status || null,
+      referrerName: trackDataSearch.referrerName || null,
+      codes: trackDataSearch.codes || [],
+      sourcetag: trackDataSearch.sourcetag || [],
+      createTimeStart: trackDataSearch.createTimeStart || null,
+      createTimeEnd: trackDataSearch.createTimeEnd || null,
+    });
   }
   render() {
     const statusMap = [
       { name: '全部', value: null },
       { name: '未联系', value: 'TS001' },
       { name: '跟进中', value: 'TS002' },
-      { name: '已签约', value: 'TS003' },
+      { name: '已成交', value: 'TS003' },
       { name: '无效线索', value: 'TS005' },
       { name: '战败', value: 'TS004' },
     ];
     const { treeData, ReferrerData } = this.props.LeadManage;
-    const { referrerName, codes } = this.state;
+    const {
+      referrerName,
+      sourcetag,
+      codes,
+      searchVal,
+      createTimeEnd,
+      createTimeStart,
+    } = this.state;
     const treedatas = (treeData.length > 0 && this.treeFilter(treeData)) || [];
     return (
       <div>
         <Card bordered={false}>
           <Search
             placeholder="可通过姓名 / 电话 / 描述进行搜索"
+            value={searchVal}
             onSearch={value => this.handleSearch(value)}
             onPressEnter={e => this.handleSearch(e.target.value)}
+            onChange={e => {
+              this.setState({ searchVal: e.target.value });
+              if (!e.target.value) {
+                this.handleSearch('');
+              }
+            }}
             style={{ width: 400 }}
           />
           <Divider dashed={true} />
@@ -87,15 +117,17 @@ class LeadManageSearch extends Component {
                   placeholder="选择来源"
                   onChange={this.handleCascaderchange}
                   multiple={true}
-                  initvalue={{
-                    codes: codes,
-                  }}
+                  initvalue={{ sourcetag, codes }}
                   style={{ width: '100%' }}
                 />
               </div>
               <div>
                 <span>创建时间：</span>
                 <RangePicker
+                  value={[
+                    createTimeStart && moment(createTimeStart, 'YYYY-MM-DD'),
+                    createTimeEnd && moment(createTimeEnd, 'YYYY-MM-DD'),
+                  ]}
                   onChange={(v, d) => this.handleStartChange(v, d, 'createTime')}
                   format={dateFormat}
                   placeholder={['开始时间', '截止时间']}
@@ -107,7 +139,14 @@ class LeadManageSearch extends Component {
                 <div className={styles.searchDiv}>
                   <Input
                     value={referrerName}
-                    onChange={e => this.handleSelectSearch(e.target.value)}
+                    onChange={e => {
+                      this.setState({ referrerName: e.target.value }, () => {
+                        const { referrerName } = this.state;
+                        if (!referrerName) {
+                          this.handleBlur();
+                        }
+                      });
+                    }}
                     style={{ width: '100%' }}
                     placeholder="请输入推荐人姓名进行搜索"
                     onBlur={() => this.handleBlur()}
@@ -150,13 +189,15 @@ class LeadManageSearch extends Component {
   // 来源
   handleCascaderchange = (codes, arr) => {
     this.setState({
-      // sourcetag: arr,
+      sourcetag: arr,
       codes,
     });
     const val = codes[codes.length - 1];
     this.queryTrackData({
       pageNum: 1,
-      sourceChannel: codes.length > 0 ? (val === 'TSC000' ? '' : val) : '',
+      sourceChannel: val,
+      codes,
+      sourcetag: arr,
     });
   };
   //
@@ -178,9 +219,6 @@ class LeadManageSearch extends Component {
       createTimeStart: dateString[0],
       createTimeEnd: dateString[1],
     });
-  };
-  handleSelectSearch = value => {
-    this.setState({ referrerName: value });
   };
   handleBlur = () => {
     this.queryTrackData({

@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-01-22 13:30:46 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-13 16:09:34
+ * @Last Modified time: 2021-05-26 18:52:39
  * 线索列表
  */
 import React, { Component } from 'react';
@@ -18,7 +18,7 @@ import { getauth } from '@/utils/authority';
 
 @connect(({ LeadManage, loading }) => ({
   LeadManage,
-  loading: loading.effects['LeadManage/projectquoteQueryModel'],
+  loading: loading.effects['LeadManage/trackQueryModel'],
 }))
 class LeadManageTable extends Component {
   constructor(props) {
@@ -41,7 +41,7 @@ class LeadManageTable extends Component {
       {
         title: '线索',
         dataIndex: 'name',
-        width: 200,
+        width: 150,
         render: (t, r) => {
           return (
             <div className={styles.tableName}>
@@ -73,11 +73,24 @@ class LeadManageTable extends Component {
         title: '楼盘/楼宇',
         dataIndex: 'address',
         width: 200,
+        render: text => {
+          return (
+            <div className={styles.remark}>
+              <p style={{ width: 200, marginBottom: 0, maxHeight: 42, overflow: 'hidden' }}>
+                <Tooltip title={text}>
+                  <span className={styles.remarkspan} style={{ WebkitBoxOrient: 'vertical' }}>
+                    {text}
+                  </span>
+                </Tooltip>
+              </p>
+            </div>
+          );
+        },
       },
       {
         title: '建筑面积',
         dataIndex: 'area',
-        width: 150,
+        width: 120,
         render: text => {
           return text ? (
             <span>
@@ -92,7 +105,7 @@ class LeadManageTable extends Component {
       {
         title: '状态',
         dataIndex: 'statusName',
-        width: 150,
+        width: 120,
         render: (t, r) => {
           const map = {
             TS001: '#bfbfbf',
@@ -143,22 +156,29 @@ class LeadManageTable extends Component {
         render: (t, r) => {
           return (
             <span className={styles.operate}>
-              {permissionsBtn.includes('BTN210326000022') && (
-                <span onClick={() => this.setState({ changeVisible: true, record: r })}>
-                  变更状态
+              {permissionsBtn.includes('MU900000020001') && (
+                <span
+                  onClick={() => {
+                    router.push(`/customer/detail?uid=${r.uid}`);
+                  }}
+                >
+                  详情
                 </span>
               )}
-              {permissionsBtn.includes('BTN210326000022') &&
-                (permissionsBtn.includes('BTN210326000023') ||
-                  permissionsBtn.includes('BTN210326000024')) && <span> | </span>}
-              {permissionsBtn.includes('BTN210326000023') && (
-                <span onClick={() => this.setState({ clueVisible: true, record: r })}>编辑</span>
+              {permissionsBtn.includes('MU900000020001') &&
+                (permissionsBtn.includes('BTN210526000002') ||
+                  permissionsBtn.includes('BTN210526000003')) && <span> | </span>}
+              {permissionsBtn.includes('BTN210526000002') && (
+                // <span onClick={() => this.setState({ clueVisible: true, record: r })}>编辑</span>
+                <span onClick={() => this.setState({ changeVisible: true, record: r })}>
+                  写跟进
+                </span>
               )}
-              {permissionsBtn.includes('BTN210326000023') &&
-                permissionsBtn.includes('BTN210326000024') && <span> | </span>}
-              {permissionsBtn.includes('BTN210326000024') && (
+              {permissionsBtn.includes('BTN210526000002') &&
+                permissionsBtn.includes('BTN210526000003') && <span> | </span>}
+              {permissionsBtn.includes('BTN210526000003') && (
                 <span onClick={() => this.setState({ recordVisible: true, record: r })}>
-                  变更记录
+                  跟进记录
                 </span>
               )}
             </span>
@@ -184,6 +204,7 @@ class LeadManageTable extends Component {
             loading={loading}
             dataSource={trackData.list}
             columns={columns}
+            rowKey={(t, r) => r}
             onChange={this.handleTableChange}
             scroll={{ x: 1600 }}
             pagination={trackData && paginations(trackData)}
@@ -245,7 +266,7 @@ class LeadManageTable extends Component {
       payload: { ...r },
     }).then(res => {
       if (res && res.code === 200) {
-        message.success('状态变更成功');
+        message.success('跟进成功');
         this.handleChangeCancel();
         // 刷新列表
         this.queryTrackData({});

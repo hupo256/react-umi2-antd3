@@ -65,26 +65,27 @@ class TagGroup extends Component {
     const { tags, inputVisible, inputValue } = this.state;
     return (
       <div>
-        {tags.map((tag, index) => {
-          const isLongTag = tag.length > 20;
-          const tagElem = (
-            <Tag
-              key={tag}
-              closable={true}
-              onClose={() => this.handleClose(tag)}
-              style={{ fontSize: 14 }}
-            >
-              {isLongTag ? `${tag.slice(0, 20)}...` : tag}
-            </Tag>
-          );
-          return isLongTag ? (
-            <Tooltip title={tag} key={tag}>
-              {tagElem}
-            </Tooltip>
-          ) : (
-            tagElem
-          );
-        })}
+        {Array.isArray(tags) &&
+          tags.map((tag, index) => {
+            const isLongTag = tag.length > 20;
+            const tagElem = (
+              <Tag
+                key={tag}
+                closable={true}
+                onClose={() => this.handleClose(tag)}
+                style={{ fontSize: 14 }}
+              >
+                {isLongTag ? `${tag.slice(0, 20)}...` : tag}
+              </Tag>
+            );
+            return isLongTag ? (
+              <Tooltip title={tag} key={tag}>
+                {tagElem}
+              </Tooltip>
+            ) : (
+              tagElem
+            );
+          })}
         {inputVisible && (
           <Input
             ref={this.saveInputRef}
