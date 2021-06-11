@@ -138,7 +138,7 @@ export function Provider({ children }) {
     });
     queryNavEditData().then(r => {
       if (r && r.code === 200) {
-        setNavData(r.data);
+        setNavData(r.data?.map(nav => ({...nav, showSec: false})));
       }
     });
   }
@@ -169,10 +169,9 @@ export function Provider({ children }) {
       if (res.code !== 200) return message.error(res.message || '请稍后再试');
 
       const navObj = validationData();
-      if (navObj) {
-        navObj.paths = [, -1];
+      console.log(navObj)
+      if (navObj?.[0]) {
         setcurFlag('nav');
-        setNavData(navData.slice());
         return message.error('关联页面必须选到末节点');
       }
 
@@ -184,11 +183,12 @@ export function Provider({ children }) {
   }
 
   function validationData() {
-    return navData.find(nav => {
+    const arr = navData.filter(nav => {
       const { paths, navModule } = nav;
       const len = paths?.length;
       return navModule !== 'index' && len === 1;
     });
+    return arr
   }
 
   const value = {

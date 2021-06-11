@@ -19,53 +19,66 @@ const { Search } = Input;
 }))
 @Form.create()
 export default class RelevanceInp extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      relatedPageOption: [],
-      currentSelectRelatedPageOpt: [],
-      currentKey: '0',
-      recordTotal: 0,
-      detailType: 0,
-      dataList: [],
-      articleDicOpts: [],
-      currentarticleDicCode: undefined,
-      searchText: '',
-      pageNum: 1,
-      pageSize: 10,
-      showSelectPanl: false,
-    };
-  }
-  async componentDidMount() {
-    const { form, relatedPage, curUid } = this.props;
-    relatedPage && form.setFieldsValue({ relatedPage });
-    curUid === -1 && this.clickInputHandle(); // 为-1则校验没通过
-  }
-
-  async componentDidUpdate(prevProps) {
-    const { form, relatedPage } = this.props;
-    relatedPage !== prevProps.relatedPage && form.setFieldsValue({ relatedPage });
-  }
-
-  // 格式化回显
-  formatData = () => {
-    const { currentSelectRelatedPageOpt } = this.state;
-    let arr = [];
-    for (const key in currentSelectRelatedPageOpt) {
-      if (currentSelectRelatedPageOpt.hasOwnProperty.call(currentSelectRelatedPageOpt, key)) {
-        const { name, uid, icon, appletsLink, linkKey } = currentSelectRelatedPageOpt[key];
-        arr.push({
-          text: name,
-          code: uid,
-          icon,
-          linkKey,
-          appletsLink,
-        });
-      }
+    constructor(props){
+        super(props)
+        this.state ={
+            relatedPageOption: [],
+            currentSelectRelatedPageOpt: [],
+            currentKey: '0',
+            recordTotal: 0,
+            detailType: 0,
+            dataList: [],
+            articleDicOpts: [],
+            currentarticleDicCode: undefined,
+            searchText: '',
+            pageNum: 1,
+            pageSize: 10,
+            showSelectPanl: false,
+        }
     }
-    return arr;
-  };
+    async componentDidMount() {
+        const { form, relatedPage, curUid, showSec } = this.props;
+        relatedPage && form.setFieldsValue({ relatedPage })
+        curUid === -1 && this.clickInputHandle()  // 为-1则校验没通过
+        console.log(showSec)
+    }
 
+    async componentDidUpdate( prevProps ) {
+        const { form, relatedPage } = this.props;
+        relatedPage !== prevProps.relatedPage && form.setFieldsValue({ relatedPage })
+    }
+
+    clickInputHandle = () => {
+      const { form, showSec, curUid, callFun } = this.props
+      // callFun
+
+      this.toggleSelectPanlHandle(true);
+      this.setState({
+          currentSelectRelatedPageOpt: [],
+          currentKey: '0',
+          relatedPageOption: this.filterLevelOps()
+      }, () => {
+          this.props.form.setFieldsValue({
+              relatedPage:  this.formatData().map(item =>item.text).join(' / ')
+          })
+      })
+  }
+    // 格式化回显
+    formatData = () => {
+        const {currentSelectRelatedPageOpt } = this.state;
+        let arr = [];
+        for (const key in currentSelectRelatedPageOpt) {
+            if (currentSelectRelatedPageOpt.hasOwnProperty.call(currentSelectRelatedPageOpt, key)) {
+                const {name, uid, icon, appletsLink, linkKey} = currentSelectRelatedPageOpt[key];
+                arr.push({
+                    text: name,
+                    code: uid,
+                    icon, linkKey, appletsLink,
+                })
+            }
+        }
+        return arr;
+    }
   // 解构重组后台数据
   format = data => {
     if (!Array.isArray(data)) return;
@@ -329,26 +342,21 @@ export default class RelevanceInp extends Component {
       }
     );
   };
-
   releInpBlur = () => {
+    const { form, showSec, curUid, callFun } = this.props
     setTimeout(() => {
-      const { form, curNavs, curUid } = this.props;
-      console.log(curUid);
-      if (!curUid) {
-        this.clickInputHandle();
-      }
-    }, 400);
+        const { form, curNavs, curUid } = this.props
+        console.log(curUid)
+        if(!curUid) {
+            this.clickInputHandle()
+        }else {
+            this.toggleSelectPanlHandle(false);
+        }
+    }, 200)    
+    return
+}
 
-    return;
-
-    form.validateFields((err, values) => {
-      console.log(values);
-      if (err) return;
-      console.log(11);
-    });
-  };
-
-  // 页码变换
+// 页码变换
   pageChange = page => {
     const { searchText, currentarticleDicCode } = this.state;
     this.setState({

@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import { Input, Icon, Button, Form, message, Row, Col, Popover, Select } from 'antd';
 import RcViewer from 'rc-viewer';
 import Upload from '@/components/Upload/Upload';
+import { regExpConfig } from '@/utils/regular.config';
 import TagGroup from '@/components/TagSelect/TagGroup';
+import { getauth } from '@/utils/authority';
+const permissionsBtn = getauth().permissions || [];
 const { TextArea } = Input;
 const FormItem = Form.Item;
 @Form.create()
@@ -18,6 +21,7 @@ class BasicMessage extends Component {
       basicKeyWords: [],
       iconUpload: false,
       logoUpload: false,
+      emojiIf: '',
     };
   }
   async componentWillMount() {
@@ -40,11 +44,43 @@ class BasicMessage extends Component {
       }
     });
   }
+
+  componentDidMount() {
+    this.props.onRef && this.props.onRef(this);
+  }
+  async dispatchValue() {
+    const { dispatch } = this.props;
+    await dispatch({ type: 'WebSettingStroe/basicMessageModel' }).then(async res => {
+      if (res && res.code == 200) {
+        await this.setState(
+          {
+            basicIcon: res.data.icon,
+            basicLogo: res.data.logo,
+            basicTitle: res.data.title,
+            basicContent: res.data.content,
+            basicKeyWords: JSON.parse(res.data.keywords),
+          },
+          () => {
+            this.setState({ showtag: true });
+          }
+        );
+      }
+    });
+  }
+  clickButton() {
+    document.getElementById('BasicMessageButton').click();
+    this.props.changeHintIf(false);
+  }
   onBasicForm = e => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (err) {
         throw err;
+      }
+      const ifEmojis = this.isEmojiCharacter(values.basicTitle);
+      if (ifEmojis) {
+        message.error('不能输入表情');
+        return;
       }
       const { basicIcon, basicLogo, basicKeyWords } = this.state;
       const { dispatch } = this.props;
@@ -72,6 +108,10 @@ class BasicMessage extends Component {
         } else {
           newBasicLogo = '';
         }
+        let newkeywords = []
+        if(basicKeyWords && basicKeyWords.length > 0){
+          newkeywords = basicKeyWords
+        }
         dispatch({
           type: 'WebSettingStroe/basicMessageSave',
           payload: {
@@ -91,16 +131,62 @@ class BasicMessage extends Component {
               basicContent: values.basicContent,
               basicKeyWords: basicKeyWords,
             });
+            this.props.changeHintIf(false);
           }
         });
       }
     });
   };
+  isEmojiCharacter(substring) {
+    for (var i = 0; i < substring.length; i++) {
+      var hs = substring.charCodeAt(i);
+      if (0xd800 <= hs && hs <= 0xdbff) {
+        if (substring.length > 1) {
+          var ls = substring.charCodeAt(i + 1);
+          var uc = (hs - 0xd800) * 0x400 + (ls - 0xdc00) + 0x10000;
+          if (0x1d000 <= uc && uc <= 0x1f77f) {
+            return true;
+          }
+        }
+      } else if (substring.length > 1) {
+        var ls = substring.charCodeAt(i + 1);
+        if (ls == 0x20e3) {
+          return true;
+        }
+      } else {
+        if (0x2100 <= hs && hs <= 0x27ff) {
+          return true;
+        } else if (0x2b05 <= hs && hs <= 0x2b07) {
+          return true;
+        } else if (0x2934 <= hs && hs <= 0x2935) {
+          return true;
+        } else if (0x3297 <= hs && hs <= 0x3299) {
+          return true;
+        } else if (
+          hs == 0xa9 ||
+          hs == 0xae ||
+          hs == 0x303d ||
+          hs == 0x3030 ||
+          hs == 0x2b55 ||
+          hs == 0x2b1c ||
+          hs == 0x2b1b ||
+          hs == 0x2b50
+        ) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+  changeTextArea() {
+    this.props.changeHintIf(true);
+  }
   render() {
     const {
       form: { getFieldDecorator },
     } = this.props;
     const {
+      emojiIf,
       showtag,
       basicIcon,
       basicLogo,
@@ -113,7 +199,11 @@ class BasicMessage extends Component {
     return (
       <div>
         <div style={{ color: '#101010', fontSize: '22px', marginBottom: '20px' }}>基本信息</div>
-        <Form className="basicMessageFrom" onSubmit={this.onBasicForm} style={{position: 'relative'}}>
+        <Form
+          className="basicMessageFrom"
+          onSubmit={this.onBasicForm}
+          style={{ position: 'relative' }}
+        >
           <Popover
             placement="right"
             className="ContentHint uploadHints"
@@ -137,6 +227,10 @@ class BasicMessage extends Component {
                   message: '请正确填写网站标题',
                 },
                 {
+                  pattern: emojiIf,
+                  message: '不能输入表情',
+                },
+                {
                   max: 30,
                   message: '限制1-30字符长度',
                 },
@@ -147,6 +241,9 @@ class BasicMessage extends Component {
                 style={{ width: 400 }}
                 autoComplete="off"
                 placeholder="请输入网站标题"
+                onChange={e => {
+                  this.onBasicTitle(e);
+                }}
               />
             )}
           </FormItem>
@@ -170,6 +267,7 @@ class BasicMessage extends Component {
                 style={{ width: 400, height: 100, resize: 'none' }}
                 autoComplete="off"
                 placeholder="请输入网站描述"
+                onChange={() => this.changeTextArea()}
               />
             )}
           </FormItem>
@@ -217,7 +315,7 @@ class BasicMessage extends Component {
                         <Popover
                           placement="right"
                           className="uploadHint"
-                          content="浏览器标签上的全站页面图标"
+                          content="将会用于浏览器标签上的图标，建议尺寸：32px*32px"
                         >
                           <Icon type="question-circle" />
                         </Popover>
@@ -236,7 +334,8 @@ class BasicMessage extends Component {
                     <Popover
                       placement="right"
                       className="uploadHint"
-                      content="将会用于频道栏的企业LOGO显示"
+                      
+                      content="将会用于浏览器标签上的图标，建议尺寸：32px*32px"
                     >
                       <Icon type="question-circle" />
                     </Popover>
@@ -273,7 +372,7 @@ class BasicMessage extends Component {
                         <Popover
                           placement="top"
                           className="uploadHint"
-                          content="将会用于频道栏的企业LOGO显示"
+                          content="将会用于频道栏的企业LOGO显示，建议尺寸：250px*30px"
                         >
                           <Icon type="question-circle" />
                         </Popover>
@@ -292,7 +391,7 @@ class BasicMessage extends Component {
                     <Popover
                       placement="top"
                       className="uploadHint"
-                      content="将会用于频道栏的企业LOGO显示"
+                      content="将会用于频道栏的企业LOGO显示， 建议尺寸：250px*30px"
                     >
                       <Icon type="question-circle" />
                     </Popover>
@@ -303,14 +402,17 @@ class BasicMessage extends Component {
           </FormItem>
           <Row>
             <Col span={16}>
-              <Button
-                type="primary"
-                htmlType="submit"
-                className="defaultHostButton"
-                style={{ border: 0 }}
-              >
-                保存
-              </Button>
+              {permissionsBtn.includes('BTN210610000002') && (
+                <Button
+                  id="BasicMessageButton"
+                  type="primary"
+                  htmlType="submit"
+                  className="defaultHostButton"
+                  style={{ border: 0 }}
+                >
+                  保存
+                </Button>
+              )}
             </Col>
           </Row>
         </Form>
@@ -348,6 +450,7 @@ class BasicMessage extends Component {
   handleTagSave = tags => {
     // console.log('basicKeyWords', tags, this.state);
     this.setState({ basicKeyWords: tags });
+    this.props.changeHintIf(true);
   };
   // 图片选择cance
   handleUploadCancel = () => {
@@ -356,12 +459,25 @@ class BasicMessage extends Component {
   // icon图片选择
   iconUploadOk = data => {
     // console.log(data);
-    const sizes = '?x-oss-process=image/crop,w_32,h_32,g_center';
-    this.setState({ basicIcon: data[0].path + sizes });
-    this.props.form.setFieldsValue({
-      basicIcon: data[0].path + sizes,
-    });
-    this.handleUploadCancel();
+    const imgs = new Image();
+    let sizes = '';
+    imgs.src = data[0].path;
+    imgs.onload = () => {
+      console.log('this', this);
+      if (imgs.width > imgs.height) {
+        sizes = `?x-oss-process=image/crop,w_${imgs.height},h_${imgs.height},g_center`;
+      } else if (imgs.width < imgs.height) {
+        sizes = `?x-oss-process=image/crop,w_${imgs.width},h_${imgs.width},g_center`;
+      } else {
+        sizes = '';
+      }
+      this.setState({ basicIcon: data[0].path + sizes });
+      this.props.form.setFieldsValue({
+        basicIcon: data[0].path + sizes,
+      });
+      this.handleUploadCancel();
+      this.props.changeHintIf(true);
+    };
   };
   // logo图片选择
   logoUploadOk = data => {
@@ -371,7 +487,76 @@ class BasicMessage extends Component {
       basicLogo: data[0].path,
     });
     this.handleUploadCancel();
+    this.props.changeHintIf(true);
   };
+  async onBasicTitle(e) {
+    console.log('onBasicTitle', e.target.value, this);
+    for (var i = 0; i < e.target.value.length; i++) {
+      var hs = e.target.value.charCodeAt(i);
+      if (0xd800 <= hs && hs <= 0xdbff) {
+        if (e.target.value.length > 1) {
+          var ls = e.target.value.charCodeAt(i + 1);
+          var uc = (hs - 0xd800) * 0x400 + (ls - 0xdc00) + 0x10000;
+          if (0x1d000 <= uc && uc <= 0x1f77f) {
+            message.error('不能输入表情');
+            await this.setState({
+              emojiIf: regExpConfig.emojiInput,
+            });
+            return;
+          }
+        }
+      } else if (e.target.value.length > 1) {
+        var ls = e.target.value.charCodeAt(i + 1);
+        if (ls == 0x20e3) {
+          await this.setState({
+            emojiIf: regExpConfig.emojiInput,
+          });
+          return;
+        }
+      } else {
+        if (0x2100 <= hs && hs <= 0x27ff) {
+          await this.setState({
+            emojiIf: regExpConfig.emojiInput,
+          });
+          message.error('不能输入表情');
+          return;
+        } else if (0x2b05 <= hs && hs <= 0x2b07) {
+          await this.setState({
+            emojiIf: regExpConfig.emojiInput,
+          });
+          return;
+        } else if (0x2934 <= hs && hs <= 0x2935) {
+          await this.setState({
+            emojiIf: regExpConfig.emojiInput,
+          });
+          return;
+        } else if (0x3297 <= hs && hs <= 0x3299) {
+          await this.setState({
+            emojiIf: regExpConfig.emojiInput,
+          });
+          return;
+        } else if (
+          hs == 0xa9 ||
+          hs == 0xae ||
+          hs == 0x303d ||
+          hs == 0x3030 ||
+          hs == 0x2b55 ||
+          hs == 0x2b1c ||
+          hs == 0x2b1b ||
+          hs == 0x2b50
+        ) {
+          await this.setState({
+            emojiIf: regExpConfig.emojiInput,
+          });
+          return;
+        }
+      }
+    }
+    await this.setState({
+      emojiIf: '',
+    });
+    this.props.changeHintIf(true);
+  }
 }
 
 export default BasicMessage;

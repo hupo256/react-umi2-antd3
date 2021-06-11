@@ -52,7 +52,8 @@ export default function NavEdit(props) {
   }
 
   function updateNavData() {
-    setNavData(navData.slice());
+    const newArr = [...navData]
+    setNavData(newArr);
   }
 
   function delImg(num) {
@@ -91,13 +92,20 @@ export default function NavEdit(props) {
   }
 
   function touchRelece(arr, num) {
+    // if(!arr){
+    //   navData[num].showSec = true
+    // }else{
+      const len = arr.length;
+      const paths = arr.map(p => p.code)
+      if(paths.length === 2) navData[num].showSec = false  // 重置
+      navData[num].icon = arr[len - 1]?.icon;
+      navData[num].navModule = arr[len - 1]?.appletsLink;
+      navData[num].linkKey = arr[len - 1]?.linkKey;
+      navData[num].paths = paths;
+      navData[num].linkDisplayName = arr.map(p => p.text).join('/');
+    // }
     // console.log(arr);
-    const len = arr.length;
-    navData[num].icon = arr[len - 1]?.icon;
-    navData[num].navModule = arr[len - 1]?.appletsLink;
-    navData[num].linkKey = arr[len - 1]?.linkKey;
-    navData[num].paths = arr.map(p => p.code);
-    navData[num].linkDisplayName = arr.map(p => p.text).join('/');
+    
     updateNavData();
   }
 
@@ -115,6 +123,7 @@ export default function NavEdit(props) {
               paths,
               desStatus = 'success',
               desMsg = '',
+              showSec,
             } = tag;
             const isHome = navModule === 'index';
             icon = 'icon-' + icon?.split('icon')[1]; // 兼容iconfont在生成时加的前辍
@@ -165,6 +174,9 @@ export default function NavEdit(props) {
                         curNavs={curNavs} // 当前已经有的nav -- 禁用重复选择
                         inpDisabled={isHome}
                         curUid={paths?.[1] || ''}
+                        curInd={ind}
+                        list={navData}
+                        showSec={showSec}
                       />
                     </>
                   )}

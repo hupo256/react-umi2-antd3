@@ -1,8 +1,8 @@
 /*
  * @Author: tdd
  * @Date: 2021-03-25 16:49:12
- * @Last Modified by: tdd
- * @Last Modified time: 2021-03-25 16:49:12
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2021-06-10 19:38:29
  * 移动端首页 公用头部
  */
 import React, { useContext } from 'react';
@@ -12,11 +12,12 @@ import { baseRouteKey, themes } from '../../tools/data';
 import { ctx } from '../context';
 import { publishEditData } from '@/services/miniProgram';
 import styles from './titleGuid.less';
+import { getauth } from '@/utils/authority';
 
 export default function TitleGuid(props) {
   const { title = '标题', disc, isEdit } = props;
   const { pageData, setcurFlag, templateCode, templateName, savePageData } = useContext(ctx);
-
+  const permissionsBtn = getauth();
   function toPublish() {
     let { jsonData, themeData } = pageData;
     const { customerService } = JSON.parse(localStorage.getItem('auth'));
@@ -60,10 +61,10 @@ export default function TitleGuid(props) {
         {isEdit && (
           <div className={styles.btnBox}>
             <Button onClick={showConfirm}>放弃更改</Button>
-            <a href="#/pc/preview" target="_blank">
+            {permissionsBtn.permissions.includes('BTN210610000005') ?<a href="#/pc/preview" target="_blank">
               <Icon type="desktop" />
               <span>网站预览</span>
-            </a>
+            </a>:null}
             <Button onClick={toPublish} type="primary">
               <img
                 src="https://img.inbase.in-deco.com/crm_saas/release/20210511/bb4bd99abc374cae9b1dbe634a6a388c/ic_send.png"

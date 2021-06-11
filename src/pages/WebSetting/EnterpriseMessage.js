@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Input, Button, message, Form, Icon, Row, Col, Popover } from 'antd';
 import RcViewer from 'rc-viewer';
 import Upload from '@/components/Upload/Upload';
+import { getauth } from '@/utils/authority';
+const permissionsBtn = getauth().permissions || [];
 const { TextArea } = Input;
 const FormItem = Form.Item;
 @Form.create()
@@ -39,6 +41,31 @@ class EnterpriseMessage extends Component {
         // console.log('enterprise', this);
       }
     });
+  }
+  componentDidMount() {
+    this.props.onRef && this.props.onRef(this);
+  }
+  async dispatchValue() {
+    const { dispatch } = this.props;
+    dispatch({ type: 'WebSettingStroe/enterpriseMessageModel' }).then(res => {
+      if (res && res.code == 200) {
+        this.setState({
+          icp: res.data.icp,
+          copyright: res.data.copyright,
+          wechatName: res.data.wechatName,
+          disclaimer: res.data.disclaimer,
+          storeCover: res.data.storeCover,
+          storeAddress: res.data.storeAddress,
+          wechatNumber: res.data.wechatNumber,
+          wechatQrCode: res.data.wechatQrCode,
+        });
+        // console.log('enterprise', this);
+      }
+    });
+  }
+  clickButton() {
+    document.getElementById('EnterpriseMessageButton').click();
+    this.props.changeHintIf(false);
   }
   onEnterpriseForm = e => {
     e.preventDefault();
@@ -92,10 +119,14 @@ class EnterpriseMessage extends Component {
             wechatNumber: values.wechatNumber,
             wechatQrCode: newWechatQrCode,
           });
+          this.props.changeHintIf(false);
         }
       });
     });
   };
+  changeTextArea() {
+    this.props.changeHintIf(true);
+  }
   render() {
     const {
       form: { getFieldDecorator },
@@ -113,7 +144,9 @@ class EnterpriseMessage extends Component {
       qrCodeUpload,
       storeCoverUpload,
     } = this.state;
-    const prpoverImg = <img src='https://img.inbase.in-deco.com/crm_saas/release/20210519/b0bd7f64b276409dbb22deb8bf88ea05/企业信息.png' />;
+    const prpoverImg = (
+      <img src="https://img.inbase.in-deco.com/crm_saas/release/20210519/b0bd7f64b276409dbb22deb8bf88ea05/企业信息.png" />
+    );
     return (
       <div>
         <div style={{ color: '#101010', fontSize: '22px', marginBottom: '20px' }}>
@@ -142,6 +175,7 @@ class EnterpriseMessage extends Component {
                 style={{ width: 400 }}
                 autoComplete="off"
                 placeholder="请输入公众号名称"
+                onChange={() => this.changeTextArea()}
               />
             )}
           </FormItem>
@@ -173,7 +207,7 @@ class EnterpriseMessage extends Component {
                         <Popover
                           placement="rightTop"
                           className="uploadHint"
-                          content="公众号二维码，用于底部栏显示"
+                          content="公众号二维码，用于底部栏显示，建议尺寸：78px*78px"
                         >
                           <Icon type="question-circle" />
                         </Popover>
@@ -192,7 +226,7 @@ class EnterpriseMessage extends Component {
                     <Popover
                       placement="rightTop"
                       className="uploadHint"
-                      content="公众号二维码，用于底部栏显示"
+                      content="公众号二维码，用于底部栏显示，建议尺寸：78px*78px"
                     >
                       <Icon type="question-circle" />
                     </Popover>
@@ -220,6 +254,7 @@ class EnterpriseMessage extends Component {
                 style={{ width: 400 }}
                 autoComplete="off"
                 placeholder="请输入微信号"
+                onChange={() => this.changeTextArea()}
               />
             )}
           </FormItem>
@@ -242,6 +277,7 @@ class EnterpriseMessage extends Component {
                 style={{ width: 400 }}
                 autoComplete="off"
                 placeholder="请输入门店地址"
+                onChange={() => this.changeTextArea()}
               />
             )}
           </FormItem>
@@ -270,7 +306,7 @@ class EnterpriseMessage extends Component {
                         <span onClick={() => this.setState({ storeCover: null })}>
                           <Icon type="delete" />
                         </span>
-                        <Popover placement="rightTop" className="uploadHint" content="门店封面图">
+                        <Popover placement="rightTop" className="uploadHint" content="门店封面图，用于底部栏显示，建议尺寸156px*78px">
                           <Icon type="question-circle" />
                         </Popover>
                       </div>
@@ -285,7 +321,7 @@ class EnterpriseMessage extends Component {
                       <Icon type="plus" />
                     </p>
                     <p>点击上传</p>
-                    <Popover placement="rightTop" className="uploadHint" content="门店封面图">
+                    <Popover placement="rightTop" className="uploadHint" content="门店封面图，用于底部栏显示，建议尺寸156px*78px">
                       <Icon type="question-circle" />
                     </Popover>
                   </div>
@@ -313,6 +349,7 @@ class EnterpriseMessage extends Component {
                 style={{ width: 400, height: 54, resize: 'none' }}
                 autoComplete="off"
                 placeholder="本网站部分内容由用户自行上传，如权利人发现存在误传其作品情形，请及时与本站联系。"
+                onChange={() => this.changeTextArea()}
               />
             )}
           </FormItem>
@@ -336,6 +373,7 @@ class EnterpriseMessage extends Component {
                 style={{ width: 400, height: 54, resize: 'none' }}
                 autoComplete="off"
                 placeholder="请输入版权信息，如：@2016 XXX设计装饰有限公司版权所有"
+                onChange={() => this.changeTextArea()}
               />
             )}
           </FormItem>
@@ -358,14 +396,22 @@ class EnterpriseMessage extends Component {
                 style={{ width: 400 }}
                 autoComplete="off"
                 placeholder="请输入ICP备案号，如：京ICP备102342219号"
+                onChange={() => this.changeTextArea()}
               />
             )}
           </FormItem>
           <Row className="enterpriseButton">
             <Col span={16}>
-              <Button type="primary" htmlType="submit" className="defaultHostButton">
-                保存
-              </Button>
+              {permissionsBtn.includes('BTN210610000003') && (
+                <Button
+                  type="primary"
+                  id="EnterpriseMessageButton"
+                  htmlType="submit"
+                  className="defaultHostButton"
+                >
+                  保存
+                </Button>
+              )}
             </Col>
           </Row>
         </Form>
@@ -412,6 +458,7 @@ class EnterpriseMessage extends Component {
       wechatQrCode: data[0].path,
     });
     this.handleUploadCancel();
+    this.props.changeHintIf(true);
   };
   // logo图片选择
   storeCoverUploadOk = data => {
@@ -421,6 +468,7 @@ class EnterpriseMessage extends Component {
       storeCover: data[0].path,
     });
     this.handleUploadCancel();
+    this.props.changeHintIf(true);
   };
 }
 
