@@ -235,7 +235,7 @@ const Home = () => {
       </Drawer>
 
       <Drawer
-        title="编辑公司信息"
+        title="编辑企业信息"
         placement="right"
         closable={true}
         onClose={() => {
