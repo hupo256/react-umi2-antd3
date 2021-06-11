@@ -227,7 +227,7 @@ const Home = () => {
           setShowHeaderDrawer(false)
         }}
         visible={showHeaderDrawer}
-        width={900}
+        width={1150}
         headerStyle={{ border: 'none', marginBottom: '-18px' }}
         destroyOnClose
       >
