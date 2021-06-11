@@ -47,6 +47,11 @@ class BasicMessage extends Component {
 
   componentDidMount() {
     this.props.onRef && this.props.onRef(this);
+    let ua = navigator.userAgent.toLocaleLowerCase();
+    if(ua.match(/tencenttraveler/) != null || ua.match(/qqbrowse/) != null){
+      const iconDiv = document.querySelector('.keyWordHint')
+      iconDiv.style.top = '-65px';
+    }
   }
   async dispatchValue() {
     const { dispatch } = this.props;
@@ -372,7 +377,7 @@ class BasicMessage extends Component {
                         <Popover
                           placement="top"
                           className="uploadHint"
-                          content="将会用于频道栏的企业LOGO显示，建议尺寸：250px*30px"
+                          content="将会用于频道栏的企业LOGO显示，建议尺寸：277px*30px"
                         >
                           <Icon type="question-circle" />
                         </Popover>
@@ -391,7 +396,7 @@ class BasicMessage extends Component {
                     <Popover
                       placement="top"
                       className="uploadHint"
-                      content="将会用于频道栏的企业LOGO显示， 建议尺寸：250px*30px"
+                      content="将会用于频道栏的企业LOGO显示， 建议尺寸：277px*30px"
                     >
                       <Icon type="question-circle" />
                     </Popover>
