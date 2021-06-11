@@ -12,7 +12,8 @@ export default {
   'menu.setting.dictconfig': '字典配置',
   'menu.setting.miniprogram': '小程序授权',
   'menu.customer': '线索',
-  'menu.customer.leadmanagement': '线索',
+  'menu.customer.customer': '线索',
+  'menu.customer.customerdetail': '详情',
   'menu.project': '项目',
   'menu.project.manage': '项目列表',
 

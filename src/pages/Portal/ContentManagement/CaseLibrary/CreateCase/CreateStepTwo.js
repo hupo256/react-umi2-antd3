@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-06-10 19:47:46
+ * @Last Modified time: 2021-06-10 21:41:47
  * 创建工地
  */
 import React, { PureComponent, Fragment, Component } from 'react';
@@ -380,6 +380,7 @@ class CreateStepTwo extends Component {
             dataSource={DicList}
             rowKey={record => record.uid}
             components={this.components}
+            scroll={{ x: 1200 }}
             onRow={(record, index) => {
               return {
                 index,
