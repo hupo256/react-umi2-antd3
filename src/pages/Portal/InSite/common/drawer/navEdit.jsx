@@ -52,7 +52,8 @@ export default function NavEdit(props) {
   }
 
   function updateNavData() {
-    setNavData(navData.slice());
+    const newArr = [...navData]
+    setNavData(newArr);
   }
 
   function delImg(num) {
@@ -175,6 +176,7 @@ export default function NavEdit(props) {
                         curUid={paths?.[1] || ''}
                         curInd={ind}
                         list={navData}
+                        showSec={showSec}
                       />
                     </>
                   )}

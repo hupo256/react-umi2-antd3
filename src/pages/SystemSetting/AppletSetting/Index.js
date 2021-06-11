@@ -1,8 +1,8 @@
 /*
  * @Author: zqm 
  * @Date: 2021-04-28 17:05:47 
- * @Last Modified by: zqm
- * @Last Modified time: 2021-06-08 14:30:37
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2021-06-10 21:33:19
  * 小程序设置
  */
 
@@ -159,6 +159,7 @@ class Index extends PureComponent {
         ]
       : [];
     const { visible, record, selectedKeys, switchChecked } = this.state;
+    const permissionsBtn = getauth();
     return (
       <div className={styles.appleCard}>
         <PageHeaderWrapper title={title}>
@@ -173,54 +174,60 @@ class Index extends PureComponent {
                     defaultOpenKeys={['sub1']}
                     mode="inline"
                   >
-                    <Menu.Item key="1">
-                      <p
-                        style={{
-                          paddingLeft: 24,
-                        }}
-                      >
-                        通用设置
-                      </p>
-                    </Menu.Item>
-                    <Menu.Item key="2">
-                      <p
-                        style={{
-                          paddingLeft: 24,
-                        }}
-                      >
-                        关联页面设置
-                      </p>
-                    </Menu.Item>
+                    {permissionsBtn.permissions.includes('BTN210610000006') ? (
+                      <Menu.Item key="1">
+                        <p
+                          style={{
+                            paddingLeft: 24,
+                          }}
+                        >
+                          通用设置
+                        </p>
+                      </Menu.Item>
+                    ) : null}
+                    {permissionsBtn.permissions.includes('BTN210610000007') ? (
+                      <Menu.Item key="2">
+                        <p
+                          style={{
+                            paddingLeft: 24,
+                          }}
+                        >
+                          关联页面设置
+                        </p>
+                      </Menu.Item>
+                    ) : null}
                   </Menu>
                 </div>
-                {selectedKeys[0] === '2' && (
-                  <div className={styles.appleRight}>
-                    <p style={{ fontWeight: 500, fontSize: 22, color: '#333' }}>关联页面设置</p>
-                    <p style={{ fontWeight: 400, fontSize: 13, color: '#666' }}>
-                      <MyIcon
-                        type="icon-tips"
-                        style={{ color: '#ccebfa', fontSize: 18, marginRight: 6 }}
-                      />
-                      关联后，在小程序的对应模块内点击按钮，会跳转展示所关联的页面
-                    </p>
-                    <Table columns={columns} dataSource={data} pagination={false} />
-                  </div>
-                )}
-                {selectedKeys[0] === '1' && (
-                  <div className={styles.appleRight}>
-                    <p style={{ fontWeight: 500, fontSize: 22, color: '#333' }}>通用设置</p>
-                    <p>
-                      打开小程序一键授权（首次）
-                      <Switch
-                        style={{ marginLeft: 30 }}
-                        checked={switchChecked}
-                        onChange={checked => {
-                          this.handleSwitchChange(checked);
-                        }}
-                      />
-                    </p>
-                  </div>
-                )}
+                {selectedKeys[0] === '2' &&
+                  permissionsBtn.permissions.includes('BTN210610000007') && (
+                    <div className={styles.appleRight}>
+                      <p style={{ fontWeight: 500, fontSize: 22, color: '#333' }}>关联页面设置</p>
+                      <p style={{ fontWeight: 400, fontSize: 13, color: '#666' }}>
+                        <MyIcon
+                          type="icon-tips"
+                          style={{ color: '#ccebfa', fontSize: 18, marginRight: 6 }}
+                        />
+                        关联后，在小程序的对应模块内点击按钮，会跳转展示所关联的页面
+                      </p>
+                      <Table columns={columns} dataSource={data} pagination={false} />
+                    </div>
+                  )}
+                {selectedKeys[0] === '1' &&
+                  permissionsBtn.permissions.includes('BTN210610000006') && (
+                    <div className={styles.appleRight}>
+                      <p style={{ fontWeight: 500, fontSize: 22, color: '#333' }}>通用设置</p>
+                      <p>
+                        打开小程序一键授权（首次）
+                        <Switch
+                          style={{ marginLeft: 30 }}
+                          checked={switchChecked}
+                          onChange={checked => {
+                            this.handleSwitchChange(checked);
+                          }}
+                        />
+                      </p>
+                    </div>
+                  )}
               </div>
             )}
             {!AuthInfo.isAuthedWechatMini && (

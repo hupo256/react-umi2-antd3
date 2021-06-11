@@ -29,14 +29,31 @@ export default class RelevanceInp extends Component {
         }
     }
     async componentDidMount() {
-        const { form, relatedPage, curUid } = this.props;
+        const { form, relatedPage, curUid, showSec } = this.props;
         relatedPage && form.setFieldsValue({ relatedPage })
         curUid === -1 && this.clickInputHandle()  // 为-1则校验没通过
+        console.log(showSec)
     }
 
     async componentDidUpdate( prevProps ) {
         const { form, relatedPage } = this.props;
         relatedPage !== prevProps.relatedPage && form.setFieldsValue({ relatedPage })
+    }
+
+    clickInputHandle = () => {
+        const { form, showSec, curUid, callFun } = this.props
+        // callFun
+
+        this.toggleSelectPanlHandle(true);
+        this.setState({
+            currentSelectRelatedPageOpt: [],
+            currentKey: '0',
+            relatedPageOption: this.filterLevelOps()
+        }, () => {
+            this.props.form.setFieldsValue({
+                relatedPage:  this.formatData().map(item =>item.text).join(' / ')
+            })
+        })
     }
 
     // 格式化回显
@@ -272,22 +289,6 @@ export default class RelevanceInp extends Component {
         }
     }
 
-    clickInputHandle = () => {
-        const { form, showSec, curUid, callFun } = this.props
-        // callFun
-
-        this.toggleSelectPanlHandle(true);
-        this.setState({
-            currentSelectRelatedPageOpt: [],
-            currentKey: '0',
-            relatedPageOption: this.filterLevelOps()
-        }, () => {
-            this.props.form.setFieldsValue({
-                relatedPage:  this.formatData().map(item =>item.text).join(' / ')
-            })
-        })
-    }
-
     releInpBlur = () => {
         const { form, showSec, curUid, callFun } = this.props
 
@@ -500,7 +501,7 @@ export default class RelevanceInp extends Component {
                     readOnly 
                     placeholder='请选择关联页面' 
                     onClick={this.clickInputHandle}
-                    onBlur={this.releInpBlur}
+                    // onBlur={this.releInpBlur}
                     suffix={<Icon type="down" />}
                 />             
             )} 

@@ -112,6 +112,7 @@ export default [
           {
             path: '/portal/insite/appletsetting',
             name: 'applet',
+            code: 'MU900000011003',
             component: './SystemSetting/AppletSetting/Index.js',
           },
         ],
