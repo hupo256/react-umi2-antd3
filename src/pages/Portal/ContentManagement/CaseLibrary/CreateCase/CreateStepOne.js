@@ -480,10 +480,10 @@ class CreateStepOne extends PureComponent {
         message.error('面积限制输入0.01-99999.99范围内的数字');
         return false;
       } else if (
-        parseFloat(values.decorationCost) < 0.01 ||
+        parseFloat(values.decorationCost) < 0 ||
         parseFloat(values.decorationCost) > 99999.99
       ) {
-        message.error('装修造价限制输入0.01-99999.99范围内的数字');
+        message.error('装修造价限制输入0-99999.99范围内的数字');
         return false;
       } else {
         if (this.props.type === 'edit') {
