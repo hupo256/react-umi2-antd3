@@ -15,6 +15,7 @@ import { MyIcon } from '@/utils/utils';
 import styles from './index.less';
 import { getauth } from '@/utils/authority';
 import LinkPage from './LinkPage';
+import AdSeter from './AdSeter';
 import NotBound from '../MiniProgram/NotBound';
 const { SubMenu } = Menu;
 
@@ -25,7 +26,7 @@ class Index extends PureComponent {
     this.state = {
       visible: false,
       record: null,
-      selectedKeys: ['1'],
+      selectedKeys: ['3'],
       switchChecked: false,
     };
   }
@@ -196,8 +197,22 @@ class Index extends PureComponent {
                         </p>
                       </Menu.Item>
                     ) : null}
+
+                    <Menu.Item key="3">
+                      <p style={{ paddingLeft: 24 }}>广告设置</p>
+                    </Menu.Item>
                   </Menu>
                 </div>
+                {selectedKeys[0] === '3' && (
+                  // <div className={styles.appleRight}>
+                  //   <p style={{ fontWeight: 500, fontSize: 22, color: '#333' }}>广告设置</p>
+                  //   <p>
+                  //     <span>打开小程序弹屏广告</span>
+                  //     <Switch />
+                  //   </p>
+                  // </div>
+                  <AdSeter />
+                )}
                 {selectedKeys[0] === '2' &&
                   permissionsBtn.permissions.includes('BTN210610000007') && (
                     <div className={styles.appleRight}>
@@ -217,9 +232,18 @@ class Index extends PureComponent {
                     <div className={styles.appleRight}>
                       <p style={{ fontWeight: 500, fontSize: 22, color: '#333' }}>通用设置</p>
                       <p>
-                        打开小程序一键授权（首次）
+                        <span>打开小程序一键授权（首次）</span>
                         <Switch
-                          style={{ marginLeft: 30 }}
+                          checked={switchChecked}
+                          onChange={checked => {
+                            this.handleSwitchChange(checked);
+                          }}
+                        />
+                      </p>
+
+                      <p>
+                        <span>在线客服</span>
+                        <Switch
                           checked={switchChecked}
                           onChange={checked => {
                             this.handleSwitchChange(checked);
