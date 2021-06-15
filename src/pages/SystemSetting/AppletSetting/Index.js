@@ -203,16 +203,7 @@ class Index extends PureComponent {
                     </Menu.Item>
                   </Menu>
                 </div>
-                {selectedKeys[0] === '3' && (
-                  // <div className={styles.appleRight}>
-                  //   <p style={{ fontWeight: 500, fontSize: 22, color: '#333' }}>广告设置</p>
-                  //   <p>
-                  //     <span>打开小程序弹屏广告</span>
-                  //     <Switch />
-                  //   </p>
-                  // </div>
-                  <AdSeter />
-                )}
+                {selectedKeys[0] === '3' && <AdSeter />}
                 {selectedKeys[0] === '2' &&
                   permissionsBtn.permissions.includes('BTN210610000007') && (
                     <div className={styles.appleRight}>
