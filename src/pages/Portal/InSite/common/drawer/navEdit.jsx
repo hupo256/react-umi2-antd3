@@ -24,19 +24,12 @@ export default function NavEdit(props) {
   useEffect(() => {
     getRelatedPage({ sceneType: 2 }).then(res => {
       if (!res?.data) return;
-      touchCurNavs();
       setrelatedPageOption(res?.data);
     });
   }, []);
 
-  useEffect(
-    () => {
-      touchCurNavs();
-    },
-    [navData]
-  );
-
-  function addNewTag() {
+  function addNewTag(e) {
+    e.stopPropagation();
     const len = navData.length;
     const empty = navData.find(nav => !nav.paths);
     if (len === maxLen) return message.warning(`导航栏添加${maxLen}个效果最佳哦`);
@@ -48,12 +41,11 @@ export default function NavEdit(props) {
       name: '',
       navModule: `module${len}`,
     };
-    setNavData(navData.concat(item));
+    setNavData([...navData, item])
   }
 
   function updateNavData() {
-    const newArr = [...navData]
-    setNavData(newArr);
+    setNavData(navData.slice());
   }
 
   function delImg(num) {
@@ -80,33 +72,50 @@ export default function NavEdit(props) {
     updateNavData();
   }
 
-  // 收集已经有的nav
-  function touchCurNavs() {
-    const arr = ['fd8d01f1a35111eb999e00505694ddf5']; // 首页
-    navData.map(nav => {
-      const { paths = [] } = nav;
-      const id = paths?.[1];
-      !!id && arr.push(id); // 取末级的uid,去重时也从末级开始
-    });
-    setcurNavs(arr);
+  function touchRelece(arr, num) {
+    const len = arr.length;
+    const paths = arr.map(p => p.code);
+    const nav = navData[num];
+    nav.icon = arr[len - 1]?.icon;
+    nav.navModule = arr[len - 1]?.appletsLink;
+    nav.linkKey = arr[len - 1]?.linkKey;
+    nav.paths = paths;
+    nav.linkDisplayName = arr.map(p => p.text).join('/');
+    if (paths.length === 2) nav.showSec = false;
+    updateNavData();
   }
 
-  function touchRelece(arr, num) {
-    // if(!arr){
-    //   navData[num].showSec = true
-    // }else{
-      const len = arr.length;
-      const paths = arr.map(p => p.code)
-      if(paths.length === 2) navData[num].showSec = false  // 重置
-      navData[num].icon = arr[len - 1]?.icon;
-      navData[num].navModule = arr[len - 1]?.appletsLink;
-      navData[num].linkKey = arr[len - 1]?.linkKey;
-      navData[num].paths = paths;
-      navData[num].linkDisplayName = arr.map(p => p.text).join('/');
-    // }
-    // console.log(arr);
-    
-    updateNavData();
+  // 点击
+  function relevClick(num) {
+    const arr = ['fd8d01f1a35111eb999e00505694ddf5']; // 首页
+    const navs = navData.map((nav, ind) => {
+      const { paths = [], showSec } = nav;
+      const id = paths?.[1];
+      ind !== num && !!id && arr.push(id); // 把自己也排除，取末级的uid,去重时也从末级开始
+      nav.showSec = ind === num;
+      return nav;
+    });
+
+    setcurNavs(arr);
+    setNavData(navs);
+  }
+
+  function inputBlur(num) {
+    return
+    setTimeout(() => {
+      if (!isSecWork) {
+        const len = navData[num].paths.length;
+        if (len !== 2) {
+          navData[num].desStatus = 'error';
+          navData[num].desMsg = '最多4个字符';
+        } else {
+          navData[num].showSec = false;
+        }
+        updateNavData();
+      } else {
+        console.log(23);
+      }
+    }, 400)
   }
 
   return (
@@ -120,13 +129,12 @@ export default function NavEdit(props) {
               icon,
               name,
               navModule,
-              paths,
+              showSec,
               desStatus = 'success',
               desMsg = '',
-              showSec,
             } = tag;
-            const isHome = navModule === 'index';
             icon = 'icon-' + icon?.split('icon')[1]; // 兼容iconfont在生成时加的前辍
+            const isHome = navModule === 'index';
             return (
               <li key={ind}>
                 <div className={styles.titBox}>
@@ -152,7 +160,7 @@ export default function NavEdit(props) {
                       </svg>
                     </span>
 
-                    <Item validateStatus={desStatus} help={desMsg}>
+                    <Item>
                       <Input
                         value={name}
                         maxLength={4}
@@ -164,22 +172,32 @@ export default function NavEdit(props) {
                     </Item>
                   </Form>
 
-                  {relatedPageOption?.length > 0 && (
-                    <>
-                      <p>关联页面</p>
-                      <RelevanceInp
-                        callFun={arr => touchRelece(arr, ind)} // 对外暴露的回调，用来把数据传出去
-                        relatedPageOption={relatedPageOption} // 渲染组件需要的数据
-                        relatedPage={linkDisplayName} // input用来回显的值
-                        curNavs={curNavs} // 当前已经有的nav -- 禁用重复选择
-                        inpDisabled={isHome}
-                        curUid={paths?.[1] || ''}
-                        curInd={ind}
-                        list={navData}
-                        showSec={showSec}
-                      />
-                    </>
-                  )}
+                  <p>关联页面</p>
+                  <div onClick={e => {e.stopPropagation()}}>   
+                    <Form style={{ width: '100%' }}>
+                      <Item validateStatus={desStatus} help={desMsg}>
+                        <Input
+                          value={linkDisplayName}
+                          readOnly
+                          disabled={isHome}
+                          placeholder="请选择关联页面"
+                          onBlur={() => inputBlur(ind)}
+                          onFocus={() => relevClick(ind)}
+                          onClick={() => relevClick(ind)}
+                          suffix={<Icon type="down" className={styles.inpSuffix} />}
+                        />
+                      </Item>
+                    </Form>
+
+                    {showSec &&
+                      relatedPageOption?.length > 0 && (
+                        <RelevanceInp
+                          callFun={arr => touchRelece(arr, ind)} // 对外暴露的回调，用来把数据传出去
+                          optsArr={relatedPageOption} // 渲染组件需要的数据
+                          curNavs={curNavs} // 当前已经有的nav -- 禁用重复选择
+                        />
+                      )}
+                  </div>
                 </div>
               </li>
             );

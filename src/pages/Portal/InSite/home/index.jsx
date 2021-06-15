@@ -42,7 +42,10 @@ function Home(props) {
   return (
     <PageHeaderWrapper>
       <div className={styles.homeBox}>
-        <TitleGuid title={templateName || pageData.templateName || '模板名称'} />
+        <TitleGuid
+          title={templateName || pageData.templateName || '模板名称'}
+          isAuthed={authorInf?.isAuthedWechatMini}
+        />
         {authorInf && (
           <>
             {authorInf.isAuthedWechatMini ? (

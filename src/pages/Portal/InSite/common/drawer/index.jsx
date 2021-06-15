@@ -19,15 +19,22 @@ import NavEdit from './navEdit';
 import ChannelManage from '@/pages/ChannelManage';
 
 export default function DrawerEditor(props) {
-  const { curFlag, setcurFlag, MdTip, pageData, setpageData, navData, setNavData } = useContext(
-    ctx
-  );
+  const { curFlag, setcurFlag, MdTip, pageData, setpageData, navData, setNavData } = useContext(ctx);
   const isShow = canEditTags.includes(curFlag);
 
   function blockPropagation(e) {
     e.stopPropagation();
     // 阻止与原生事件的冒泡
     // e.nativeEvent.stopImmediatePropagation();
+    
+    // 如果click到了这里，则认为input失焦
+    if(curFlag === 'nav') {
+      const arr = navData.map(nav => {
+        nav.showSec = false
+        return nav
+      })
+      setNavData(arr)
+    }  
   }
 
   function dealWithEditAndNav() {
@@ -40,21 +47,11 @@ export default function DrawerEditor(props) {
       });
       setpageData(newObj);
     }
-    if (curFlag === 'nav') {
-      const newArr = [...navData];
-      const arr = [];
-      newArr.map(e => {
-        if (e.navModule) {
-          arr.push(e);
-        }
-      });
-      setNavData(arr);
-    }
     setcurFlag('editing');
   }
 
-   // 抽屉关闭时获取新的channles
-   function drawerClose() {
+  // 抽屉关闭时获取新的channles
+  function drawerClose() {
     const param = {
       pageNum: 1,
       pageSize: 20,
@@ -78,7 +75,7 @@ export default function DrawerEditor(props) {
           closable={true}
           onClose={drawerClose}
           visible={curFlag === 'channel'}
-          width={900}
+          width={1150}
           headerStyle={{ border: 'none', marginBottom: '-18px' }}
         >
           <ChannelManage isPcPreview={true} />
