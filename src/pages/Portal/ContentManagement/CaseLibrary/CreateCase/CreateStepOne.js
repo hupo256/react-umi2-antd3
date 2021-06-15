@@ -327,7 +327,7 @@ class CreateStepOne extends PureComponent {
               initialValue: stepOne.decorationCost || null,
               rules: [
                 {
-                  required: true,
+                  required: false,
                   message: '请输入装修造价',
                 },
               ],
