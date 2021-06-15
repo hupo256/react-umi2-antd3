@@ -1,8 +1,8 @@
 /*
  * @Author: zqm 
  * @Date: 2021-04-28 17:05:47 
- * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-06-10 21:33:19
+ * @Last Modified by: zqm
+ * @Last Modified time: 2021-06-16 03:26:49
  * 小程序设置
  */
 
@@ -231,7 +231,7 @@ class Index extends PureComponent {
               </div>
             )}
             {!AuthInfo.isAuthedWechatMini && (
-              <NotBound jumpUrl={`/#/portal/insite/appletsetting`} />
+              <NotBound jumpUrl={`${window.location.origin}/#/portal/insite/appletsetting`} />
             )}
           </Card>
         </PageHeaderWrapper>
