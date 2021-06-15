@@ -162,6 +162,7 @@ const Home = () => {
                   return
                 }
                 if (item.type === 'games') {
+                  message.destory()
                   message.warning('PC端不允许跳转到小游戏')
                   return
                 }
