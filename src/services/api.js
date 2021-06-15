@@ -129,6 +129,13 @@ export async function loginCheck(params) {
     body: params,
   });
 }
+// 验证手机号
+export async function checkMobile(params) {
+  return request(`${baseurl}/api/v1/sso/login/checkMobile`, {
+    method: "POST",
+    body: params,
+  });
+}
 export async function loginPassword(params) {
   //密码登陆
   return request(baseurl + '/api/v1/sso/login', {
