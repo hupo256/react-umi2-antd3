@@ -35,8 +35,9 @@ function Home(props) {
           if (!data.isPublished) {
             return router.push(`${baseRouteKey}templates`);
           }
-          setauthorInf(userInfor);
         });
+        
+        setauthorInf(userInfor);
     });
   }, []);
 
