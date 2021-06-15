@@ -35,6 +35,12 @@ const findParent = (menuList, url) => {
   if (/trim/.test(url)) {
     return _.find(menuList, { linkKey: 'decorate' })
   }
+  if (/material/.test(url)) {
+    return _.find(menuList, { linkKey: 'material' })
+  }
+  if (/trim/.test(url)) {
+    return _.find(menuList, { linkKey: 'decorate' })
+  }
   return null
 }
 
