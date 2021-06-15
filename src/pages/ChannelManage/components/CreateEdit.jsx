@@ -315,12 +315,13 @@ export default class CreateEdit extends Component {
 
     // 文章类型切换
     radioGroupChange = e => {
-        const { pageNum, searchText } = this.state
+        const { searchText } = this.state
         this.setState({
-            currentarticleDicCode: e.target.value
+            currentarticleDicCode: e.target.value,
+            pageNum: 1
         });
         
-        this.getDataList({articleDicCode: e.target.value,  pageNum, searchText })
+        this.getDataList({articleDicCode: e.target.value,  pageNum: 1, searchText })
 
     }
 
