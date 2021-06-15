@@ -49,7 +49,8 @@ class Index extends PureComponent {
     const code = localStorage.getItem('auth');
     const saasSellerCode = JSON.parse(code).companyCode;
     dispatch({ type: 'MiniProgram/getAuthInfoModel', payload: { saasSellerCode } }).then(res => {
-      if (res && res.code === 200 && res.data.isAuthedWechatMini) {
+      // if (res && res.code === 200 && res.data.isAuthedWechatMini) {
+      if (res && res.code === 200) {
         dispatch({ type: 'MiniProgram/formbindmapModel' });
         dispatch({ type: 'MiniProgram/queryWechatMiniGlobalModel' }).then(res => {
           if (res?.code === 200) {
@@ -173,12 +174,11 @@ class Index extends PureComponent {
         ]
       : [];
     const { visible, record, selectedKeys, switchCommonDate, switchLoading, showSec } = this.state;
-
     return (
       <div className={styles.appleCard} onClick={this.touchInpBlurTag}>
         <PageHeaderWrapper title={title}>
           <Card bordered={false}>
-            {AuthInfo.isAuthedWechatMini && (
+            {!AuthInfo.isAuthedWechatMini && (
               <div className={styles.appletWrap}>
                 <div className={styles.appleLeft}>
                   <Menu
