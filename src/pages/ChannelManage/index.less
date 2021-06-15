@@ -40,6 +40,26 @@
             background: #efefef ;
         }
     }
+    .desigTit{
+        display: flex;
+        align-items: center;
+        img{
+            width: 30px;
+            height: 30px;
+            border-radius: 100%;
+        }
+        span{
+            margin-left: 8px;
+        }
+    }
+    .cellCon{
+        max-width: 120px;
+        display: '-webkit-box';
+        text-overflow: 'ellipsis';
+        -webkit-box-orient: 'vertical';
+        overflow:'hidden'; 
+        -webkit-line-clamp: 1
+    }
     :global {
         .ant-radio-button-wrapper {
             border: none;
@@ -91,6 +111,9 @@
                 margin: 0px;
                 margin-top: 8px;
             }
+        }
+        .ant-table-column-title{
+            font-weight: 300;
         }
     }
     
