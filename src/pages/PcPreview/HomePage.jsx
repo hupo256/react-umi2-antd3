@@ -184,29 +184,29 @@ const Home = () => {
         </Carousel>
 
         <Content className={styles.mainWrapper}>
-          {_.isEmpty(publishedData['highlights']) || (
+          {_.isEmpty(publishedData['highlights']['list']) || (
             <ChapterLayout title={'产品特点'}>
               <KeyPoints pointsList={publishedData['highlights']['list']} domain={dynamicDomain} />
             </ChapterLayout>
           )}
-          {_.isEmpty(publishedData['case']) || (
+          {_.isEmpty(publishedData['case']['list']) || (
             <ChapterLayout title={publishedData['case']['title']}>
               <CaseProjects data={publishedData['case']['list']} domain={dynamicDomain} />
             </ChapterLayout>
           )}
-          {_.isEmpty(publishedData['site']) || (
+          {_.isEmpty(publishedData['site']['list']) || (
             <div className={styles.liveShowSectionWiderBackground}>
               <ChapterLayout title={publishedData['site']['title']}>
                 <LiveShow data={publishedData['site']['list']} domain={dynamicDomain} />
               </ChapterLayout>
             </div>
           )}
-          {_.isEmpty(publishedData['design']) || (
+          {_.isEmpty(publishedData['design']['list']) || (
             <ChapterLayout title={publishedData['design']['title']} moreStyles={{ marginBottom: '10px' }}>
               <DesignerContent data={publishedData['design']['list']} domain={dynamicDomain} />
             </ChapterLayout>
           )}
-          {_.isEmpty(publishedData['article']) || (
+          {_.isEmpty(publishedData['article']['list']) || (
             <div className={styles.designerSectionWiderBackground}>
               <ChapterLayout title={publishedData['article']['title']}>
                 <Articles data={_.slice(publishedData['article']['list'], 0, 3)} domain={dynamicDomain} />
