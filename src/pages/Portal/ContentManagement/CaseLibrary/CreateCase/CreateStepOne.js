@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-06-15 10:28:49
+ * @Last Modified time: 2021-06-16 03:14:25
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -67,10 +67,11 @@ class CreateStepOne extends PureComponent {
     ['bedroom', 'liveroom', 'kitchen', 'bathroom'].forEach(item => {
       this.setState({ [item]: (stepOne && stepOne[item]) || 0 });
     });
+    const isArr = Array.isArray(stepOne?.keywords);
     this.setState(
       {
         designerUid: stepOne.designerUid,
-        tags: stepOne?.keywords || [],
+        tags: isArr ? stepOne?.keywords : JSON.parse(stepOne?.keywords || '[]'),
       },
       () => {
         this.setState({ show: true });
