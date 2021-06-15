@@ -128,3 +128,19 @@ export async function setWechatMiniGlobal(params) {
     body: params,
   });
 }
+
+// 查询小程序广告设置
+export async function openadvGet(params) {
+  return request(baseurl + '/api/v1/wechat/wechat-mini/openadv/get', {
+    method: 'POST',
+    body: params,
+  });
+}
+
+// 保存小程序广告设置
+export async function openadvSave(params) {
+  return request(baseurl + '/api/v1/wechat/wechat-mini/openadv/save', {
+    method: 'POST',
+    body: params,
+  });
+}

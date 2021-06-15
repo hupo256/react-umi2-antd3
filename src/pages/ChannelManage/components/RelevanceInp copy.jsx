@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
 import { siteListApi, designerListApi, caseListApi, articleListApi, articleDicApi, specialListApi, activeListApi  } from '@/services/channelManage'
-import { Form, Input, Tabs, Table, Radio, Tooltip   } from 'antd'
+import { Form, Input, Tabs, Table, Radio, Icon, Tooltip   } from 'antd'
 import styles from '../index.less'
 
 const { TabPane } = Tabs

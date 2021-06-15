@@ -44,14 +44,8 @@ export default class AdSeter extends PureComponent {
 
   componentDidUpdate(prevProps) {
     const { showSecTag } = this.props;
-    // showSecTag !== prevProps.showSecTag &&
-    //   this.setState({ showSec: showSecTag, linkDisplayName: '' });
-    
-    if(showSecTag !== prevProps.showSecTag){
-      const { linkType } = this.state
-      const linkDisplayName = linkType === 1 ? linkDisplayName : ''
-      this.setState({ showSec: showSecTag, linkDisplayName });
-    }
+    showSecTag !== prevProps.showSecTag &&
+      this.setState({ showSec: showSecTag, linkDisplayName: '' });
   }
 
   adSwitchClick = val => {
@@ -64,7 +58,7 @@ export default class AdSeter extends PureComponent {
     this.setState({ imgEdtor: false, picUrl: data[0].path, isEditing: true });
   };
 
-  // 点击input
+  // 点击selector
   releInpClick = () => {
     const { taggleSecTag } = this.props;
     taggleSecTag();
@@ -73,19 +67,15 @@ export default class AdSeter extends PureComponent {
     });
   };
 
-  // 点击selector
   touchRelece = arr => {
-    console.log(arr)
     const tex = arr.map(p => p.text).join('/');
     const paths = arr.map(p => p.code);
-    const linkType = arr[arr.length - 1]?.linkType;
-    console.log(linkType)
+    const linkType = arr[arr.length]?.linkType;
     this.setState({ linkDisplayName: tex, paths, linkType, releErrer: false });
   };
 
   saveAdCofig = route => {
     const { picUrl, paths, linkType, isOpen } = this.state;
-    console.log(paths, linkType)
     const len = paths.length;
     const detailUid = len === 3 ? paths[2] : '';
 
@@ -105,12 +95,6 @@ export default class AdSeter extends PureComponent {
       }
     });
   };
-
-  submitClick = e => {
-    console.log(e)
-    e.stopPropagation()
-    this.saveAdCofig()
-  }
 
   render() {
     const {
@@ -192,7 +176,7 @@ export default class AdSeter extends PureComponent {
             </ul>
           )}
 
-          <Button type="primary" loading={btnLoading} onClick={this.submitClick}>
+          <Button type="primary" loading={btnLoading} onClick={() => this.saveAdCofig()}>
             保存
           </Button>
         </div>
