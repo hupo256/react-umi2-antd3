@@ -56,7 +56,6 @@ const CaseProjects = ({ data, domain }) => {
   const TwoImageLayout = () => {
     caseStyle.projectCasesWrapper = {
       display: 'flex',
-      gap: '18px',
     }
     caseStyle.caseItem = { flex: 1, height: '368px' }
 
@@ -64,7 +63,7 @@ const CaseProjects = ({ data, domain }) => {
       <>
         <div style={caseStyle.projectCasesWrapper}>
           <div
-            style={caseStyle.caseItem}
+            style={{ ...caseStyle.caseItem, marginRight: '18px' }}
             className={styles.clickableImg}
             onClick={() => data[0].uid && window.open(`${domain}/sites/details?gongdiUid=${data[0].uid}`, '页面预览')}
           >
@@ -95,18 +94,17 @@ const CaseProjects = ({ data, domain }) => {
     caseStyle.projectCasesWrapper = {
       display: 'flex',
       alignItems: 'stretch',
-      gap: '18px',
       height: '368px',
     }
     caseStyle.left = {
       flex: 1,
       flexBasis: '25%',
+      marginRight: '18px',
     }
 
     caseStyle.right = {
       flex: 1,
       display: 'flex',
-      gap: '18px',
       flexDirection: 'column',
     }
 
@@ -130,7 +128,7 @@ const CaseProjects = ({ data, domain }) => {
           </div>
           <div style={caseStyle.right}>
             <div
-              style={caseStyle.caseItem}
+              style={{ ...caseStyle.caseItem, marginBottom: '18px' }}
               className={styles.clickableImg}
               onClick={() => data[0].uid && window.open(`${domain}/sites/details?gongdiUid=${data[1].uid}`, '页面预览')}
             >
