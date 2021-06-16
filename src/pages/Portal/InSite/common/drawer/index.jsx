@@ -30,7 +30,9 @@ export default function DrawerEditor(props) {
     // 如果click到了这里，则认为input失焦
     if(curFlag === 'nav') {
       const arr = navData.map(nav => {
+        const { paths } = nav
         nav.showSec = false
+        paths.length !== 2 && (nav.linkDisplayName = '')
         return nav
       })
       setNavData(arr)
