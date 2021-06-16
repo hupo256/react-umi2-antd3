@@ -34,7 +34,8 @@ export default class CreateEdit extends Component {
             showSelectPanl: false,
             btnLoading: false
 
-        }
+    componentDidMount() {
+        this.showSelect()
     }
     async componentDidMount() {
         const { isCreate, currentEditUid } = this.props;
@@ -180,6 +181,12 @@ export default class CreateEdit extends Component {
 
         }
 
+    // 过滤二级掉已有的nav
+    touchSelcOpts = (opts) => {
+      const { curNavs=[] } = this.props
+      const tempNavs = [...curNavs]
+      const newOpts = opts.filter(opt => !tempNavs.includes(opt?.uid))
+      return newOpts
     }
 
     // 选择关联页面
@@ -193,24 +200,21 @@ export default class CreateEdit extends Component {
 
         const { pageNum, searchText, currentarticleDicCode, currentSelectRelatedPageOpt } = this.state
         this.setState(prevState => {
-            let arr = prevState.currentSelectRelatedPageOpt;
-            arr[+step] = item;
             return ({
                 currentSelectRelatedPageOpt: arr,
                 currentKey: (arr[+step].linkType == '1' && !arr[+step].children.length) ?  step : +step + 1 + ''  ,
                 detailType: item.detailType,
-
             })
         }, () => {
-            this.props.form.setFieldsValue({
-                relatedPage:  this.formatData().map(item => {if(item){return item.text}}).join(' / ')
-            })
             if (!item.children.length && item.linkType === 1) {
                 this.toggleSelectPanlHandle(false)
             }
             this.getDataList({pageNum,  searchText, articleDicCode: currentarticleDicCode});
             
         })
+
+        const {callFun} = this.props
+        if(callFun) callFun(this.formatData(arr))
     }
 
     // tab面板切换
@@ -221,12 +225,7 @@ export default class CreateEdit extends Component {
                 currentKey: key,
                 currentSelectRelatedPageOpt: arr,
             }       
-        }, () => {
-            this.props.form.setFieldsValue({
-                relatedPage: this.state.currentSelectRelatedPageOpt?.slice(0, +key).map(item => item.name).join(' / ')
-            })
         })
-       
     } 
 
 
@@ -372,17 +371,11 @@ export default class CreateEdit extends Component {
             currentSelectRelatedPageOpt[currentSelectRelatedPageOpt.length - 1]?.children?.length) {
             
             this.setState(prevState => {
-                
                 return ({
                     currentSelectRelatedPageOpt: [],
                     currentKey: '0'
                 })
-            }, () => {
-                this.props.form.setFieldsValue({
-                    relatedPage: this.state.currentSelectRelatedPageOpt?.slice(0, this.state.currentSelectRelatedPageOpt.length).map(item => item.name).join(' / ')
-                })
             })
-           
         }
         this.setState({
             showSelectPanl: isShow
@@ -436,7 +429,7 @@ export default class CreateEdit extends Component {
         const { form, isCreate  } = this.props;
         const { relatedPageOption, currentSelectRelatedPageOpt, currentKey, dataList,detailType, 
             articleDicOpts, currentarticleDicCode, searchText, showSelectPanl,
-            pageNum, pageSize, recordTotal, btnLoading
+            pageNum, pageSize, recordTotal,
         } = this.state
         const { getFieldDecorator } = form
         
