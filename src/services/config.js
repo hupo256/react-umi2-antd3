@@ -30,8 +30,8 @@ switch (APP_ENVIRONMENT) {
     break;
   case 'local': // 本地开发
     console.warn = function() {};
-    url = 'http://testgw.ingongdi.com';
-    // url = 'http://devgw.ingongdi.com';
+    // url = 'http://testgw.ingongdi.com';
+    url = 'http://devgw.ingongdi.com';
     //url = 'https://pregw.ingongdi.com';
     break;
   default:
