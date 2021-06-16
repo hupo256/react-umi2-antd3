@@ -27,7 +27,7 @@ const findParent = (menuList, url) => {
     return _.find(menuList, { linkKey: 'articleList' })
   }
   if (/articles/.test(url)) {
-    return _.find(menuList, { linkUrl: '/articles?uid=' })
+    return _.find(menuList, { linkKey: 'articleGroup' })
   }
   if (/material/.test(url)) {
     return _.find(menuList, { linkKey: 'material' })
@@ -155,7 +155,14 @@ const MenuListComp = ({ menuList, setShowHeaderDrawer, dynamicDomain = '' }) => 
 
   return (
     <div className={cx(styles.menuWrapper, styles.editMode)}>
-      <div className={extraCharCount[chunkIndex] > MIN_CHUNK_SIZE ? styles.menuRoot : styles.menuRootMin}>
+      <div
+        className={styles.menuRoot}
+        style={
+          extraCharCount[chunkIndex] > MIN_CHUNK_SIZE
+            ? { justifyContent: 'space-between' }
+            : { justifyContent: 'flex-end' }
+        }
+      >
         {_.map(menuChunkList[chunkIndex], (item, index) => {
           if (item.status === 2) return null
           return (
