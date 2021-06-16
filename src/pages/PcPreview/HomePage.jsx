@@ -176,7 +176,7 @@ const Home = () => {
                 )
               }}
             >
-              <h3 className={styles.banner} style={{ backgroundImage: `url(${encodeURI(_.get(item, 'imgUrl'))})` }}>
+              <h3 className={styles.banner} style={{ backgroundImage: `url('${item?.imgUrl}')` }}>
                 {' '}
               </h3>
             </div>
