@@ -19,24 +19,29 @@ import NavEdit from './navEdit';
 import ChannelManage from '@/pages/ChannelManage';
 
 export default function DrawerEditor(props) {
-  const { curFlag, setcurFlag, MdTip, pageData, setpageData, navData, setNavData } = useContext(ctx);
+  const { curFlag, setcurFlag, MdTip, pageData, setpageData, navData, setNavData } = useContext(
+    ctx
+  );
   const isShow = canEditTags.includes(curFlag);
 
   function blockPropagation(e) {
     e.stopPropagation();
     // 阻止与原生事件的冒泡
     // e.nativeEvent.stopImmediatePropagation();
-    
+
     // 如果click到了这里，则认为input失焦
-    if(curFlag === 'nav') {
+    if (curFlag === 'nav') {
       const arr = navData.map(nav => {
-        const { paths } = nav
-        nav.showSec = false
-        paths.length !== 2 && (nav.linkDisplayName = '')
-        return nav
-      })
-      setNavData(arr)
-    }  
+        const { paths } = nav;
+        nav.showSec = false;
+        if (paths.length !== 2) {
+          nav.linkDisplayName = '';
+          nav.icon = '';
+        }
+        return nav;
+      });
+      setNavData(arr);
+    }
   }
 
   function dealWithEditAndNav() {
