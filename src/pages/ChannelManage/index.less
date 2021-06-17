@@ -29,25 +29,69 @@
     background: #BFBFBF;
 }
 .card-container {
-    .ant-tabs-card{
-        .ant-tabs-content {
-            height: 120px;
-            margin-top: -16px;
-            .ant-tabs-tabpane {
-                background: #fff;
-                padding: 16px;
+    border: 1px solid #efefef;
+    border-radius: 4px;
+    box-sizing: border-box;
+    overflow: hidden;
+    .card-item {
+        cursor: pointer;
+        padding: 6px 8px;
+        &:hover {
+            background: #efefef ;
+        }
+    }
+    :global {
+        .ant-radio-button-wrapper {
+            border: none;
+            border-radius: 2px;
+            margin: 2px 6px;
+            &:not(:first-child)::before {
+                width: 0;
             }
         }
-        .ant-tabs-bar {
-            border-color: #fff;
+        .ant-tabs-nav-container {
+            background: #efefef;
+        }
+        .ant-table-small {
+            border: none;
+        }
+        .ant-tabs-nav-container {
+            height: 34px !important;
             .ant-tabs-tab {
-                border-color: transparent;
-                background: transparent;
+                height: 34px !important;
+                line-height: 32px !important;
+                transition: all 0s !important;
             }
-            .ant-tabs-tab-active {
+        }
+        .ant-tabs-card{
+            .ant-tabs-content {
+                // height: 120px;
+                margin-top: -16px;
+                .ant-tabs-tabpane {
+                    background: #fff;
+                    padding: 16px 8px;
+                }
+                .ant-table-body {
+                    margin: 0
+                }
+            }
+            .ant-tabs-bar {
                 border-color: #fff;
-                background: #fff;
+                .ant-tabs-tab {
+                    background: #efefef;
+                    border-color: transparent;
+                }
+                .ant-tabs-tab-active {
+                    border-color: #fff;
+                    background: #fff;
+                    color: rgba(0,0,0,0.65)
+                }
+            }
+            .ant-table-pagination {
+                margin: 0px;
+                margin-top: 8px;
             }
         }
     }
+    
 }  

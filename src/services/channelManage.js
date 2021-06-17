@@ -1,7 +1,7 @@
 /*
  * @Author: ql
  * @Date: 2021-04-22 10:55:31
- * @LastEditTime: 2021-05-19 11:13:21
+ * @LastEditTime: 2021-06-07 13:57:58
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-wechat-saas\src\services\channelManage.js
@@ -87,9 +87,9 @@ export const articleListApi = body =>
 
 // 文章栏目列表信息接口
 export const articleDicApi = body =>
-  request(`${baseurl}/api/v1/wechat/dic/queryDicForForm`, {
-    method: 'POST',
-    body,
+  // request(`${baseurl}/api/v1/wechat/dic/queryDicForForm`, {
+    request(`${baseurl}/api/v1/wechat/dic/queryArticleDic`, {
+    method: 'GET',
   });
 
 // 专题列表接口
@@ -104,4 +104,10 @@ export const appletsMenus = body =>
   request(`${baseurl}/api/v1/wechat/menu/applets/listMenus`, {
     method: 'POST',
     body,
-  });
+})
+
+// 小游戏列表接口
+export const activeListApi = body => request(`${baseurl}/api/v1/wechat/activity/queryActivityList`, {
+    method: 'POST',
+    body
+})

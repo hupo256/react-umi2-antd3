@@ -17,7 +17,7 @@ export default function AboutUsMd(props) {
 
   return (
     <div className={`${pageStyle.mdBlock} ${pageStyle.modelEditBox}`}>
-      <img className={pageStyle.bg} src={imgWordAbout} alt="" />
+      <img className={pageStyle.bg} src={imgWordAbout} alt=''  />
       <h3>
         <b>{title}</b>
       </h3>

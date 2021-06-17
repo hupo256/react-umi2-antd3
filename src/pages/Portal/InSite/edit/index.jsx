@@ -1,8 +1,8 @@
 /*
  * @Author: tdd
  * @Date: 2021-03-23 13:49:12
- * @Last Modified by: tdd
- * @Last Modified time: 2021-03-23 13:49:12
+ * @Last Modified by: zqm
+ * @Last Modified time: 2021-05-28 18:36:27
  * 编辑模板
  */
 import React, { useState, useContext } from 'react';
@@ -17,8 +17,13 @@ import Prompt from './prompt';
 import styles from './edit.less';
 
 function TempEdit(props) {
-  const { curFlag, setcurFlag } = useContext(ctx);
+  const { curFlag, setcurFlag, setMdTip } = useContext(ctx);
   const showRight = canEditTags.includes(curFlag);
+
+  function editModelClick(){
+    setcurFlag('editModel')
+    setMdTip('模块')
+  }
 
   return (
     <PageHeaderWrapper>
@@ -30,7 +35,7 @@ function TempEdit(props) {
           <div
             className={styles.tipsBox}
             style={{ bottom: '15.5em' }}
-            onClick={() => setcurFlag('editModel')}
+            onClick={editModelClick}
           >
             <Tooltip placement="topLeft" title={editText}>
               <Icon type="appstore" style={{ fontSize: '16px', color: '#fe6a30' }} />

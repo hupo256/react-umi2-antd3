@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-05-14 09:54:07
+ * @Last Modified time: 2021-06-10 21:41:47
  * 创建工地
  */
 import React, { PureComponent, Fragment, Component } from 'react';
@@ -251,6 +251,8 @@ class CreateStepTwo extends Component {
                         onClick={() => this.handleAddDic(r)}
                       >
                         <Icon type="plus-circle" />
+                        {'    '}
+                        {'    '}
                         添加选项
                       </span>
                     </div>
@@ -378,6 +380,7 @@ class CreateStepTwo extends Component {
             dataSource={DicList}
             rowKey={record => record.uid}
             components={this.components}
+            scroll={{ x: 1200 }}
             onRow={(record, index) => {
               return {
                 index,
@@ -507,6 +510,7 @@ class CreateStepTwo extends Component {
   };
   // 图片选择
   handleUploadOk = data => {
+    const datas = [...data].filter(item => !Array.isArray(item));
     const { DicList, record } = this.state;
     const {
       dispatch,
@@ -516,9 +520,9 @@ class CreateStepTwo extends Component {
       // 编辑
       const newDicList = DicList.map(item => {
         if (item.guid === record.guid) {
-          item.path = data[0].path;
-          item.url = data[0].path;
-          item.addr = data[0].path;
+          item.path = datas[0].path;
+          item.url = datas[0].path;
+          item.addr = datas[0].path;
         }
         return item;
       });
@@ -527,7 +531,7 @@ class CreateStepTwo extends Component {
     } else {
       // 新增
       const len = DicList.length;
-      const newData = data.map((item, i) => {
+      const newData = datas.map((item, i) => {
         item.isCover = len + '' == '0' && i == 0 ? true : false;
         item.isVr = false;
         item.picDesc = null;

@@ -1,21 +1,21 @@
 /*
  * @Author: zqm 
  * @Date: 2021-04-28 17:05:47 
- * @Last Modified by: zqm
- * @Last Modified time: 2021-06-02 10:26:26
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2021-06-10 21:33:19
  * 小程序设置
  */
 
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
-import router from 'umi/router';
-import { Card, Switch, Icon, Menu, Table, Input, message, Modal } from 'antd';
+import { Card, Switch, Icon, Menu, Table, message } from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { MyIcon } from '@/utils/utils';
 import styles from './index.less';
 import { getauth } from '@/utils/authority';
 import LinkPage from './LinkPage';
-const { SubMenu } = Menu;
+import AdSeter from './AdSeter';
+import NotBound from '../MiniProgram/NotBound';
 
 @connect(({ MiniProgram }) => ({ MiniProgram }))
 class Index extends PureComponent {
@@ -24,8 +24,10 @@ class Index extends PureComponent {
     this.state = {
       visible: false,
       record: null,
-      selectedKeys: ['1'],
-      switchChecked: false,
+      selectedKeys: ['3'],
+      switchCommonDate: null,
+      switchLoading: false,
+      showSec: false,
     };
   }
 
@@ -34,11 +36,12 @@ class Index extends PureComponent {
     const code = localStorage.getItem('auth');
     const saasSellerCode = JSON.parse(code).companyCode;
     dispatch({ type: 'MiniProgram/getAuthInfoModel', payload: { saasSellerCode } }).then(res => {
-      if (res && res.code === 200 && res.data.isAuthedWechatMini) {
+      // if (res && res.code === 200 && res.data.isAuthedWechatMini) {
+      if (res && res.code === 200) {
         dispatch({ type: 'MiniProgram/formbindmapModel' });
         dispatch({ type: 'MiniProgram/queryWechatMiniGlobalModel' }).then(res => {
           if (res?.code === 200) {
-            this.setState({ switchChecked: res.data?.homePageOpenAuth });
+            this.setState({ switchCommonDate: res.data });
           }
         });
       }
@@ -48,7 +51,7 @@ class Index extends PureComponent {
   render() {
     const { FormDetail, AuthInfo } = this.props.MiniProgram;
     const title = (
-      <div>
+      <div style={{ display: 'none' }}>
         <h3 style={{ marginTop: 10 }}>关联页面设置</h3>
       </div>
     );
@@ -157,12 +160,13 @@ class Index extends PureComponent {
           },
         ]
       : [];
-    const { visible, record, selectedKeys, switchChecked } = this.state;
+    const { visible, record, selectedKeys, switchCommonDate, switchLoading, showSec } = this.state;
+    const permissionsBtn = getauth();
     return (
-      <div className={styles.appleCard}>
+      <div className={styles.appleCard} onClick={this.touchInpBlurTag}>
         <PageHeaderWrapper title={title}>
           <Card bordered={false}>
-            {AuthInfo.isAuthedWechatMini && (
+            {!AuthInfo.isAuthedWechatMini && (
               <div className={styles.appletWrap}>
                 <div className={styles.appleLeft}>
                   <Menu
@@ -172,6 +176,7 @@ class Index extends PureComponent {
                     defaultOpenKeys={['sub1']}
                     mode="inline"
                   >
+                    {/* {permissionsBtn.permissions.includes('BTN210610000006') ? ( */}
                     <Menu.Item key="1">
                       <p
                         style={{
@@ -181,49 +186,78 @@ class Index extends PureComponent {
                         通用设置
                       </p>
                     </Menu.Item>
-                    <Menu.Item key="2">
-                      <p
-                        style={{
-                          paddingLeft: 24,
-                        }}
-                      >
-                        关联页面设置
-                      </p>
+                    {/* ) : null} */}
+                    {permissionsBtn.permissions.includes('BTN210610000007') ? (
+                      <Menu.Item key="2">
+                        <p
+                          style={{
+                            paddingLeft: 24,
+                          }}
+                        >
+                          关联页面设置
+                        </p>
+                      </Menu.Item>
+                    ) : null}
+
+                    <Menu.Item key="3">
+                      <p style={{ paddingLeft: 24 }}>广告设置</p>
                     </Menu.Item>
                   </Menu>
                 </div>
-                {selectedKeys[0] === '2' && (
-                  <div className={styles.appleRight}>
-                    <p style={{ fontWeight: 400, fontSize: 13, color: '#666' }}>
-                      <MyIcon
-                        type="icon-tips"
-                        style={{ color: '#ccebfa', fontSize: 18, marginRight: 6 }}
-                      />
-                      关联后，在小程序的对应模块内点击按钮，会跳转展示所关联的页面
-                    </p>
-                    <Table columns={columns} dataSource={data} pagination={false} />
-                  </div>
+                {selectedKeys[0] === '3' && (
+                  <AdSeter
+                    showSecTag={showSec}
+                    taggleSecTag={() => this.setState({ showSec: true })}
+                  />
                 )}
+                {selectedKeys[0] === '2' &&
+                  permissionsBtn.permissions.includes('BTN210610000007') && (
+                    <div className={styles.appleRight}>
+                      <p style={{ fontWeight: 500, fontSize: 22, color: '#333' }}>关联页面设置</p>
+                      <p style={{ fontWeight: 400, fontSize: 13, color: '#666' }}>
+                        <MyIcon
+                          type="icon-tips"
+                          style={{ color: '#ccebfa', fontSize: 18, marginRight: 6 }}
+                        />
+                        关联后，在小程序的对应模块内点击按钮，会跳转展示所关联的页面
+                      </p>
+                      <Table columns={columns} dataSource={data} pagination={false} />
+                    </div>
+                  )}
                 {selectedKeys[0] === '1' && (
+                  // permissionsBtn.permissions.includes('BTN210610000006') && (
                   <div className={styles.appleRight}>
                     <p style={{ fontWeight: 500, fontSize: 22, color: '#333' }}>通用设置</p>
                     <p>
-                      打开小程序一键授权（首次）
+                      <span>打开小程序一键授权（首次）</span>
                       <Switch
-                        style={{ marginLeft: 30 }}
-                        checked={switchChecked}
-                        onChange={checked => {
-                          this.handleSwitchChange(checked);
+                        loading={switchLoading}
+                        checked={switchCommonDate?.homePageOpenAuth}
+                        onChange={e => {
+                          this.handleSwitchChange('homePageOpenAuth', e);
+                        }}
+                      />
+                    </p>
+
+                    <p>
+                      <span>在线客服</span>
+                      <Switch
+                        loading={switchLoading}
+                        checked={switchCommonDate?.wechatCustomerService}
+                        onChange={e => {
+                          this.handleSwitchChange('wechatCustomerService', e);
                         }}
                       />
                     </p>
                   </div>
-                )}
+                )
+                // )
+                }
               </div>
             )}
-            {!AuthInfo.isAuthedWechatMini && (
-              <div style={{ fontSize: 24, padding: 20 }}>请先进行小程序授权</div>
-            )}
+            {/* {!AuthInfo.isAuthedWechatMini && (
+              <NotBound jumpUrl={`/#/portal/insite/appletsetting`} />
+            )} */}
           </Card>
         </PageHeaderWrapper>
         {visible && (
@@ -239,6 +273,14 @@ class Index extends PureComponent {
       </div>
     );
   }
+
+  // click 事件能到这里说明那个input已经失焦了
+  touchInpBlurTag = e => {
+    // e.stopPropagation();
+    // console.log(123);
+    this.setState({ showSec: false });
+  };
+
   handleOk = () => {
     const { dispatch } = this.props;
     dispatch({ type: 'MiniProgram/formbindmapModel' });
@@ -248,18 +290,23 @@ class Index extends PureComponent {
     this.setState({ visible: false });
   };
   // 开关
-  handleSwitchChange = checked => {
+  handleSwitchChange = (key, bool) => {
     const { dispatch } = this.props;
+    const { switchCommonDate } = this.state;
+    const payload = { ...switchCommonDate, [key]: bool };
+    this.setState({ switchLoading: true });
     dispatch({
       type: 'MiniProgram/setWechatMiniGlobalModel',
-      payload: { homePageOpenAuth: checked },
+      payload,
     }).then(res => {
       if (res?.code === 200002) {
         message.warning(res.message);
       } else if (res?.code === 200) {
-        this.setState({ switchChecked: checked }, () => {
-          message.success(checked ? '授权成功' : '取消授权成功');
-        });
+        this.setState({ ...payload, switchLoading: false });
+        const AuthTex = ['授权成功', '取消授权成功'];
+        const wechatTex = ['在线客服开启成功', '在线客服关闭成功'];
+        const tex = key === 'homePageOpenAuth' ? AuthTex : wechatTex;
+        message.success(bool ? tex[0] : tex[1]);
       }
     });
   };

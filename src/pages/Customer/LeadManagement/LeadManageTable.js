@@ -266,7 +266,7 @@ class LeadManageTable extends Component {
       payload: { ...r },
     }).then(res => {
       if (res && res.code === 200) {
-        message.success('状态变更成功');
+        message.success('跟进成功');
         this.handleChangeCancel();
         // 刷新列表
         this.queryTrackData({});

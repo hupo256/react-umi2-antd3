@@ -98,13 +98,18 @@
           display: inline-block;
           vertical-align: top;
         }
-        input:nth-child(3) {
-          width: 100%;
-        }
         .navIcon {
-          font-size: 25px;
-          color: @hightColor;
-          margin-left: 15px;
+          font-size: 23px;
+          color: #666;
+          margin: 0 0 8px 12px;
+          width: 32px;
+          height: 32px;
+          border: 1px solid #ececed;
+          border-radius: 4px;
+          background: #f8f8f8;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
         :global {
           .ant-form-inline {
@@ -127,16 +132,59 @@
           .ant-form-item-with-help {
             margin-bottom: 5px;
           }
+          .ant-tabs-top {
+            // padding-top: 5px;
+
+            p {
+              line-height: 1.8;
+            }
+          }
         }
       }
     }
-    :global{
-      .ant-pagination-item,.ant-pagination-prev,.ant-pagination-next {
-        padding: 0!important;
+    :global {
+      .ant-pagination-item,
+      .ant-pagination-prev,
+      .ant-pagination-next {
+        padding: 0 !important;
         border-color: transparent;
       }
       .ant-pagination-item-active {
         border-color: #fe6a30;
+      }
+    }
+  }
+
+  .navEditBox {
+    .titBox {
+      > span:nth-child(1) {
+        width: 17%;
+      }
+      > span:nth-child(2) {
+        width: 55%;
+      }
+    }
+    .taginpBox {
+      :global {
+        .ant-form-inline {
+          > div:nth-child(1) {
+            width: 20%;
+          }
+          > div:nth-child(2) {
+            width: 77%;
+          }
+        }
+        .ant-form-item {
+          margin-bottom: 0;
+        }
+
+        .icon {
+          width: auto;
+          height: 1em;
+          vertical-align: middle;
+          fill: currentColor;
+          overflow: auto;
+        }
       }
     }
   }
@@ -207,14 +255,14 @@
     }
   }
 }
-.aboutUsBox{
+.aboutUsBox {
   //padding: 0 16px;
-  .titBox{
-    span{
+  .titBox {
+    span {
       margin-bottom: 7px;
     }
   }
-  .imgLinkWrapper{
+  .imgLinkWrapper {
     margin-top: 14px;
     .minImgBox {
       width: 152px;
@@ -243,7 +291,6 @@
       }
     }
   }
-
 }
 .selectWrap {
   display: inline-block;
@@ -256,7 +303,7 @@
     background: #fff;
     padding-left: 3px;
   }
-  :global{
+  :global {
     .tagstatus {
       cursor: pointer;
       padding: 2px 10px;

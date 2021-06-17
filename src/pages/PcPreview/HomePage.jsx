@@ -11,6 +11,7 @@ import Articles from './Articles/Articles.jsx'
 import LiveShow from './LiveShow/LiveShow.jsx'
 import FooterComp from './FooterComp/FooterComp.jsx'
 import Regisiter from './Regisiter/Regisiter.jsx'
+import axios from 'axios'
 
 import { typeMap, paramMap } from './constants.js'
 import WebSetting from './WebSettingOut' // 注意：此处营销站独有
@@ -57,20 +58,20 @@ const Home = () => {
           const filtered = {
             banner: _.find(rawCollection, {
               flag: 'banner',
-            })?.list,
+            }),
             highlights: _.find(rawCollection, {
               flag: 'highlights',
-            })?.list,
+            }),
             case: _.find(rawCollection, {
               flag: 'case',
-            })?.list,
+            }),
             site: _.find(rawCollection, {
               flag: 'site',
-            })?.list,
-            design: _.find(rawCollection, { flag: 'design' })?.list,
+            }),
+            design: _.find(rawCollection, { flag: 'design' }),
             article: _.find(rawCollection, {
               flag: 'article',
-            })?.list,
+            }),
           }
 
           setPublishedData(filtered)
@@ -84,6 +85,27 @@ const Home = () => {
         if (res?.data && document) {
           const iconUrl = res.data.icon
           document.head.querySelector('[rel=icon]').href = iconUrl
+        }
+
+        if (document && res?.data) {
+          const data = res.data
+          const string = data.header,
+            temp = document.createElement('div')
+
+          temp.innerHTML = string
+          const elemScripts = temp.querySelectorAll('script')
+
+          _.forEach(elemScripts, async elem => {
+            const src = elem.src
+            if (src) {
+              try {
+                const res = await axios.get(src)
+                eval(res.data)
+              } catch (e) {}
+            } else {
+              eval(elem.text)
+            }
+          })
         }
       })()
       ;(async () => {
@@ -132,7 +154,7 @@ const Home = () => {
         </div>
 
         <Carousel autoplay>
-          {_.map(publishedData['banner'], (item, index) => (
+          {_.map(publishedData['banner']['list'], (item, index) => (
             <div
               key={`banner-${index}`}
               onClick={() => {
@@ -141,6 +163,10 @@ const Home = () => {
                 }
                 if (item.type === 'games') {
                   message.warning('PC端不允许跳转到小游戏')
+                  return
+                }
+                if (item.type === 'special') {
+                  window.open(`${dynamicDomain}/img/PublicLibraryPc/special.html#/?uid=${item.uid}`, '页面预览')
                   return
                 }
                 window.open(
@@ -159,30 +185,30 @@ const Home = () => {
         <Content className={styles.mainWrapper}>
           {_.isEmpty(publishedData['highlights']) || (
             <ChapterLayout title={'产品特点'}>
-              <KeyPoints pointsList={publishedData['highlights']} domain={dynamicDomain} />
+              <KeyPoints pointsList={publishedData['highlights']['list']} domain={dynamicDomain} />
             </ChapterLayout>
           )}
           {_.isEmpty(publishedData['case']) || (
-            <ChapterLayout title={'装修案例'}>
-              <CaseProjects data={publishedData['case']} domain={dynamicDomain} />
+            <ChapterLayout title={publishedData['case']['title']}>
+              <CaseProjects data={publishedData['case']['list']} domain={dynamicDomain} />
             </ChapterLayout>
           )}
           {_.isEmpty(publishedData['site']) || (
-            <div className={styles.designerSectionWiderBackground}>
-              <ChapterLayout title={'参观工地'}>
-                <LiveShow data={publishedData['site']} domain={dynamicDomain} />
+            <div className={styles.liveShowSectionWiderBackground}>
+              <ChapterLayout title={publishedData['site']['title']}>
+                <LiveShow data={publishedData['site']['list']} domain={dynamicDomain} />
               </ChapterLayout>
             </div>
           )}
           {_.isEmpty(publishedData['design']) || (
-            <ChapterLayout title={'首席设计师'} moreStyles={{ marginBottom: '10px' }}>
-              <DesignerContent data={publishedData['design']} domain={dynamicDomain} />
+            <ChapterLayout title={publishedData['design']['title']} moreStyles={{ marginBottom: '10px' }}>
+              <DesignerContent data={publishedData['design']['list']} domain={dynamicDomain} />
             </ChapterLayout>
           )}
           {_.isEmpty(publishedData['article']) || (
             <div className={styles.designerSectionWiderBackground}>
-              <ChapterLayout title={'装修攻略'}>
-                <Articles data={_.slice(publishedData['article'], 0, 3)} domain={dynamicDomain} />
+              <ChapterLayout title={publishedData['article']['title']}>
+                <Articles data={_.slice(publishedData['article']['list'], 0, 3)} domain={dynamicDomain} />
               </ChapterLayout>
             </div>
           )}
@@ -201,7 +227,7 @@ const Home = () => {
           setShowHeaderDrawer(false)
         }}
         visible={showHeaderDrawer}
-        width={900}
+        width={1150}
         headerStyle={{ border: 'none', marginBottom: '-18px' }}
         destroyOnClose
       >
@@ -209,7 +235,7 @@ const Home = () => {
       </Drawer>
 
       <Drawer
-        title="编辑公司信息"
+        title="编辑企业信息"
         placement="right"
         closable={true}
         onClose={() => {

@@ -158,7 +158,7 @@ export default class ChannelManage extends Component {
         const { dispatch, showCreateEdit } = this.props;
         // 超过20条禁止再创建
         if ( list.length >= maxLength && !showCreateEdit) {
-            message.warning(`最多支持创建${maxLength}条频道！`);
+            message.warning(`最多可创建${maxLength}个频道哦！`);
             return;
         }
         dispatch({

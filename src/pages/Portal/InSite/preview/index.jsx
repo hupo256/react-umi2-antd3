@@ -94,7 +94,7 @@ export default function Preview(props) {
     const { target } = e;
     const clientHeight = target.clientHeight; //可视区域高度
     const scrollTop = target.scrollTop; //滚动条滚动高度
-    settotopShow(scrollTop > clientHeight / 3);
+    settotopShow(scrollTop > clientHeight / 5);
   }
 
   function gotoRoute(key) {
@@ -116,32 +116,45 @@ export default function Preview(props) {
         </div>
         {/* 循环出主体 */}
         <div className={pageStyle.conBox} ref={contentBox}>
-          {pageData?.jsonData?.length > 0 &&
-            pageData.jsonData.map((item, ind) => {
-              const { flag, list = [] } = item;
-              const model = componentMap[flag];
-              if (model) {
-                const { tips, creatCom } = model;
-                return (
-                  <HoverMd key={ind} tips={tips} flag={flag} isEmpty={!list?.length}>
-                    {creatCom({ ...item })}
-                  </HoverMd>
-                );
-              }
-            })}
+          <div className={pageStyle.conInnerBox}>
+            {pageData?.jsonData?.length > 0 &&
+              pageData.jsonData.map((item, ind) => {
+                const { flag, list = [] } = item;
+                if (flag === 'channel' && list.length === 0) return;
+                const model = componentMap[flag];
+                if (model) {
+                  const { tips, creatCom } = model;
+                  return (
+                    <HoverMd key={ind} tips={tips} flag={flag} isEmpty={!list?.length}>
+                      {creatCom({ ...item })}
+                    </HoverMd>
+                  );
+                }
+              })}
 
-          {/* 底部导航 */}
-          <NavMd />
+            {/* 底部导航 */}
+            <NavMd />
+          </div>
         </div>
 
         {/* totopBox */}
-        <div className={`${pageStyle.totopBox} ${totopShow ? pageStyle.show : ''}`}>
+        <div className={pageStyle.totopBox}>
+          <span>
+            <svg className="icon" aria-hidden="true">
+              <use href="#icon-ic_share" />
+            </svg>
+          </span>
           <span>
             <svg className="icon" aria-hidden="true">
               <use href="#icon-ic_call" />
             </svg>
           </span>
-          <span onClick={gotoTop}>
+          <span>
+            <svg className="icon" aria-hidden="true">
+              <use href="#icon-ic_more" />
+            </svg>
+          </span>
+          <span onClick={gotoTop} className={`${totopShow ? pageStyle.show : ''}`}>
             <svg className="icon" aria-hidden="true">
               <use href="#icon-ic_top" />
             </svg>

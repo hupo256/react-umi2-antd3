@@ -2,13 +2,15 @@ import React, { Component } from 'react';
 import { Input, Icon, Button, Form, message } from 'antd';
 import { regExpConfig } from '@/utils/regular.config';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { getauth } from '@/utils/authority';
+const permissionsBtn = getauth().permissions || [];
 const FormItem = Form.Item;
 @Form.create()
 class HostBind extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      hostSuffix: '',
+      hostSuffix: '-site.ingongdi.com',
       defaultHostValue: '',
     };
   }
@@ -19,7 +21,7 @@ class HostBind extends Component {
     let defaultDomain = '';
     dispatch({ type: 'WebSettingStroe/hostSettingModel' }).then(res => {
       if (res && res.code === 200) {
-        const { isBind, type, domain, randomDomain, suffix } = res.data;
+        const { isBind, domain, randomDomain, suffix } = res.data;
         if (isBind) {
           const resIndex = domain.indexOf(suffix);
           if (resIndex == -1) {
@@ -43,10 +45,43 @@ class HostBind extends Component {
       }
     });
   }
-  onDefaultHost(e) {
-    this.setState({
+  componentDidMount() {
+    this.props.onRef && this.props.onRef(this);
+  }
+  async dispatchValue() {
+    const { dispatch } = this.props;
+    let defaultDomain = '';
+    await dispatch({ type: 'WebSettingStroe/hostSettingModel' }).then(async res => {
+      if (res && res.code === 200) {
+        const { isBind, domain, randomDomain, suffix } = res.data;
+        if (isBind) {
+          const resIndex = domain.indexOf(suffix);
+          if (resIndex == -1) {
+            defaultDomain = domain;
+          } else {
+            defaultDomain = domain.slice(0, resIndex);
+          }
+        } else {
+          const resIndex = randomDomain.indexOf(suffix);
+          if (resIndex == -1) {
+            defaultDomain = randomDomain;
+          } else {
+            defaultDomain = randomDomain.slice(0, resIndex);
+          }
+        }
+
+        await this.setState({
+          hostSuffix: res.data.suffix,
+          defaultHostValue: defaultDomain,
+        });
+      }
+    });
+  }
+  async onDefaultHost(e) {
+    await this.setState({
       defaultHostValue: e.target.value,
     });
+    await this.props.changeHintIf(true);
   }
   onEnrollHost() {
     window.open('https://wanwang.aliyun.com/domain/searchresult/#/?keyword=&suffix=com');
@@ -83,6 +118,7 @@ class HostBind extends Component {
     await dispatch({ type: 'WebSettingStroe/hostSettingBind', payload: payload }).then(res => {
       if (res && res.code == 200) {
         // console.log(payload.type);
+        this.props.changeHintIf(false);
         message.success('保存成功');
       }
     });
@@ -94,20 +130,20 @@ class HostBind extends Component {
     } = this.props;
     return (
       <div className="hostBindContent">
-        <div style={{ color: '#101010', fontSize: '26px', marginBottom: '10px' }}>
+        <div style={{ color: '#101010', fontSize: '22px', marginBottom: '10px' }}>
           域名绑定
           <Icon
             type="question-circle"
-            style={{ margin: ' 5px 0 0 10px', cursor: 'pointer', fontSize:'20px'}}
+            style={{ margin: ' 5px 0 0 10px', cursor: 'pointer', fontSize: '20px' }}
             onClick={this.onHost.bind(this)}
           />
         </div>
         <div>
           <div style={{ display: 'flex' }}>
-            <Form>
+            <Form id="HostBindForm">
               <FormItem label="默认域名（二级域名）">
                 {getFieldDecorator('defaultHost', {
-                  initialValue: defaultHostValue,
+                  initialValue: defaultHostValue || '',
                   rules: [
                     {
                       pattern: regExpConfig.defalutHostType,
@@ -136,19 +172,22 @@ class HostBind extends Component {
               </FormItem>
             </Form>
             <div style={{ marginTop: '49px' }}>{hostSuffix}</div>
+            <CopyToClipboard
+              text={defaultHostValue + hostSuffix}
+              onCopy={() => message.success('复制成功')}
+            >
+              <div className="defaultHostCopyDiv">
+                <Icon type="copy" />
+                复制链接
+              </div>
+            </CopyToClipboard>
           </div>
-          <CopyToClipboard
-            text={defaultHostValue + hostSuffix}
-            onCopy={() => message.success('复制成功')}
-          >
-            <div className="defaultHostCopyDiv">
-              <Icon type="copy" />
-              复制链接
-            </div>
-          </CopyToClipboard>
-          <Button className="defaultHostButton" onClick={this.onHostBind.bind(this)}>
-            保存
-          </Button>
+          {permissionsBtn.includes('BTN210610000001') && (
+            <Button className="defaultHostButton" onClick={this.onHostBind.bind(this)}>
+              保存
+            </Button>
+          )}
+
           <div className="customHostWire" />
           <div className="customHostText">没有域名？快去注册一个吧，价格低至￥29/年</div>
           <Button className="customHostA" onClick={this.onEnrollHost.bind(this)}>

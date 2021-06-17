@@ -123,6 +123,9 @@ export default function TagsEdit(props) {
 
   return (
     <>
+       <div style={{marginBottom: '1em', fontSize: 12, paddingLeft: 17, width: '100%'}}>
+        <Icon type="info-circle" style={{color: '#c1c1c1'}} /> 为保证网站显示效果，图片建议尺寸：1920px*952px
+      </div>
       <div className={styles.widthBox}>
         图片高度：
         <Group onChange={radioChage} value={imgHeightType}>

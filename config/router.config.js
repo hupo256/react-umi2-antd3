@@ -101,15 +101,18 @@ export default [
             name: 'channelmanage',
             path: '/portal/insite/channelmanage',
             component: './ChannelManage',
+            code: 'MU900000011001',
           },
           {
             path: '/portal/insite/websetting',
             name: 'websetting',
+            code: 'MU900000011004',
             component: './WebSetting/index',
           },
           {
             path: '/portal/insite/appletsetting',
             name: 'applet',
+            code: 'MU900000011003',
             component: './SystemSetting/AppletSetting/Index.js',
           },
         ],
@@ -278,46 +281,38 @@ export default [
           },
         ],
       },
-      // {
-      //   path: '/portal/mysite',
-      //   name: 'mysite',
-      //   routes: [
-      //     {
-      //       path: '/portal/mysite',
-      //       redirect: '/portal/mysite/sitepanel',
-      //     },
-      //     {
-      //       path: '/portal/mysite/sitepanel',
-      //       name: 'sitepanel',
-      //       component: './Portal/MySIte/SitePanel/SitePanel',
-      //     },
-      //   ],
-      // },
-      //   ],
-      // },
-      // v1.1
-      // 客户
+      // 线索管理
       {
         path: '/customer',
         name: 'customer',
         icon: 'MyIcon@icon-xiansuo',
         code: 'MU90000002',
         component: './Customer/LeadManagement/LeadManagement',
-        // routes: [
-        //   {
-        //     path: '/customer',
-        //     redirect: '/customer/companyinformation',
-        //   },
-        //   // 线索管理
-        //   {
-        //     path: '/customer/leadmanagement',
-        //     name: 'leadmanagement',
-        //     icon: 'retweet',
-        //     //code: 'P2020010110015',
-        //     component: './Customer/LeadManagement/LeadManagement',
-        //   },
-        // ],
       },
+      // 线索管理
+      {
+        path: '/customer',
+        name: 'customer',
+        icon: 'retweet',
+        code: 'MU90000002',
+        hideInMenu: true,
+        routes: [
+          {
+            path: '/customer',
+            name: 'customer',
+            icon: 'retweet',
+            code: 'MU90000002',
+            component: './Customer/LeadManagement/LeadManagement',
+          },
+          {
+            path: '/customer/detail',
+            name: 'customerdetail',
+            code: 'MU900000020001',
+            component: './Customer/LeadManagement/LeadManageDetail',
+          },
+        ],
+      },
+
       // 配置
       {
         path: '/setting',

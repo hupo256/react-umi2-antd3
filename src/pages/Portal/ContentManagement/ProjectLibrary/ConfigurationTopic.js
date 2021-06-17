@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-06-07 18:53:43
+ * @Last Modified time: 2021-06-10 23:12:06
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -358,7 +358,7 @@ class ProjectLibrary extends PureComponent {
               >
                 放弃更改
               </Button>
-              {permissionsBtn.permissions.includes('BTN210326000048') ? (
+              {permissionsBtn.permissions.includes('BTN210326000049') ? (
                 <Button
                   style={{ borderRadius: 2, marginRight: 10, width: 80 }}
                   onClick={() => {
