@@ -24,31 +24,12 @@ export default function NavEdit(props) {
   useEffect(() => {
     getRelatedPage({ sceneType: 2 }).then(res => {
       if (!res?.data) return;
-      touchCurNavs()
       setrelatedPageOption(res?.data);
     });
   }, []);
 
-  useEffect(() => {
-    touchCurNavs()
-  }, [navData])
-
-  // 收集已经有的nav
-  function touchCurNavs() {
-    // const arr = navData.map(nav => nav?.paths?.[0]);
-    const arr = ['fd8d01f1a35111eb999e00505694ddf5']  // 首页
-    navData.map(nav => {
-      const { paths = [] } = nav;
-      // const len = paths.length;
-      // const num = len === 2 ? 1 : 0;  // 取末级的uid,去重时也从末级开始
-      // return paths?.[num];
-      const id = paths?.[1]
-      !!id && arr.push(id)  // 取末级的uid,去重时也从末级开始
-    });
-    setcurNavs(arr);
-  }
-
-  function addNewTag() {
+  function addNewTag(e) {
+    // e.stopPropagation();
     const len = navData.length;
     const empty = navData.find(nav => !nav.paths);
     if (len === maxLen) return message.warning(`最多可添加${maxLen}个导航`);
@@ -57,9 +38,21 @@ export default function NavEdit(props) {
       icon: 'iconic_site_new',
       linkDisplayName: '',
       name: '',
-      navModule: '',
-    });
-    setNavData(newArr);
+      navModule: `module${len}`,
+    };
+    
+    setTimeout(() => {
+      setNavData([...navData, item])
+    })
+  }
+
+  function forUpdatePageData() {
+    // const newObj = { ...pageData };
+    // newObj.maps[curFlag].list = tagList;
+    // settagList(tagList.slice());
+    // setpageData(newObj);
+
+    setNavData(navData.slice());
   }
 
   function delImg(num) {
@@ -80,30 +73,53 @@ export default function NavEdit(props) {
     newArr.splice(ind + num, 0, rec);
     setNavData(newArr);
   }
-  function filterData(navModule) {
-    const newArr = [...choiceData];
-    newArr.map(i => {
-      const r = navData.find(e => {
-        return i.navModule === e.navModule;
-      });
-      if (r) {
-        i.disabled = true;
-      } else {
-        i.disabled = false;
-      }
-    });
-    setChoiceData(newArr);
+
+  function discTexChange(e, rec) {
+    let val = e.target.value;
+    if (val?.length > 4) {
+      rec.desStatus = 'error';
+      rec.desMsg = '最多4个字符';
+    } else {
+      rec.desStatus = 'success';
+      rec.desMsg = '';
+    }
+    rec.name = val;
+    updateNavData();
   }
 
   function touchRelece(arr, num) {
-    console.log(arr);
     const len = arr.length;
-    navData[num].icon = arr[len - 1]?.icon;
-    navData[num].navModule = arr[len - 1]?.appletsLink;
-    navData[num].linkKey = arr[len - 1]?.linkKey;
-    navData[num].paths = arr.map(p => p.code);
-    navData[num].linkDisplayName = arr.map(p => p.text).join('/');
-    forUpdatePageData();
+    const paths = arr.map(p => p.code);
+    const nav = navData[num];
+    nav.icon = arr[len - 1]?.icon;
+    nav.navModule = arr[len - 1]?.appletsLink;
+    nav.linkKey = arr[len - 1]?.linkKey;
+    nav.paths = paths;
+    nav.linkDisplayName = arr.map(p => p.text).join('/');
+    if (paths.length === 2) nav.showSec = false;
+    updateNavData();
+  }
+
+  
+
+  // 点击input
+  function relevClick(num) {
+    const arr = ['fd8d01f1a35111eb999e00505694ddf5']; // 首页
+    const navs = navData.map((nav, ind) => {
+      const { paths = [] } = nav;
+      const id = paths?.[1];
+      ind !== num && !!id && arr.push(id); // 把自己也排除，取末级的uid,去重时也从末级开始
+      nav.showSec = ind === num;
+      if (ind !== 0 && paths?.length !== 2) {  
+        // 如果同时有没选到末点的，就关掉并清空
+        nav.linkDisplayName = '';
+        nav.icon = '';
+      }
+      return nav;
+    });
+
+    setcurNavs(arr);
+    setNavData(navs);
   }
   const columns = [
     {
@@ -175,12 +191,90 @@ export default function NavEdit(props) {
   ];
 
   return (
-    <div className={pageStyle.navBox}>
-      <Table columns={columns} dataSource={navData || []} rowKey={'navModule'} pagination={false} />
-      <p className={pageStyle.addImg} onClick={addNewNav}>
-        <span>+</span>
-        <span>添加导航</span>
-      </p>
-    </div>
+    <>
+      <ul>
+        {navData?.length > 0 &&
+          navData.map((tag, ind) => {
+            const len = navData.length;
+            let {
+              linkDisplayName,
+              icon,
+              name,
+              navModule,
+              showSec,
+              desStatus = 'success',
+              desMsg = '',
+            } = tag;
+            icon = 'icon-' + icon?.split('icon')[1]; // 兼容iconfont在生成时加的前辍
+            const isHome = navModule === 'index';
+            return (
+              <li key={ind}>
+                <div className={styles.titBox}>
+                  <span>导航图标</span>
+                  <span>导航名称</span>
+                  <div className={styles.tbOpration}>
+                    <a disabled={ind === 0} onClick={() => toMove(ind, -1)}>
+                      <Icon type="arrow-up" />
+                    </a>
+                    <a disabled={ind === len - 1} onClick={() => toMove(ind, 1)}>
+                      <Icon type="arrow-down" />
+                    </a>
+                    <a disabled={len === 1} onClick={() => delImg(ind)}>
+                      <Icon type="delete" />
+                    </a>
+                  </div>
+                </div>
+                <div className={styles.taginpBox}>
+                  <Form layout="inline">
+                    <Item>
+                      <svg className={`icon ${styles.navIcon}`}>
+                        <use href={`#${icon}`} />
+                      </svg>
+                    </Item>
+
+                    <Item>
+                      <Input
+                        value={name}
+                        maxLength={4}
+                        onBlur={e => discTexChange(e, tag)}
+                        onChange={e => discTexChange(e, tag)}
+                        placeholder="请输入导航名称"
+                      />
+                    </Item>
+                  </Form>
+
+                  <p>关联页面</p>
+                  <div onClick={e => {e.stopPropagation()}}>   
+                    <Form style={{ width: '100%' }}>
+                      <Item validateStatus={desStatus} help={desMsg}>
+                        <Input
+                          value={linkDisplayName}
+                          readOnly
+                          disabled={isHome}
+                          placeholder="请选择关联页面"
+                          onFocus={() => relevClick(ind)}
+                          onClick={() => relevClick(ind)}
+                          suffix={<Icon type="down" className={styles.inpSuffix} />}
+                        />
+                      </Item>
+                    </Form>
+
+                    {showSec &&
+                      relatedPageOption?.length > 0 && (
+                        <RelevanceInp
+                          callFun={arr => touchRelece(arr, ind)} // 对外暴露的回调，用来把数据传出去
+                          optsArr={relatedPageOption} // 渲染组件需要的数据
+                          curNavs={curNavs} // 当前已经有的nav -- 禁用重复选择
+                        />
+                      )}
+                  </div>
+                </div>
+              </li>
+            );
+          })}
+      </ul>
+
+      <AddMore clickHandle={addNewTag} />
+    </>
   );
 }
