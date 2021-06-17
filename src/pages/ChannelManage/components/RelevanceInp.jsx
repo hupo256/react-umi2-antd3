@@ -1,16 +1,11 @@
 import React, { Component } from 'react'
-import { connect } from 'dva'
 import { siteListApi, designerListApi, caseListApi, articleListApi, articleDicApi, specialListApi, activeListApi  } from '@/services/channelManage'
-import { Form, Input, Tabs, Table, Radio, Tooltip   } from 'antd'
+import { Input, Tabs, Table, Radio, Tooltip } from 'antd'
 import styles from '../index.less'
 
 const { TabPane } = Tabs
 const { Search } = Input;
-@connect(state => ({
-    ...state.channelManage
-}))
-@Form.create()
-export default class RelevanceInp extends Component {
+export default class CascadeSelect extends Component {
     state ={
         relatedPageOption: [],
         currentSelectRelatedPageOpt: [],
@@ -249,7 +244,7 @@ export default class RelevanceInp extends Component {
         this.setState({
             pageNum: page
         })
-        this.getDataList({pageNum: page,  searchText, articleDicCode: currentarticleDicCode});
+        this.getDataList({pageNum: page, searchText, articleDicCode: currentarticleDicCode});
     }
 
     render() {

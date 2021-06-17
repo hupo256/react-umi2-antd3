@@ -191,7 +191,8 @@ export default class AdSeter extends PureComponent {
                         callFun={arr => this.touchRelece(arr)} // 对外暴露的回调，用来把数据传出去
                         optsArr={relatedPageOption} // 渲染组件需要的数据
                       />
-                    )}
+                    // )
+                    }
                 </div>
               </li>
             </ul>
