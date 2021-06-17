@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-04-27 19:10:13
+ * @Last Modified time: 2021-06-10 23:11:22
  * 创建工地
  */
 import React, { PureComponent } from 'react';
@@ -29,17 +29,7 @@ class TextComponent extends PureComponent {
       y: 0,
     };
   }
-  componentDidMount() {
-    const { data } = this.props;
-    let isStyle = JSON.parse(data.elementStyle);
-    console.log(isStyle);
-    this.setState({
-      width: isStyle.width ? isStyle.width : 150,
-      height: isStyle.height,
-      x: isStyle.left,
-      y: isStyle.top,
-    });
-  }
+  componentDidMount() {}
 
   render() {
     const { data, index } = this.props;
@@ -69,8 +59,8 @@ class TextComponent extends PureComponent {
         ) : null}
         <Rnd
           minHeight={43}
-          size={{ width: this.state.width, height: this.state.height }}
-          position={{ x: this.state.x, y: this.state.y }}
+          size={{ width: isStyle.width ? isStyle.width : 150, height: isStyle.height }}
+          position={{ x: isStyle.left, y: isStyle.top }}
           onDrag={(e, d) => {
             this.setState({ x: d.x, y: d.y }, () => {
               this.changeOnDrag(d);
@@ -478,6 +468,7 @@ class TextComponent extends PureComponent {
     aStyle.top = d.y;
     aStyle.left = d.x;
     compentList[index].elementStyle = JSON.stringify(aStyle);
+    console.log(compentList);
     dispatch({
       type: 'ProjectLibrary/saveDataModel',
       payload: {

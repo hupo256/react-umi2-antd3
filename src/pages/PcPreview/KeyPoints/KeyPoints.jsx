@@ -23,6 +23,10 @@ const KeyPoints = ({ pointsList, domain }) => {
               message.warning('PC端不允许跳转到小游戏')
               return
             }
+            if (feature.type === 'special') {
+              window.open(`${domain}/img/PublicLibraryPc/special.html#/?uid=${feature.uid}`, '页面预览')
+              return
+            }
             window.open(
               `${domain}/${typeMap[feature.type]}/details?${paramMap[feature.type]}=${feature.uid}`,
               '页面预览',

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { Button, Input, message } from 'antd'
 import { trackCount, trackWebPush } from '@/services/pcPreview'
 import { pushMsgMap } from '../constants.js'
+import { regExpConfig } from '@/utils/regular.config'
 
 const Regisiter = ({ setRegisiterFromVisiable, type = 'home' }) => {
   const [name, setName] = useState(null)
@@ -19,6 +20,11 @@ const Regisiter = ({ setRegisiterFromVisiable, type = 'home' }) => {
   const handleSubmit = async e => {
     if (!phone) {
       message.warning('手机号为必填，请填写后提交哦！')
+      return
+    }
+
+    if (!regExpConfig.phone.test(phone)) {
+      message.warning('手机号输入有误，请重试！')
       return
     }
 

@@ -186,41 +186,50 @@ export default class SiderMenu extends PureComponent {
       </Sider>
     );
   }
-  handleSystemRoute = systemCode => {
+  getUrl = name => {
     let token = localStorage.getItem('crmtoken');
+    return APP_ENVIRONMENT === 'prod'
+      ? `http://${name}.ingongdi.com/#/user/login?token=${token}`
+      : APP_ENVIRONMENT === 'pre'
+        ? `http://pre-${name}.ingongdi.com/#/user/login?token=${token}`
+        : APP_ENVIRONMENT === 'test'
+          ? `http://test-${name}.ingongdi.com/#/user/login?token=${token}`
+          : `http://dev-${name}.ingongdi.com/#/user/login?token=${token}`;
+  };
+  handleSystemRoute = systemCode => {
     let targetUrl = '';
     switch (systemCode) {
       case 'S003':
-        targetUrl =
-          APP_ENVIRONMENT === 'prod'
-            ? `http://control.ingongdi.com/#/user/login?token=${token}`
-            : APP_ENVIRONMENT === 'test'
-              ? `http://test-control.ingongdi.com/#/user/login?token=${token}`
-              : `http://dev-control.ingongdi.com/#/user/login?token=${token}`;
+        targetUrl = this.getUrl('control');
+        // APP_ENVIRONMENT === 'prod'
+        //   ? `http://control.ingongdi.com/#/user/login?token=${token}`
+        //   : APP_ENVIRONMENT === 'test'
+        //     ? `http://test-control.ingongdi.com/#/user/login?token=${token}`
+        //     : `http://dev-control.ingongdi.com/#/user/login?token=${token}`;
         break;
       case 'S004':
-        targetUrl =
-          APP_ENVIRONMENT === 'prod'
-            ? `http://admin.ingongdi.com/#/user/login?token=${token}`
-            : APP_ENVIRONMENT === 'test'
-              ? `http://test-admin.ingongdi.com/#/user/login?token=${token}`
-              : `http://dev-admin.ingongdi.com/#/user/login?token=${token}`;
+        targetUrl = this.getUrl('admin');
+        // APP_ENVIRONMENT === 'prod'
+        //   ? `http://admin.ingongdi.com/#/user/login?token=${token}`
+        //   : APP_ENVIRONMENT === 'test'
+        //     ? `http://test-admin.ingongdi.com/#/user/login?token=${token}`
+        //     : `http://dev-admin.ingongdi.com/#/user/login?token=${token}`;
         break;
       case 'S005':
-        targetUrl =
-          APP_ENVIRONMENT === 'prod'
-            ? `http://wechat.ingongdi.com/#/user/login?token=${token}`
-            : APP_ENVIRONMENT === 'test'
-              ? `http://test-wechat.ingongdi.com/#/user/login?token=${token}`
-              : `http://dev-wechat.ingongdi.com/#/user/login?token=${token}`;
+        targetUrl = this.getUrl('wechat');
+        // APP_ENVIRONMENT === 'prod'
+        //   ? `http://wechat.ingongdi.com/#/user/login?token=${token}`
+        //   : APP_ENVIRONMENT === 'test'
+        //     ? `http://test-wechat.ingongdi.com/#/user/login?token=${token}`
+        //     : `http://dev-wechat.ingongdi.com/#/user/login?token=${token}`;
         break;
       case 'S001':
-        targetUrl =
-          APP_ENVIRONMENT === 'prod'
-            ? `http://sys.ingongdi.com/#/user/login?token=${token}`
-            : APP_ENVIRONMENT === 'test'
-              ? `http://test.sys.ingongdi.com/#/user/login?token=${token}`
-              : `http://dev.sys.ingongdi.com/#/user/login?token=${token}`;
+        targetUrl = this.getUrl('sys');
+        // APP_ENVIRONMENT === 'prod'
+        //   ? `http://sys.ingongdi.com/#/user/login?token=${token}`
+        //   : APP_ENVIRONMENT === 'test'
+        //     ? `http://test.sys.ingongdi.com/#/user/login?token=${token}`
+        //     : `http://dev.sys.ingongdi.com/#/user/login?token=${token}`;
         break;
       default:
         break;

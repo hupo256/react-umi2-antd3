@@ -158,7 +158,7 @@ export default class ChannelManage extends Component {
         const { dispatch, showCreateEdit } = this.props;
         // 超过20条禁止再创建
         if ( list.length >= maxLength && !showCreateEdit) {
-            message.warning(`最多支持创建${maxLength}条频道！`);
+            message.warning(`最多可创建${maxLength}个频道哦！`);
             return;
         }
         dispatch({
@@ -274,6 +274,7 @@ export default class ChannelManage extends Component {
       />
     );
 
+<<<<<<< HEAD
     let columns = [
       {
         dataIndex: 'icon',
@@ -391,6 +392,47 @@ export default class ChannelManage extends Component {
         row: DragableBodyRow,
       },
     };
+=======
+                        </div>,
+                key: 'websiteName',
+                dataIndex: 'websiteName',
+            },
+            {
+                title: '关联页面',
+                key: 'linkDisplayName',   
+                dataIndex: 'linkDisplayName',
+                render: (text, record) =>
+                    <Tooltip placement="topLeft" title={text}>
+                        <div style={{maxWidth: 180, overflow:'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis'}}>{text}</div>
+                    </Tooltip>     
+            },
+            {
+                title: '是否小程序可用',
+                key: 'isApplets',
+                align: 'left',
+                dataIndex: 'isApplets',
+                render: (text, record) => text === 0 ? '否' : '是'
+            },
+            {
+                title: '是否网站可用',
+                key: 'isWebsite',
+                dataIndex: 'isWebsite',
+                render: (text, record) => text === 0 ? '否' : '是'
+            },
+            {
+                title: '状态',
+                key: 'status',
+                dataIndex: 'status',
+                render: text => {
+                    return (
+                        <div className={styles['table-header-status-div']}> 
+                            <i className={`${styles['table-header-status-icon']} 
+                            ${text === 1 ? styles['table-header-status-icon-1'] : styles['table-header-status-icon-2'] }`} />
+                            <span style={{marginLeft: 8}}>{text === 1 ? '正常' : '停用'}</span>
+                        </div>
+                    )
+                }
+>>>>>>> preview
 
     return (
       <PageHeaderWrapper>
