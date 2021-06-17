@@ -155,14 +155,7 @@ const MenuListComp = ({ menuList, setShowHeaderDrawer, dynamicDomain = '' }) => 
 
   return (
     <div className={cx(styles.menuWrapper, styles.editMode)}>
-      <div
-        className={styles.menuRoot}
-        style={
-          extraCharCount[chunkIndex] > MIN_CHUNK_SIZE
-            ? { justifyContent: 'space-between' }
-            : { justifyContent: 'flex-end' }
-        }
-      >
+      <div className={extraCharCount[chunkIndex] > MIN_CHUNK_SIZE ? styles.menuRoot : styles.menuRootMin}>
         {_.map(menuChunkList[chunkIndex], (item, index) => {
           if (item.status === 2) return null
           return (
