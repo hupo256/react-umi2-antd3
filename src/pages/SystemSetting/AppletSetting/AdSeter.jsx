@@ -44,13 +44,10 @@ export default class AdSeter extends PureComponent {
 
   componentDidUpdate(prevProps) {
     const { showSecTag } = this.props;
-    // showSecTag !== prevProps.showSecTag &&
-    //   this.setState({ showSec: showSecTag, linkDisplayName: '' });
-    
     if(showSecTag !== prevProps.showSecTag){
-      const { linkType } = this.state
-      const linkDisplayName = linkType === 1 ? linkDisplayName : ''
-      this.setState({ showSec: showSecTag, linkDisplayName });
+      const { linkType, linkDisplayName } = this.state
+      const linkTex = linkType === 1 ? linkDisplayName : ''
+      this.setState({ showSec: showSecTag, linkDisplayName: linkTex });
     }
   }
 
@@ -69,23 +66,20 @@ export default class AdSeter extends PureComponent {
     const { taggleSecTag } = this.props;
     taggleSecTag();
     this.setState({ showSec: false }, () => {
-      this.setState({ showSec: true, linkDisplayName: '', releErrer: false, isEditing: true });
+      this.setState({ showSec: true, releErrer: false});
     });
   };
 
   // 点击selector
   touchRelece = arr => {
-    console.log(arr)
     const tex = arr.map(p => p.text).join('/');
     const paths = arr.map(p => p.code);
     const linkType = arr[arr.length - 1]?.linkType;
-    console.log(linkType)
     this.setState({ linkDisplayName: tex, paths, linkType, releErrer: false });
   };
 
   saveAdCofig = route => {
     const { picUrl, paths, linkType, isOpen } = this.state;
-    console.log(paths, linkType)
     const len = paths.length;
     const detailUid = len === 3 ? paths[2] : '';
 
