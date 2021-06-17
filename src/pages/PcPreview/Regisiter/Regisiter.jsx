@@ -19,11 +19,13 @@ const Regisiter = ({ setRegisiterFromVisiable, type = 'home' }) => {
 
   const handleSubmit = async e => {
     if (!phone) {
+      message.destroy()
       message.warning('手机号为必填，请填写后提交哦！')
       return
     }
 
     if (!regExpConfig.phone.test(phone)) {
+      message.destroy()
       message.warning('手机号输入有误，请重试！')
       return
     }
@@ -35,6 +37,7 @@ const Regisiter = ({ setRegisiterFromVisiable, type = 'home' }) => {
     })
 
     if (msg === '手机号格式不正确，请检查') {
+      message.destroy()
       message.warning('手机号输入有误，请重试！')
       return
     }
