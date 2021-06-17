@@ -22,6 +22,7 @@ export default class AdSeter extends PureComponent {
     imgEdtor: false,
     showSec: false,
     relatedPageOption: [], // 渲染选择器的数据
+    curOpt: [], // 已选出来的原始数据
     paths: [], // 已选出来的数据
     isEnd: false, // 是否到末级
     linkDisplayName: '', // 回显关联页面inupt的值
@@ -58,7 +59,7 @@ export default class AdSeter extends PureComponent {
   // 图片选择
   handleUploadOk = data => {
     console.log(data[0].path);
-    this.setState({ imgEdtor: false, picUrl: data[0].path, isEditing: true });
+    this.setState({ imgEdtor: false, picUrl: data[0].path, isEditing: true, imgErrer: false });
   };
 
   // 点击input
@@ -66,7 +67,7 @@ export default class AdSeter extends PureComponent {
     const { taggleSecTag } = this.props;
     taggleSecTag();
     this.setState({ showSec: false }, () => {
-      this.setState({ showSec: true, releErrer: false });
+      this.setState({ showSec: true });
     });
   };
 
@@ -76,20 +77,24 @@ export default class AdSeter extends PureComponent {
     const tex = arr.map(p => p.text).join('/');
     const paths = arr.map(p => p.code);
     const isEnd = arr[arr.length - 1]?.isEnd;
-    this.setState({ linkDisplayName: tex, paths, isEnd, releErrer: false });
+    this.setState({ linkDisplayName: tex, curOpt: arr, paths, isEnd, releErrer: false });
   };
 
+  // 关联页面 非必填，一旦填了，就要做校验
   saveAdCofig = route => {
-    const { picUrl, paths, isEnd, isOpen } = this.state;
-    const len = paths.length;
-    const detailUid = len === 3 ? paths[2] : '';
-
-    // 提交前检验
-    if (!picUrl) return this.setState({ imgErrer: true });
-    if (!isEnd) return this.setState({ releErrer: true });
+    const { picUrl, paths, isEnd, isOpen, curOpt, detailUid } = this.state;
+    const len = curOpt.length;
+    let detUid = ''
+    
+    if (!picUrl) return this.setState({ imgErrer: true });  // 图片非空检验
+    if(len){ 
+      // 已选择过关联页面，则校验之
+      if (!isEnd) return this.setState({ releErrer: true });
+      detUid = paths.pop();
+    }
 
     this.setState({ btnLoading: true });
-    const param = { isOpen, detailUid, paths, picUrl };
+    const param = { isOpen, paths, picUrl, detailUid: detUid || detailUid };
     openadvSave(param).then(res => {
       console.log(res);
       this.setState({ btnLoading: false });
@@ -102,7 +107,6 @@ export default class AdSeter extends PureComponent {
   };
 
   submitClick = e => {
-    console.log(e);
     e.stopPropagation();
     this.saveAdCofig();
   };

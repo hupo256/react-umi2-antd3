@@ -24,7 +24,7 @@ class Index extends PureComponent {
     this.state = {
       visible: false,
       record: null,
-      selectedKeys: ['3'],
+      selectedKeys: ['1'],
       switchCommonDate: null,
       switchLoading: false,
       showSec: false,
@@ -166,7 +166,7 @@ class Index extends PureComponent {
       <div className={styles.appleCard} onClick={this.touchInpBlurTag}>
         <PageHeaderWrapper title={title}>
           <Card bordered={false}>
-            {!AuthInfo.isAuthedWechatMini && (
+            {AuthInfo.isAuthedWechatMini && (
               <div className={styles.appletWrap}>
                 <div className={styles.appleLeft}>
                   <Menu
