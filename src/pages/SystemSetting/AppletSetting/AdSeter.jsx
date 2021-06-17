@@ -9,8 +9,7 @@ import React, { PureComponent } from 'react';
 import { message, Popover, Button, Input, Switch, Icon } from 'antd';
 import { openadvGet, openadvSave } from '@/services/miniProgram';
 import { getRelatedPage } from '@/services/channelManage';
-// import RelevanceInp from '@/pages/ChannelManage/components/RelevanceInp';
-import RelevanceInp from '@/pages/ChannelManage/components/CascadeSelect';
+import CascadeSelect from '@/pages/ChannelManage/components/CascadeSelect';
 import Upload from '@/components/Upload/Upload';
 import Prompt from './prompt';
 import styles from './index.less';
@@ -45,10 +44,10 @@ export default class AdSeter extends PureComponent {
 
   componentDidUpdate(prevProps) {
     const { showSecTag } = this.props;
-    if(showSecTag !== prevProps.showSecTag){
-      const { isEnd, linkDisplayName } = this.state
-      const linkTex = isEnd ? linkDisplayName : ''
-      this.setState({ showSec: showSecTag, linkDisplayName: linkTex});
+    if (showSecTag !== prevProps.showSecTag) {
+      const { isEnd, linkDisplayName } = this.state;
+      const linkTex = isEnd ? linkDisplayName : '';
+      this.setState({ showSec: showSecTag, linkDisplayName: linkTex });
     }
   }
 
@@ -67,13 +66,13 @@ export default class AdSeter extends PureComponent {
     const { taggleSecTag } = this.props;
     taggleSecTag();
     this.setState({ showSec: false }, () => {
-      this.setState({ showSec: true, releErrer: false});
+      this.setState({ showSec: true, releErrer: false });
     });
   };
 
   // 点击selector
   touchRelece = arr => {
-    console.log(arr)
+    console.log(arr);
     const tex = arr.map(p => p.text).join('/');
     const paths = arr.map(p => p.code);
     const isEnd = arr[arr.length - 1]?.isEnd;
@@ -103,10 +102,10 @@ export default class AdSeter extends PureComponent {
   };
 
   submitClick = e => {
-    console.log(e)
-    e.stopPropagation()
-    this.saveAdCofig()
-  }
+    console.log(e);
+    e.stopPropagation();
+    this.saveAdCofig();
+  };
 
   render() {
     const {
@@ -177,13 +176,12 @@ export default class AdSeter extends PureComponent {
                   />
                   <span className={styles.errMsg}>请正确填写弹屏广告关联页面</span>
                   {showSec &&
-                    // relatedPageOption.length > 0 && (
-                      <RelevanceInp
+                    relatedPageOption.length > 0 && (
+                      <CascadeSelect
                         callFun={arr => this.touchRelece(arr)} // 对外暴露的回调，用来把数据传出去
                         optsArr={relatedPageOption} // 渲染组件需要的数据
                       />
-                    // )
-                    }
+                    )}
                 </div>
               </li>
             </ul>
