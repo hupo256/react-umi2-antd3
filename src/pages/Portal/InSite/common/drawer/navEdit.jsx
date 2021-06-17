@@ -29,7 +29,7 @@ export default function NavEdit(props) {
   }, []);
 
   function addNewTag(e) {
-    e.stopPropagation();
+    // e.stopPropagation();
     const len = navData.length;
     const empty = navData.find(nav => !nav.paths);
     if (len === maxLen) return message.warning(`导航栏添加${maxLen}个效果最佳哦`);
@@ -41,7 +41,10 @@ export default function NavEdit(props) {
       name: '',
       navModule: `module${len}`,
     };
-    setNavData([...navData, item])
+    
+    setTimeout(() => {
+      setNavData([...navData, item])
+    })
   }
 
   function updateNavData() {
@@ -85,37 +88,26 @@ export default function NavEdit(props) {
     updateNavData();
   }
 
-  // 点击
+  
+
+  // 点击input
   function relevClick(num) {
     const arr = ['fd8d01f1a35111eb999e00505694ddf5']; // 首页
     const navs = navData.map((nav, ind) => {
-      const { paths = [], showSec } = nav;
+      const { paths = [] } = nav;
       const id = paths?.[1];
       ind !== num && !!id && arr.push(id); // 把自己也排除，取末级的uid,去重时也从末级开始
       nav.showSec = ind === num;
+      if (ind !== 0 && paths?.length !== 2) {  
+        // 如果同时有没选到末点的，就关掉并清空
+        nav.linkDisplayName = '';
+        nav.icon = '';
+      }
       return nav;
     });
 
     setcurNavs(arr);
     setNavData(navs);
-  }
-
-  function inputBlur(num) {
-    return
-    setTimeout(() => {
-      if (!isSecWork) {
-        const len = navData[num].paths.length;
-        if (len !== 2) {
-          navData[num].desStatus = 'error';
-          navData[num].desMsg = '最多4个字符';
-        } else {
-          navData[num].showSec = false;
-        }
-        updateNavData();
-      } else {
-        console.log(23);
-      }
-    }, 400)
   }
 
   return (
@@ -181,7 +173,6 @@ export default function NavEdit(props) {
                           readOnly
                           disabled={isHome}
                           placeholder="请选择关联页面"
-                          onBlur={() => inputBlur(ind)}
                           onFocus={() => relevClick(ind)}
                           onClick={() => relevClick(ind)}
                           suffix={<Icon type="down" className={styles.inpSuffix} />}
