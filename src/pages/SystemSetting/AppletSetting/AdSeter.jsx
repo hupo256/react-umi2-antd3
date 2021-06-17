@@ -9,7 +9,7 @@ import React, { PureComponent } from 'react';
 import { message, Popover, Button, Input, Switch, Icon } from 'antd';
 import { openadvGet, openadvSave } from '@/services/miniProgram';
 import { getRelatedPage } from '@/services/channelManage';
-import RelevanceInp from '@/pages/ChannelManage/components/RelevanceInp';
+import CascadeSelect from '@/pages/ChannelManage/components/CascadeSelect';
 import Upload from '@/components/Upload/Upload';
 import Prompt from './prompt';
 import styles from './index.less';
@@ -23,8 +23,8 @@ export default class AdSeter extends PureComponent {
     showSec: false,
     relatedPageOption: [], // 渲染选择器的数据
     paths: [], // 已选出来的数据
-    linkType: -1, // 已选出来的数据
-    linkDisplayName: '', // 回显关联页面inut的值
+    isEnd: false, // 是否到末级
+    linkDisplayName: '', // 回显关联页面inupt的值
     picUrl: '',
     imgErrer: false,
     releErrer: false,
@@ -44,9 +44,9 @@ export default class AdSeter extends PureComponent {
 
   componentDidUpdate(prevProps) {
     const { showSecTag } = this.props;
-    if(showSecTag !== prevProps.showSecTag){
-      const { linkType, linkDisplayName } = this.state
-      const linkTex = linkType === 1 ? linkDisplayName : ''
+    if (showSecTag !== prevProps.showSecTag) {
+      const { isEnd, linkDisplayName } = this.state;
+      const linkTex = isEnd ? linkDisplayName : '';
       this.setState({ showSec: showSecTag, linkDisplayName: linkTex });
     }
   }
@@ -66,26 +66,27 @@ export default class AdSeter extends PureComponent {
     const { taggleSecTag } = this.props;
     taggleSecTag();
     this.setState({ showSec: false }, () => {
-      this.setState({ showSec: true, releErrer: false});
+      this.setState({ showSec: true, releErrer: false });
     });
   };
 
   // 点击selector
   touchRelece = arr => {
+    console.log(arr);
     const tex = arr.map(p => p.text).join('/');
     const paths = arr.map(p => p.code);
-    const linkType = arr[arr.length - 1]?.linkType;
-    this.setState({ linkDisplayName: tex, paths, linkType, releErrer: false });
+    const isEnd = arr[arr.length - 1]?.isEnd;
+    this.setState({ linkDisplayName: tex, paths, isEnd, releErrer: false });
   };
 
   saveAdCofig = route => {
-    const { picUrl, paths, linkType, isOpen } = this.state;
+    const { picUrl, paths, isEnd, isOpen } = this.state;
     const len = paths.length;
     const detailUid = len === 3 ? paths[2] : '';
 
     // 提交前检验
     if (!picUrl) return this.setState({ imgErrer: true });
-    if (len !== 0 && linkType !== 1) return this.setState({ releErrer: true });
+    if (!isEnd) return this.setState({ releErrer: true });
 
     this.setState({ btnLoading: true });
     const param = { isOpen, detailUid, paths, picUrl };
@@ -101,10 +102,10 @@ export default class AdSeter extends PureComponent {
   };
 
   submitClick = e => {
-    console.log(e)
-    e.stopPropagation()
-    this.saveAdCofig()
-  }
+    console.log(e);
+    e.stopPropagation();
+    this.saveAdCofig();
+  };
 
   render() {
     const {
@@ -176,7 +177,7 @@ export default class AdSeter extends PureComponent {
                   <span className={styles.errMsg}>请正确填写弹屏广告关联页面</span>
                   {showSec &&
                     relatedPageOption.length > 0 && (
-                      <RelevanceInp
+                      <CascadeSelect
                         callFun={arr => this.touchRelece(arr)} // 对外暴露的回调，用来把数据传出去
                         optsArr={relatedPageOption} // 渲染组件需要的数据
                       />

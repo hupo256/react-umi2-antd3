@@ -1,128 +1,105 @@
-import React, { Component } from 'react'
-import { connect } from 'dva'
+import React, { useState, useEffect } from 'react'
 import { siteListApi, designerListApi, caseListApi, articleListApi, articleDicApi, specialListApi, activeListApi  } from '@/services/channelManage'
-import { Form, Input, Tabs, Table, Radio, Icon, Tooltip   } from 'antd'
+import { Input, Tabs, Table, Radio, Tooltip } from 'antd'
 import styles from '../index.less'
 
 const { TabPane } = Tabs
 const { Search } = Input;
-@connect(state => ({
-    ...state.channelManage
-}))
-@Form.create()
-export default class RelevanceInp extends Component {
-    state ={
-        relatedPageOption: [],
-        currentSelectRelatedPageOpt: [],
-        currentKey: '0',
-        recordTotal: 0,
-        detailType: 0,
-        dataList: [],
-        articleDicOpts: [],
-        currentarticleDicCode: undefined,
-        searchText: '',
-        pageNum: 1,
-        pageSize: 10,
-        showSelectPanl: false,
-    }
+export default function CascadeSelect(props){
+    const { optsArr, curNavs=[], callFun } = props
 
-    componentDidMount() {
-        this.showSelect()
-    }
+    const [relatedPageOption, setrelatedPageOption] = useState([])  // 生成级联选择的数据
+    const [currentSelectRelatedPageOpt, setcurrentSelectRelatedPageOpt] = useState([])  // 当前已选
+    const [dataList, setdataList] = useState([])  
+    const [articleDicOpts, setarticleDicOpts] = useState([])  
+    const [currentarticleDicCode, setcurrentarticleDicCode] = useState(undefined)  
+    const [currentKey, setcurrentKey] = useState('0')  
+    const [recordTotal, setrecordTotal] = useState(0)  
+    const [detailType, setdetailType] = useState(0)   // 祥情页类型 
+    const [showSelectPanl, setshowSelectPanl] = useState(false)  
+    const [searchText, setsearchText] = useState('')  
+    const [pageNum, setpageNum] = useState(1)  
+    const [pageSize, setpageSize] = useState(10)  
 
-    showSelect = () => {
-        this.toggleSelectPanlHandle(true);
-        this.setState({
-            currentSelectRelatedPageOpt: [],
-            currentKey: '0',
-            relatedPageOption: this.filterLevelOps()
-        })
+    useEffect(() => {
+        showSelect()
+    }, [])
+
+    useEffect(() => {
+        detailType && getDataList({pageNum, searchText, articleDicCode: currentarticleDicCode});
+    }, [detailType])
+
+    function showSelect(){
+        toggleSelectPanlHandle(true);
+        setcurrentSelectRelatedPageOpt([])
+        setrelatedPageOption(filterLevelOps())
     }
 
     // 格式化回显
-    formatData = (opts) => {
+    function formatData(opts){
+        console.log(opts)
         let arr = [];
-        for (const key in opts) {
-            if (opts.hasOwnProperty.call(opts, key)) {
-                const {name, title, articleTitle,gongdiTitle,specialTitle, activityTitle,
-                    uid, gongdiUid, articleUid, specialUid, icon, appletsLink, linkKey, linkType } = opts[key];
-                arr.push({
-                    text: name || title || articleTitle  || gongdiTitle || specialTitle || activityTitle,
-                    code: uid || gongdiUid || articleUid || specialUid,
-                    icon, linkKey, appletsLink, linkType
-                })
-            }
-        }
+        opts.forEach((opt, ind) => {
+            const {name, title, articleTitle,gongdiTitle,specialTitle, activityTitle,
+                uid, gongdiUid, articleUid, specialUid, icon, appletsLink, linkKey, linkType } = opt;
+            const isEnd = ind === 2 || (ind === 1 && linkType === 1)  // 顺便处理是否到末级的逻辑
+            arr.push({
+                text: name || title || articleTitle  || gongdiTitle || specialTitle || activityTitle,
+                code: uid || gongdiUid || articleUid || specialUid,
+                icon, linkKey, appletsLink, linkType, isEnd
+            })
+        })
         return arr;
     }
 
     // 解构重组后台数据 
-    format = data => {
+    function format(data){
         if (!Array.isArray(data)) return;
         let newArr = [];
         for (const item of data) {            
             newArr.push ({
                 ...item.node,
-                children: item.children.length ? this.format(item.children) : []
+                children: item.children.length ? format(item.children) : []
             })
         } 
-        newArr = this.touchSelcOpts(newArr)
+        newArr = touchSelcOpts(newArr)
         // console.log(newArr)
         return newArr
     }
 
     // 过滤一级nav, 当children为空，则认为不应出现
-    filterLevelOps = () => {
-        const { optsArr } = this.props
-        const optArr = this.format(optsArr)
+    function filterLevelOps(){
+        const optArr = format(optsArr)
         const arr = optArr.filter(ar => ar.children?.length > 0)
         return arr
     }
 
     // 过滤二级掉已有的nav
-    touchSelcOpts = (opts) => {
-      const { curNavs=[] } = this.props
+    function touchSelcOpts(opts){
       const tempNavs = [...curNavs]
       const newOpts = opts.filter(opt => !tempNavs.includes(opt?.uid))
       return newOpts
     }
 
-    // 选择关联页面
-    selectedHandle =  ( item, step ) => {
-        const { pageNum, searchText, currentarticleDicCode, currentSelectRelatedPageOpt } = this.state
-        const arr = [...currentSelectRelatedPageOpt, item]
-        this.setState(prevState => {
-            return ({
-                currentSelectRelatedPageOpt: arr,
-                currentKey: +step + 1 + '',
-                detailType: item.detailType,
-            })
-        }, () => {
-            if (!item.children.length && item.linkType === 1) {
-                this.toggleSelectPanlHandle(false)
-            }
-            this.getDataList({pageNum,  searchText, articleDicCode: currentarticleDicCode});
-        })
-
-        const {callFun} = this.props
-        if(callFun) callFun(this.formatData(arr))
-    }
-
     // tab面板切换
-    tabChange = key => {
-        this.setState(prevState => {
-            const arr = prevState.currentSelectRelatedPageOpt.slice(0, +key)
-            return {
-                currentKey: key,
-                currentSelectRelatedPageOpt: arr,
-            }       
-        })
+    function tabChange(key){
+        setcurrentSelectRelatedPageOpt(currentSelectRelatedPageOpt.slice(0, +key))
+        setcurrentKey(key)
     } 
 
+    // 选择关联页面
+    function selectedHandle(item, step ){
+        const arr = [...currentSelectRelatedPageOpt, item]
+        setcurrentSelectRelatedPageOpt(arr)
+        setcurrentKey(+step + 1 + '')
+        setdetailType(item.detailType)
+
+        if (!item.children.length && item.linkType === 1) toggleSelectPanlHandle(false)
+        if(callFun) callFun(formatData(arr))
+    }
 
     // 获取表格数据
-    getDataList = async ({ status = '1', searchText='', pageNum = 1, pageSize = 10, articleDicCode='' } = {}) => {
-        const { detailType } = this.state;
+    async function getDataList ({ status = '1', searchText='', pageNum = 1, pageSize = 10, articleDicCode='' } = {}){
         let res;
         detailType === 1 && (res = await siteListApi({
             gongdiStatus: 0,
@@ -145,12 +122,12 @@ export default class RelevanceInp extends Component {
         }));
         if (detailType === 4) {
             // 没有文章栏目时请求一次
-            if (!this.state.articleDicOpts.length) {
-                await this.getArticleDic();
+            if (!articleDicOpts.length) {
+                await getArticleDic();
             }   
             res = await articleListApi({
                 searchText,
-                articleDicCode: articleDicCode ||  this.state.currentarticleDicCode,
+                articleDicCode: articleDicCode ||  currentarticleDicCode,
                 pageNum,
                 pageSize
             });
@@ -168,34 +145,25 @@ export default class RelevanceInp extends Component {
             pageNum,
             pageSize
         }));
-        
-        this.setState( {
-            dataList: res?.data?.list,
-            recordTotal: res?.data?.recordTotal
-        })
+        setdataList(res?.data?.list)
+        setrecordTotal(res?.data?.recordTotal)
     }
 
      // 查询文章栏目选项
-     getArticleDic = async () => {
+     async function getArticleDic(){
         const res = await articleDicApi({dicModuleCodes: 'DM006'});
-        if (res?.data?.DM006) {
-            this.setState({
-                articleDicOpts: res.data.DM006,
-                currentarticleDicCode: res.data.DM006[0].code
-            })
+        const { DM006} = res?.data
+        if(DM006){
+            setarticleDicOpts(DM006)
+            setcurrentarticleDicCode(DM006[0].code)
         }
-        
     }
 
     // 文章类型切换
-    radioGroupChange = e => {
-        const { pageNum, searchText } = this.state
-        this.setState({
-            currentarticleDicCode: e.target.value
-        });
-        
-        this.getDataList({articleDicCode: e.target.value,  pageNum, searchText })
-
+    function radioGroupChange(e){
+        const val = e.target.value
+        setcurrentarticleDicCode(val)
+        getDataList({articleDicCode: val,  pageNum, searchText })
     }
 
     /**
@@ -203,60 +171,49 @@ export default class RelevanceInp extends Component {
      * @param {*}
      * @return {*}
      */    
-     handleChange = _.debounce( value => {
-        const searchText = value.length > 30 ? value.substring(0, 30) : value
-        const { pageNum } = this.state
-        this.getDataList({searchText, pageNum })
-    }, 300)
+    function handleChange(e){
+        const value = e.target.value; 
+        setsearchText(value) 
+        setpageNum(1)
+
+        const getList =  _.debounce( value => {
+            const searchText = value.length > 30 ? value.substring(0, 30) : value
+            getDataList({searchText, pageNum })
+        }, 300)
+
+        getList()
+    }
 
     // 行点击事件
-    rowClick = (e, record) => {
-        const { currentSelectRelatedPageOpt } = this.state
+    function rowClick(e, record){
         const arr = [...currentSelectRelatedPageOpt, record]
-        this.toggleSelectPanlHandle(false)
-        this.setState({currentSelectRelatedPageOpt: arr})
+        toggleSelectPanlHandle(false)
+        setcurrentSelectRelatedPageOpt(arr)
 
-        const {callFun} = this.props
-        if(callFun) callFun(this.formatData(arr))
+        if(callFun) callFun(formatData(arr))
     }
 
     // 切换选择页面面板显示
-    toggleSelectPanlHandle = ( isShow ) => {
-        const { currentSelectRelatedPageOpt } = this.state;
-        if ( (currentSelectRelatedPageOpt[1]?.linkType === 2 && !!!currentSelectRelatedPageOpt[2]) || (currentSelectRelatedPageOpt[0]?.linkType === 2 && !!!currentSelectRelatedPageOpt[1] )) {
-            this.setState(prevState => {
-                return ({
-                    currentSelectRelatedPageOpt: prevState.currentSelectRelatedPageOpt.slice(0, prevState.currentSelectRelatedPageOpt.length - 1)
-                })
-            })
+    function toggleSelectPanlHandle(isShow){
+        setshowSelectPanl(isShow)
+        if ( (currentSelectRelatedPageOpt[1]?.linkType === 2 && !!!currentSelectRelatedPageOpt[2]) || 
+             (currentSelectRelatedPageOpt[0]?.linkType === 2 && !!!currentSelectRelatedPageOpt[1] )) {
+            setcurrentSelectRelatedPageOpt(currentSelectRelatedPageOpt.slice(0, currentSelectRelatedPageOpt.length - 1))
         }
-        this.setState({
-            showSelectPanl: isShow
-        })
         if (!isShow ) {
-            this.setState({
-                currentKey: '0',
-                searchText: '',
-                pageNum: 1,
-                pageSize: 10,
-            })
+            setcurrentKey('0')
+            setsearchText('')
+            setpageNum(1)
+            setpageSize(10)
         }
     }
 
     // 页码变换
-    pageChange = page => {
-        const { searchText,  currentarticleDicCode } = this.state
-        this.setState({
-            pageNum: page
-        })
-        this.getDataList({pageNum: page,  searchText, articleDicCode: currentarticleDicCode});
+    function pageChange(page){
+        setpageNum(page)
+        getDataList({pageNum: page, searchText, articleDicCode: currentarticleDicCode});
     }
 
-    render() {
-        const { relatedPageOption, currentSelectRelatedPageOpt, currentKey, dataList,detailType, 
-            articleDicOpts, currentarticleDicCode, searchText, showSelectPanl,
-            pageNum, pageSize, recordTotal,
-        } = this.state
         const ColumnsObj = {
             // 工地详情页表头
             columns_1: [
@@ -419,31 +376,30 @@ export default class RelevanceInp extends Component {
                
             ]
         }
-
         return (
         <>  
-            {showSelectPanl && <div ref='parentNode'  className={styles['card-container']}>
-                <Tabs type="card" tabBarGutter={0}  activeKey={currentKey} onChange={this.tabChange}>
+            {showSelectPanl && <div className={styles['card-container']}>
+                <Tabs type="card" tabBarGutter={0}  activeKey={currentKey} onChange={tabChange}>
                     <TabPane tab={currentSelectRelatedPageOpt[0]?.name || '请选择'} key='0'>
                         {
                             relatedPageOption?.map(item => 
-                                <p style={{cursor: 'pointer'}} key={item.uid} onClick={() => this.selectedHandle(item, '0')}>{item.name}</p>
+                                <p style={{cursor: 'pointer'}} key={item.uid} onClick={() => selectedHandle(item, '0')}>{item.name}</p>
                             )
                         }
                     </TabPane>
                     {currentSelectRelatedPageOpt[0]?.children.length && <TabPane tab={currentSelectRelatedPageOpt[1]?.name || '请选择'} key='1'>
                         {
                             currentSelectRelatedPageOpt[0].children.map(item => 
-                                <p style={{cursor: 'pointer'}} key={item.uid} onClick={() => this.selectedHandle(item, '1')}>{item.name}</p>)
+                                <p style={{cursor: 'pointer'}} key={item.uid} onClick={() => selectedHandle(item, '1')}>{item.name}</p>)
                         }
                     </TabPane>}
                     {(currentSelectRelatedPageOpt[1]?.linkType === 2 || currentSelectRelatedPageOpt[0]?.linkType === 2 ) && <TabPane tab='请选择' key= {currentSelectRelatedPageOpt[0]?.linkType === 2 ? '1' : '2'}>
                         <Search
                             value={searchText}
                             placeholder='可输入关键字进行检索'
-                            onChange={  e => { const value = e.target.value; this.setState({searchText: value, pageNum: 1}); this.handleChange(value) }}
+                            onChange={handleChange}
                         />
-                        {detailType === 4 && <Radio.Group style={{marginTop: 8}} buttonStyle='solid'  size='small' value={currentarticleDicCode} buttonStyle="solid"  onChange={this.radioGroupChange}>
+                        {detailType === 4 && <Radio.Group style={{marginTop: 8}} buttonStyle='solid'  size='small' value={currentarticleDicCode} buttonStyle="solid"  onChange={radioGroupChange}>
                             {
                                 articleDicOpts.map(item => <Radio.Button key={item.code} value={item.code}>{item.name}</Radio.Button>)
                             }
@@ -456,14 +412,14 @@ export default class RelevanceInp extends Component {
                             rowKey={(r, i) => i}
                             onRow={record => {
                                 return {
-                                    onClick: e => this.rowClick(e, record)
+                                    onClick: e => rowClick(e, record)
                                 }
                             }}
                             pagination={{
                                 current: pageNum,
                                 pageSize,
                                 total: recordTotal,
-                                onChange: this.pageChange
+                                onChange: pageChange
                             }}
                         />
                     </TabPane>}
@@ -471,5 +427,4 @@ export default class RelevanceInp extends Component {
             </div>}
             </>
         )
-    }
 }

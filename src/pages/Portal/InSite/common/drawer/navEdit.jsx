@@ -10,7 +10,7 @@ import { ctx } from '../context';
 import { Input, Icon, message, Form } from 'antd';
 import AddMore from './addMore';
 import { getRelatedPage } from '@/services/channelManage';
-import RelevanceInp from '@/pages/ChannelManage/components/RelevanceInp';
+import CascadeSelect from '@/pages/ChannelManage/components/CascadeSelect';
 import styles from './drawerEditor.less';
 
 const maxLen = 5;
@@ -191,7 +191,7 @@ export default function NavEdit(props) {
 
                     {showSec &&
                       relatedPageOption?.length > 0 && (
-                        <RelevanceInp
+                        <CascadeSelect
                           callFun={arr => touchRelece(arr, ind)} // 对外暴露的回调，用来把数据传出去
                           optsArr={relatedPageOption} // 渲染组件需要的数据
                           curNavs={curNavs} // 当前已经有的nav -- 禁用重复选择
