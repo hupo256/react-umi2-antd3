@@ -1,3 +1,11 @@
+/*
+ * @Author: tdd 
+ * @Date: 2020-06-17 14:35:33 
+ * @Last Modified by: tdd
+ * @Last Modified time: 2021-06-17 15:09:47
+ * 关联页面级联选择器
+ */
+
 import React, { useState, useEffect } from 'react'
 import { siteListApi, designerListApi, caseListApi, articleListApi, articleDicApi, specialListApi, activeListApi  } from '@/services/channelManage'
 import { Input, Tabs, Table, Radio, Tooltip } from 'antd'
@@ -26,7 +34,7 @@ export default function CascadeSelect(props){
     }, [])
 
     useEffect(() => {
-        detailType && getDataList({pageNum, searchText, articleDicCode: currentarticleDicCode});
+        detailType && getDataList();
     }, [detailType])
 
     function showSelect(){
@@ -99,58 +107,31 @@ export default function CascadeSelect(props){
     }
 
     // 获取表格数据
-    async function getDataList ({ status = '1', searchText='', pageNum = 1, pageSize = 10, articleDicCode='' } = {}){
-        let res;
-        detailType === 1 && (res = await siteListApi({
+    async function getDataList (config){
+        if(!detailType) return
+        const status = detailType === 6 ? '' : '1'
+        const prama = {
             gongdiStatus: 0,
+            searchText,
+            status,
+            specialStatus: status,
+            searchWord: searchText,
+            activityTitle: searchText,
+            articleDicCode: currentarticleDicCode,
             pageNum,
             pageSize,
-            searchText
-        }))
-        detailType === 2 && (res = await designerListApi({
-            status,
-            searchWord: searchText,
-            pageNum,
-            pageSize
-        })
-        )
-        detailType === 3 && (res = await caseListApi({
-            status,
-            searchWord: searchText,
-            pageNum,
-            pageSize
-        }));
-        if (detailType === 4) {
-            // 没有文章栏目时请求一次
-            if (!articleDicOpts.length) {
-                await getArticleDic();
-            }   
-            res = await articleListApi({
-                searchText,
-                articleDicCode: articleDicCode ||  currentarticleDicCode,
-                pageNum,
-                pageSize
-            });
-
         }
-        detailType === 5 && (res = await specialListApi({
-            specialStatus: status,
-            searchText,
-            pageNum,
-            pageSize
-        }));
-        detailType === 6 && (res = await activeListApi({
-            state: '',
-            activityTitle: searchText,
-            pageNum,
-            pageSize
-        }));
-        setdataList(res?.data?.list)
-        setrecordTotal(res?.data?.recordTotal)
+        // 没有文章栏目时先请求一次
+        if (detailType === 4 && !articleDicOpts.length) await getArticleDic();
+        const apiKeys = [siteListApi, designerListApi, caseListApi, articleListApi, specialListApi, activeListApi]
+        const { data, code } = await apiKeys[detailType-1]({...prama, ...config})
+        if(code !== 200 ) return
+        setdataList(data?.list)
+        setrecordTotal(data?.recordTotal)
     }
 
-     // 查询文章栏目选项
-     async function getArticleDic(){
+    // 查询文章栏目选项
+    async function getArticleDic(){
         const res = await articleDicApi({dicModuleCodes: 'DM006'});
         const { DM006} = res?.data
         if(DM006){
@@ -163,7 +144,7 @@ export default function CascadeSelect(props){
     function radioGroupChange(e){
         const val = e.target.value
         setcurrentarticleDicCode(val)
-        getDataList({articleDicCode: val,  pageNum, searchText })
+        getDataList({articleDicCode: val})
     }
 
     /**
@@ -178,7 +159,7 @@ export default function CascadeSelect(props){
 
         const getList =  _.debounce( value => {
             const searchText = value.length > 30 ? value.substring(0, 30) : value
-            getDataList({searchText, pageNum })
+            getDataList({searchText})
         }, 300)
 
         getList()
@@ -211,220 +192,217 @@ export default function CascadeSelect(props){
     // 页码变换
     function pageChange(page){
         setpageNum(page)
-        getDataList({pageNum: page, searchText, articleDicCode: currentarticleDicCode});
+        getDataList({pageNum: page});
     }
 
-        const ColumnsObj = {
-            // 工地详情页表头
-            columns_1: [
-                {
-                    title: <span style={{fontWeight: 300}}>工地</span>,
-                    key: 'gongdiTitle',
-                    dataIndex: 'gongdiTitle',
-                    // width: '30%',
-                    render: (text, r) =>  <Tooltip placement='topLeft' title={text}>
+    const ColumnsObj = {
+        // 工地详情页表头
+        columns_1: [
+            {
+                title: <span style={{fontWeight: 300}}>工地</span>,
+                key: 'gongdiTitle',
+                dataIndex: 'gongdiTitle',
+                // width: '30%',
+                render: (text, r) =>  <Tooltip placement='topLeft' title={text}>
+                    <div style={{ maxWidth: 120, display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>{text}</div>
+                </Tooltip> 
+            },
+            {
+                title: <span style={{fontWeight: 300}}>工地信息</span>,
+                key: 'buildingName',
+                dataIndex: 'buildingName',
+                // width: 200,
+                render: (text, r) => 
+                    <Tooltip placement='topLeft' title={text}>
                         <div style={{ maxWidth: 120, display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>{text}</div>
                     </Tooltip> 
-                },
-                {
-                    title: <span style={{fontWeight: 300}}>工地信息</span>,
-                    key: 'buildingName',
-                    dataIndex: 'buildingName',
-                    // width: 200,
-                    render: (text, r) => 
-                        <Tooltip placement='topLeft' title={text}>
-                            <div style={{ maxWidth: 120, display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>{text}</div>
-                        </Tooltip> 
-                },
-                {
-                    title: <span style={{fontWeight: 300}}>阶段</span>,
-                    key: 'gongdiStageName',
-                    dataIndex: 'gongdiStageName',
+            },
+            {
+                title: <span style={{fontWeight: 300}}>阶段</span>,
+                key: 'gongdiStageName',
+                dataIndex: 'gongdiStageName',
+            }
+        ],
+
+        // 设计师表头
+        columns_2: [
+            {
+                title: <span style={{fontWeight: 300}}>设计师</span>,
+                key: 'name',
+                dataIndex: 'name',
+                // align: 'left',
+                render: (text, record) => <div style={{display: 'flex', alignItems: 'center'}}>
+                    <img src={record?.headPicUrl} alt="" srcset="" style={{ width: 30, height: 30, borderRadius: '100%'}}/>
+                    <span style={{marginLeft: 8}}>{text}</span>
+                </div>
+            },
+            {
+                title: <span style={{fontWeight: 300}}>职级</span>,
+                key: 'position',
+                dataIndex: 'position',
+            },
+            {
+                title: <span style={{fontWeight: 300}}>案例数</span>,
+                key: 'caseNum',
+                dataIndex: 'caseNum'
+            },
+        ],
+
+        // 案例表头
+        columns_3: [
+            {
+                title: <span style={{fontWeight: 300}}>案例</span>,
+                key: 'titleInfo',
+                dataIndex: 'title',
+                render: (text, r) => <Tooltip placement='topLeft' title={text} >
+                    <div style={{maxWidth: 120,  display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>{text}</div>
+                </Tooltip> 
+            },
+            {
+                title: <span style={{fontWeight: 300}}>案例信息</span>,
+                key: 'buildingName',
+                dataIndex: 'buildingName',
+                render: (text, r) => <Tooltip placement='topLeft' title={text}>
+                    <span style={{ maxWidth: 120, display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>{text}</span>
+                </Tooltip> 
+            },
+            {
+                title: <span style={{fontWeight: 300}}>设计师</span>,
+                key: 'designerName',
+                dataIndex: 'designerName',
+                render: (text, r) => <Tooltip placement='topLeft' title={text}>
+                    <div style={{maxWidth: 120,  display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>{text}</div>
+                </Tooltip> 
+            },
+        ],
+
+        // 文章表头
+        columns_4: [
+            {
+                title: <span style={{fontWeight: 300}}>文章标题</span>,
+                key: 'articleTitle',
+                dataIndex: 'articleTitle',
+                render: (text, r) => <Tooltip placement='topLeft' title={text}>
+                    <div style={{maxWidth: 120,  display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>{text}</div>
+                </Tooltip> 
+            },
+            {
+                title: <span style={{fontWeight: 300}}>发布人</span>,
+                key: 'creatorName',
+                dataIndex: 'creatorName',
+                render: (text, r) => <Tooltip placement='topLeft' title={text}>
+                    <div style={{maxWidth: 120,  display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>{text}</div>
+                </Tooltip> 
+            },
+            {
+                title: <span style={{fontWeight: 300}}>更新时间</span>,
+                key: 'updateTime',
+                dataIndex: 'updateTime'
+            },
+        ],
+        // 专题表头
+        columns_5: [
+            {
+                title: <span style={{fontWeight: 300}}>专题标题</span>,
+                key: 'specialTitle',
+                dataIndex: 'specialTitle',
+                render: (text, r) => <Tooltip placement='topLeft' title={text}>
+                    <div style={{maxWidth: 120,  display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>{text}</div>
+                </Tooltip> 
+            },
+            {
+                title: <span style={{fontWeight: 300}}>创建人</span>,
+                key: 'creatorName',
+                dataIndex: 'creatorName',
+                render: (text, r) => <Tooltip placement='topLeft' title={text}>
+                    <div style={{maxWidth: 120,  display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>{text}</div>
+                </Tooltip> 
+            },
+            {
+                title: <span style={{fontWeight: 300}}>更新时间</span>,
+                key: 'updateTime',
+                dataIndex: 'updateTime'
+            },
+        ],
+        // 小游戏表头
+        columns_6: [
+            {
+                title: <span style={{fontWeight: 300}}>游戏标题</span>,
+                key: 'activityTitle',
+                dataIndex: 'activityTitle',
+                render: (text, r) => <Tooltip placement='topLeft' title={text}>
+                    <div style={{maxWidth: 120,  display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>{text}</div>
+                </Tooltip> 
+            },
+            {
+                title: <span style={{fontWeight: 300}}>状态</span>,
+                key: 'status',
+                dataIndex: 'status',
+                render: (text, r) => {
+                    let tex = '未开始';
+                    text === 1 && (tex = '进行中');
+                    text === 2 && (tex = '已结束');
+                    return tex;
                 }
-            ],
-
-            // 设计师表头
-            columns_2: [
-                {
-                    title: <span style={{fontWeight: 300}}>设计师</span>,
-                    key: 'name',
-                    dataIndex: 'name',
-                    // align: 'left',
-                    render: (text, record) => <div style={{display: 'flex', alignItems: 'center'}}>
-                        <img src={record?.headPicUrl} alt="" srcset="" style={{ width: 30, height: 30, borderRadius: '100%'}}/>
-                        <span style={{marginLeft: 8}}>{text}</span>
-                    </div>
-                },
-                {
-                    title: <span style={{fontWeight: 300}}>职级</span>,
-                    key: 'position',
-                    dataIndex: 'position',
-                },
-                {
-                    title: <span style={{fontWeight: 300}}>案例数</span>,
-                    key: 'caseNum',
-                    dataIndex: 'caseNum'
-                },
-            ],
-
-            // 案例表头
-            columns_3: [
-                {
-                    title: <span style={{fontWeight: 300}}>案例</span>,
-                    key: 'titleInfo',
-                    dataIndex: 'title',
-                    render: (text, r) => <Tooltip placement='topLeft' title={text} >
-                        <div style={{maxWidth: 120,  display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>{text}</div>
-                    </Tooltip> 
-                },
-                {
-                    title: <span style={{fontWeight: 300}}>案例信息</span>,
-                    key: 'buildingName',
-                    dataIndex: 'buildingName',
-                    render: (text, r) => <Tooltip placement='topLeft' title={text}>
-                        <span style={{ maxWidth: 120, display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>{text}</span>
-                    </Tooltip> 
-                },
-                {
-                    title: <span style={{fontWeight: 300}}>设计师</span>,
-                    key: 'designerName',
-                    dataIndex: 'designerName',
-                    render: (text, r) => <Tooltip placement='topLeft' title={text}>
-                        <div style={{maxWidth: 120,  display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>{text}</div>
-                    </Tooltip> 
-                },
-            ],
-
-            // 文章表头
-            columns_4: [
-                {
-                    title: <span style={{fontWeight: 300}}>文章标题</span>,
-                    key: 'articleTitle',
-                    dataIndex: 'articleTitle',
-                    render: (text, r) => <Tooltip placement='topLeft' title={text}>
-                        <div style={{maxWidth: 120,  display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>{text}</div>
-                    </Tooltip> 
-                },
-                {
-                    title: <span style={{fontWeight: 300}}>发布人</span>,
-                    key: 'creatorName',
-                    dataIndex: 'creatorName',
-                    render: (text, r) => <Tooltip placement='topLeft' title={text}>
-                        <div style={{maxWidth: 120,  display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>{text}</div>
-                    </Tooltip> 
-                },
-                {
-                    title: <span style={{fontWeight: 300}}>更新时间</span>,
-                    key: 'updateTime',
-                    dataIndex: 'updateTime'
-                },
-            ],
-            // 专题表头
-            columns_5: [
-                {
-                    title: <span style={{fontWeight: 300}}>专题标题</span>,
-                    key: 'specialTitle',
-                    dataIndex: 'specialTitle',
-                    render: (text, r) => <Tooltip placement='topLeft' title={text}>
-                        <div style={{maxWidth: 120,  display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>{text}</div>
-                    </Tooltip> 
-                },
-                {
-                    title: <span style={{fontWeight: 300}}>创建人</span>,
-                    key: 'creatorName',
-                    dataIndex: 'creatorName',
-                    render: (text, r) => <Tooltip placement='topLeft' title={text}>
-                        <div style={{maxWidth: 120,  display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>{text}</div>
-                    </Tooltip> 
-                },
-                {
-                    title: <span style={{fontWeight: 300}}>更新时间</span>,
-                    key: 'updateTime',
-                    dataIndex: 'updateTime'
-                },
-            ],
-             // 小游戏表头
-             columns_6: [
-                {
-                    title: <span style={{fontWeight: 300}}>游戏标题</span>,
-                    key: 'activityTitle',
-                    dataIndex: 'activityTitle',
-                    render: (text, r) => <Tooltip placement='topLeft' title={text}>
-                        <div style={{maxWidth: 120,  display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>{text}</div>
-                    </Tooltip> 
-                },
-                {
-                    title: <span style={{fontWeight: 300}}>状态</span>,
-                    key: 'status',
-                    dataIndex: 'status',
-                    render: (text, r) => {
-                        let tex = '未开始';
-                        text === 1 && (tex = '进行中');
-                        text === 2 && (tex = '已结束');
-                        return tex;
-                    }
-                },
-                {
-                    title: <span style={{fontWeight: 300}}>创建人</span>,
-                    key: 'creater',
-                    dataIndex: 'creater',
-                    render: (text, r) => <Tooltip placement='topLeft' title={text}>
-                        <div style={{maxWidth: 120,  display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>{text}</div>
-                    </Tooltip> 
-                },
-               
-               
-            ]
-        }
-        return (
+            },
+            {
+                title: <span style={{fontWeight: 300}}>创建人</span>,
+                key: 'creater',
+                dataIndex: 'creater',
+                render: (text, r) => <Tooltip placement='topLeft' title={text}>
+                    <div style={{maxWidth: 120,  display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>{text}</div>
+                </Tooltip> 
+            },
+        ]
+    }
+    return (
         <>  
             {showSelectPanl && <div className={styles['card-container']}>
                 <Tabs type="card" tabBarGutter={0}  activeKey={currentKey} onChange={tabChange}>
                     <TabPane tab={currentSelectRelatedPageOpt[0]?.name || '请选择'} key='0'>
-                        {
-                            relatedPageOption?.map(item => 
-                                <p style={{cursor: 'pointer'}} key={item.uid} onClick={() => selectedHandle(item, '0')}>{item.name}</p>
-                            )
-                        }
+                        {relatedPageOption?.map(item => 
+                            <p style={{cursor: 'pointer'}} key={item.uid} onClick={() => selectedHandle(item, '0')}>{item.name}</p>
+                        )}
                     </TabPane>
-                    {currentSelectRelatedPageOpt[0]?.children.length && <TabPane tab={currentSelectRelatedPageOpt[1]?.name || '请选择'} key='1'>
-                        {
-                            currentSelectRelatedPageOpt[0].children.map(item => 
-                                <p style={{cursor: 'pointer'}} key={item.uid} onClick={() => selectedHandle(item, '1')}>{item.name}</p>)
-                        }
-                    </TabPane>}
-                    {(currentSelectRelatedPageOpt[1]?.linkType === 2 || currentSelectRelatedPageOpt[0]?.linkType === 2 ) && <TabPane tab='请选择' key= {currentSelectRelatedPageOpt[0]?.linkType === 2 ? '1' : '2'}>
-                        <Search
-                            value={searchText}
-                            placeholder='可输入关键字进行检索'
-                            onChange={handleChange}
-                        />
-                        {detailType === 4 && <Radio.Group style={{marginTop: 8}} buttonStyle='solid'  size='small' value={currentarticleDicCode} buttonStyle="solid"  onChange={radioGroupChange}>
-                            {
-                                articleDicOpts.map(item => <Radio.Button key={item.code} value={item.code}>{item.name}</Radio.Button>)
-                            }
-                        </Radio.Group>}
-                        <Table
-                            size='small'
-                            style={{marginTop: 8, cursor: 'pointer'}}
-                            columns={ ColumnsObj[`columns_${detailType}`] }
-                            dataSource={dataList}
-                            rowKey={(r, i) => i}
-                            onRow={record => {
-                                return {
-                                    onClick: e => rowClick(e, record)
-                                }
-                            }}
-                            pagination={{
-                                current: pageNum,
-                                pageSize,
-                                total: recordTotal,
-                                onChange: pageChange
-                            }}
-                        />
-                    </TabPane>}
+                    {currentSelectRelatedPageOpt[0]?.children.length && 
+                        <TabPane tab={currentSelectRelatedPageOpt[1]?.name || '请选择'} key='1'>
+                            {currentSelectRelatedPageOpt[0].children.map(item => 
+                                <p style={{cursor: 'pointer'}} key={item.uid} onClick={() => selectedHandle(item, '1')}>{item.name}</p>
+                            )}
+                        </TabPane>}
+                    {(currentSelectRelatedPageOpt[1]?.linkType === 2 || currentSelectRelatedPageOpt[0]?.linkType === 2 ) && 
+                        <TabPane tab='请选择' key= {currentSelectRelatedPageOpt[0]?.linkType === 2 ? '1' : '2'}>
+                            <Search
+                                value={searchText}
+                                placeholder='可输入关键字进行检索'
+                                onChange={handleChange}
+                            />
+                             {detailType === 4 && 
+                             <Radio.Group style={{marginTop: 8}} buttonStyle='solid'  size='small' value={currentarticleDicCode} buttonStyle="solid" onChange={radioGroupChange}>
+                                {articleDicOpts.map(item => <Radio.Button key={item.code} value={item.code}>{item.name}</Radio.Button>)}
+                            </Radio.Group>}
+                            <Table
+                                size='small'
+                                style={{marginTop: 8, cursor: 'pointer'}}
+                                columns={ ColumnsObj[`columns_${detailType}`] }
+                                dataSource={dataList}
+                                rowKey={(r, i) => i}
+                                onRow={record => {
+                                    return {
+                                        onClick: e => rowClick(e, record)
+                                    }
+                                }}
+                                pagination={{
+                                    current: pageNum,
+                                    pageSize,
+                                    total: recordTotal,
+                                    onChange: pageChange
+                                }}
+                            />
+                        </TabPane>
+                    }
                 </Tabs>
             </div>}
-            </>
-        )
+        </>
+    )
 }
