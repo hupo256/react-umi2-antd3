@@ -178,7 +178,7 @@ class Index extends PureComponent {
       <div className={styles.appleCard} onClick={this.touchInpBlurTag}>
         <PageHeaderWrapper title={title}>
           <Card bordered={false}>
-            {!AuthInfo.isAuthedWechatMini && (
+            {AuthInfo.isAuthedWechatMini && (
               <div className={styles.appletWrap}>
                 <div className={styles.appleLeft}>
                   <Menu
