@@ -186,10 +186,11 @@ class Index extends PureComponent {
                         <p style={{paddingLeft: 24}}>关联页面设置</p>
                       </Menu.Item>
                     ) : null}
-
+                    {/* {permissionsBtn.permissions.includes('BTN210610000006') && */}
                     <Menu.Item key="3">
                       <p style={{ paddingLeft: 24 }}>广告设置</p>
                     </Menu.Item>
+                    {/* } */}
                   </Menu>
                 </div>
                 {selectedKeys[0] === '3' && (
@@ -221,8 +222,8 @@ class Index extends PureComponent {
                       <Switch
                         loading={switchLoading}
                         checked={switchCommonDate?.homePageOpenAuth}
-                        onChange={e => {
-                          this.handleSwitchChange('homePageOpenAuth', e);
+                        onChange={val => {
+                          this.handleSwitchChange('homePageOpenAuth', val);
                         }}
                       />
                     </p>
@@ -232,8 +233,8 @@ class Index extends PureComponent {
                       <Switch
                         loading={switchLoading}
                         checked={switchCommonDate?.wechatCustomerService}
-                        onChange={e => {
-                          this.handleSwitchChange('wechatCustomerService', e);
+                        onChange={val => {
+                          this.handleSwitchChange('wechatCustomerService', val);
                         }}
                       />
                     </p>
@@ -290,7 +291,7 @@ class Index extends PureComponent {
       if (res?.code === 200002) {
         message.warning(res.message);
       } else if (res?.code === 200) {
-        this.setState({ ...payload, switchLoading: false });
+        this.setState({ switchCommonDate: payload, switchLoading: false });
         const AuthTex = ['授权成功', '取消授权成功'];
         const wechatTex = ['在线客服开启成功', '在线客服关闭成功'];
         const tex = key === 'homePageOpenAuth' ? AuthTex : wechatTex;
