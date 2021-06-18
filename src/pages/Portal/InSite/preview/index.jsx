@@ -140,6 +140,7 @@ export default function Preview(props) {
           </div>
         </div>
 
+        {console.log(wechatAuthed)}
         {/* totopBox */}
         <div className={pageStyle.totopBox}>
           {wechatAuthed?.isCompanyAuthWechatMini && (
