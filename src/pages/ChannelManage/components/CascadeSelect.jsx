@@ -17,18 +17,15 @@ const { Search } = Input;
 export default function CascadeSelect(props){
     const { optsArr, curNavs=[], callFun } = props
 
+    const [showSelectPanl, setshowSelectPanl] = useState(false)  // 选择器的显示开关
     const [relatedPageOption, setrelatedPageOption] = useState([])  // 生成级联选择的数据
     const [currentSelectRelatedPageOpt, setcurrentSelectRelatedPageOpt] = useState([])  // 当前已选
-    const [dataList, setdataList] = useState([])  
     const [articleDicOpts, setarticleDicOpts] = useState([])  
     const [currentarticleDicCode, setcurrentarticleDicCode] = useState(undefined)  
     const [currentKey, setcurrentKey] = useState('0')  
-    const [recordTotal, setrecordTotal] = useState(0)  
+    const [detData, setdetData] = useState(null)  // 查询出来的详情列表
     const [detailType, setdetailType] = useState(0)   // 祥情页类型 
-    const [showSelectPanl, setshowSelectPanl] = useState(false)  
-    const [searchText, setsearchText] = useState('')  
     const [pageNum, setpageNum] = useState(1)  
-    const [pageSize, setpageSize] = useState(10)  
 
     useEffect(() => {
         showSelect()
@@ -39,7 +36,7 @@ export default function CascadeSelect(props){
     }, [detailType])
 
     function showSelect(){
-        toggleSelectPanlHandle(true);
+        setshowSelectPanl(true)
         setcurrentSelectRelatedPageOpt([])
         setrelatedPageOption(filterLevelOps())
     }
@@ -96,13 +93,14 @@ export default function CascadeSelect(props){
     } 
 
     // 选择关联页面
-    function selectedHandle(item, step ){
+    function selectedHandle(item, step){
+        const {children, linkType, detailType} = item
         const arr = [...currentSelectRelatedPageOpt, item]
         setcurrentSelectRelatedPageOpt(arr)
         setcurrentKey(+step + 1 + '')
-        setdetailType(item.detailType)
+        setdetailType(detailType)
 
-        if (!item.children.length && item.linkType === 1) toggleSelectPanlHandle(false)
+        if (!children.length && linkType === 1) hidePanel()
         if(callFun) callFun(formatData(arr))
     }
 
@@ -110,6 +108,7 @@ export default function CascadeSelect(props){
     async function getDataList (config){
         if(!detailType) return
         const status = detailType === 6 ? '' : '1'
+        const searchText = config?.searchText || ''
         const prama = {
             gongdiStatus: 0,
             searchText,
@@ -119,15 +118,14 @@ export default function CascadeSelect(props){
             activityTitle: searchText,
             articleDicCode: currentarticleDicCode,
             pageNum,
-            pageSize,
+            pageSize: 10,
         }
         // 没有文章栏目时先请求一次
         if (detailType === 4 && !articleDicOpts.length) await getArticleDic();
         const apiKeys = [siteListApi, designerListApi, caseListApi, articleListApi, specialListApi, activeListApi]
         const { data, code } = await apiKeys[detailType-1]({...prama, ...config})
         if(code !== 200 ) return
-        setdataList(data?.list)
-        setrecordTotal(data?.recordTotal)
+        setdetData(data)
     }
 
     // 查询文章栏目选项
@@ -149,13 +147,11 @@ export default function CascadeSelect(props){
 
     // 模糊查询  
     function handleChange(e){
-        const value = e.target.value; 
-        setsearchText(value) 
-        setpageNum(1)
-        const getList =  _.debounce( value => {
-            const searchText = value.length > 30 ? value.substring(0, 30) : value
-            getDataList({searchText})
+        const val = e.target.value; 
+        const getList =  _.debounce( () => {
+            getDataList({searchText: val.slice(0, 30)})
         }, 300)
+        setpageNum(1)
         getList()
     }
 
@@ -163,25 +159,18 @@ export default function CascadeSelect(props){
     function rowClick(record){
         record.linkType = 1  // 到这里来的都是末节点了，作个标记
         const arr = [...currentSelectRelatedPageOpt, record]
-        toggleSelectPanlHandle(false)
         setcurrentSelectRelatedPageOpt(arr)
+        hidePanel()
 
         if(callFun) callFun(formatData(arr))
     }
 
-    // 切换选择页面面板显示
-    function toggleSelectPanlHandle(isShow){
-        setshowSelectPanl(isShow)
-        if ( (currentSelectRelatedPageOpt[1]?.linkType === 2 && !!!currentSelectRelatedPageOpt[2]) || 
-             (currentSelectRelatedPageOpt[0]?.linkType === 2 && !!!currentSelectRelatedPageOpt[1] )) {
-            setcurrentSelectRelatedPageOpt(currentSelectRelatedPageOpt.slice(0, currentSelectRelatedPageOpt.length - 1))
-        }
-        if (!isShow ) {
-            setcurrentKey('0')
-            setsearchText('')
-            setpageNum(1)
-            setpageSize(10)
-        }
+    // 关闭选择器面板时顺便重置
+    function hidePanel(){
+        setshowSelectPanl(false)
+
+        setcurrentKey('0')
+        setpageNum(1)
     }
 
     // 页码变换
@@ -193,7 +182,7 @@ export default function CascadeSelect(props){
     return (
         <>  
             {showSelectPanl && <div className={styles['card-container']}>
-                <Tabs type="card" tabBarGutter={0}  activeKey={currentKey} onChange={tabChange}>
+                <Tabs type="card" tabBarGutter={0} activeKey={currentKey} onChange={tabChange}>
                     <TabPane tab={currentSelectRelatedPageOpt[0]?.name || '请选择'} key='0'>
                         {relatedPageOption?.map(item => 
                             <p style={{cursor: 'pointer'}} key={item.uid} onClick={() => selectedHandle(item, '0')}>{item.name}</p>
@@ -207,26 +196,23 @@ export default function CascadeSelect(props){
                         </TabPane>}
                     {(currentSelectRelatedPageOpt[1]?.linkType === 2 || currentSelectRelatedPageOpt[0]?.linkType === 2 ) && 
                         <TabPane tab='请选择' key= {currentSelectRelatedPageOpt[0]?.linkType === 2 ? '1' : '2'}>
-                            <Search
-                                value={searchText}
-                                placeholder='可输入关键字进行检索'
-                                onChange={handleChange}
-                            />
-                             {detailType === 4 && 
-                             <Radio.Group style={{marginTop: 8}} buttonStyle='solid'  size='small' value={currentarticleDicCode} buttonStyle="solid" onChange={radioGroupChange}>
-                                {articleDicOpts.map(item => <Radio.Button key={item.code} value={item.code}>{item.name}</Radio.Button>)}
-                            </Radio.Group>}
+                            <Search placeholder='可输入关键字进行检索'  onChange={handleChange}/>
+                                {detailType === 4 && 
+                                    <Radio.Group style={{marginTop: 8}} buttonStyle='solid' size='small' value={currentarticleDicCode} buttonStyle="solid" onChange={radioGroupChange}>
+                                        {articleDicOpts.map(item => <Radio.Button key={item.code} value={item.code}>{item.name}</Radio.Button>)}
+                                    </Radio.Group>
+                                }
                             <Table
                                 size='small'
                                 style={{marginTop: 8, cursor: 'pointer'}}
                                 columns={ ColumnsObj[`columns_${detailType}`] }
-                                dataSource={dataList}
+                                dataSource={detData?.list}
                                 rowKey={(r, i) => i}
-                                onRow={record => {return { onClick: () => rowClick(record)}}}
+                                onRow={record => {return {onClick: () => rowClick(record)}}}
                                 pagination={{
                                     current: pageNum,
-                                    pageSize,
-                                    total: recordTotal,
+                                    pageSize: 10,
+                                    total: detData?.recordTotal,
                                     onChange: pageChange
                                 }}
                             />
