@@ -41,6 +41,35 @@ export default function CascadeSelect(props){
         setrelatedPageOption(filterLevelOps())
     }
 
+    // 过滤一级nav, 当children为空，则认为不应出现
+    function filterLevelOps(){
+        const len = curNavs.length  
+        const optArr = format(optsArr)
+        const arr = optArr.filter(ar => ar.children?.length > 0)
+        return len > 0 ? arr  : optArr // curNavs如果大于0，则表示要去重
+    }
+
+    // 过滤二级掉已有的nav
+    function touchSelcOpts(opts){
+      const tempNavs = [...curNavs]
+      const newOpts = opts.filter(opt => !tempNavs.includes(opt?.uid))
+      return newOpts
+    }
+
+     // 解构重组后台数据 
+     function format(data){
+        if (!Array.isArray(data)) return;
+        let newArr = [];
+        for (const item of data) {            
+            newArr.push ({
+                ...item.node,
+                children: item.children.length ? format(item.children) : []
+            })
+        } 
+        newArr = touchSelcOpts(newArr)
+        return newArr
+    }
+
     // 格式化回显
     function formatData(opts){
         console.log(opts)
@@ -56,34 +85,6 @@ export default function CascadeSelect(props){
             })
         })
         return arr;
-    }
-
-    // 解构重组后台数据 
-    function format(data){
-        if (!Array.isArray(data)) return;
-        let newArr = [];
-        for (const item of data) {            
-            newArr.push ({
-                ...item.node,
-                children: item.children.length ? format(item.children) : []
-            })
-        } 
-        newArr = touchSelcOpts(newArr)
-        return newArr
-    }
-
-    // 过滤一级nav, 当children为空，则认为不应出现
-    function filterLevelOps(){
-        const optArr = format(optsArr)
-        const arr = optArr.filter(ar => ar.children?.length > 0)
-        return arr
-    }
-
-    // 过滤二级掉已有的nav
-    function touchSelcOpts(opts){
-      const tempNavs = [...curNavs]
-      const newOpts = opts.filter(opt => !tempNavs.includes(opt?.uid))
-      return newOpts
     }
 
     // tab面板切换
