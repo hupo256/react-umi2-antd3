@@ -36,8 +36,8 @@ class Index extends PureComponent {
     const code = localStorage.getItem('auth');
     const saasSellerCode = JSON.parse(code).companyCode;
     dispatch({ type: 'MiniProgram/getAuthInfoModel', payload: { saasSellerCode } }).then(res => {
-      // if (res && res.code === 200 && res.data.isAuthedWechatMini) {
-      if (res && res.code === 200) {
+      if (res && res.code === 200 && res.data.isAuthedWechatMini) {
+      // if (res && res.code === 200) {
         dispatch({ type: 'MiniProgram/formbindmapModel' });
         dispatch({ type: 'MiniProgram/queryWechatMiniGlobalModel' }).then(res => {
           if (res?.code === 200) {
@@ -178,24 +178,12 @@ class Index extends PureComponent {
                   >
                     {/* {permissionsBtn.permissions.includes('BTN210610000006') ? ( */}
                     <Menu.Item key="1">
-                      <p
-                        style={{
-                          paddingLeft: 24,
-                        }}
-                      >
-                        通用设置
-                      </p>
+                      <p style={{paddingLeft: 24}}>通用设置</p>
                     </Menu.Item>
                     {/* ) : null} */}
                     {permissionsBtn.permissions.includes('BTN210610000007') ? (
                       <Menu.Item key="2">
-                        <p
-                          style={{
-                            paddingLeft: 24,
-                          }}
-                        >
-                          关联页面设置
-                        </p>
+                        <p style={{paddingLeft: 24}}>关联页面设置</p>
                       </Menu.Item>
                     ) : null}
 
@@ -255,9 +243,9 @@ class Index extends PureComponent {
                 }
               </div>
             )}
-            {/* {!AuthInfo.isAuthedWechatMini && (
+            {!AuthInfo.isAuthedWechatMini && (
               <NotBound jumpUrl={`/#/portal/insite/appletsetting`} />
-            )} */}
+            )}
           </Card>
         </PageHeaderWrapper>
         {visible && (
