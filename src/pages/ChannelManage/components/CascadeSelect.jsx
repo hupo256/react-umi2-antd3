@@ -131,11 +131,9 @@ export default function CascadeSelect(props){
     // 查询文章栏目选项
     async function getArticleDic(){
         const res = await articleDicApi({dicModuleCodes: 'DM006'});
-        const { DM006} = res?.data
-        if(DM006){
-            setarticleDicOpts(DM006)
-            setcurrentarticleDicCode(DM006[0].code)
-        }
+        if(!res?.data) return
+        setarticleDicOpts(res.data)
+        setcurrentarticleDicCode(res.data[0]?.code)
     }
 
     // 文章类型切换
