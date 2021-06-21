@@ -26,6 +26,9 @@ class DynamicList extends Component {
       visible: false,
       status:null,
       initData: null,
+      page: 1,
+      pageSize: 10,
+      isEdit: false,
     };
   }
 
@@ -62,7 +65,7 @@ class DynamicList extends Component {
               payload: { gongdiUid: getQueryUrlVal('uid') },
             }).then(res=>{
               if(res&&res.code===200){
-                this.setState({status:res.data.value,visible: true,initData: null})
+                this.setState({status:res.data.value,visible: true,initData: null, isEdit: false })
               }
             });}}>
               <Icon type="plus" />
@@ -73,7 +76,7 @@ class DynamicList extends Component {
             Array.isArray(dynamicList) &&
             dynamicList.length > 0 && (
               <Card bordered={false} style={{ marginTop: 20 }}>
-                {dynamicList.map(item => {
+                {dynamicList?.map(item => {
                   return (
                     <div key={item.dicCode} style={{ marginBottom: 20 }}>
                       <p>
@@ -91,7 +94,7 @@ class DynamicList extends Component {
                           {item.dicName}
                         </span>
                       </p>
-                      {item.pageList.list.map(items => {
+                      {item.pageList?.list?.map(items => {
                         return (
                           <div key={items.diaryUid}>
                             <p>
@@ -127,7 +130,7 @@ class DynamicList extends Component {
                                   options={{ title: false }}
                                   style={{ display: 'inline-block', verticalAlign: 'top' }}
                                 >
-                                  {items.fileList.map((item, i) => {
+                                  {items.fileList?.map((item, i) => {
                                     return (
                                       <img
                                         className="rcviewer"
@@ -183,7 +186,7 @@ class DynamicList extends Component {
     try {
       const res = await getSiteDetaiyApi({diaryUid: item.diaryUid});
       if (res.code === 200) {
-        this.setState({initData: res.data, visible: true})
+        this.setState({initData: res.data, visible: true, isEdit: true})
       }
     } catch (error) {
       message.error('出错了！')
@@ -194,7 +197,10 @@ class DynamicList extends Component {
 
   // 分页
   handlePagination = (page, pageSize, dicCode) => {
-    // pageDynamicModel
+    this.setState({
+      page,
+      dicCode
+    })
     const { dispatch } = this.props;
     dispatch({
       type: 'SiteLibrary/pageDynamicModel',
@@ -225,10 +231,19 @@ class DynamicList extends Component {
   handleOk = () => {
     this.setState({ visible: false });
     const { dispatch } = this.props;
-    dispatch({
-      type: 'SiteLibrary/dynamicListModel',
-      payload: { gongdiUid: getQueryUrlVal('uid') },
-    });
+    const { isEdit, page, dicCode } = this.state;
+    if (isEdit) {
+      this.handlePagination(page, undefined, dicCode)
+    } else {
+      console.log(123)
+      dispatch({
+        type: 'SiteLibrary/dynamicListModel',
+        payload: { gongdiUid: getQueryUrlVal('uid') },
+      });
+    }
+    
+    
+    
   };
   handleCancel = () => {
     this.setState({ visible: false });
