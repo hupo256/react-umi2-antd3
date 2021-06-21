@@ -1,8 +1,8 @@
 /*
  * @Author: tdd 
  * @Date: 2021-03-23 13:49:12 
- * @Last Modified by: tdd
- * @Last Modified time: 2021-03-23 13:49:12 
+ * @Last Modified by: zqm
+ * @Last Modified time: 2021-06-16 03:40:00
  * 小程序UI模板
  */
 import React, { useState, useEffect, useContext } from 'react';
@@ -28,21 +28,26 @@ function Home(props) {
       const userInfor = res.data;
 
       // 之前有发布过吗
-      getHomePagePublishState().then(res => {
-        if (!res?.data) return;
-        const { data } = res;
-        if (!data.isPublished) {
-          return router.push(`${baseRouteKey}templates`);
-        }
+      res.data.isAuthedWechatMini &&
+        getHomePagePublishState().then(res => {
+          if (!res?.data) return;
+          const { data } = res;
+          if (!data.isPublished) {
+            return router.push(`${baseRouteKey}templates`);
+          }
+        });
+        
         setauthorInf(userInfor);
-      });
     });
   }, []);
 
   return (
     <PageHeaderWrapper>
       <div className={styles.homeBox}>
-        <TitleGuid title={templateName || pageData.templateName || '模板名称'} />
+        <TitleGuid
+          title={templateName || pageData.templateName || '模板名称'}
+          isAuthed={authorInf?.isAuthedWechatMini}
+        />
         {authorInf && (
           <>
             {authorInf.isAuthedWechatMini ? (

@@ -39,38 +39,96 @@ class LoginPage extends Component {
             localStorage.setItem('ticket', ress.ticket);
             localStorage.setItem('randstr', ress.randstr);
             dispatch({
-              type: 'login/loginCheckModel',
+              type: "login/checkMobileModel",
               payload: {
                 mobile: values.userName,
+                password: values.pwd,
+                source: 1,
               },
-            }).then(res => {
-              if (res && res.code === 200) {
-                if (res.data && res.data.length == 1) {
-                  let code = res.data[0].companyCode;
+            }).then((re) => {
+                if (re && re.code === 200) {
                   dispatch({
-                    type: 'login/loginPasswordModel',
+                    type: 'login/loginCheckModel',
                     payload: {
-                      companyCode: code,
                       mobile: values.userName,
-                      password: values.pwd,
-                      ticket: ress.ticket,
-                      randstr: ress.randstr,
-                      //uuid: CodeFlag,
-                      source: 0,
-                      systemCode: 'S005',
-                      //verificationCode: values.verificationCode,
                     },
                   }).then(res => {
-                    localStorage.setItem('companyName', code);
                     if (res && res.code === 200) {
-                      dispatch({
-                        type: 'login/setAuthModel',
-                        payload: {},
-                      }).then(res => {
-                        if (res && res.code === 200) {
-                          window.location.href = '/';
+                      if (res.data && res.data.length === 1) {
+                        let code = res.data[0].companyCode;
+                        dispatch({
+                          type: 'login/loginPasswordModel',
+                          payload: {
+                            companyCode: code,
+                            mobile: values.userName,
+                            password: values.pwd,
+                            ticket: ress.ticket,
+                            randstr: ress.randstr,
+                            //uuid: CodeFlag,
+                            source: 0,
+                            systemCode: 'S005',
+                            //verificationCode: values.verificationCode,
+                          },
+                        }).then(res => {
+                          localStorage.setItem('companyName', code);
+                          if (res && res.code === 200) {
+                            dispatch({
+                              type: 'login/setAuthModel',
+                              payload: {},
+                            }).then(res => {
+                              if (res && res.code === 200) {
+                                window.location.href = '/';
+                              }
+                            });
+                          } else {
+                            if (res && res.message) {
+                              message.warning(res.message);
+                              //this.ReplacementVerificationCode();
+                            }
+                          }
+                        });
+                      } else {
+                        if (res.data && res.data.length > 0) {
+                          dispatch({
+                            type: 'login/saveDataModel',
+                            payload: {
+                              key: 'companyList',
+                              value: res.data,
+                            },
+                          });
+                          sessionStorage.setItem('companyList', JSON.stringify(res.data));
+                          router.push('/choiceCompany');
+                        } else {
+                          message.warning('抱歉，您当前未开通营销站权限，请联系公司管理员开通。');
                         }
+                      }
+                      dispatch({
+                        type: 'login/saveDataModel',
+                        payload: {
+                          key: 'PasswordData',
+                          value: {
+                            mobile: values.userName,
+                            password: values.pwd,
+                            //uuid: CodeFlag,
+                            systemCode: 'S005',
+                            source: 0,
+                            ticket: ress.ticket,
+                            randstr: ress.randstr,
+                            //verificationCode: values.verificationCode,
+                          },
+                        },
                       });
+                      let pass = {
+                        mobile: values.userName,
+                        password: values.pwd,
+                        //uuid: CodeFlag,
+                        source: 0,
+                        //verificationCode: values.verificationCode,
+                        ticket: ress.ticket,
+                        randstr: ress.randstr,
+                      };
+                      console.log(pass);
+                      sessionStorage.setItem('PasswordData', JSON.stringify(pass));
                     } else {
                       if (res && res.message) {
                         message.warning(res.message);
@@ -78,55 +136,9 @@ class LoginPage extends Component {
                       }
                     }
                   });
-                } else {
-                  if (res.data && res.data.length > 0) {
-                    dispatch({
-                      type: 'login/saveDataModel',
-                      payload: {
-                        key: 'companyList',
-                        value: res.data,
-                      },
-                    });
-                    sessionStorage.setItem('companyList', JSON.stringify(res.data));
-                    router.push('/choiceCompany');
-                  } else {
-                    message.warning('抱歉，您当前未开通营销站权限，请联系公司管理员开通。');
-                  }
                 }
-                dispatch({
-                  type: 'login/saveDataModel',
-                  payload: {
-                    key: 'PasswordData',
-                    value: {
-                      mobile: values.userName,
-                      password: values.pwd,
-                      //uuid: CodeFlag,
-                      systemCode: 'S005',
-                      source: 0,
-                      ticket: ress.ticket,
-                      randstr: ress.randstr,
-                      //verificationCode: values.verificationCode,
-                    },
-                  },
-                });
-                let pass = {
-                  mobile: values.userName,
-                  password: values.pwd,
-                  //uuid: CodeFlag,
-                  source: 0,
-                  //verificationCode: values.verificationCode,
-                  ticket: ress.ticket,
-                  randstr: ress.randstr,
-                };
-                console.log(pass);
-                sessionStorage.setItem('PasswordData', JSON.stringify(pass));
-              } else {
-                if (res && res.message) {
-                  message.warning(res.message);
-                  //this.ReplacementVerificationCode();
-                }
-              }
-            });
+            })
+
           }
         },
         { sdkView: { right: 0 } }

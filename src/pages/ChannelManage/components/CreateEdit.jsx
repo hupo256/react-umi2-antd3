@@ -315,12 +315,13 @@ export default class CreateEdit extends Component {
 
     // 文章类型切换
     radioGroupChange = e => {
-        const { pageNum, searchText } = this.state
+        const { searchText } = this.state
         this.setState({
-            currentarticleDicCode: e.target.value
+            currentarticleDicCode: e.target.value,
+            pageNum: 1
         });
         
-        this.getDataList({articleDicCode: e.target.value,  pageNum, searchText })
+        this.getDataList({articleDicCode: e.target.value,  pageNum: 1, searchText })
 
     }
 
@@ -420,19 +421,17 @@ export default class CreateEdit extends Component {
 
     clickInputHandle = e => {
         const { showSelectPanl } = this.state;
+        const { isCreate} = this.props;
+        this.setState({
+            currentSelectRelatedPageOpt: [],
+            currentKey: '0',
+        })
         if (!showSelectPanl) {
             this.toggleSelectPanlHandle(true);
             return;
         } 
         this.toggleSelectPanlHandle(false);
-        // this.setState({
-        //     currentSelectRelatedPageOpt: [],
-        //     currentKey: '0',
-        // }, () => {
-        //     this.props.form.setFieldsValue({
-        //         relatedPage:  this.formatData().map(item =>item.text).join(' / ')
-        //     })
-        // })
+        
     }
 
     // 页码变换
@@ -454,6 +453,7 @@ export default class CreateEdit extends Component {
             pageNum, pageSize, recordTotal, btnLoading
         } = this.state
         const { getFieldDecorator } = form
+        
         const placeholderArr = [
             '工地标题',
             '设计师姓名',
@@ -461,7 +461,7 @@ export default class CreateEdit extends Component {
             '文章标题/内容',
             '专题标题',
             '小游戏标题'
-        ]
+        ];
         const ColumnsObj = {
             // 工地详情页表头
             columns_1: [
@@ -696,7 +696,7 @@ export default class CreateEdit extends Component {
                                     <Search
                                         style={{marginTop: 8}}
                                         value={searchText}
-                                        placeholder={placeholderArr[+detailType] ? `可通过${placeholderArr[(+detailType) - 1]}进行搜索` : '可输入关键字进行检索'}
+                                        placeholder={placeholderArr[+detailType - 1] ? `可通过${placeholderArr[(+detailType) - 1]}进行搜索` : '可输入关键字进行检索'}
                                         onChange={  e => { const value = e.target.value; this.setState({searchText: value, pageNum: 1}); this.handleChange(value) }}
                                     />
                                     {detailType === 4 && <div>

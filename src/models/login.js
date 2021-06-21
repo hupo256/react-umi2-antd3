@@ -9,6 +9,7 @@ import {
   logout,
   switchSystem,
   editPassword,
+  checkMobile
 } from '@/services/api';
 import { setAuthority, cleanAuthority, setauth } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
@@ -45,6 +46,10 @@ export default {
     },
     *login({ payload }, { call, put, select }) {
       const response = yield call(fakeAccountLogin, payload);
+      return response;
+    },
+    *checkMobileModel({ payload }, { call, put, select }) {
+      const response = yield call(checkMobile, payload);
       return response;
     },
     *loginTs({ payload }, { call, put, select }) {

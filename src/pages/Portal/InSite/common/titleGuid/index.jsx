@@ -15,7 +15,7 @@ import styles from './titleGuid.less';
 import { getauth } from '@/utils/authority';
 
 export default function TitleGuid(props) {
-  const { title = '标题', disc, isEdit } = props;
+  const { title = '标题', disc, isEdit, isAuthed } = props;
   const { pageData, setcurFlag, templateCode, templateName, savePageData } = useContext(ctx);
   const permissionsBtn = getauth();
   function toPublish() {
@@ -58,22 +58,37 @@ export default function TitleGuid(props) {
     <div className={styles.guidBox}>
       <h3>
         <span>{title}</span>
-        {isEdit && (
-          <div className={styles.btnBox}>
-            <Button onClick={showConfirm}>放弃更改</Button>
-            {permissionsBtn.permissions.includes('BTN210610000005') ?<a href="#/pc/preview" target="_blank">
-              <Icon type="desktop" />
-              <span>网站预览</span>
-            </a>:null}
-            <Button onClick={toPublish} type="primary">
-              <img
-                src="https://img.inbase.in-deco.com/crm_saas/release/20210511/bb4bd99abc374cae9b1dbe634a6a388c/ic_send.png"
-                alt=""
-              />
-              发布
-            </Button>
-          </div>
-        )}
+        <div className={styles.btnBox}>
+          {isEdit && (
+            <>
+              <Button onClick={showConfirm}>放弃更改</Button>
+              {permissionsBtn.permissions.includes('BTN210610000005') && (
+                <a href="#/pc/preview" target="_blank">
+                  <Icon type="desktop" />
+                  <span>网站预览</span>
+                </a>
+              )}
+              <Button onClick={toPublish} type="primary">
+                <img
+                  src="https://img.inbase.in-deco.com/crm_saas/release/20210511/bb4bd99abc374cae9b1dbe634a6a388c/ic_send.png"
+                  alt=""
+                />
+                发布
+              </Button>
+            </>
+          )}
+
+          {isAuthed && (
+            <>
+              {permissionsBtn.permissions.includes('BTN210610000005') && (
+                <a href="#/pc/preview" target="_blank">
+                  <Icon type="desktop" />
+                  <span>网站预览</span>
+                </a>
+              )}
+            </>
+          )}
+        </div>
       </h3>
       {disc && <p>模板可以帮您一键生成案例、工地和设计师模块，并有多种布局和风格供您选择。</p>}
     </div>

@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 10:30:18 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-04-08 19:57:17
+ * @Last Modified time: 2021-06-16 02:06:30
  * 字典配置
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -281,6 +281,7 @@ class DictConfig extends PureComponent {
                         };
                       }}
                       onChange={this.handleTableChange}
+                      scroll={{ x: 900 }}
                       pagination={{
                         pageSize: 100,
                         hideOnSinglePage: true,
