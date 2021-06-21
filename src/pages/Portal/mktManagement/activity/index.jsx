@@ -14,11 +14,13 @@ import { Card, Button, Table, Input, Icon, message } from 'antd';
 import { getauth } from '@/utils/authority';
 import { actColumns, searchTags } from '../tools/data';
 import styles from './activity.less';
+import Applets from  '../../ContentManagement/components/Applets';
+import { connect } from 'dva';
 
 const { Search } = Input;
 const permissionsBtn = getauth().permissions || [];
 
-export default function Activityer(props) {
+function Activityer(props) {
   const [actList, setactList] = useState([]);
   const [tbColumns, settbColumns] = useState([]);
   const [searchInd, setsearchInd] = useState(0);
@@ -87,16 +89,32 @@ export default function Activityer(props) {
     const col = {
       title: '操作',
       dataIndex: 'action',
-      width: 130,
+      width: 260,
       render: (text, record, index) => (
         <p className={styles.actions}>
           {permissionsBtn.includes('BTN210422000002') && <a onClick={() => toEdit(record.uid)}>编辑</a>}  
           {permissionsBtn.includes('BTN210422000002') && permissionsBtn.includes('BTN210422000003') && <span className={styles.operateLine} />}
           {permissionsBtn.includes('BTN210422000003') && <a onClick={() => toRecod(record.activityCode)}>抽奖记录</a>}
+          <span className={styles.operateLine}></span>
+            { <a className="operateBtn" onClick={() => getWechatCode(record)}>
+              小程序码
+          </a>}
         </p>
       ),
     };
     settbColumns([...actColumns, col]);
+  }
+
+   // 获取小程序码
+  const  getWechatCode = record => {
+    const { dispatch } = props;
+    dispatch({
+      type: 'ContentManage/getAppletsCode',
+      payload: {
+        qrCodePage: 'game',
+        uid: record.uid
+      }
+    })
   }
 
   function copyLink(id) {
@@ -210,6 +228,15 @@ export default function Activityer(props) {
           rowKey={(r, i) => i}
         />
       </Card>
+      <Applets />
     </PageHeaderWrapper>
   );
 }
+
+const mapStateToProps = state => {
+  return {
+    ...state.ContentManage
+  }
+}
+
+export default connect(mapStateToProps, null)(Activityer)

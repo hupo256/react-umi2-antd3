@@ -13,6 +13,7 @@ import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { paginations, successIcon, waringInfo, errorIcon } from '@/utils/utils';
 import styles from './index.less';
 import { getauth } from '@/utils/authority';
+import Applets from '../components/Applets';
 const Search = Input.Search;
 const { confirm } = Modal;
 import TagSelect from '@/components/TagSelect';
@@ -70,6 +71,7 @@ class ProjectLibrary extends PureComponent {
             )}
             {this.renderTable()}
           </Card>
+          <Applets />
         </PageHeaderWrapper>
       </div>
     );
@@ -322,6 +324,10 @@ class ProjectLibrary extends PureComponent {
                   </span>
                 </span>
               ) : null}
+              {r.specialStatus === 1 && <span className="operateLine" />}
+               {r.specialStatus === 1 && <span className="operateBtn" onClick={() => this.getWechatCode(r)}>
+                 小程序码
+              </span>}
             </div>
           );
         },
@@ -339,6 +345,19 @@ class ProjectLibrary extends PureComponent {
       />
     );
   }
+
+   // 获取小程序码
+   getWechatCode = record => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'ContentManage/getAppletsCode',
+      payload: {
+        qrCodePage: 'special',
+        uid: record.specialUid
+      }
+    })
+  }
+
   handleFormSubmit = value => {
     if (value.length > 1) {
       value.splice(0, 1);

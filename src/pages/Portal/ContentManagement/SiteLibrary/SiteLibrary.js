@@ -15,6 +15,7 @@ import styles from './SiteLibrary.less';
 import DynamicAdd from './DynamicAdd';
 import { getauth } from '@/utils/authority';
 import FromProjectModel from './FromProjectModel';
+import  Applets  from '../components/Applets'
 const { confirm } = Modal;
 const { Search } = Input;
 
@@ -203,6 +204,10 @@ class SiteLibrary extends PureComponent {
                   工地动态
                 </span>
               )}
+              {r.gongdiStatus !== 1 && <span className="operateLine" />}
+              {r.gongdiStatus !== 1 && <span className="operateBtn" onClick={() => this.getWechatCode(r)}>
+                 小程序码
+              </span>}
             </div>
           );
         },
@@ -314,9 +319,23 @@ class SiteLibrary extends PureComponent {
         {porjectVisible && (
           <FromProjectModel visible={porjectVisible} handleCancel={() => this.handleFromCancel()} />
         )}
+        <Applets />
       </div>
     );
   }
+
+  // 获取小程序码
+  getWechatCode = record => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'ContentManage/getAppletsCode',
+      payload: {
+        qrCodePage: 'site',
+        uid: record.gongdiUid
+      }
+    })
+  }
+
   handleSrarchStatus = status => {
     this.setState({ status }, () => {
       this.getList({
@@ -346,7 +365,8 @@ class SiteLibrary extends PureComponent {
 
   handleOk = () => {
     this.setState({ visible: false, record: null });
-    this.getList({});
+    const pageNum = this.state
+    this.getList({pageNum});
   };
   handleCancel = () => {
     this.setState({ visible: false, record: null });
