@@ -17,19 +17,32 @@ import LinkPage from './LinkPage';
 import AdSeter from './AdSeter';
 import NotBound from '../MiniProgram/NotBound';
 
+const { permissions } = getauth();
+const menuData = [
+  {
+    name: '通用设置',
+    code: 'BTN210610000006',
+  },
+  {
+    name: '关联页面设置',
+    code: 'BTN210610000007',
+  },
+  {
+    name: '广告设置',
+    code: 'BTN210621000001',
+  },
+];
+
 @connect(({ MiniProgram }) => ({ MiniProgram }))
 class Index extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      visible: false,
-      record: null,
-      selectedKeys: ['1'],
-      switchCommonDate: null,
-      switchLoading: false,
-      showSec: false,
-    };
-  }
+  state = {
+    visible: false,
+    record: null,
+    selectedKeys: ['1'],
+    switchCommonDate: null,
+    switchLoading: false,
+    showSec: false,
+  };
 
   componentDidMount() {
     const { dispatch } = this.props;
@@ -37,7 +50,6 @@ class Index extends PureComponent {
     const saasSellerCode = JSON.parse(code).companyCode;
     dispatch({ type: 'MiniProgram/getAuthInfoModel', payload: { saasSellerCode } }).then(res => {
       if (res && res.code === 200 && res.data.isAuthedWechatMini) {
-      // if (res && res.code === 200) {
         dispatch({ type: 'MiniProgram/formbindmapModel' });
         dispatch({ type: 'MiniProgram/queryWechatMiniGlobalModel' }).then(res => {
           if (res?.code === 200) {
@@ -161,7 +173,7 @@ class Index extends PureComponent {
         ]
       : [];
     const { visible, record, selectedKeys, switchCommonDate, switchLoading, showSec } = this.state;
-    const permissionsBtn = getauth();
+
     return (
       <div className={styles.appleCard} onClick={this.touchInpBlurTag}>
         <PageHeaderWrapper title={title}>
@@ -176,31 +188,27 @@ class Index extends PureComponent {
                     defaultOpenKeys={['sub1']}
                     mode="inline"
                   >
-                    {/* {permissionsBtn.permissions.includes('BTN210610000006') ? ( */}
-                    <Menu.Item key="1">
-                      <p style={{paddingLeft: 24}}>通用设置</p>
-                    </Menu.Item>
-                    {/* ) : null} */}
-                    {permissionsBtn.permissions.includes('BTN210610000007') ? (
-                      <Menu.Item key="2">
-                        <p style={{paddingLeft: 24}}>关联页面设置</p>
-                      </Menu.Item>
-                    ) : null}
-                    {/* {permissionsBtn.permissions.includes('BTN210610000006') && */}
-                    <Menu.Item key="3">
-                      <p style={{ paddingLeft: 24 }}>广告设置</p>
-                    </Menu.Item>
-                    {/* } */}
+                    {menuData.map((menu, ind) => {
+                      const { name, code } = menu;
+                      return (
+                        permissions.includes(code) && (
+                          <Menu.Item key={`${ind + 1}`}>
+                            <p style={{ paddingLeft: 24 }}>{name}</p>
+                          </Menu.Item>
+                        )
+                      );
+                    })}
                   </Menu>
                 </div>
-                {selectedKeys[0] === '3' && (
-                  <AdSeter
-                    showSecTag={showSec}
-                    taggleSecTag={() => this.setState({ showSec: true })}
-                  />
-                )}
+                {selectedKeys[0] === '3' &&
+                  permissions.includes('BTN210621000001') && (
+                    <AdSeter
+                      showSecTag={showSec}
+                      taggleSecTag={() => this.setState({ showSec: true })}
+                    />
+                  )}
                 {selectedKeys[0] === '2' &&
-                  permissionsBtn.permissions.includes('BTN210610000007') && (
+                  permissions.includes('BTN210610000007') && (
                     <div className={styles.appleRight}>
                       <p style={{ fontWeight: 500, fontSize: 22, color: '#333' }}>关联页面设置</p>
                       <p style={{ fontWeight: 400, fontSize: 13, color: '#666' }}>
@@ -213,35 +221,33 @@ class Index extends PureComponent {
                       <Table columns={columns} dataSource={data} pagination={false} />
                     </div>
                   )}
-                {selectedKeys[0] === '1' && (
-                  // permissionsBtn.permissions.includes('BTN210610000006') && (
-                  <div className={styles.appleRight}>
-                    <p style={{ fontWeight: 500, fontSize: 22, color: '#333' }}>通用设置</p>
-                    <p>
-                      <span>打开小程序一键授权（首次）</span>
-                      <Switch
-                        loading={switchLoading}
-                        checked={switchCommonDate?.homePageOpenAuth}
-                        onChange={val => {
-                          this.handleSwitchChange('homePageOpenAuth', val);
-                        }}
-                      />
-                    </p>
+                {selectedKeys[0] === '1' &&
+                  permissions.includes('BTN210610000006') && (
+                    <div className={styles.appleRight}>
+                      <p style={{ fontWeight: 500, fontSize: 22, color: '#333' }}>通用设置</p>
+                      <p>
+                        <span>打开小程序一键授权（首次）</span>
+                        <Switch
+                          loading={switchLoading}
+                          checked={switchCommonDate?.homePageOpenAuth}
+                          onChange={val => {
+                            this.handleSwitchChange('homePageOpenAuth', val);
+                          }}
+                        />
+                      </p>
 
-                    <p>
-                      <span>在线客服</span>
-                      <Switch
-                        loading={switchLoading}
-                        checked={switchCommonDate?.wechatCustomerService}
-                        onChange={val => {
-                          this.handleSwitchChange('wechatCustomerService', val);
-                        }}
-                      />
-                    </p>
-                  </div>
-                )
-                // )
-                }
+                      <p>
+                        <span>在线客服</span>
+                        <Switch
+                          loading={switchLoading}
+                          checked={switchCommonDate?.wechatCustomerService}
+                          onChange={val => {
+                            this.handleSwitchChange('wechatCustomerService', val);
+                          }}
+                        />
+                      </p>
+                    </div>
+                  )}
               </div>
             )}
             {!AuthInfo.isAuthedWechatMini && (
@@ -263,7 +269,7 @@ class Index extends PureComponent {
     );
   }
 
-  // click 事件能到这里说明那个input已经失焦了
+  // click 事件能到冒泡这里说明那个input已经失焦了
   touchInpBlurTag = e => {
     // e.stopPropagation();
     // console.log(123);

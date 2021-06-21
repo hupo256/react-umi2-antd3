@@ -196,6 +196,7 @@ export default function CascadeSelect(props){
                     {(currentSelectRelatedPageOpt[1]?.linkType === 2 || currentSelectRelatedPageOpt[0]?.linkType === 2 ) && 
                         <TabPane tab='请选择' key= {currentSelectRelatedPageOpt[0]?.linkType === 2 ? '1' : '2'}>
                             <Search placeholder='可输入关键字进行检索'  onChange={handleChange}/>
+                            {console.log(detailType, articleDicOpts)}
                                 {detailType === 4 && 
                                     <Radio.Group style={{marginTop: 8}} buttonStyle='solid' size='small' value={currentarticleDicCode} buttonStyle="solid" onChange={radioGroupChange}>
                                         {articleDicOpts.map(item => <Radio.Button key={item.code} value={item.code}>{item.name}</Radio.Button>)}
