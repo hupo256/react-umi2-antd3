@@ -50,7 +50,6 @@ class Index extends PureComponent {
     const saasSellerCode = JSON.parse(code).companyCode;
     dispatch({ type: 'MiniProgram/getAuthInfoModel', payload: { saasSellerCode } }).then(res => {
       if (res && res.code === 200 && res.data.isAuthedWechatMini) {
-      // if (res && res.code === 200) {
         dispatch({ type: 'MiniProgram/formbindmapModel' });
         dispatch({ type: 'MiniProgram/queryWechatMiniGlobalModel' }).then(res => {
           if (res?.code === 200) {

@@ -205,22 +205,11 @@ export default class ChannelManage extends Component {
     });
   };
 
-  /**
-   * @description: 编辑弹框
-   * @param {*}
-   * @return {*}
-   */
-  editHandle = uid => {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'channelManage/save',
-      payload: {
-        isCreate: false,
-        currentEditUid: uid,
-        showCreateEdit: true,
-      },
-    });
-  };
+    render() {
+        const { isShow, list, pageNum, recordTotal, pageSize } = this.state;
+        const { isOver, connectDragSource, connectDropTarget, moveRow, showCreateEdit,  isCreate, currentDetailType, isPcPreview } = this.props;
+        const appTip = <img width='160'  src={require('@/assets/wechartNav.png')} alt="" srcset=""/>
+        const webTip = <img height='50' src={require('@/assets/pcNav.png')} alt="" srcset=""/>
 
   pageNumChange = pageNum => {
     this.setState({
@@ -246,33 +235,33 @@ export default class ChannelManage extends Component {
     });
   };
 
-  render() {
-    const { isShow, list, pageNum, recordTotal, pageSize } = this.state;
-    const {
-      isOver,
-      connectDragSource,
-      connectDropTarget,
-      moveRow,
-      showCreateEdit,
-      showSelectSite,
-      isCreate,
-      currentDetailType,
-      isPcPreview,
-    } = this.props;
-    const appTip = (
-      <img
-        src="https://img0.baidu.com/it/u=2568886724,3755935577&fm=26&fmt=auto&gp=0.jpg"
-        alt=""
-        srcset=""
-      />
-    );
-    const webTip = (
-      <img
-        src="https://img0.baidu.com/it/u=2568886724,3755935577&fm=26&fmt=auto&gp=0.jpg"
-        alt=""
-        srcset=""
-      />
-    );
+        let columns = [
+            {
+                dataIndex: 'icon',
+                width: 60,
+                align: 'center',
+                key: 'icon', 
+                render: (text, record) => record.isIndex === 0 && <Icon type="fullscreen" rotate={45} style={{fontSize: 20}} />
+            },
+            {
+                title: <div ref='weChartDom'>
+                            <span>小程序频道名称</span>
+                            {!!!isPcPreview &&
+                            <Popover content={appTip} forceRender={true}>
+                                <Icon type="question-circle" className={styles['table-header-icon']} />
+                            </Popover>}
+                            
+                        </div>,
+                dataIndex: 'appletsName',
+                key: 'appletsName',   
+            },
+            {
+                title: <div>
+                            <span>网站频道名称</span>
+                            {!!!isPcPreview &&
+                            <Popover content={webTip} forceRender={true}>
+                                <Icon type="question-circle" className={styles['table-header-icon']} />
+                            </Popover>}
 
     let columns = [
       {
@@ -405,54 +394,85 @@ export default class ChannelManage extends Component {
       },
     };
 
-    return (
-      <PageHeaderWrapper>
-        <div>
-          <Card>
-            <Button
-              type="primary"
-              icon="plus"
-              onClick={() => {
-                this.toggleShow('createEdit');
-              }}
-            >
-              创建频道
-            </Button>
-            <div style={{ marginTop: 16 }}>
-              <DndProvider backend={HTML5Backend}>
-                <Table
-                  columns={columns}
-                  id={styles.componentsTableSorting}
-                  dataSource={list}
-                  components={components}
-                  rowKey={record => record.uid}
-                  onRow={(record, index) => ({
-                    index,
-                    moveRow: this.moveRow,
-                  })}
-                  pagination={{
-                    current: pageNum,
-                    total: recordTotal,
-                    pageSize,
-                    hideOnSinglePage: true,
-                    onChange: this.pageNumChange,
-                  }}
-                />
-              </DndProvider>
-            </div>
-          </Card>
-          <Modal
-            title={`${isCreate ? '创建' : '编辑'}频道`}
-            width="750px"
-            footer={null}
-            visible={showCreateEdit}
-            onCancel={() => {
-              this.toggleShow('createEdit');
-            }}
-          >
-            <CreateEdit />
-          </Modal>
-          {/* <Modal
+            },
+            {
+                title: '更新时间',
+                key: 'updateTime',
+                dataIndex: 'updateTime',
+                render: (text, record) => {
+                    return (
+                        <div>
+                            <div>{text}</div>
+                            <div>{record.operator}</div>
+                        </div>
+                    )
+                }   
+            },
+            {
+                title: <span style={{padding: '0 15px'}}>操作</span> ,
+                key: 'modify',
+                render: (text, record) => {
+                    if (record?.isIndex === 0) {
+                        return (
+                            <div>
+                                <Button type='link' onClick={() => this.editHandle(record.uid)}>编辑</Button>
+                                <Divider type='vertical' style={{background: '#ff8e59', margin: 0 }} />
+                                <Button type='link' onClick={() => this.showConfirmHandle(record)}>{record.status === 2 ? '启用' : '停用'}</Button>
+                            </div>
+                        )
+                    }
+                    
+                }       
+            },
+        ];
+        if (isPcPreview) {
+            columns.splice(7, 1);
+        }
+        const components = {
+            body: {
+              row: DragableBodyRow,
+            },
+        };
+        
+        return (
+            <PageHeaderWrapper>
+                <div>
+                    <Card>
+                        <Button type='primary' icon="plus" onClick={this.toggleShow}>创建频道</Button>
+                        <div style={{marginTop: 16}}>
+                            <DndProvider backend={HTML5Backend}>
+                                <Table
+                                    columns={columns}
+                                    id={styles.componentsTableSorting}
+                                    dataSource={list}
+                                    components={components}
+                                    rowKey={record => record.uid}
+                                    onRow={(record, index) => ({
+                                        index,
+                                        moveRow:  this.moveRow 
+                                    })}
+                                    pagination={{
+                                        // current: pageNum,
+                                        // total: recordTotal,
+                                        pageSize: 20,
+                                        hideOnSinglePage: true,
+                                        // onChange: this.pageNumChange
+                                    }}
+                                />
+                            </DndProvider>
+                        </div>
+                        
+                    </Card>
+                    <Modal
+                        title={`${isCreate? '创建' : '编辑'}频道`}
+                        width='750px'
+                        footer={null}
+                        visible={ showCreateEdit }
+                        onCancel={this.toggleShow}
+                    >
+                        <CreateEdit />
+                    </Modal>
+                    {/* <Modal
                         title={`选择${DETAIL_TYPE_MAP[currentDetailType]}`}
                         width='800px'
                         footer={null}
