@@ -45,7 +45,7 @@ class DynamicAdd extends Component {
         const data = res.data['DM001']
           .filter(item => item.status === '1')
           .filter(item => item.code === status);
-        this.setState({ diaryDate: initData?.diaryDate ||  getDay(), gongdiStage: (data.length > 0 && status) || [] });
+        this.setState({ diaryDate: initData.diaryDate ||  getDay(), gongdiStage: (data.length > 0 && status) || [] });
       }
     });
     if (initData) {

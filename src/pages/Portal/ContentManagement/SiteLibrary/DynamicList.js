@@ -26,9 +26,6 @@ class DynamicList extends Component {
       visible: false,
       status:null,
       initData: null,
-      page: 1,
-      pageSize: 10,
-      isEdit: false,
     };
   }
 
@@ -65,7 +62,7 @@ class DynamicList extends Component {
               payload: { gongdiUid: getQueryUrlVal('uid') },
             }).then(res=>{
               if(res&&res.code===200){
-                this.setState({status:res.data.value,visible: true,initData: null, isEdit: false })
+                this.setState({status:res.data.value,visible: true,initData: null})
               }
             });}}>
               <Icon type="plus" />
@@ -186,7 +183,7 @@ class DynamicList extends Component {
     try {
       const res = await getSiteDetaiyApi({diaryUid: item.diaryUid});
       if (res.code === 200) {
-        this.setState({initData: res.data, visible: true, isEdit: true})
+        this.setState({initData: res.data, visible: true})
       }
     } catch (error) {
       message.error('出错了！')
