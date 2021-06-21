@@ -37,7 +37,7 @@ export default function SiteMd(props) {
                     <img src={coverImg} alt="" />
                   </div>
                   <b>{gongdiTitle}</b>
-                  <p>{`${buildingArea}m² | ${roomTex}${renovationCosts}万`}</p>
+                  <p>{`${buildingArea}m² | ${roomTex}${!!renovationCosts ? renovationCosts + '万' : ''}`}</p>
                   <p className={pageStyle.flex}>
                     <span>{`${visitNum}人参观过`}</span>
                     <a className={pageStyle.btn}>预约参观</a>

@@ -25,7 +25,7 @@ export default function CaseMd(props) {
         <div className={pageStyle.caseBox}>
           <div className={pageStyle.hightImg}>
             <img src={coverPicUrl} alt="" />
-            <p>{`${styleDic.name || ''} | ${acreage}m² | ${roomTex}${decorationCost}万`}</p>
+            <p>{`${styleDic.name || ''} | ${acreage}m² | ${roomTex}${decorationCost ? decorationCost + '万' : ''}`}</p>
           </div>
 
           <div className={`${pageStyle.caseImgs} ${pageStyle.flex}`}>
