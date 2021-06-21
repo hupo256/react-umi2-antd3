@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2021-06-10 18:35:51
+ * @LastEditTime: 2021-06-11 18:45:02
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: \front-wechat-saas\src\services\caseLibrary.js
+ */
 import request from '../utils/request';
 import { baseurl } from './config';
 
@@ -48,3 +56,9 @@ export async function updateCaseStatus(params) {
     body: params,
   });
 }
+
+// 获取案例小程序码
+export const getCode = async body => request(`${baseurl}/api/v1/wechat/wechat-mini/qrcode/getQrCode`, {
+  method: 'POST',
+  body
+})

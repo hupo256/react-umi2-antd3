@@ -19,6 +19,7 @@ import ic_smile from '../../../../assets/ic_smile.png';
 import ic_arm from '../../../../assets/ic_arm.png';
 import styles from './ArticleLibrary.less';
 import { getauth } from '@/utils/authority';
+import Applets from '../components/Applets';
 const { confirm } = Modal;
 const { Search } = Input;
 const { TabPane } = Tabs;
@@ -143,7 +144,7 @@ class ArticleLibrary extends PureComponent {
       {
         title: '更新时间',
         dataIndex: 'updateTime',
-        width: 160,
+        width: 260,
         render: (t, r) => {
           return (
             <div>
@@ -156,7 +157,7 @@ class ArticleLibrary extends PureComponent {
       {
         title: '操作',
         dataIndex: 'operate',
-        width: 120,
+        width: 260,
         render: (t, r) => {
           return (
             <div className="operateWrap">
@@ -172,6 +173,10 @@ class ArticleLibrary extends PureComponent {
                   {r.articleStatus + '' === '1' ? '停用' : '启用'}{' '}
                 </span>
               )}
+              {r.articleStatus === 1 && <span className="operateLine" />}
+              {r.articleStatus === 1 && <span className="operateBtn" onClick={() => this.getWechatCode(r)}>
+                 小程序码
+              </span>}
             </div>
           );
         },
@@ -308,8 +313,21 @@ class ArticleLibrary extends PureComponent {
             visible={ArticleListVisible}
           />
         )}
+        <Applets />
       </div>
     );
+  }
+
+   // 获取小程序码
+   getWechatCode = record => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'ContentManage/getAppletsCode',
+      payload: {
+        qrCodePage: 'article',
+        uid: record.articleUid
+      }
+    })
   }
   handleChanges = e => {
     this.setState({ searchWord: e.target.value }, () => {

@@ -89,3 +89,19 @@ export async function dynamicStatus(params) {
     body: params,
   });
 }
+
+// 动态详情
+export const getSiteDetaiyApi = body => {
+  return request(`${baseurl}/api/v1/wechat/site/diary/get`, {
+    method: 'POST',
+    body
+  })
+}
+
+// 修改工地动态
+export const editSiteDetailApi  = body => {
+  return request(`${baseurl}/api/v1/wechat/site/diary/update`, {
+    method: 'POST',
+    body
+  })
+}
