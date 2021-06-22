@@ -82,7 +82,7 @@ export default class AdSeter extends PureComponent {
 
   // 关联页面 非必填，一旦填了，就要做校验
   saveAdCofig = route => {
-    const { picUrl, paths, isEnd, isOpen, curOpt } = this.state;
+    const { picUrl, paths, isEnd, isOpen, curOpt, detailUid } = this.state;
     const len = curOpt.length;
     let detUid = '';
 
@@ -94,7 +94,7 @@ export default class AdSeter extends PureComponent {
     }
 
     this.setState({ btnLoading: true });
-    const param = { isOpen, paths, picUrl, detailUid: detUid || detailUid || '' };
+    const param = { isOpen, paths, picUrl, detailUid: detUid || detailUid };
     openadvSave(param).then(res => {
       console.log(res);
       this.setState({ btnLoading: false });
