@@ -7,6 +7,7 @@
  */
 import React, { PureComponent } from 'react';
 import { message, Popover, Button, Input, Switch, Icon } from 'antd';
+import router from 'umi/router';
 import { openadvGet, openadvSave } from '@/services/miniProgram';
 import { getRelatedPage } from '@/services/channelManage';
 import CascadeSelect from '@/pages/ChannelManage/components/CascadeSelect';
@@ -73,11 +74,12 @@ export default class AdSeter extends PureComponent {
 
   // 点击selector
   touchRelece = arr => {
-    console.log(arr);
-    const tex = arr.map(p => p.text).join('/');
-    const paths = arr.map(p => p.code);
+    // console.log(arr);
+    const linkDisplayName = arr.map(p => p.text).join('/');
     const isEnd = arr[arr.length - 1]?.isEnd;
-    this.setState({ linkDisplayName: tex, curOpt: arr, paths, isEnd, releErrer: false });
+    const paths = isEnd ? arr.map(p => p.code) : [];
+    const curOpt = isEnd ? arr : [];
+    this.setState({ linkDisplayName, curOpt, paths, isEnd, isEditing: true, releErrer: false });
   };
 
   // 关联页面 非必填，一旦填了，就要做校验
@@ -96,12 +98,14 @@ export default class AdSeter extends PureComponent {
     this.setState({ btnLoading: true });
     const param = { isOpen, paths, picUrl, detailUid: detUid || detailUid };
     openadvSave(param).then(res => {
-      console.log(res);
       this.setState({ btnLoading: false });
       res?.message && message.error(res.message);
       if (res.code === 200) {
         message.success('编辑已保存，已实时生效');
-        route && router.push(route); // 如果是从prompt过来的，还需要跳转
+        this.setState({ isEditing: false });
+        setTimeout(() => {
+          route && router.push(route); // 如果是从prompt过来的，还需要跳转
+        }, 1500)
       }
     });
   };

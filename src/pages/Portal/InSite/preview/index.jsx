@@ -166,7 +166,7 @@ export default function Preview(props) {
           {wechatAuthed?.wechatCustomerService && (
             <span>
               <svg className="icon" aria-hidden="true">
-                <use href="#icon-ic_more" />
+                <use href="#icon-ic_message" />
               </svg>
             </span>
           )}
