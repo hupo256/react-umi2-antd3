@@ -183,6 +183,9 @@ class DynamicList extends Component {
    * @return {*}
    */  
   editHandle = async item => {
+    this.setState({
+      dicCode: item.gongdiStage
+    })
     try {
       const res = await getSiteDetaiyApi({diaryUid: item.diaryUid});
       if (res.code === 200) {
@@ -236,7 +239,6 @@ class DynamicList extends Component {
     if (isEdit) {
       this.handlePagination(page, undefined, dicCode)
     } else {
-      console.log(123)
       dispatch({
         type: 'SiteLibrary/dynamicListModel',
         payload: { gongdiUid: getQueryUrlVal('uid') },
