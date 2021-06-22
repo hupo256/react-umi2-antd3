@@ -1,8 +1,8 @@
 /*
  * @Author: zqm 
  * @Date: 2021-04-28 17:05:47 
- * @Last Modified by: zqm
- * @Last Modified time: 2021-06-16 03:26:49
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2021-06-10 21:33:19
  * 小程序设置
  */
 
@@ -190,22 +190,23 @@ class Index extends PureComponent {
                     {menuData.map((menu, ind) => {
                       const { name, code } = menu;
                       return (
-                        permissions.includes(code) && (
+                        // permissions.includes(code) && (
                           <Menu.Item key={`${ind + 1}`}>
                             <p style={{ paddingLeft: 24 }}>{name}</p>
                           </Menu.Item>
-                        )
+                        // )
                       );
                     })}
                   </Menu>
                 </div>
                 {selectedKeys[0] === '3' &&
-                  permissions.includes('BTN210621000001') && (
+                  // permissions.includes('BTN210621000001') && (
                     <AdSeter
                       showSecTag={showSec}
                       taggleSecTag={() => this.setState({ showSec: true })}
                     />
-                  )}
+                  // )
+                  }
                 {selectedKeys[0] === '2' &&
                   permissions.includes('BTN210610000007') && (
                     <div className={styles.appleRight}>

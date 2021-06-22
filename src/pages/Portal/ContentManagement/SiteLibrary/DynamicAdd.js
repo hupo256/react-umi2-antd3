@@ -180,7 +180,7 @@ class DynamicAdd extends Component {
           <Upload
             visible={uploadVisible}
             selectNum={9}
-            selected={diaryPics.length}
+            selected={diaryPics?.length}
             rep={rep}
             size={10}
             handleOk={data => this.handleUploadOk(data)}
