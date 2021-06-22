@@ -51,7 +51,7 @@ class DynamicAdd extends Component {
     if (initData) {
       this.setState({
         diaryContent: initData.diaryContent,
-        diaryPics: initData.fileList?.map(item => ({ path: item.fileUrl }))
+        diaryPics: initData.fileList ?  initData.fileList?.map(item => ({ path: item.fileUrl })) : [],
       })
     } 
     
@@ -62,7 +62,6 @@ class DynamicAdd extends Component {
       DictConfig: { dicData },
       initData
     } = this.props;
-    console.log({initData})
     const { diaryContent, uploadVisible, diaryDate, rep, diaryPics } = this.state;
     return (
       <Modal
@@ -164,7 +163,7 @@ class DynamicAdd extends Component {
                   );
                 })}
 
-              { diaryPics?.length < 9 && (
+              { (!!!diaryPics || diaryPics?.length) < 9 && (
                 <div
                   className="previewimgs"
                   style={{ border: '1px dashed #d9d9d9' }}
