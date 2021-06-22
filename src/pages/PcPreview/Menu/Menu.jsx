@@ -23,8 +23,17 @@ const findParent = (menuList, url) => {
   if (/designers/.test(url)) {
     return _.find(menuList, { linkUrl: '/designers' })
   }
+  if (/articles\?uid=$/.test(url)) {
+    return _.find(menuList, { linkKey: 'articleList' })
+  }
   if (/articles/.test(url)) {
-    return _.find(menuList, { linkUrl: '/articles?uid=' })
+    return _.find(menuList, { linkKey: 'articleGroup' })
+  }
+  if (/material/.test(url)) {
+    return _.find(menuList, { linkKey: 'material' })
+  }
+  if (/trim/.test(url)) {
+    return _.find(menuList, { linkKey: 'decorate' })
   }
   return null
 }
@@ -137,6 +146,7 @@ const MenuListComp = ({ menuList, setShowHeaderDrawer, dynamicDomain = '' }) => 
   const clickMenuItem = ({ linkUrl, uid, linkKey }) => {
     if (!uid) return
     if (linkKey === 'games') {
+      message.destroy()
       message.warning('网站端暂不支持打开小游戏，请在小程序中打开！')
       return
     }
@@ -145,14 +155,7 @@ const MenuListComp = ({ menuList, setShowHeaderDrawer, dynamicDomain = '' }) => 
 
   return (
     <div className={cx(styles.menuWrapper, styles.editMode)}>
-      <div
-        className={styles.menuRoot}
-        style={
-          extraCharCount[chunkIndex] > MIN_CHUNK_SIZE
-            ? { justifyContent: 'space-between' }
-            : { justifyContent: 'flex-end', gap: '40px' }
-        }
-      >
+      <div className={extraCharCount[chunkIndex] > MIN_CHUNK_SIZE ? styles.menuRoot : styles.menuRootMin}>
         {_.map(menuChunkList[chunkIndex], (item, index) => {
           if (item.status === 2) return null
           return (

@@ -421,31 +421,17 @@ export default class CreateEdit extends Component {
 
     clickInputHandle = e => {
         const { showSelectPanl } = this.state;
-        const { isCreate } = this.props;
-        if (isCreate) {
-            this.setState({
-                currentKey: '0',
-                currentSelectRelatedPageOpt: [],
-            })
-        } else {
-            this.setState({
-                currentKey: '0',
-            })
-        }
-       
+        const { isCreate} = this.props;
+        this.setState({
+            currentSelectRelatedPageOpt: [],
+            currentKey: '0',
+        })
         if (!showSelectPanl) {
             this.toggleSelectPanlHandle(true);
             return;
         } 
         this.toggleSelectPanlHandle(false);
-        // this.setState({
-        //     currentSelectRelatedPageOpt: [],
-        //     currentKey: '0',
-        // }, () => {
-        //     this.props.form.setFieldsValue({
-        //         relatedPage:  this.formatData().map(item =>item.text).join(' / ')
-        //     })
-        // })
+        
     }
 
     // 页码变换

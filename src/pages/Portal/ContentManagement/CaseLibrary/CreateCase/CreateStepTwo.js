@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-06-10 21:41:47
+ * @Last Modified time: 2021-06-15 19:05:31
  * 创建工地
  */
 import React, { PureComponent, Fragment, Component } from 'react';
@@ -647,7 +647,7 @@ class CreateStepTwo extends Component {
           // 获取字典数据 queryDicModel
           dispatch({
             type: 'DictConfig/queryDicModel',
-            payload: { dicModuleCodes: 'DM001,DM002,DM003,DM004' },
+            payload: { dicModuleCodes: 'DM005,DM002,DM003,DM004' },
           });
           // 设置选择值
           this.handleSelectChange(res.data.code, record, 'styleDicCode');

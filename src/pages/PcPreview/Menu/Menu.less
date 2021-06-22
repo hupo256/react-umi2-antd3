@@ -64,8 +64,16 @@
 
 .menuRoot {
   display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.menuRootMin {
+  display: flex;
   justify-content: flex-end;
   width: 100%;
+  .menuItemWrapper:not(:last-of-type) {
+    margin-right: 40px;
+  }
 }
 
 .menuRoot a {
@@ -77,10 +85,6 @@
 }
 .menuRoot a img {
   margin-right: 6px;
-}
-
-.menuRoot a:last-child {
-  gap: unset;
 }
 
 .menuItemWrapper {

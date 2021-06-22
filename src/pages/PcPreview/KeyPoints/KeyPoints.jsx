@@ -20,6 +20,7 @@ const KeyPoints = ({ pointsList, domain }) => {
               return
             }
             if (feature.type === 'games') {
+              message.destroy()
               message.warning('PC端不允许跳转到小游戏')
               return
             }

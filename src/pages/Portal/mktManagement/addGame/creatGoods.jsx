@@ -353,7 +353,10 @@ export default function CreatGoods(props) {
 
         mktApi.updatePrize(params).then(res => {
           console.log(res);
-          res?.data && message.success('保存成功');
+          if(res?.data){
+            message.success('保存成功');
+            setcurGoods(res?.data)
+          }
         });
       });
     } else {

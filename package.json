@@ -14,6 +14,7 @@
     "pre:start": "ENV=pre umi dev",
     "pre1:start": "ENV=pre1 umi dev",
     "pre1:build": "ENV=pre1 umi build",
+    "uat:build": "ENV=uat umi build",
     "rc:build": "ENV=rc umi build",
     "rc:start": "ENV=rc umi dev",
     "auto:build": "ENV=auto umi build",

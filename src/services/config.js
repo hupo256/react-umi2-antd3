@@ -24,9 +24,13 @@ switch (APP_ENVIRONMENT) {
     console.warn = function() {};
     url = 'http://devgw.ingongdi.com';
     break;
+  case 'uat': // uat环境
+    console.warn = function() {};
+    url = 'http://mygw.ingongdi.com';
+    break;
   case 'local': // 本地开发
     console.warn = function() {};
-    //url = 'http://testgw.ingongdi.com';
+    // url = 'http://testgw.ingongdi.com';
     url = 'http://devgw.ingongdi.com';
     //url = 'https://pregw.ingongdi.com';
     break;

@@ -3,6 +3,13 @@ import React from 'react'
 import cx from 'classnames'
 import styles from './FooterComp.less'
 
+const ImgPlaceHolderComp = ({ text = '请上传', iconUrl, manualStyle }) => (
+  <div className={styles.placeholderWrap} style={manualStyle}>
+    <img className={styles.centerImg} src={iconUrl} alt="" />
+    <p className={styles.warningText}>{text}</p>
+  </div>
+)
+
 export default function FooterComp({ data, setShowFooterDrawer }) {
   if (!data) return null
 
@@ -25,7 +32,11 @@ export default function FooterComp({ data, setShowFooterDrawer }) {
         <div className={cx(styles.companyBox, styles.editMode)}>
           <div className={styles.wechatWrapper}>
             <b>公众号</b>
-            <img className={styles.qrCodeImg} src={wechatQrCode} alt="" />
+            {wechatQrCode ? (
+              <img className={styles.qrCodeImg} src={wechatQrCode} alt="" />
+            ) : (
+              <ImgPlaceHolderComp text="请上传" iconUrl="/img/ic_QRcode@2x.png" manualStyle={{ width: '78px' }} />
+            )}
             <p className={styles.wechatName}>
               微信公众号：
               {wechatName}
@@ -33,15 +44,19 @@ export default function FooterComp({ data, setShowFooterDrawer }) {
           </div>
           <div className={styles.contactUs}>
             <b>联系我们</b>
-            <p className={styles.customerService}>{customerService}</p>
-            <p className={styles.email}>{email}</p>
-            <p className={styles.wechat}>{wechatNumber}</p>
+            {customerService && <p className={styles.customerService}>{customerService}</p>}
+            {email && <p className={styles.email}>{email}</p>}
+            {wechatNumber && <p className={styles.wechat}>{wechatNumber}</p>}
           </div>
           <div className={styles.companyAddressWrapper}>
             <b>门店地址</b>
-            <div className={styles.minImgBox}>
-              <img src={storeCover} alt="" />
-            </div>
+            {storeCover ? (
+              <div className={styles.minImgBox}>
+                <img src={storeCover} alt="" />
+              </div>
+            ) : (
+              <ImgPlaceHolderComp text="请上传门店封面" iconUrl="/img/ic_shop@2x.png" />
+            )}
             <div className={styles.storeAddress}>
               <img src="/img/add.png" alt="" style={{ height: '20px', width: '13px' }} />
               <div>{storeAddress}</div>

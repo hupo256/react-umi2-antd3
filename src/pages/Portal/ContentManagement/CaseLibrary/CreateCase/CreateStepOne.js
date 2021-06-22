@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-06-08 14:11:28
+ * @Last Modified time: 2021-06-16 03:14:25
  * 创建工地
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -67,10 +67,11 @@ class CreateStepOne extends PureComponent {
     ['bedroom', 'liveroom', 'kitchen', 'bathroom'].forEach(item => {
       this.setState({ [item]: (stepOne && stepOne[item]) || 0 });
     });
+    const isArr = Array.isArray(stepOne?.keywords);
     this.setState(
       {
         designerUid: stepOne.designerUid,
-        tags: stepOne?.keywords || [],
+        tags: isArr ? stepOne?.keywords : JSON.parse(stepOne?.keywords || '[]'),
       },
       () => {
         this.setState({ show: true });
@@ -340,7 +341,7 @@ class CreateStepOne extends PureComponent {
               initialValue: stepOne.decorationCost || null,
               rules: [
                 {
-                  required: true,
+                  required: false,
                   message: '请输入装修造价',
                 },
               ],
@@ -492,10 +493,10 @@ class CreateStepOne extends PureComponent {
         message.error('面积限制输入0.01-99999.99范围内的数字');
         return false;
       } else if (
-        parseFloat(values.decorationCost) < 0.01 ||
+        parseFloat(values.decorationCost) < 0 ||
         parseFloat(values.decorationCost) > 99999.99
       ) {
-        message.error('装修造价限制输入0.01-99999.99范围内的数字');
+        message.error('装修造价限制输入0-99999.99范围内的数字');
         return false;
       } else {
         

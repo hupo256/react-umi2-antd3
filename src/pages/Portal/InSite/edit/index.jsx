@@ -17,8 +17,13 @@ import Prompt from './prompt';
 import styles from './edit.less';
 
 function TempEdit(props) {
-  const { curFlag, setcurFlag } = useContext(ctx);
+  const { curFlag, setcurFlag, setMdTip } = useContext(ctx);
   const showRight = canEditTags.includes(curFlag);
+
+  function editModelClick(){
+    setcurFlag('editModel')
+    setMdTip('模块')
+  }
 
   return (
     <PageHeaderWrapper>
@@ -30,7 +35,7 @@ function TempEdit(props) {
           <div
             className={styles.tipsBox}
             style={{ bottom: '15.5em' }}
-            onClick={() => setcurFlag('editModel')}
+            onClick={editModelClick}
           >
             <Tooltip placement="topLeft" title={editText}>
               <Icon type="appstore" style={{ fontSize: '16px', color: '#fe6a30' }} />
