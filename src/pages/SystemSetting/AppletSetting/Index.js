@@ -173,6 +173,7 @@ class Index extends PureComponent {
         ]
       : [];
     const { visible, record, selectedKeys, switchCommonDate, switchLoading, showSec } = this.state;
+
     return (
       <div className={styles.appleCard} onClick={this.touchInpBlurTag}>
         <PageHeaderWrapper title={title}>
@@ -190,23 +191,22 @@ class Index extends PureComponent {
                     {menuData.map((menu, ind) => {
                       const { name, code } = menu;
                       return (
-                        // permissions.includes(code) && (
+                        permissions.includes(code) && (
                           <Menu.Item key={`${ind + 1}`}>
                             <p style={{ paddingLeft: 24 }}>{name}</p>
                           </Menu.Item>
-                        // )
+                        )
                       );
                     })}
                   </Menu>
                 </div>
                 {selectedKeys[0] === '3' &&
-                  // permissions.includes('BTN210621000001') && (
+                  permissions.includes('BTN210621000001') && (
                     <AdSeter
                       showSecTag={showSec}
                       taggleSecTag={() => this.setState({ showSec: true })}
                     />
-                  // )
-                  }
+                  )}
                 {selectedKeys[0] === '2' &&
                   permissions.includes('BTN210610000007') && (
                     <div className={styles.appleRight}>
