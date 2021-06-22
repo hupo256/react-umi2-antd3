@@ -294,10 +294,11 @@ class Index extends PureComponent {
       type: 'MiniProgram/setWechatMiniGlobalModel',
       payload,
     }).then(res => {
+      this.setState({ switchLoading: false });
       if (res?.code === 200002) {
         message.warning(res.message);
       } else if (res?.code === 200) {
-        this.setState({ switchCommonDate: payload, switchLoading: false });
+        this.setState({ switchCommonDate: payload });
         const AuthTex = ['授权成功', '取消授权成功'];
         const wechatTex = ['在线客服开启成功', '在线客服关闭成功'];
         const tex = key === 'homePageOpenAuth' ? AuthTex : wechatTex;
