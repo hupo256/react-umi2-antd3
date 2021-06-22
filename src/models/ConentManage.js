@@ -1,7 +1,7 @@
 /*
  * @Author: ql
  * @Date: 2021-06-15 14:46:47
- * @LastEditTime: 2021-06-15 15:21:02
+ * @LastEditTime: 2021-06-22 17:48:36
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-wechat-saas\src\models\ConentManage.js
@@ -13,7 +13,8 @@ export default {
         visible: false,
         uid: null,
         showUrl: '',
-        downloadUrl: ''
+        downloadUrl: '',
+        loading: false
 
     },
     reducers: {
@@ -27,6 +28,13 @@ export default {
     effects: {
         // 获取小程序码
         *getAppletsCode({ payload }, {put, call}) {
+            yield put({
+                type: 'upData',
+                payload: {
+                    loading: true,
+                    visible: true,
+                }
+            })
             const res = yield call(getCode, payload);
             if(res?.data) {
                 yield put({
@@ -34,7 +42,7 @@ export default {
                     payload: {
                         showUrl: res.data.showUrl,
                         downloadUrl: res.data.downloadUrl,
-                        visible: true,
+                        loading: false
                     }
                 })
             }
