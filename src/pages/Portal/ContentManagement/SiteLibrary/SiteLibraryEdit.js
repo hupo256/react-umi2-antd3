@@ -110,6 +110,8 @@ class SiteLibraryAdd extends PureComponent {
       }
     };
 
+    const selectAfter = siteDetail.vrLink ? siteDetail.vrLink.split('https://vr.realsee.cn/vr/')[1] : ''
+
     const selectBefore =  getFieldDecorator('prefix',{
       initialValue: siteDetail.vrLink ? 'https://vr.realsee.cn/vr/' :  '',
     })(
@@ -320,7 +322,7 @@ class SiteLibraryAdd extends PureComponent {
               </Form.Item>
               <Form.Item label="VR链接">
                 {getFieldDecorator('vrLink', {
-                  initialValue: siteDetail.vrLink || '',
+                  initialValue: selectAfter,
                   rules: [
                     {
                       max: 200,
