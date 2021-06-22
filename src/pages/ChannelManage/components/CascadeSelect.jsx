@@ -120,6 +120,9 @@ export default function CascadeSelect(props){
             articleDicCode: currentarticleDicCode,
             pageNum,
             pageSize: 10,
+        }
+        // 没有文章栏目时先请求一次
+        if (detailType === 4 && !articleDicOpts.length) await getArticleDic();
         const apiKeys = [siteListApi, designerListApi, caseListApi, articleListApi, specialListApi, activeListApi]
         const { data, code } = await apiKeys[detailType-1]({...prama, ...config})
         if(code !== 200 ) return

@@ -33,6 +33,8 @@ export default class CreateEdit extends Component {
             pageSize: 10,
             showSelectPanl: false,
             btnLoading: false
+        }
+    }
 
     componentDidMount() {
         this.showSelect()

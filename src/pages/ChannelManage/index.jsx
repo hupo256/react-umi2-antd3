@@ -263,136 +263,45 @@ export default class ChannelManage extends Component {
                                 <Icon type="question-circle" className={styles['table-header-icon']} />
                             </Popover>}
 
-    let columns = [
-      {
-        dataIndex: 'icon',
-        width: 60,
-        align: 'center',
-        key: 'icon',
-        render: (text, record) =>
-          record.isIndex === 0 && <Icon type="fullscreen" rotate={45} style={{ fontSize: 20 }} />,
-      },
-      {
-        title: (
-          <div>
-            <span>小程序频道名称</span>
-            {!!!isPcPreview && (
-              <Popover content={appTip}>
-                <Icon type="question-circle" className={styles['table-header-icon']} />
-              </Popover>
-            )}
-          </div>
-        ),
-        dataIndex: 'appletsName',
-        key: 'appletsName',
-      },
-      {
-        title: (
-          <div>
-            <span>网站频道名称</span>
-            {!!!isPcPreview && (
-              <Popover content={webTip}>
-                <Icon type="question-circle" className={styles['table-header-icon']} />
-              </Popover>
-            )}
-          </div>
-        ),
-        key: 'websiteName',
-        dataIndex: 'websiteName',
-      },
-      {
-        title: '关联页面',
-        key: 'linkDisplayName',
-        dataIndex: 'linkDisplayName',
-        render: (text, record) => (
-          <Tooltip placement="topLeft" title={text}>
-            <div
-              style={{
-                maxWidth: 220,
-                overflow: 'hidden',
-                whiteSpace: 'nowrap',
-                textOverflow: 'ellipsis',
-              }}
-            >
-              {text}
-            </div>
-          </Tooltip>
-        ),
-      },
-      {
-            title: '是否小程序可用',
-            key: 'isApplets',
-            align: 'left',
-            dataIndex: 'isApplets',
-            render: (text, record) => text === 0 ? '否' : '是'
-        },
-        {
-            title: '是否网站可用',
-            key: 'isWebsite',
-            dataIndex: 'isWebsite',
-            render: (text, record) => text === 0 ? '否' : '是'
-        },
-      {
-        title: '状态',
-        key: 'status',
-        dataIndex: 'status',
-        render: text => {
-          return (
-            <div className={styles['table-header-status-div']}>
-              <i
-                className={`${styles['table-header-status-icon']} 
-                            ${
-                              text === 1
-                                ? styles['table-header-status-icon-1']
-                                : styles['table-header-status-icon-2']
-                            }`}
-              />
-              <span style={{ marginLeft: 8 }}>{text === 1 ? '正常' : '停用'}</span>
-            </div>
-          );
-        },
-      },
-      {
-        title: '更新时间',
-        key: 'updateTime',
-        dataIndex: 'updateTime',
-        render: (text, record) => {
-          return (
-            <div>
-              <div>{text}</div>
-              <div>{record.operator}</div>
-            </div>
-          );
-        },
-      },
-      {
-        title: <span style={{ padding: '0 15px' }}>操作</span>,
-        key: 'modify',
-        render: (text, record) => {
-          if (record?.isIndex === 0) {
-            return (
-              <div>
-                <Button type="link" onClick={() => this.editHandle(record.uid)}>
-                  编辑
-                </Button>
-                <Divider type="vertical" style={{ background: '#ff8e59', margin: 0 }} />
-                <Button type="link" onClick={() => this.showConfirmHandle(record)}>
-                  {record.status === 2 ? '启用' : '停用'}
-                </Button>
-              </div>
-            );
-          }
-        },
-      },
-    ];
-    if (isPcPreview) {
-      columns.splice(7, 1);
-    }
-    const components = {
-      body: {
-        row: DragableBodyRow,
-      },
-    };
+                        </div>,
+                key: 'websiteName',
+                dataIndex: 'websiteName',
+            },
+            {
+                title: '关联页面',
+                key: 'linkDisplayName',   
+                dataIndex: 'linkDisplayName',
+                render: (text, record) =>
+                    <Tooltip placement="topLeft" title={text}>
+                        <div style={{maxWidth: 180, overflow:'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis'}}>{text}</div>
+                    </Tooltip>     
+            },
+            {
+                title: '是否小程序可用',
+                key: 'isApplets',
+                align: 'left',
+                dataIndex: 'isApplets',
+                render: (text, record) => text === 0 ? '否' : '是'
+            },
+            {
+                title: '是否网站可用',
+                key: 'isWebsite',
+                dataIndex: 'isWebsite',
+                render: (text, record) => text === 0 ? '否' : '是'
+            },
+            {
+                title: '状态',
+                key: 'status',
+                dataIndex: 'status',
+                render: text => {
+                    return (
+                        <div className={styles['table-header-status-div']}> 
+                            <i className={`${styles['table-header-status-icon']} 
+                            ${text === 1 ? styles['table-header-status-icon-1'] : styles['table-header-status-icon-2'] }`} />
+                            <span style={{marginLeft: 8}}>{text === 1 ? '正常' : '停用'}</span>
+                        </div>
+                    )
+                }
 
             },
             {
