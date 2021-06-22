@@ -173,6 +173,7 @@ class Index extends PureComponent {
         ]
       : [];
     const { visible, record, selectedKeys, switchCommonDate, switchLoading, showSec } = this.state;
+
     return (
       <div className={styles.appleCard} onClick={this.touchInpBlurTag}>
         <PageHeaderWrapper title={title}>
@@ -190,23 +191,22 @@ class Index extends PureComponent {
                     {menuData.map((menu, ind) => {
                       const { name, code } = menu;
                       return (
-                        // permissions.includes(code) && (
+                        permissions.includes(code) && (
                           <Menu.Item key={`${ind + 1}`}>
                             <p style={{ paddingLeft: 24 }}>{name}</p>
                           </Menu.Item>
-                        // )
+                        )
                       );
                     })}
                   </Menu>
                 </div>
                 {selectedKeys[0] === '3' &&
-                  // permissions.includes('BTN210621000001') && (
+                  permissions.includes('BTN210621000001') && (
                     <AdSeter
                       showSecTag={showSec}
                       taggleSecTag={() => this.setState({ showSec: true })}
                     />
-                  // )
-                  }
+                  )}
                 {selectedKeys[0] === '2' &&
                   permissions.includes('BTN210610000007') && (
                     <div className={styles.appleRight}>
@@ -294,10 +294,11 @@ class Index extends PureComponent {
       type: 'MiniProgram/setWechatMiniGlobalModel',
       payload,
     }).then(res => {
+      this.setState({ switchLoading: false });
       if (res?.code === 200002) {
         message.warning(res.message);
       } else if (res?.code === 200) {
-        this.setState({ switchCommonDate: payload, switchLoading: false });
+        this.setState({ switchCommonDate: payload });
         const AuthTex = ['授权成功', '取消授权成功'];
         const wechatTex = ['在线客服开启成功', '在线客服关闭成功'];
         const tex = key === 'homePageOpenAuth' ? AuthTex : wechatTex;

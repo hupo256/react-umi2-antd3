@@ -183,6 +183,9 @@ class DynamicList extends Component {
    * @return {*}
    */  
   editHandle = async item => {
+    this.setState({
+      dicCode: item.gongdiStage
+    })
     try {
       const res = await getSiteDetaiyApi({diaryUid: item.diaryUid});
       if (res.code === 200) {

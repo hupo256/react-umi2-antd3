@@ -27,10 +27,9 @@ export default function ForPrompt(props) {
     <Prompt
       when={isPrompt}
       message={location => {
-        if (!isPrompt) {
-          return true;
-        }
         const { pathname } = location;
+        if (pathname === '/portal/insite/appletsetting' || !isPrompt) return true;
+        
         Modal.confirm({
           title: '保存修改',
           content: '您刚才编辑的信息需要保存吗？',
