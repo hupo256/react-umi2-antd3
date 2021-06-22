@@ -164,7 +164,7 @@ class DynamicAdd extends Component {
                   );
                 })}
 
-              { diaryPics && diaryPics.length < 9 && (
+              { diaryPics?.length < 9 && (
                 <div
                   className="previewimgs"
                   style={{ border: '1px dashed #d9d9d9' }}
@@ -180,7 +180,7 @@ class DynamicAdd extends Component {
           <Upload
             visible={uploadVisible}
             selectNum={9}
-            selected={diaryPics.length}
+            selected={diaryPics?.length}
             rep={rep}
             size={10}
             handleOk={data => this.handleUploadOk(data)}
