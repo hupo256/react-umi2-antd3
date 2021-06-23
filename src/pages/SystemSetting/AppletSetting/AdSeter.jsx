@@ -34,8 +34,9 @@ export default class AdSeter extends PureComponent {
 
   componentDidMount() {
     openadvGet().then(res => {
-      console.log(res);
+      // console.log(res);
       if (!res?.data) return;
+      const { paths } = res.data;
       this.setState({ ...res.data });
     });
     getRelatedPage({ sceneType: 3 }).then(res => {
@@ -47,9 +48,10 @@ export default class AdSeter extends PureComponent {
   componentDidUpdate(prevProps) {
     const { showSecTag } = this.props;
     if (showSecTag !== prevProps.showSecTag) {
-      const { isEnd, linkDisplayName } = this.state;
+      const { isEnd, linkDisplayName, paths } = this.state;
       const linkTex = isEnd ? linkDisplayName : '';
-      this.setState({ showSec: showSecTag, linkDisplayName: linkTex });
+      const arr = isEnd ? paths : [];
+      this.setState({ showSec: showSecTag, linkDisplayName: linkTex, paths: arr });
     }
   }
 
