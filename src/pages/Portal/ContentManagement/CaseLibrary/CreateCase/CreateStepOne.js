@@ -486,9 +486,13 @@ class CreateStepOne extends PureComponent {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (err) throw err;
-      console.log(values);
       const { bedroom, liveroom, kitchen, bathroom, tags } = this.state;
       const { dispatch } = this.props;
+      if(!!!values.vrUrl) {
+        this.props.form.setFieldsValue({
+          prefix: ''
+        })
+      }
       if (parseFloat(values.acreage) < 0.01 || parseFloat(values.acreage) > 99999.99) {
         message.error('面积限制输入0.01-99999.99范围内的数字');
         return false;
@@ -515,7 +519,7 @@ class CreateStepOne extends PureComponent {
               bathroom,
               uid: getQueryUrlVal('uid'),
               keywords: JSON.stringify(tags || []),
-              vrUrl: prefix + copyValues.vrUrl,
+              vrUrl: (!!!copyValues.vrUrl || !!!prefix) ?  '' :  prefix + copyValues.vrUrl,
             },
           }).then(res => {
             if (res && res.code === 200) {
@@ -531,7 +535,7 @@ class CreateStepOne extends PureComponent {
                 bedroom,
                 liveroom,
                 kitchen,
-                vrUrl: prefix + copyValues.vrUrl,
+                vrUrl: !!!copyValues.vrUrl ?  '' :  prefix + copyValues.vrUrl,
                 bathroom,
                 keywords: JSON.stringify(tags || []),
               },
