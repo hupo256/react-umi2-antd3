@@ -422,7 +422,13 @@ class SiteLibraryAdd extends PureComponent {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (err) throw err;
-      console.log(values);
+
+      if(!!!values.vrLink) {
+        this.props.form.setFieldsValue({
+          prefix: ''
+        })
+      }
+      
       const { coverImg, bedroom, parlor, kitchen, toilet, tags } = this.state;
       const { dispatch } = this.props;
       if (parseFloat(values.buildingArea) < 0.01 || parseFloat(values.buildingArea) > 99999.99) {
@@ -451,7 +457,7 @@ class SiteLibraryAdd extends PureComponent {
             gongdiUid: getQueryUrlVal('uid') === 'null' ? null : getQueryUrlVal('uid'),
             ...obj,
             headKeywords: tags,
-            vrLink: prefix + copyValues.vrLink,
+            vrLink: (!!!copyValues.vrLink || !!!prefix) ?  '' :  prefix + copyValues.vrLink,
           },
         }).then(res => {
           if (res && res.code === 200) {

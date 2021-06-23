@@ -241,6 +241,7 @@ class DynamicAdd extends Component {
               diaryUid: initData.diaryUid
             });
             if (res.code === 200 ) {
+              message.success('编辑成功！');
               this.setState({
                 diaryContent: null,
                 diaryDate: null,
