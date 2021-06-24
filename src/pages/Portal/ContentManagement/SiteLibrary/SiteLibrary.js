@@ -204,8 +204,8 @@ class SiteLibrary extends PureComponent {
                   工地动态
                 </span>
               )}
-              {r.gongdiStatus !== 1 && <span className="operateLine" />}
-              {r.gongdiStatus !== 1 && <span className="operateBtn" onClick={() => this.getWechatCode(r)}>
+              {permissionsBtn.includes('BTN210623000002') && r.gongdiStatus !== 1 && <span className="operateLine" />}
+              {permissionsBtn.includes('BTN210623000002') && r.gongdiStatus !== 1 && <span className="operateBtn" onClick={() => this.getWechatCode(r)}>
                  小程序码
               </span>}
             </div>

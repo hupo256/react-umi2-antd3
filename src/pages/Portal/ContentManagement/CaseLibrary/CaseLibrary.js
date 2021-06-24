@@ -152,9 +152,12 @@ class CaseLibrary extends PureComponent {
                   {r.status === '1' ? '停用' : '启用'}{' '}
                 </span>
               )}
-              {r.status === '1' && <span className="operateLine" />}
+              {r.status === '1' && permissionsBtn.includes('BTN210623000003') &&  <span className="operateLine" />}
+              {/* {r.status === '1' && permissionsBtn.includes('BTN210623000003') && <span className="operateBtn" onClick={() => this.getWechatCode(r)}>
+                小程序码
+              </span>} */}
               <span className="operateBtn" onClick={() => this.getWechatCode(r)}>
-                {r.status === '1' &&  '小程序码'}
+                小程序码
               </span>
             </div>
           );
