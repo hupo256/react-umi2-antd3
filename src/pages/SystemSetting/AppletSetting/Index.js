@@ -38,7 +38,7 @@ class Index extends PureComponent {
   state = {
     visible: false,
     record: null,
-    selectedKeys: ['1'],
+    selectedKeys: '',
     switchCommonDate: null,
     switchLoading: false,
     showSec: false,
@@ -54,6 +54,7 @@ class Index extends PureComponent {
         dispatch({ type: 'MiniProgram/queryWechatMiniGlobalModel' }).then(res => {
           if (res?.code === 200) {
             this.setState({ switchCommonDate: res.data });
+            this.touchDefaultTab()
           }
         });
       }
@@ -182,10 +183,9 @@ class Index extends PureComponent {
               <div className={styles.appletWrap}>
                 <div className={styles.appleLeft}>
                   <Menu
-                    onClick={e => this.setState({ selectedKeys: [e.key] })}
+                    onClick={e => this.setState({ selectedKeys: e.key})}
                     style={{ width: 256 }}
-                    selectedKeys={selectedKeys}
-                    defaultOpenKeys={['sub1']}
+                    selectedKeys={[selectedKeys]}
                     mode="inline"
                   >
                     {menuData.map((menu, ind) => {
@@ -200,14 +200,14 @@ class Index extends PureComponent {
                     })}
                   </Menu>
                 </div>
-                {selectedKeys[0] === '3' &&
+                {selectedKeys === '3' &&
                   permissions.includes('BTN210621000001') && (
                     <AdSeter
                       showSecTag={showSec}
                       taggleSecTag={() => this.setState({ showSec: true })}
                     />
                   )}
-                {selectedKeys[0] === '2' &&
+                {selectedKeys === '2' &&
                   permissions.includes('BTN210610000007') && (
                     <div className={styles.appleRight}>
                       <p style={{ fontWeight: 500, fontSize: 22, color: '#333' }}>关联页面设置</p>
@@ -221,7 +221,7 @@ class Index extends PureComponent {
                       <Table columns={columns} dataSource={data} pagination={false} />
                     </div>
                   )}
-                {selectedKeys[0] === '1' &&
+                {selectedKeys === '1' &&
                   permissions.includes('BTN210610000006') && (
                     <div className={styles.appleRight}>
                       <p style={{ fontWeight: 500, fontSize: 22, color: '#333' }}>通用设置</p>
@@ -272,9 +272,18 @@ class Index extends PureComponent {
   // click 事件能到冒泡这里说明那个input已经失焦了
   touchInpBlurTag = e => {
     // e.stopPropagation();
-    // console.log(123);
     this.setState({ showSec: false });
   };
+
+  // 根据permiss code算出默认显示的tab
+  touchDefaultTab = () => {
+    for(let i=0, k=menuData.length; i<k; i++){
+      if(permissions.includes(menuData[i].code)){
+        this.setState({ selectedKeys: `${i + 1}`})
+        break
+      }
+    }
+  }
 
   handleOk = () => {
     const { dispatch } = this.props;
