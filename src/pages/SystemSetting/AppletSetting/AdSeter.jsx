@@ -34,8 +34,9 @@ export default class AdSeter extends PureComponent {
 
   componentDidMount() {
     openadvGet().then(res => {
-      console.log(res);
+      // console.log(res);
       if (!res?.data) return;
+      const { paths } = res.data;
       this.setState({ ...res.data });
     });
     getRelatedPage({ sceneType: 3 }).then(res => {
@@ -47,9 +48,10 @@ export default class AdSeter extends PureComponent {
   componentDidUpdate(prevProps) {
     const { showSecTag } = this.props;
     if (showSecTag !== prevProps.showSecTag) {
-      const { isEnd, linkDisplayName } = this.state;
+      const { isEnd, linkDisplayName, paths } = this.state;
       const linkTex = isEnd ? linkDisplayName : '';
-      this.setState({ showSec: showSecTag, linkDisplayName: linkTex });
+      const arr = isEnd ? paths : [];
+      this.setState({ showSec: showSecTag, linkDisplayName: linkTex, paths: arr });
     }
   }
 
@@ -101,8 +103,8 @@ export default class AdSeter extends PureComponent {
     if (len) {
       // 已选择过关联页面，则校验之
       if (!isEnd) return this.setState({ releErrer: true });
-      // 没有linkKey 表示选择了详情页
-      linkKey || (detailUid = paths.pop());
+      // 没有linkKey 表示选择了详情页, 排除首页
+      linkKey || linkKey!=='home' || (detailUid = paths.pop());
     }
     const param = { isOpen, paths, picUrl, detailUid };
     this.setState({ btnLoading: true });

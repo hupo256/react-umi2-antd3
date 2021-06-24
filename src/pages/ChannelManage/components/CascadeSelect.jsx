@@ -77,7 +77,8 @@ export default function CascadeSelect(props){
         opts.forEach((opt, ind) => {
             const {name, title, articleTitle,gongdiTitle,specialTitle, activityTitle,
                 uid, gongdiUid, articleUid, specialUid, icon, appletsLink, linkKey, linkType } = opt;
-            const isEnd = (ind === 1 && linkType === 1) || ind === 2 // 顺便处理是否到末级的逻辑
+            // linkType 1 详情页,  2 列表页
+            const isEnd = (ind === 1 && linkType === 1) || linkKey==='home' || ind === 2 // 顺便处理是否到末级的逻辑
             arr.push({
                 text: name || title || articleTitle  || gongdiTitle || specialTitle || activityTitle,
                 code: uid || gongdiUid || articleUid || specialUid,
