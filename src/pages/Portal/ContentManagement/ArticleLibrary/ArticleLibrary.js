@@ -173,8 +173,8 @@ class ArticleLibrary extends PureComponent {
                   {r.articleStatus + '' === '1' ? '停用' : '启用'}{' '}
                 </span>
               )}
-              {r.articleStatus === 1 && <span className="operateLine" />}
-              {r.articleStatus === 1 && <span className="operateBtn" onClick={() => this.getWechatCode(r)}>
+              {permissionsBtn.includes('BTN210623000005') &&  r.articleStatus === 1 && <span className="operateLine" />}
+              {permissionsBtn.includes('BTN210623000005') && r.articleStatus === 1 && <span className="operateBtn" onClick={() => this.getWechatCode(r)}>
                  小程序码
               </span>}
             </div>

@@ -1,7 +1,7 @@
 /*
  * @Author: ql
  * @Date: 2021-06-15 14:46:47
- * @LastEditTime: 2021-06-22 17:48:36
+ * @LastEditTime: 2021-06-24 18:35:36
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-wechat-saas\src\models\ConentManage.js
@@ -33,6 +33,7 @@ export default {
                 payload: {
                     loading: true,
                     visible: true,
+                    showUrl: ''
                 }
             })
             const res = yield call(getCode, payload);
