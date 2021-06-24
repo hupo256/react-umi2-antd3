@@ -280,8 +280,12 @@ class SiteLibraryAdd extends PureComponent {
                   rules: [
                     {
                       max: 200,
-                      message: '请输入链接后缀',
+                      message: '最多可输入200位字符!',
                     },
+                    {
+                      whitespace: true,
+                      message: '不可含有空格！',
+                    }
                   ],
                 })(
                   <Input 

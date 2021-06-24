@@ -324,8 +324,8 @@ class ProjectLibrary extends PureComponent {
                   </span>
                 </span>
               ) : null}
-              {r.specialStatus === 1 && <span className="operateLine" />}
-               {r.specialStatus === 1 && <span className="operateBtn" onClick={() => this.getWechatCode(r)}>
+              {permissionsBtn.permissions.includes('BTN210623000006') && r.specialStatus === 1 && <span className="operateLine" />}
+               {permissionsBtn.permissions.includes('BTN210623000006') && r.specialStatus === 1 && <span className="operateBtn" onClick={() => this.getWechatCode(r)}>
                  小程序码
               </span>}
             </div>

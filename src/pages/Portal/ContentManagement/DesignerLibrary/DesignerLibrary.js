@@ -146,8 +146,8 @@ class DesignerLibrary extends PureComponent {
                   {r.status === '1' ? '停用' : '启用'}{' '}
                 </span>
               )}
-              {r.status === '1' && <span className="operateLine" />}
-              {r.status === '1' && <span className="operateBtn" onClick={() => this.getWechatCode(r)}>
+              {permissionsBtn.includes('BTN210623000004') && r.status === '1' && <span className="operateLine" />}
+              {permissionsBtn.includes('BTN210623000004') && r.status === '1' && <span className="operateBtn" onClick={() => this.getWechatCode(r)}>
                  小程序码
               </span>}
             </div>

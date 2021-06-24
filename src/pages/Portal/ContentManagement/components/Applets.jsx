@@ -31,7 +31,9 @@ export default class Applets extends Component {
                 >
                     <Spin tip="加载中..." spinning={loading}>
                         <div style={{textAlign: 'center'}}>
-                            <img style={{width: '90%'}} src={showUrl} />
+                            <div style={{ height: 352}}>
+                                <img style={{width: '90%'}} src={showUrl} />
+                            </div>                            
                             <a style={{
                                 display: 'inline-block', 
                                 width: 119, 
