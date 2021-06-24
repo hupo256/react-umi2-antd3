@@ -4,6 +4,7 @@ import { createChannel, getRelatedPage, getDetailApi, editChannelApi,
          siteListApi, designerListApi, caseListApi, articleListApi, articleDicApi, specialListApi, activeListApi  } from '@/services/channelManage'
 import { Form, Input, Select, Button, Cascader, message, Tabs, Table, Radio, Tag, Tooltip, Checkbox, Icon   } from 'antd'
 import styles from '../index.less'
+import Page from '@/components/AssociatedPage'
 
 
 const { TextArea } = Input;
@@ -631,6 +632,7 @@ export default class CreateEdit extends Component {
 
         return (
             <div className='createEdit' onClick={this.closeHanlde}>
+                <Page options={relatedPageOption} />
                 <Form labelCol={{ span: 6 }} wrapperCol={{ span: 13 }} onSubmit={this.handleSubmit}>
                     <Form.Item label="小程序频道名称">
                         {getFieldDecorator('appletsName', {
