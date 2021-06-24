@@ -138,9 +138,10 @@ export const ColumnsObj = {
       key: 'status',
       dataIndex: 'status',
       render: (text, r) => {
+        const { state } = r;
         let tex = '未开始';
-        text === 1 && (tex = '进行中');
-        text === 2 && (tex = '已结束');
+        state === 1 && (tex = '进行中');
+        state === 2 && (tex = '已结束');
         return tex;
       },
     },
