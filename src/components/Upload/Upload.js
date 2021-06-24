@@ -30,7 +30,7 @@ class Upload extends Component {
         title={`上传图片  ${checkedData.length}/${num}`}
         visible={this.props.visible}
         onOk={this.handleOk}
-        onCancel={this.props.handleCancel}
+        onCancel={this.uploadCancel}
         footer={null}
         maskClosable={false}
         width={710}
@@ -80,7 +80,7 @@ class Upload extends Component {
               <Button onClick={() => this.handleOk()} type="primary" style={{ marginRight: 10 }}>
                 确认
               </Button>
-              <Button onClick={this.props.handleCancel}>取消</Button>
+              <Button onClick={this.uploadCancel}>取消</Button>
             </div>
           </div>
         </div>
@@ -118,6 +118,12 @@ class Upload extends Component {
       }
     }
   };
+
+  uploadCancel = () => {
+    const { handleCancel } = this.props
+    this.setState({ checkedData: [] });
+    handleCancel && handleCancel()
+  }
 }
 
 export default Upload;
