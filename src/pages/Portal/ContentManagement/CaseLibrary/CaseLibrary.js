@@ -153,7 +153,8 @@ class CaseLibrary extends PureComponent {
                   {r.status === '1' ? '停用' : '启用'}{' '}
                 </span>
               )}
-              {r.status === '1' && permissionsBtn.includes('BTN210623000003') &&  <span className="operateLine" />}
+              {r.status === '1' && permissionsBtn.includes('BTN210623000003') &&  
+              isCompanyAuthWechatMini && <span className="operateLine" />}
               {r.status === '1' && 
               permissionsBtn.includes('BTN210623000003') && 
               isCompanyAuthWechatMini &&

@@ -174,7 +174,9 @@ class ArticleLibrary extends PureComponent {
                   {r.articleStatus + '' === '1' ? '停用' : '启用'}{' '}
                 </span>
               )}
-              {permissionsBtn.includes('BTN210623000005') &&  r.articleStatus === 1 && <span className="operateLine" />}
+              {permissionsBtn.includes('BTN210623000005') &&  r.articleStatus === 1 && 
+              isCompanyAuthWechatMini &&
+              <span className="operateLine" />}
               {permissionsBtn.includes('BTN210623000005') && 
               r.articleStatus === 1 && 
               isCompanyAuthWechatMini &&
