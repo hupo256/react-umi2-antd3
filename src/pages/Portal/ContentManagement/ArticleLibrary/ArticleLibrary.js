@@ -83,6 +83,7 @@ class ArticleLibrary extends PureComponent {
       ArticleLibrary: { ArticleList, ArticleListQuery },
     } = this.props;
     const permissionsBtn = getauth().permissions || [];
+    const isCompanyAuthWechatMini = localStorage.getItem('isCompanyAuthWechatMini');
 
     const columns = [
       {
@@ -174,7 +175,10 @@ class ArticleLibrary extends PureComponent {
                 </span>
               )}
               {permissionsBtn.includes('BTN210623000005') &&  r.articleStatus === 1 && <span className="operateLine" />}
-              {permissionsBtn.includes('BTN210623000005') && r.articleStatus === 1 && <span className="operateBtn" onClick={() => this.getWechatCode(r)}>
+              {permissionsBtn.includes('BTN210623000005') && 
+              r.articleStatus === 1 && 
+              isCompanyAuthWechatMini &&
+              <span className="operateBtn" onClick={() => this.getWechatCode(r)}>
                  小程序码
               </span>}
             </div>

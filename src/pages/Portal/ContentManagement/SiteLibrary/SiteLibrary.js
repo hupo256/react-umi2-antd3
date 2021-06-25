@@ -59,6 +59,7 @@ class SiteLibrary extends PureComponent {
       SiteLibrary: { siteList, siteListQuery },
     } = this.props;
     const permissionsBtn = getauth().permissions || [];
+    const isCompanyAuthWechatMini = localStorage.getItem('isCompanyAuthWechatMini');
 
     const columns = [
       {
@@ -205,7 +206,10 @@ class SiteLibrary extends PureComponent {
                 </span>
               )}
               {permissionsBtn.includes('BTN210623000002') && r.gongdiStatus !== 1 && <span className="operateLine" />}
-              {permissionsBtn.includes('BTN210623000002') && r.gongdiStatus !== 1 && <span className="operateBtn" onClick={() => this.getWechatCode(r)}>
+              {permissionsBtn.includes('BTN210623000002') && 
+              r.gongdiStatus !== 1 && 
+              isCompanyAuthWechatMini &&
+              <span className="operateBtn" onClick={() => this.getWechatCode(r)}>
                  小程序码
               </span>}
             </div>
