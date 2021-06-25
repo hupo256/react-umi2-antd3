@@ -40,7 +40,7 @@ class CaseLibrary extends PureComponent {
       Loading,
       CaseLibrary: { CaseList },
     } = this.props;
-    const isCompanyAuthWechatMini = localStorage.getItem('isCompanyAuthWechatMini');
+    const isCompanyAuthWechatMini = JSON.parse(localStorage.getItem('isCompanyAuthWechatMini'))
     const permissionsBtn = getauth().permissions || [];
     const columns = [
       {

@@ -47,7 +47,7 @@ class DesignerLibrary extends PureComponent {
       DesignerLibrary: { DesignerList },
     } = this.props;
     const permissionsBtn = getauth().permissions || [];
-    const isCompanyAuthWechatMini = localStorage.getItem('isCompanyAuthWechatMini');
+    const isCompanyAuthWechatMini = JSON.parse(localStorage.getItem('isCompanyAuthWechatMini'));
     const columns = [
       {
         title: '设计师',

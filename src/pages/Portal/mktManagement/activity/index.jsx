@@ -50,7 +50,7 @@ function Activityer(props) {
 
   function creatColumn() {
     const [, col1, col2, col3] = actColumns;
-    const isCompanyAuthWechatMini = localStorage.getItem('isCompanyAuthWechatMini');
+    const isCompanyAuthWechatMini = JSON.parse(localStorage.getItem('isCompanyAuthWechatMini'));
     actColumns[1] = {
       ...col1,
       render: (text, record, index) => {

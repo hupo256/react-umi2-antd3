@@ -119,7 +119,7 @@ class ProjectLibrary extends PureComponent {
       ProjectLibrary: { siteList },
       loading,
     } = this.props;
-    const isCompanyAuthWechatMini = localStorage.getItem('isCompanyAuthWechatMini');
+    const isCompanyAuthWechatMini = JSON.parse(localStorage.getItem('isCompanyAuthWechatMini'));
     const columns = [
       {
         title: '专题',
