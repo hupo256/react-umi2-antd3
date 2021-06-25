@@ -7,7 +7,14 @@
  */
 import React, { useState, createContext } from 'react';
 import { message } from 'antd';
-import { getHomePageEditData, queryNavEditData } from '@/services/miniProgram';
+import {
+  getHomePageEditData,
+  updateHomePageEditData,
+  queryNavEditData,
+  saveNavEditData,
+  getAuthInfo,
+  queryWechatMiniGlobal,
+} from '@/services/miniProgram';
 import { highlightsBgImgs } from '../tools/data';
 import { getauth } from '@/utils/authority';
 import {
@@ -55,7 +62,7 @@ export function Provider({ children }) {
 
   function touchPageData() {
     message.loading('正在加载，请稍后...');
-    queryDicForForm({ dicModuleCodes: 'DM006' }).then(r => {
+    queryArticleTopicDic().then(r => {
       if (r && r.code === 200) {
         const dictionaries = r.data;
         const param = [
@@ -78,7 +85,7 @@ export function Provider({ children }) {
             key: 'article',
             pageNum: '1',
             pageSize: '2',
-            articleDicCode: dictionaries[0]?.code,
+            articleDicCode: dictionaries.length ? dictionaries[0].code : '',
           },
           {
             key: 'aboutUs',
@@ -95,28 +102,31 @@ export function Provider({ children }) {
           const article = res.data.editTemplateJson.jsonData.find(e => e.flag === 'article');
           if (!article) {
             res.data.editTemplateJson.jsonData.push({
-              flag: "article",
+              flag: 'article',
               list: [],
-              title: "装修攻略",
-              afterName: "装修攻略",
-              styleType: "",
+              title: '装修攻略',
+              afterName: '装修攻略',
+              styleType: '',
               showModule: true,
-              nameListData: []
+              nameListData: [],
             });
           }
           if (!aboutUs) {
             res.data.editTemplateJson.jsonData.push({
               flag: 'aboutUs',
               title: '关于我们',
-              name: '公司简称',
+              name: userInfo.abbreviateName || '公司简介',
               content: '请用一句简明扼要的话，来描述下您的公司吧',
-              url: 'http://img.inbase.in-deco.com/crm-saas/img/banner_about.png'
-            })
+              url: 'http://img.inbase.in-deco.com/crm-saas/img/banner_about.png',
+            });
           }
           const { editTemplateCode, editTemplateJson } = res.data;
           editTemplateJson.jsonData.map(e => {
             if (e.flag === 'article') {
-              e.nameListData = dictionaries.filter(i => i.status === '1')
+              e.nameListData = dictionaries.filter(i => i.status === '1');
+            }
+            if (e.title) {
+              e.afterName = e.title;
             }
           });
           setpageData(addMapToData(editTemplateJson));

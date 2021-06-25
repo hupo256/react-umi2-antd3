@@ -105,22 +105,27 @@ class Select extends Component {
     };
     return (
       <div className={styles.selectWrap}>
-        {inputVal?.length > 20 ?
-          <Tooltip placement="top" title={inputVal} style={{backgroundColor: 'rgba(0, 0, 0, 0.75)'}}>
+        {inputVal?.length > 20 ? (
+          <Tooltip
+            placement="top"
+            title={inputVal}
+            style={{ backgroundColor: 'rgba(0, 0, 0, 0.75)' }}
+          >
             <Input
               placeholder="请选择关联页面"
               value={inputVal}
               onClick={() => this.handleInputTogger()}
               style={{ width: '100%' }}
             />
-          </Tooltip> :
+          </Tooltip>
+        ) : (
           <Input
             placeholder="请选择关联页面"
             value={inputVal}
             onClick={() => this.handleInputTogger()}
             style={{ width: '100%' }}
           />
-        }
+        )}
 
         <span className={styles.linkIcon} onClick={() => this.handleInputTogger()}>
           <Icon type={show ? 'up' : 'down'} />
@@ -164,22 +169,26 @@ class Select extends Component {
                   onPressEnter={() => this.handleSrarch()}
                   style={{ width: '100%', marginBottom: 10 }}
                 />
-                {textOne === '文章' && <p style={{paddingBottom: 10}}>
-                  文章栏目：
-                  <span
-                    onClick={() => this.handleSrarchStatus('')}
-                    className={`tagstatus ${!status && 'tagstatusCur'}`}
-                  >
-                全部
-                  </span>
-                  {nameListData.map(e => <span
-                    style={{paddingBottom: 5}}
-                    onClick={() => this.handleSrarchStatus(e.code)}
-                    className={`tagstatus ${e.code === status && 'tagstatusCur'}`}
-                  >
-                    {e.name}
-                  </span>)}
-                </p>}
+                {textOne === '文章' && (
+                  <p>
+                    文章栏目：
+                    <span
+                      onClick={() => this.handleSrarchStatus('')}
+                      className={`tagstatus ${!status && 'tagstatusCur'}`}
+                    >
+                      全部
+                    </span>
+                    {nameListData.map(e => (
+                      <span
+                        style={{ paddingBottom: 5 }}
+                        onClick={() => this.handleSrarchStatus(e.code)}
+                        className={`tagstatus ${e.code === status && 'tagstatusCur'}`}
+                      >
+                        {e.name}
+                      </span>
+                    ))}
+                  </p>
+                )}
                 <Table
                   loading={Loading}
                   className={styles.tablename}
@@ -223,9 +232,11 @@ class Select extends Component {
   handleClickTwo = type => {
     const { status } = this.state;
     const payload = {
-      pageNum: 1, pageSize: 10,
-      articleStatus: 1, specialStatus: 1
-    }
+      pageNum: 1,
+      pageSize: 10,
+      articleStatus: 1,
+      specialStatus: 1,
+    };
     if (type === 'article') {
       payload.articleDicCode = status;
     }
@@ -275,7 +286,7 @@ class Select extends Component {
       dispatch,
       ArticleSpecial: { formListQuery },
     } = this.props;
-    const { textOne } = this.state
+    const { textOne } = this.state;
     dispatch({
       type:
         textOne === '专题'
@@ -289,7 +300,7 @@ class Select extends Component {
       dispatch,
       ArticleSpecial: { formListQuery },
     } = this.props;
-    const { textOne } = this.state
+    const { textOne } = this.state;
     dispatch({
       type:
         textOne === '专题'

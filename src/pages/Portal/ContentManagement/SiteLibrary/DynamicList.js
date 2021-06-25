@@ -239,6 +239,7 @@ class DynamicList extends Component {
     if (isEdit) {
       this.handlePagination(page, undefined, dicCode)
     } else {
+      console.log(123)
       dispatch({
         type: 'SiteLibrary/dynamicListModel',
         payload: { gongdiUid: getQueryUrlVal('uid') },

@@ -50,9 +50,13 @@ export default function FooterComp({ data, setShowFooterDrawer }) {
           </div>
           <div className={styles.companyAddressWrapper}>
             <b>门店地址</b>
-            <div className={styles.minImgBox}>
-              <img src={storeCover} alt="" />
-            </div>
+            {storeCover ? (
+              <div className={styles.minImgBox}>
+                <img src={storeCover} alt="" />
+              </div>
+            ) : (
+              <ImgPlaceHolderComp text="请上传门店封面" iconUrl="/img/ic_shop@2x.png" />
+            )}
             <div className={styles.storeAddress}>
               <img src="/img/add.png" alt="" style={{ height: '20px', width: '13px' }} />
               <div>{storeAddress}</div>

@@ -19,8 +19,6 @@ export default function TitleGuid(props) {
   const { pageData, setcurFlag, templateCode, templateName, savePageData } = useContext(ctx);
   const permissionsBtn = getauth();
   function toPublish() {
-    console.log(pageData);
-    if(!pageData?.jsonData) return message.error('数据为空，请稍后再试')
     let { jsonData, themeData } = pageData;
     const { customerService } = JSON.parse(localStorage.getItem('auth'));
     themeData = themes[templateCode];
@@ -28,27 +26,14 @@ export default function TitleGuid(props) {
       editTemplateCode: templateCode,
       editTemplateJson: { jsonData, themeData, templateName, globalInfor: { customerService } },
     };
-    updateHomePageEditData(parmas).then(res => {
-      if (res.code === 200) {
-        const newArr = [...navData];
-        const arr = [];
-        newArr.map(e => {
-          if (e.navModule) {
-            arr.push(e);
-          }
-        });
-        saveNavEditData(arr).then(r => {
-          if (r.code === 200) {
-            publishEditData().then(() => {
-              setcurFlag(''); // 置空
-              message.success('发布成功');
-              setTimeout(() => {
-                router.push(`${baseRouteKey}home`);
-              }, 1000);
-            });
-          }
-        });
-      }
+    savePageData(parmas, () => {
+      publishEditData().then(() => {
+        setcurFlag(''); // 置空
+        message.success('发布成功');
+        setTimeout(() => {
+          router.push(`${baseRouteKey}home`);
+        }, 1000);
+      });
     });
   }
 

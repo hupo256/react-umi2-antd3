@@ -58,24 +58,9 @@ function Templates(props) {
       editTemplateCode: code,
       editTemplateJson: pageData,
     };
-    updateHomePageEditData(parmas).then(res => {
-      if (res.code === 200) {
-        const newArr = [...navData];
-        const arr = [];
-        newArr.map(e => {
-          if (e.navModule) {
-            arr.push(e);
-          }
-        });
-        saveNavEditData(arr)
-          .then(r => {
-            if (r.code === 200) {
-              const key = `edit?templateCode=${code}`;
-              router.push(`${baseRouteKey}${key}`);
-            }
-          })
-
-      }
+    savePageData(parmas, () => {
+      const key = `edit?templateCode=${code}`;
+      router.push(`${baseRouteKey}${key}`);
     });
   }
 

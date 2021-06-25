@@ -47,7 +47,7 @@ export const emptyMdText = {
   case: '请在案例库中添加案例',
   site: '请在工地库中添加工地',
   design: '请在设计师库中添加设计师',
-  article: '请在文章库中添加文章哦'
+  article: '请在文章库中添加文章哦',
 };
 
 const highlightsImgBase = 'https://img.inbase.in-deco.com/crm-saas/img/highlights/';

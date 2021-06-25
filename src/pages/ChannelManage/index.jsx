@@ -205,21 +205,11 @@ export default class ChannelManage extends Component {
     });
   };
 
-  /**
-   * @description: 编辑弹框
-   * @param {*}
-   * @return {*}
-   */
-  editHandle = uid => {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'channelManage/save',
-      payload: {
-        isCreate: false,
-        currentEditUid: uid,
-        showCreateEdit: true,
-      },
+  pageNumChange = pageNum => {
+    this.setState({
+      pageNum,
     });
+    this.getList({ pageNum });
   };
 
   pageNumChange = pageNum => {

@@ -43,25 +43,6 @@ export default function DrawerEditor(props) {
       setNavData(arr);
     }
   }
-  console.log(111)
-  return (
-    <div
-      className={`${styles.drawerOut} ${isShow ? styles.show : ''}`}
-      onClick={() => {
-        if (curFlag === 'editModel') {
-          const newObj = { ...pageData };
-          newObj.jsonData.map((e) => {
-            if (e.afterName !== undefined) {
-              e.title = e.afterName
-            }
-          });
-          setpageData(newObj);
-        }
-        return nav;
-      });
-      setNavData(arr);
-    }
-  }
 
   function dealWithEditAndNav() {
     if (curFlag === 'editModel') {
@@ -79,18 +60,14 @@ export default function DrawerEditor(props) {
   // 抽屉关闭时获取新的channles
   function drawerClose() {
     const param = {
-      includeDefIndex: false,
       pageNum: 1,
       pageSize: 20,
-      status: 1,
     };
-    getList(param).then(re => {
+    appletsMenus(param).then(re => {
       console.log(re);
       if (!re?.data) return;
       const newObj = { ...pageData };
-      const { list = [] } = re.data;
-      // list.shift();
-      newObj.maps[curFlag].list = list;
+      newObj.maps[curFlag].list = re.data?.list;
       setpageData(newObj);
       setTimeout(() => setcurFlag(''));
     });
