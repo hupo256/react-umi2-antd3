@@ -111,7 +111,7 @@ class DynamicList extends Component {
                                 <Icon type={items.appletsShow ? 'eye-invisible' : 'eye'} />
                                 {items.appletsShow ? '隐藏' : '显示'}
                               </span>}
-                              <span
+                              {permissionsBtn.includes('BTN210623000001') && <span
                                 style={{ float: 'right', cursor: 'pointer',marginRight: 16 }}
                                 onClick={() => {
                                   this.editHandle(items)
@@ -120,7 +120,7 @@ class DynamicList extends Component {
                               >
                                 <Icon type="edit" />
                                 编辑
-                              </span>
+                              </span>}
                             </p>
                             <p>{items.diaryContent}</p>
                             {items.fileList &&

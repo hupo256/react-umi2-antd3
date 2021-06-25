@@ -50,6 +50,7 @@ function Activityer(props) {
 
   function creatColumn() {
     const [, col1, col2, col3] = actColumns;
+    const isCompanyAuthWechatMini = localStorage.getItem('isCompanyAuthWechatMini');
     actColumns[1] = {
       ...col1,
       render: (text, record, index) => {
@@ -96,7 +97,9 @@ function Activityer(props) {
           {permissionsBtn.includes('BTN210422000002') && permissionsBtn.includes('BTN210422000003') && <span className={styles.operateLine} />}
           {permissionsBtn.includes('BTN210422000003') && <a onClick={() => toRecod(record.activityCode)}>抽奖记录</a>}
           {permissionsBtn.includes('BTN210623000007') && <span className={styles.operateLine}></span>}
-            {permissionsBtn.includes('BTN210623000007') && <a className="operateBtn" onClick={() => getWechatCode(record)}>
+            {permissionsBtn.includes('BTN210623000007') && 
+            isCompanyAuthWechatMini &&
+            <a className="operateBtn" onClick={() => getWechatCode(record)}>
               小程序码
           </a>}
         </p>

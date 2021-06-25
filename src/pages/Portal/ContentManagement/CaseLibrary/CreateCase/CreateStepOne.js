@@ -492,11 +492,16 @@ class CreateStepOne extends PureComponent {
       if (err) throw err;
       const { bedroom, liveroom, kitchen, bathroom, tags } = this.state;
       const { dispatch } = this.props;
+
+      // 取消前后空格
+      values.vrUrl = values.vrUrl.trim();
+
       if(!!!values.vrUrl) {
         this.props.form.setFieldsValue({
           prefix: ''
         })
       }
+
       if (parseFloat(values.acreage) < 0.01 || parseFloat(values.acreage) > 99999.99) {
         message.error('面积限制输入0.01-99999.99范围内的数字');
         return false;
