@@ -83,7 +83,7 @@ class ArticleLibrary extends PureComponent {
       ArticleLibrary: { ArticleList, ArticleListQuery },
     } = this.props;
     const permissionsBtn = getauth().permissions || [];
-    const isCompanyAuthWechatMini = localStorage.getItem('isCompanyAuthWechatMini');
+    const isCompanyAuthWechatMini = JSON.parse(localStorage.getItem('isCompanyAuthWechatMini'));
 
     const columns = [
       {

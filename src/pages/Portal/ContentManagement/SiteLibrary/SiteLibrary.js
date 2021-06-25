@@ -59,7 +59,7 @@ class SiteLibrary extends PureComponent {
       SiteLibrary: { siteList, siteListQuery },
     } = this.props;
     const permissionsBtn = getauth().permissions || [];
-    const isCompanyAuthWechatMini = localStorage.getItem('isCompanyAuthWechatMini');
+    const isCompanyAuthWechatMini = JSON.parse(localStorage.getItem('isCompanyAuthWechatMini'));
 
     const columns = [
       {
