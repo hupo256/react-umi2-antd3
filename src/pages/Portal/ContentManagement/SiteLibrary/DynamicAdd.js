@@ -234,10 +234,10 @@ class DynamicAdd extends Component {
       if (initData) {
           try {
             const res = await editSiteDetailApi({
-              diaryContent,
-              diaryDate,
+              diaryContent: diaryContent ||  initData?.diaryDate,
+              diaryDate: diaryDate || initData?.diaryDate,
               diaryPics: imglist,
-              gongdiStage,
+              gongdiStage: initData.gongdiStage,
               diaryUid: initData.diaryUid
             });
             if (res.code === 200 ) {
