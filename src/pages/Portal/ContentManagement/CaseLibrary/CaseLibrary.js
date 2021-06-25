@@ -40,6 +40,7 @@ class CaseLibrary extends PureComponent {
       Loading,
       CaseLibrary: { CaseList },
     } = this.props;
+    const isCompanyAuthWechatMini = JSON.parse(localStorage.getItem('isCompanyAuthWechatMini'))
     const permissionsBtn = getauth().permissions || [];
     const columns = [
       {
@@ -153,12 +154,13 @@ class CaseLibrary extends PureComponent {
                 </span>
               )}
               {r.status === '1' && permissionsBtn.includes('BTN210623000003') &&  <span className="operateLine" />}
-              {/* {r.status === '1' && permissionsBtn.includes('BTN210623000003') && <span className="operateBtn" onClick={() => this.getWechatCode(r)}>
-                小程序码
-              </span>} */}
+              {r.status === '1' && 
+              permissionsBtn.includes('BTN210623000003') && 
+              isCompanyAuthWechatMini &&
               <span className="operateBtn" onClick={() => this.getWechatCode(r)}>
                 小程序码
-              </span>
+              </span>}
+
             </div>
           );
         },

@@ -47,6 +47,7 @@ class DesignerLibrary extends PureComponent {
       DesignerLibrary: { DesignerList },
     } = this.props;
     const permissionsBtn = getauth().permissions || [];
+    const isCompanyAuthWechatMini = JSON.parse(localStorage.getItem('isCompanyAuthWechatMini'));
     const columns = [
       {
         title: '设计师',
@@ -147,7 +148,10 @@ class DesignerLibrary extends PureComponent {
                 </span>
               )}
               {permissionsBtn.includes('BTN210623000004') && r.status === '1' && <span className="operateLine" />}
-              {permissionsBtn.includes('BTN210623000004') && r.status === '1' && <span className="operateBtn" onClick={() => this.getWechatCode(r)}>
+              {permissionsBtn.includes('BTN210623000004') && 
+              r.status === '1' && 
+              isCompanyAuthWechatMini &&
+              <span className="operateBtn" onClick={() => this.getWechatCode(r)}>
                  小程序码
               </span>}
             </div>

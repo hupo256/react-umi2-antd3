@@ -119,6 +119,7 @@ class ProjectLibrary extends PureComponent {
       ProjectLibrary: { siteList },
       loading,
     } = this.props;
+    const isCompanyAuthWechatMini = JSON.parse(localStorage.getItem('isCompanyAuthWechatMini'));
     const columns = [
       {
         title: '专题',
@@ -325,7 +326,10 @@ class ProjectLibrary extends PureComponent {
                 </span>
               ) : null}
               {permissionsBtn.permissions.includes('BTN210623000006') && r.specialStatus === 1 && <span className="operateLine" />}
-               {permissionsBtn.permissions.includes('BTN210623000006') && r.specialStatus === 1 && <span className="operateBtn" onClick={() => this.getWechatCode(r)}>
+               {permissionsBtn.permissions.includes('BTN210623000006') && 
+               r.specialStatus === 1 && 
+               isCompanyAuthWechatMini &&
+               <span className="operateBtn" onClick={() => this.getWechatCode(r)}>
                  小程序码
               </span>}
             </div>

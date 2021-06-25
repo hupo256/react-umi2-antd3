@@ -427,6 +427,10 @@ class SiteLibraryAdd extends PureComponent {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (err) throw err;
 
+      // 取消前后空格
+      values.vrLink = values.vrLink.trim();
+      
+
       if(!!!values.vrLink) {
         this.props.form.setFieldsValue({
           prefix: ''

@@ -492,6 +492,10 @@ class CreateStepOne extends PureComponent {
       if (err) throw err;
       const { bedroom, liveroom, kitchen, bathroom, tags } = this.state;
       const { dispatch } = this.props;
+
+      // 取消前后空格
+      values.vrUrl = values.vrUrl.trim();
+
       if(!!!values.vrUrl) {
         this.props.form.setFieldsValue({
           prefix: ''
