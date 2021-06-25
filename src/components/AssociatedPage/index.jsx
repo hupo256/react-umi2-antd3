@@ -59,7 +59,7 @@ export default class Page extends Component {
                 />
                 <div ref='tabWrap'>
                     {show && <Tabs onChange={this.changeTab} type="card" activeKey={currentTab}>
-                        <TabPane tab={selectLists[0] ? selectLists[0]>} key='1'>
+                        <TabPane tab={selectLists[0] ? selectLists[0].name : '请选择'} key='1'>
                             {
                                 options && options.map(item => <div className={sty.item}>
                                         {item.name}
