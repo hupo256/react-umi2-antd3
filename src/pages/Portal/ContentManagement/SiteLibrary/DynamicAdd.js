@@ -51,6 +51,8 @@ class DynamicAdd extends Component {
     if (initData) {
       this.setState({
         diaryContent: initData.diaryContent,
+        gongdiStage: initData.gongdiStage,
+        diaryDate: initData.diaryDate,
         diaryPics: initData.fileList ?  initData.fileList?.map(item => ({ path: item.fileUrl })) : [],
       })
     } 
@@ -234,10 +236,10 @@ class DynamicAdd extends Component {
       if (initData) {
           try {
             const res = await editSiteDetailApi({
-              diaryContent: diaryContent ||  initData?.diaryDate,
-              diaryDate: diaryDate || initData?.diaryDate,
+              diaryContent: diaryContent,
+              diaryDate: diaryDate,
               diaryPics: imglist,
-              gongdiStage: initData.gongdiStage,
+              gongdiStage: gongdiStage,
               diaryUid: initData.diaryUid
             });
             if (res.code === 200 ) {
