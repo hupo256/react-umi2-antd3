@@ -13,6 +13,7 @@ import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { paginations, getUrl, successIcon, waringInfo } from '@/utils/utils';
 import styles from './DesignerLibrary.less';
 import { getauth } from '@/utils/authority';
+import Applets from '../components/Applets';
 const { confirm } = Modal;
 const { Search } = Input;
 
@@ -46,6 +47,7 @@ class DesignerLibrary extends PureComponent {
       DesignerLibrary: { DesignerList },
     } = this.props;
     const permissionsBtn = getauth().permissions || [];
+    const isCompanyAuthWechatMini = JSON.parse(localStorage.getItem('isCompanyAuthWechatMini'));
     const columns = [
       {
         title: '设计师',
@@ -145,6 +147,14 @@ class DesignerLibrary extends PureComponent {
                   {r.status === '1' ? '停用' : '启用'}{' '}
                 </span>
               )}
+              {permissionsBtn.includes('BTN210623000004') && r.status === '1' && 
+              isCompanyAuthWechatMini && <span className="operateLine" />}
+              {permissionsBtn.includes('BTN210623000004') && 
+              r.status === '1' && 
+              isCompanyAuthWechatMini &&
+              <span className="operateBtn" onClick={() => this.getWechatCode(r)}>
+                 小程序码
+              </span>}
             </div>
           );
         },
@@ -209,10 +219,24 @@ class DesignerLibrary extends PureComponent {
               pagination={(DesignerList && paginations(DesignerList)) || false}
             />
           </Card>
+          <Applets />
         </PageHeaderWrapper>
       </div>
     );
   }
+
+    // 获取小程序码
+    getWechatCode = record => {
+      const { dispatch } = this.props;
+      dispatch({
+        type: 'ContentManage/getAppletsCode',
+        payload: {
+          qrCodePage: 'designer',
+          uid: record.uid
+        }
+      })
+    }
+
   handleSrarchStatus = status => {
     this.setState({ status }, () => {
       this.getList({ status, pageNum: 1 });

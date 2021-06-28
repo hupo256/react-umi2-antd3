@@ -99,7 +99,6 @@ class SiteLibraryAdd extends PureComponent {
       DictConfig: { dicData },
       SiteLibrary: { siteDetail },
     } = this.props;
-    console.log(siteDetail);
     const limitDecimals = value => {
       const reg = /^(\-)*(\d+)\.(\d\d).*$/;
       if (typeof value === 'string') {
@@ -110,6 +109,19 @@ class SiteLibraryAdd extends PureComponent {
         return '';
       }
     };
+
+    const selectAfter = siteDetail.vrLink ? siteDetail.vrLink.split('https://vr.realsee.cn/vr/')[1] : ''
+
+    const selectBefore =  getFieldDecorator('prefix',{
+      initialValue: siteDetail.vrLink ? 'https://vr.realsee.cn/vr/' :  '',
+    })(
+      <Select style={{ width: 180 }}>
+        <Option value="" disabled>请选择</Option>
+        <Option value="https://vr.realsee.cn/vr/">https://vr.realsee.cn/vr/</Option>
+      </Select>
+    )
+
+  
     return (
       <div>
         <PageHeaderWrapper>
@@ -308,6 +320,26 @@ class SiteLibraryAdd extends PureComponent {
                   </div>
                 )}
               </Form.Item>
+              <Form.Item label="VR链接">
+                {getFieldDecorator('vrLink', {
+                  initialValue: selectAfter,
+                  rules: [
+                    {
+                      max: 200,
+                      message: '最多可输入200位字符!',
+                    },
+                    {
+                      whitespace: true,
+                      message: '不可含有空格！',
+                    }
+                  ],
+                })(
+                  <Input 
+                    addonBefore={selectBefore}  
+                    style={{ width: 400 }}
+                    placeholder="请输入链接后缀"/>
+                )}
+              </Form.Item>
               <h4 className={styles.title}>TDK设置（用于搜索引擎收录）</h4>
               <Form.Item
                 label={
@@ -394,7 +426,17 @@ class SiteLibraryAdd extends PureComponent {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (err) throw err;
-      console.log(values);
+
+      // 取消前后空格
+      values.vrLink = values.vrLink.trim();
+      
+
+      if(!!!values.vrLink) {
+        this.props.form.setFieldsValue({
+          prefix: ''
+        })
+      }
+      
       const { coverImg, bedroom, parlor, kitchen, toilet, tags } = this.state;
       const { dispatch } = this.props;
       if (parseFloat(values.buildingArea) < 0.01 || parseFloat(values.buildingArea) > 99999.99) {
@@ -407,18 +449,23 @@ class SiteLibraryAdd extends PureComponent {
         message.error('装修造价限制输入0.01-99999.99范围内的数字');
         return false;
       } else {
+
+        let {prefix, ...copyValues} = values;
+
         let obj = {};
         const { siteDetail } = this.props.SiteLibrary;
         obj.projectUid = siteDetail.projectUid;
         dispatch({
           type: 'SiteLibrary/modifySiteModel',
           payload: {
-            ...values,
+            ...copyValues,
+              
             // coverImg: (coverImg && coverImg[0].response.data.addr) || '',
             houseType: { bedroom, parlor, kitchen, toilet },
             gongdiUid: getQueryUrlVal('uid') === 'null' ? null : getQueryUrlVal('uid'),
             ...obj,
             headKeywords: tags,
+            vrLink: (!!!copyValues.vrLink || !!!prefix) ?  '' :  prefix + copyValues.vrLink,
           },
         }).then(res => {
           if (res && res.code === 200) {
