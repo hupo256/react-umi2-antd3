@@ -11,7 +11,7 @@ export default class Page extends Component {
             currentTab: '1',
             currentValue: '',
             selectLists: [],
-
+            tabPanList: []
         }
     }
     
@@ -33,6 +33,22 @@ export default class Page extends Component {
             }
 
         })
+        this.initData()
+    }
+
+    // 初始化第一列
+    initData = () => {
+        const { options } = this.props
+        const arr = options.map( item => ({
+            name: item.name,
+            code: item.uid,
+            detailType: item.detailType,
+            linkType: item.linkType
+        }))
+        console.log({options})
+        this.setState(prev => ({
+            tabPanList: prev.tabPanList.push(arr)
+        }))
     }
 
     changeTab = key => {
@@ -44,7 +60,8 @@ export default class Page extends Component {
     render() {
         const { options  } = this.props;
         console.log({options})
-        const { show, currentTab, currentValue, selectLists } = this.state;
+        const { show, currentTab, currentValue, selectLists, tabPanList } = this.state;
+        console.log({tabPanList})
         return (
             <div ref='wrap' className={sty.wrap}  onClick={this.wrapClick}  style={{minWidth: 200, display: 'inline-block', position: 'relative'}}>
                 <Input  
@@ -59,15 +76,20 @@ export default class Page extends Component {
                 />
                 <div ref='tabWrap'>
                     {show && <Tabs onChange={this.changeTab} type="card" activeKey={currentTab}>
-                        <TabPane tab={selectLists[0] ? selectLists[0].name : '请选择'} key='1'>
+                        {
+                            tabPanList.length && tabPanList.map( (item, index) => <TabPane tab={selectLists[index] ? selectLists[index].name : '请选择'} key={index + ''}>
                             {
-                                options && options.map(item => <div className={sty.item}>
+                                item.length && item.map(item => <div className={sty.item}>
                                         {item.name}
                                     </div>
                                 )
                             }
-                        </TabPane>
+                        </TabPane> )
+                        }
+                        
+                        {
 
+                        }
                     </Tabs>}
                 </div>
                
