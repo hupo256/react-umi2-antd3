@@ -147,7 +147,8 @@ class DesignerLibrary extends PureComponent {
                   {r.status === '1' ? '停用' : '启用'}{' '}
                 </span>
               )}
-              {permissionsBtn.includes('BTN210623000004') && r.status === '1' && <span className="operateLine" />}
+              {permissionsBtn.includes('BTN210623000004') && r.status === '1' && 
+              isCompanyAuthWechatMini && <span className="operateLine" />}
               {permissionsBtn.includes('BTN210623000004') && 
               r.status === '1' && 
               isCompanyAuthWechatMini &&

@@ -42,6 +42,17 @@ export default function DrawerEditor(props) {
       });
       setNavData(arr);
     }
+    if(curFlag === 'banner' || curFlag === 'highlights'){
+      const newObj = { ...pageData };
+      const arr = newObj.maps[curFlag].list?.map(item => {
+        const {appletsName, isEnd} = item
+        item.showSec = false;
+        item.appletsName = isEnd ? appletsName : ''  //没到末节点，则清空
+        return item;
+      });
+      newObj.maps[curFlag].list = arr
+      setpageData(newObj);
+    }
   }
 
   function dealWithEditAndNav() {

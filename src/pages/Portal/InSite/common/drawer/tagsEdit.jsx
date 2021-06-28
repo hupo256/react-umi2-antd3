@@ -10,33 +10,32 @@ import { ctx } from '../context';
 import { Input, Icon, message, Form } from 'antd';
 import { highlightsBgImgs } from '../../tools/data';
 import AddMore from './addMore';
-import LinkChoose from './linkChoose';
+import Cascader from './cascader';
 import styles from './drawerEditor.less';
 
 const maxLen = 8;
 const { Item } = Form;
 
 export default function TagsEdit(props) {
-  const { pageData, setpageData, curFlag, setlinkEdtor, setcurInd } = useContext(ctx);
-  const [tagList = [], settagList] = useState(() => pageData?.maps?.[curFlag]?.list);
+  const { pageData, setpageData, curFlag } = useContext(ctx);
+  const [tagList = [], settagList] = useState(() => touchTagList());
   const titInp = useRef();
+
+  function touchTagList() {
+    const arr = pageData?.maps?.[curFlag]?.list;
+    return arr?.map(item => ({ ...item, showSec: false }));
+  }
 
   function addNewTag() {
     const len = tagList.length;
     if (len === maxLen) return message.warning(`最多可添加${maxLen}个亮点`);
-    const newObj = { ...pageData };
     const newTag = { imgUrl: highlightsBgImgs[len] };
-    newObj.maps[curFlag].list = [...tagList, newTag];
-    settagList([...tagList, newTag]);
-    setpageData(newObj);
+    tagList.push(newTag);
+    forUpdatePageData();
+
     setTimeout(() => {
       titInp.current.focus();
     });
-  }
-
-  function toChooseLink(num) {
-    setcurInd(num);
-    setlinkEdtor(true);
   }
 
   function forUpdatePageData() {
@@ -95,7 +94,6 @@ export default function TagsEdit(props) {
               errMsg = '',
               desStatus = 'success',
               desMsg = '',
-              text = '',
             } = tag;
             const len = tagList.length;
             return (
@@ -141,12 +139,7 @@ export default function TagsEdit(props) {
                   </Form>
 
                   <p>关联页面</p>
-                  <Input
-                    value={text}
-                    placeholder="请选择关联页面"
-                    onClick={() => toChooseLink(ind)}
-                    suffix={<Icon type="right" className={styles.inpSuffix} />}
-                  />
+                  <Cascader itemInd={ind} tagList={tagList} forUpdatePageData={forUpdatePageData} />
                 </div>
               </li>
             );
@@ -154,7 +147,6 @@ export default function TagsEdit(props) {
       </ul>
 
       <AddMore clickHandle={addNewTag} />
-      <LinkChoose dList={tagList} />
     </>
   );
 }

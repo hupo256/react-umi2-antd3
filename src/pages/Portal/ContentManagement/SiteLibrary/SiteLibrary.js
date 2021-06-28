@@ -205,7 +205,8 @@ class SiteLibrary extends PureComponent {
                   工地动态
                 </span>
               )}
-              {permissionsBtn.includes('BTN210623000002') && r.gongdiStatus !== 1 && <span className="operateLine" />}
+              {permissionsBtn.includes('BTN210623000002') && r.gongdiStatus !== 1 && 
+              isCompanyAuthWechatMini && <span className="operateLine" />}
               {permissionsBtn.includes('BTN210623000002') && 
               r.gongdiStatus !== 1 && 
               isCompanyAuthWechatMini &&

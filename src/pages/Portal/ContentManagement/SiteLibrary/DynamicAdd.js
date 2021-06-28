@@ -45,12 +45,14 @@ class DynamicAdd extends Component {
         const data = res.data['DM001']
           .filter(item => item.status === '1')
           .filter(item => item.code === status);
-        this.setState({ diaryDate: initData?.diaryDate ||  getDay(), gongdiStage: (data.length > 0 && status) || [] });
+        this.setState({ diaryDate: initData?.diaryDate ||  getDay()});
       }
     });
     if (initData) {
       this.setState({
         diaryContent: initData.diaryContent,
+        gongdiStage: initData.gongdiStage,
+        diaryDate: initData.diaryDate,
         diaryPics: initData.fileList ?  initData.fileList?.map(item => ({ path: item.fileUrl })) : [],
       })
     } 
@@ -87,15 +89,24 @@ class DynamicAdd extends Component {
               {dicData &&
                 dicData['DM001'] &&
                 dicData['DM001'].map(item => {
-                  if (item.status === '1') {
+                  if(initData && initData !== {}) {
                     return (
                       <Option value={item.code} key={item.uid}>
                         {item.name}
                       </Option>
                     );
                   } else {
-                    return null;
+                    if (item.status === '1') {
+                      return (
+                        <Option value={item.code} key={item.uid}>
+                          {item.name}
+                        </Option>
+                      );
+                    } else {
+                      return null;
+                    }
                   }
+                  
                 })}
             </Select>
           </Col>
@@ -234,10 +245,10 @@ class DynamicAdd extends Component {
       if (initData) {
           try {
             const res = await editSiteDetailApi({
-              diaryContent: diaryContent ||  initData?.diaryDate,
-              diaryDate: diaryDate || initData?.diaryDate,
+              diaryContent: diaryContent,
+              diaryDate: diaryDate,
               diaryPics: imglist,
-              gongdiStage: initData.gongdiStage,
+              gongdiStage: gongdiStage,
               diaryUid: initData.diaryUid
             });
             if (res.code === 200 ) {

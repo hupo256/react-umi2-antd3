@@ -9,7 +9,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import { ctx } from '../context';
 import { Input, Icon, message, Form } from 'antd';
 import AddMore from './addMore';
-import { getRelatedPage } from '@/services/channelManage';
 import CascadeSelect from '@/pages/ChannelManage/components/CascadeSelect';
 import styles from './drawerEditor.less';
 
@@ -17,19 +16,14 @@ const maxLen = 5;
 const { Item } = Form;
 
 export default function NavEdit(props) {
-  const { navData, setNavData } = useContext(ctx);
-  const [relatedPageOption, setrelatedPageOption] = useState([]);
+  const { navData, setNavData, relatedPageOption, touchRelatedOpts } = useContext(ctx);
   const [curNavs, setcurNavs] = useState([]);
 
   useEffect(() => {
-    getRelatedPage({ sceneType: 2 }).then(res => {
-      if (!res?.data) return;
-      setrelatedPageOption(res?.data);
-    });
+    touchRelatedOpts(2);
   }, []);
 
-  function addNewTag(e) {
-    // e.stopPropagation();
+  function addNewTag() {
     const len = navData.length;
     const empty = navData.find(nav => !nav.paths);
     if (len === maxLen) return message.warning(`导航栏添加${maxLen}个效果最佳哦`);
@@ -41,7 +35,6 @@ export default function NavEdit(props) {
       name: '',
       navModule: `module${len}`,
     };
-
     setTimeout(() => {
       setNavData([...navData, item]);
     });
@@ -75,20 +68,6 @@ export default function NavEdit(props) {
     updateNavData();
   }
 
-  function touchRelece(arr, num) {
-    console.log(arr);
-    const len = arr.length;
-    const paths = arr.map(p => p.code);
-    const nav = navData[num];
-    nav.icon = arr[len - 1]?.icon;
-    nav.navModule = arr[len - 1]?.appletsLink;
-    nav.linkKey = arr[len - 1]?.linkKey;
-    nav.paths = paths;
-    nav.linkDisplayName = arr.map(p => p.text).join('/');
-    if (paths.length === 2) nav.showSec = false;
-    updateNavData();
-  }
-
   // 点击input
   function relevClick(num) {
     const arr = ['fd8d01f1a35111eb999e00505694ddf5']; // 首页
@@ -109,21 +88,27 @@ export default function NavEdit(props) {
     setNavData(navs);
   }
 
+  function touchRelece(arr, num) {
+    console.log(arr);
+    const len = arr.length;
+    const paths = arr.map(p => p.code);
+    const nav = navData[num];
+    nav.icon = arr[len - 1]?.icon;
+    nav.navModule = arr[len - 1]?.appletsLink;
+    nav.linkKey = arr[len - 1]?.linkKey;
+    nav.paths = paths;
+    nav.linkDisplayName = arr.map(p => p.text).join('/');
+    if (paths.length === 2) nav.showSec = false;
+    updateNavData();
+  }
+
   return (
     <>
       <ul className={styles.navEditBox}>
         {navData?.length > 0 &&
           navData.map((tag, ind) => {
             const len = navData.length;
-            let {
-              linkDisplayName,
-              icon,
-              name,
-              navModule,
-              showSec,
-              desStatus = 'success',
-              desMsg = '',
-            } = tag;
+            let { icon, name, navModule } = tag;
             icon = 'icon-' + icon?.split('icon')[1]; // 兼容iconfont在生成时加的前辍
             const isHome = navModule === 'index';
             return (
@@ -164,34 +149,14 @@ export default function NavEdit(props) {
                   </Form>
 
                   <p>关联页面</p>
-                  <div
-                    onClick={e => {
-                      e.stopPropagation();
-                    }}
-                  >
-                    <Form style={{ width: '100%' }}>
-                      <Item validateStatus={desStatus} help={desMsg}>
-                        <Input
-                          value={linkDisplayName}
-                          readOnly
-                          disabled={isHome}
-                          placeholder="请选择关联页面"
-                          onFocus={() => relevClick(ind)}
-                          onClick={() => relevClick(ind)}
-                          suffix={<Icon type="down" className={styles.inpSuffix} />}
-                        />
-                      </Item>
-                    </Form>
-
-                    {showSec &&
-                      relatedPageOption?.length > 0 && (
-                        <CascadeSelect
-                          callFun={arr => touchRelece(arr, ind)} // 对外暴露的回调，用来把数据传出去
-                          optsArr={relatedPageOption} // 渲染组件需要的数据
-                          curNavs={curNavs} // 当前已经有的nav -- 禁用重复选择
-                        />
-                      )}
-                  </div>
+                  <CascadeSelect
+                    curItem={tag}
+                    cascadeClick={() => relevClick(ind)}
+                    callFun={arr => touchRelece(arr, ind)} // 对外暴露的回调，用来把数据传出去
+                    optsArr={relatedPageOption} // 渲染组件需要的数据
+                    curNavs={curNavs} // 当前已经有的nav -- 禁用重复选择
+                    disabled={isHome}
+                  />
                 </div>
               </li>
             );

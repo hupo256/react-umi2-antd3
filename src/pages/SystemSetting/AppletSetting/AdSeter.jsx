@@ -103,8 +103,7 @@ export default class AdSeter extends PureComponent {
     if (len) {
       // 已选择过关联页面，则校验之
       if (!isEnd) return this.setState({ releErrer: true });
-      // 没有linkKey 表示选择了详情页, 排除首页
-      linkKey || linkKey!=='home' || (detailUid = paths.pop());
+      linkKey || (detailUid = paths.pop()); // 没有linkKey 表示选择了详情页,
     }
     const param = { isOpen, paths, picUrl, detailUid };
     this.setState({ btnLoading: true });
@@ -182,25 +181,14 @@ export default class AdSeter extends PureComponent {
 
               <li>
                 <p>弹屏广告关联页面 </p>
-                <div
-                  className={`${releErrer ? styles.releErrer : ''}`}
-                  onClick={e => e.stopPropagation()}
-                >
-                  <Input
-                    readOnly
-                    value={linkDisplayName}
-                    placeholder="请选择关联页面"
-                    onFocus={() => this.releInpClick(true)}
-                    suffix={<Icon type="down" className={styles.inpSuffix} />}
+                <div className={`${releErrer ? styles.releErrer : ''}`}>
+                  <CascadeSelect
+                    curItem={{ linkDisplayName, showSec }}
+                    cascadeClick={() => this.releInpClick()}
+                    callFun={arr => this.touchRelece(arr)} // 对外暴露的回调，用来把数据传出去
+                    optsArr={relatedPageOption} // 渲染组件需要的数据
                   />
                   <span className={styles.errMsg}>请正确填写弹屏广告关联页面</span>
-                  {showSec &&
-                    relatedPageOption.length > 0 && (
-                      <CascadeSelect
-                        callFun={arr => this.touchRelece(arr)} // 对外暴露的回调，用来把数据传出去
-                        optsArr={relatedPageOption} // 渲染组件需要的数据
-                      />
-                    )}
                 </div>
               </li>
             </ul>

@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-06-10 18:35:51
- * @LastEditTime: 2021-06-25 14:35:25
+ * @LastEditTime: 2021-06-28 17:21:29
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-wechat-saas\src\pages\Welcome.js
@@ -17,7 +17,7 @@ class Welcome extends PureComponent {
     const saasSellerCode = JSON.parse(code).companyCode;
      getAuthInfo({ saasSellerCode }).then(res => {
       if (res?.code === 200) {
-        localStorage.setItem('isCompanyAuthWechatMini', res.data.isCompanyAuthWechatMini)
+        localStorage.setItem('isCompanyAuthWechatMini', res.data.isAuthedWechatMini)
       }
     })
 

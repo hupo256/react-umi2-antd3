@@ -325,7 +325,8 @@ class ProjectLibrary extends PureComponent {
                   </span>
                 </span>
               ) : null}
-              {permissionsBtn.permissions.includes('BTN210623000006') && r.specialStatus === 1 && <span className="operateLine" />}
+              {permissionsBtn.permissions.includes('BTN210623000006') && r.specialStatus === 1 && 
+              isCompanyAuthWechatMini && <span className="operateLine" />}
                {permissionsBtn.permissions.includes('BTN210623000006') && 
                r.specialStatus === 1 && 
                isCompanyAuthWechatMini &&
