@@ -100,11 +100,9 @@ export default class AdSeter extends PureComponent {
     let detailUid = '';
 
     if (!picUrl) return this.setState({ imgErrer: true }); // 图片非空检验
-    if (len) {
-      // 已选择过关联页面，则校验之
-      if (!isEnd) return this.setState({ releErrer: true });
-      // 没有linkKey 表示选择了详情页, 排除首页
-      linkKey || linkKey!=='home' || (detailUid = paths.pop());
+    if (len) {  // 已选择过关联页面，则校验之
+      if (!isEnd) return this.setState({ releErrer: true }); 
+      linkKey || (detailUid = paths.pop()); // 没有linkKey 表示选择了详情页, 
     }
     const param = { isOpen, paths, picUrl, detailUid };
     this.setState({ btnLoading: true });
