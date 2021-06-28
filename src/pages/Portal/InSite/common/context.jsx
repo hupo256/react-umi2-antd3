@@ -12,6 +12,8 @@ import {
   updateHomePageEditData,
   queryNavEditData,
   saveNavEditData,
+  getAuthInfo,
+  queryWechatMiniGlobal,
 } from '@/services/miniProgram';
 import { highlightsBgImgs } from '../tools/data';
 import { getauth } from '@/utils/authority';
@@ -30,6 +32,7 @@ export function Provider({ children }) {
   const [templateCode, settemplateCode] = useState(''); //当前模板code
   const [templateName, settemplateName] = useState(''); //当前模板name
   const [navData, setNavData] = useState([]); //导航数据
+  const [wechatAuthed, setwechatAuthed] = useState({}); //微信授权数据
   const [choiceData, setChoiceData] = useState([
     {
       navModule: 'case',
@@ -89,15 +92,11 @@ export function Provider({ children }) {
             pageNum: '1',
             pageSize: '4',
           },
-          {
-            key: 'channel',
-            pageNum: '1',
-            pageSize: '20',
-          },
         ];
         getHomePageEditData(param).then(res => {
-          message.destroy();
+          if (res?.code !== 200) return message.error(res?.message || '数据返回出错');
           if (!res?.data) return;
+          message.destroy();
           const userInfo = getauth();
           const aboutUs = res.data.editTemplateJson.jsonData.find(e => e.flag === 'aboutUs');
           const article = res.data.editTemplateJson.jsonData.find(e => e.flag === 'article');
@@ -138,7 +137,7 @@ export function Provider({ children }) {
     });
     queryNavEditData().then(r => {
       if (r && r.code === 200) {
-        setNavData(r.data?.map(nav => ({...nav, showSec: false})));
+        setNavData(r.data?.map(nav => ({ ...nav, showSec: false })));
       }
     });
   }
@@ -169,7 +168,7 @@ export function Provider({ children }) {
       if (res.code !== 200) return message.error(res.message || '请稍后再试');
 
       const navObj = validationData();
-      console.log(navObj)
+      console.log(navObj);
       if (navObj?.[0]) {
         setcurFlag('nav');
         return message.error('关联页面必须选到末节点');
@@ -188,7 +187,18 @@ export function Provider({ children }) {
       const len = paths?.length;
       return navModule !== 'index' && len === 1;
     });
-    return arr
+    return arr;
+  }
+
+  async function setwechatAuthedInfor() {
+    const code = localStorage.getItem('auth');
+    const saasSellerCode = JSON.parse(code).companyCode;
+    const [authInfo, wechatMini] = await Promise.all([
+      getAuthInfo({ saasSellerCode }),
+      queryWechatMiniGlobal(),
+    ]);
+    console.log(authInfo, wechatMini);
+    setwechatAuthed({ ...authInfo?.data, ...wechatMini?.data });
   }
 
   const value = {
@@ -214,6 +224,8 @@ export function Provider({ children }) {
     MdTip,
     setMdTip,
     savePageData,
+    wechatAuthed,
+    setwechatAuthedInfor,
   };
 
   return <ctx.Provider value={value}>{children}</ctx.Provider>;

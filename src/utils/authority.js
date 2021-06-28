@@ -39,7 +39,7 @@ export function setauth(auth) {
 }
 
 export function getauth() {
-  return JSON.parse(localStorage.getItem('auth')) || [];
+  return JSON.parse(localStorage.getItem('auth')) || {};
 }
 
 export function setaddr(auth) {

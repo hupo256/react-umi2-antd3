@@ -10,7 +10,7 @@ import { ctx } from '../context';
 import { Input, Icon, message, Form } from 'antd';
 import AddMore from './addMore';
 import { getRelatedPage } from '@/services/channelManage';
-import RelevanceInp from '@/pages/ChannelManage/components/RelevanceInp';
+import CascadeSelect from '@/pages/ChannelManage/components/CascadeSelect';
 import styles from './drawerEditor.less';
 
 const maxLen = 5;
@@ -41,10 +41,10 @@ export default function NavEdit(props) {
       name: '',
       navModule: `module${len}`,
     };
-    
+
     setTimeout(() => {
-      setNavData([...navData, item])
-    })
+      setNavData([...navData, item]);
+    });
   }
 
   function updateNavData() {
@@ -76,6 +76,7 @@ export default function NavEdit(props) {
   }
 
   function touchRelece(arr, num) {
+    console.log(arr);
     const len = arr.length;
     const paths = arr.map(p => p.code);
     const nav = navData[num];
@@ -88,8 +89,6 @@ export default function NavEdit(props) {
     updateNavData();
   }
 
-  
-
   // 点击input
   function relevClick(num) {
     const arr = ['fd8d01f1a35111eb999e00505694ddf5']; // 首页
@@ -98,7 +97,7 @@ export default function NavEdit(props) {
       const id = paths?.[1];
       ind !== num && !!id && arr.push(id); // 把自己也排除，取末级的uid,去重时也从末级开始
       nav.showSec = ind === num;
-      if (ind !== 0 && paths?.length !== 2) {  
+      if (ind !== 0 && paths?.length !== 2) {
         // 如果同时有没选到末点的，就关掉并清空
         nav.linkDisplayName = '';
         nav.icon = '';
@@ -165,7 +164,11 @@ export default function NavEdit(props) {
                   </Form>
 
                   <p>关联页面</p>
-                  <div onClick={e => {e.stopPropagation()}}>   
+                  <div
+                    onClick={e => {
+                      e.stopPropagation();
+                    }}
+                  >
                     <Form style={{ width: '100%' }}>
                       <Item validateStatus={desStatus} help={desMsg}>
                         <Input
@@ -182,7 +185,7 @@ export default function NavEdit(props) {
 
                     {showSec &&
                       relatedPageOption?.length > 0 && (
-                        <RelevanceInp
+                        <CascadeSelect
                           callFun={arr => touchRelece(arr, ind)} // 对外暴露的回调，用来把数据传出去
                           optsArr={relatedPageOption} // 渲染组件需要的数据
                           curNavs={curNavs} // 当前已经有的nav -- 禁用重复选择

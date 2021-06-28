@@ -1,34 +1,48 @@
 /*
  * @Author: zqm 
  * @Date: 2021-04-28 17:05:47 
- * @Last Modified by: zqm
- * @Last Modified time: 2021-06-16 03:26:49
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2021-06-10 21:33:19
  * 小程序设置
  */
 
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
-import router from 'umi/router';
-import { Card, Switch, Icon, Menu, Table, Input, message, Modal } from 'antd';
+import { Card, Switch, Icon, Menu, Table, message } from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { MyIcon } from '@/utils/utils';
 import styles from './index.less';
 import { getauth } from '@/utils/authority';
 import LinkPage from './LinkPage';
+import AdSeter from './AdSeter';
 import NotBound from '../MiniProgram/NotBound';
-const { SubMenu } = Menu;
+
+const { permissions } = getauth();
+const menuData = [
+  {
+    name: '通用设置',
+    code: 'BTN210610000006',
+  },
+  {
+    name: '关联页面设置',
+    code: 'BTN210610000007',
+  },
+  {
+    name: '广告设置',
+    code: 'BTN210621000001',
+  },
+];
 
 @connect(({ MiniProgram }) => ({ MiniProgram }))
 class Index extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      visible: false,
-      record: null,
-      selectedKeys: ['1'],
-      switchChecked: false,
-    };
-  }
+  state = {
+    visible: false,
+    record: null,
+    selectedKeys: '',
+    switchCommonDate: null,
+    switchLoading: false,
+    showSec: false,
+  };
 
   componentDidMount() {
     const { dispatch } = this.props;
@@ -39,7 +53,8 @@ class Index extends PureComponent {
         dispatch({ type: 'MiniProgram/formbindmapModel' });
         dispatch({ type: 'MiniProgram/queryWechatMiniGlobalModel' }).then(res => {
           if (res?.code === 200) {
-            this.setState({ switchChecked: res.data?.homePageOpenAuth });
+            this.setState({ switchCommonDate: res.data });
+            this.touchDefaultTab()
           }
         });
       }
@@ -158,48 +173,42 @@ class Index extends PureComponent {
           },
         ]
       : [];
-    const { visible, record, selectedKeys, switchChecked } = this.state;
-    const permissionsBtn = getauth();
+    const { visible, record, selectedKeys, switchCommonDate, switchLoading, showSec } = this.state;
+
     return (
-      <div className={styles.appleCard}>
+      <div className={styles.appleCard} onClick={this.touchInpBlurTag}>
         <PageHeaderWrapper title={title}>
           <Card bordered={false}>
             {AuthInfo.isAuthedWechatMini && (
               <div className={styles.appletWrap}>
                 <div className={styles.appleLeft}>
                   <Menu
-                    onClick={e => this.setState({ selectedKeys: [e.key] })}
+                    onClick={e => this.setState({ selectedKeys: e.key})}
                     style={{ width: 256 }}
-                    selectedKeys={selectedKeys}
-                    defaultOpenKeys={['sub1']}
+                    selectedKeys={[selectedKeys]}
                     mode="inline"
                   >
-                    {permissionsBtn.permissions.includes('BTN210610000006') ? (
-                      <Menu.Item key="1">
-                        <p
-                          style={{
-                            paddingLeft: 24,
-                          }}
-                        >
-                          通用设置
-                        </p>
-                      </Menu.Item>
-                    ) : null}
-                    {permissionsBtn.permissions.includes('BTN210610000007') ? (
-                      <Menu.Item key="2">
-                        <p
-                          style={{
-                            paddingLeft: 24,
-                          }}
-                        >
-                          关联页面设置
-                        </p>
-                      </Menu.Item>
-                    ) : null}
+                    {menuData.map((menu, ind) => {
+                      const { name, code } = menu;
+                      return (
+                        permissions.includes(code) && (
+                          <Menu.Item key={`${ind + 1}`}>
+                            <p style={{ paddingLeft: 24 }}>{name}</p>
+                          </Menu.Item>
+                        )
+                      );
+                    })}
                   </Menu>
                 </div>
-                {selectedKeys[0] === '2' &&
-                  permissionsBtn.permissions.includes('BTN210610000007') && (
+                {selectedKeys === '3' &&
+                  permissions.includes('BTN210621000001') && (
+                    <AdSeter
+                      showSecTag={showSec}
+                      taggleSecTag={() => this.setState({ showSec: true })}
+                    />
+                  )}
+                {selectedKeys === '2' &&
+                  permissions.includes('BTN210610000007') && (
                     <div className={styles.appleRight}>
                       <p style={{ fontWeight: 500, fontSize: 22, color: '#333' }}>关联页面设置</p>
                       <p style={{ fontWeight: 400, fontSize: 13, color: '#666' }}>
@@ -212,17 +221,28 @@ class Index extends PureComponent {
                       <Table columns={columns} dataSource={data} pagination={false} />
                     </div>
                   )}
-                {selectedKeys[0] === '1' &&
-                  permissionsBtn.permissions.includes('BTN210610000006') && (
+                {selectedKeys === '1' &&
+                  permissions.includes('BTN210610000006') && (
                     <div className={styles.appleRight}>
                       <p style={{ fontWeight: 500, fontSize: 22, color: '#333' }}>通用设置</p>
                       <p>
-                        打开小程序一键授权（首次）
+                        <span>打开小程序一键授权（首次）</span>
                         <Switch
-                          style={{ marginLeft: 30 }}
-                          checked={switchChecked}
-                          onChange={checked => {
-                            this.handleSwitchChange(checked);
+                          loading={switchLoading}
+                          checked={switchCommonDate?.homePageOpenAuth}
+                          onChange={val => {
+                            this.handleSwitchChange('homePageOpenAuth', val);
+                          }}
+                        />
+                      </p>
+
+                      <p>
+                        <span>在线客服</span>
+                        <Switch
+                          loading={switchLoading}
+                          checked={switchCommonDate?.wechatCustomerService}
+                          onChange={val => {
+                            this.handleSwitchChange('wechatCustomerService', val);
                           }}
                         />
                       </p>
@@ -248,6 +268,23 @@ class Index extends PureComponent {
       </div>
     );
   }
+
+  // click 事件能到冒泡这里说明那个input已经失焦了
+  touchInpBlurTag = e => {
+    // e.stopPropagation();
+    this.setState({ showSec: false });
+  };
+
+  // 根据permiss code算出默认显示的tab
+  touchDefaultTab = () => {
+    for(let i=0, k=menuData.length; i<k; i++){
+      if(permissions.includes(menuData[i].code)){
+        this.setState({ selectedKeys: `${i + 1}`})
+        break
+      }
+    }
+  }
+
   handleOk = () => {
     const { dispatch } = this.props;
     dispatch({ type: 'MiniProgram/formbindmapModel' });
@@ -257,18 +294,24 @@ class Index extends PureComponent {
     this.setState({ visible: false });
   };
   // 开关
-  handleSwitchChange = checked => {
+  handleSwitchChange = (key, bool) => {
     const { dispatch } = this.props;
+    const { switchCommonDate } = this.state;
+    const payload = { ...switchCommonDate, [key]: bool };
+    this.setState({ switchLoading: true });
     dispatch({
       type: 'MiniProgram/setWechatMiniGlobalModel',
-      payload: { homePageOpenAuth: checked },
+      payload,
     }).then(res => {
+      this.setState({ switchLoading: false });
       if (res?.code === 200002) {
         message.warning(res.message);
       } else if (res?.code === 200) {
-        this.setState({ switchChecked: checked }, () => {
-          message.success(checked ? '授权成功' : '取消授权成功');
-        });
+        this.setState({ switchCommonDate: payload });
+        const AuthTex = ['授权成功', '取消授权成功'];
+        const wechatTex = ['在线客服开启成功', '在线客服关闭成功'];
+        const tex = key === 'homePageOpenAuth' ? AuthTex : wechatTex;
+        message.success(bool ? tex[0] : tex[1]);
       }
     });
   };

@@ -501,7 +501,6 @@ class CreateStepOne extends PureComponent {
           prefix: ''
         })
       }
-
       if (parseFloat(values.acreage) < 0.01 || parseFloat(values.acreage) > 99999.99) {
         message.error('面积限制输入0.01-99999.99范围内的数字');
         return false;

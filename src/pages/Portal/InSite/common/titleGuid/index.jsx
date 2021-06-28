@@ -26,7 +26,6 @@ export default function TitleGuid(props) {
       editTemplateCode: templateCode,
       editTemplateJson: { jsonData, themeData, templateName, globalInfor: { customerService } },
     };
-
     savePageData(parmas, () => {
       publishEditData().then(() => {
         setcurFlag(''); // 置空
