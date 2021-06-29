@@ -60,19 +60,24 @@ export default class Page extends Component {
 
     itemClick = (item, index) => {
         console.log(index)
-        let { tabPanList, selectLists} = this.state;
-        selectLists.push( item)
+        let { tabPanList, selectLists, currentTab} = this.state;
+        if (!!!selectLists.length) {
+            selectLists.push(item)
+        } 
         if (item?.children.length) {
-            tabPanList.splice(index, 0, item.children  )
-            
+            tabPanList.push(item.children  )
+            selectLists.splice(index + 1, 1, item  )
             this.setState({
                 tabPanList,
-                selectLists
+                selectLists,
+                currentTab: +currentTab + 1 + ''
             })
                 // this.setState(prev => ({
                 //     tabPanList: prev.tabPanList.splice(index, 0, item.children  ),
                 //     selectLists: prev.selectLists.splice(index, 0, item  )
                 // }))
+        } else {
+
         }
         
     }
