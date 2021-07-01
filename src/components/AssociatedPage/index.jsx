@@ -10,7 +10,6 @@ export default class Page extends Component {
         super(props);
         this.state = {
             show: false,
-            checkTag: false,
             tableShow: false,
             detailType: null,
             currentTab: '0',
@@ -81,7 +80,6 @@ export default class Page extends Component {
         const { onResult } = this.props; 
         this.setState({
             show: false,
-            checkTag: false
         })
         
         if(selectLists.length && (selectLists[selectLists.length - 1]?.children?.length || selectLists[selectLists.length - 1]?.linkType === 2 )) {
@@ -91,7 +89,6 @@ export default class Page extends Component {
                 currentTab: '0',
                 tabPanList,
                 tableShow: false,
-                checkTag: true
             })
             return;
         }
@@ -200,10 +197,8 @@ export default class Page extends Component {
 
     // 文章类型切换
     radioGroupChange = e => {
-        console.log({e})
         const { searchText } = this.state
         const { onChange, tabData: { detailType } } = this.props;
-        console.log({e: e.target.value})
         this.setState({
             currentarticleDicCode: e.target.value,
             pageNum: 1,
@@ -221,8 +216,8 @@ export default class Page extends Component {
 
     render() {
         const { show, currentTab, selectLists, tabPanList, tableShow, pageSize, pageNum, 
-            searchText, tableLoading, currentarticleDicCode, checkTag  } = this.state;
-        const { tabData: {tabHead, tabList, tabTotal, detailType }, articleDicOpts } = this.props;
+            searchText, tableLoading, currentarticleDicCode  } = this.state;
+        const { tabData: {tabHead, tabList, tabTotal, detailType }, articleDicOpts, initValue } = this.props;
         const placeholderArr = [
             '工地标题',
             '设计师姓名',
@@ -231,8 +226,7 @@ export default class Page extends Component {
             '专题标题',
             '小游戏标题'
         ];
-        // console.log({tabPanList, selectLists,  tabHead, tabList})
-        const currentValue = selectLists.map(item => item.name).join('/')
+        const currentValue = selectLists.length ?  selectLists.map(item => item.name).join('/') : initValue
         return (
             <div ref='wrap' className={sty.wrap}  onClick={this.wrapClick}  style={{minWidth: 200, display: 'inline-block', position: 'relative'}}>
                 <Input  
@@ -246,7 +240,6 @@ export default class Page extends Component {
                       }
                     readOnly
                 />
-                {checkTag && <div style={{fontSize: 12, color: '#f5222d', height: 22, lineHeight: '22px'}}>请选择关联页面</div>}
                 {show && <div ref='tabWrap' className={sty.tabWrap}>
                     <Tabs onChange={this.changeTab} type="card" activeKey={currentTab}>
                         {
@@ -266,11 +259,10 @@ export default class Page extends Component {
                                 placeholder={placeholderArr[+detailType - 1] ? `可通过${placeholderArr[(+detailType) - 1]}进行搜索` : '可输入关键字进行检索'}
                                 onChange={ e => { const value = e.target.value; this.setState({searchText: value, pageNum: 1}); this.handleChange(value) } }
                             />
-                            {detailType === 4 && <div>
-                                {/* <span style={{ display: 'inline-block', marginTop: 8}}>文章栏目:</span> */}
-                                <Radio.Group  buttonStyle="solid"  value={currentarticleDicCode}  onChange={this.radioGroupChange} >
+                            {detailType === 4 && articleDicOpts.length && <div>
+                                <Radio.Group  buttonStyle="solid" size='small' style={{marginTop: 4}}  value={currentarticleDicCode}  onChange={this.radioGroupChange} >
                                     {
-                                        articleDicOpts.map(item => <Radio key={item.code} style={{marginTop: 4}} value={item.code}>{item.name}</Radio>)
+                                        articleDicOpts.map(item => <Radio.Button key={item.code} style={{marginTop: 4}} value={item.code}>{item.name}</Radio.Button>)
                                     }
                                 </Radio.Group>
                             </div>}

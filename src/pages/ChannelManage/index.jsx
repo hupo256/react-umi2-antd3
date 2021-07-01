@@ -378,6 +378,7 @@ export default class ChannelManage extends Component {
                         footer={null}
                         visible={ showCreateEdit }
                         onCancel={this.toggleShow}
+                        destroyOnClose={true}
                     >
                         <CreateEdit />
                     </Modal>
