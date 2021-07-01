@@ -379,7 +379,7 @@ class SiteLibraryAdd extends PureComponent {
       if (err) throw err;
 
       // 取消前后空格
-      values.vrLink = values.vrLink.trim();
+      values.vrLink = values.vrLink?.trim();
       
 
       if(!!!values.vrLink) {
