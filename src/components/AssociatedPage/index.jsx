@@ -259,7 +259,7 @@ export default class Page extends Component {
                                 placeholder={placeholderArr[+detailType - 1] ? `可通过${placeholderArr[(+detailType) - 1]}进行搜索` : '可输入关键字进行检索'}
                                 onChange={ e => { const value = e.target.value; this.setState({searchText: value, pageNum: 1}); this.handleChange(value) } }
                             />
-                            {detailType === 4 && articleDicOpts.length && <div>
+                            {detailType === 4 &&  <div>
                                 <Radio.Group  buttonStyle="solid" size='small' style={{marginTop: 4}}  value={currentarticleDicCode}  onChange={this.radioGroupChange} >
                                     {
                                         articleDicOpts.map(item => <Radio.Button key={item.code} style={{marginTop: 4}} value={item.code}>{item.name}</Radio.Button>)
