@@ -1,11 +1,73 @@
 .wrap {
+    width: 100%;
+    .tabWrap {
+        border: 1px solid #efefef;
+        border-radius: 4px;
+        box-sizing: border-box;
+        overflow: hidden;
+    }
     .myInput:hover{
         cursor: pointer;
     }
     .item {
         padding: 4px;
+        cursor: pointer;
     }
     .item:hover {
         background: rgba(0, 0, 0, 0.1);
+    }
+   
+    :global {
+        .ant-radio-button-wrapper {
+            border: none;
+            border-radius: 2px;
+            margin: 2px 6px;
+            &:not(:first-child)::before {
+                width: 0;
+            }
+        }
+        .ant-tabs-nav-container {
+            background: #efefef;
+        }
+        .ant-table-small {
+            border: none;
+        }
+        .ant-tabs-nav-container {
+            height: 34px !important;
+            .ant-tabs-tab {
+                height: 34px !important;
+                line-height: 32px !important;
+                transition: all 0s !important;
+            }
+        }
+        .ant-tabs-card{
+            .ant-tabs-content {
+                // height: 120px;
+                margin-top: -16px;
+                .ant-tabs-tabpane {
+                    background: #fff;
+                    padding: 16px 8px;
+                }
+                .ant-table-body {
+                    margin: 0
+                }
+            }
+            .ant-tabs-bar {
+                border-color: #fff;
+                .ant-tabs-tab {
+                    background: #efefef;
+                    border-color: transparent;
+                }
+                .ant-tabs-tab-active {
+                    border-color: #fff;
+                    background: #fff;
+                    color: rgba(0,0,0,0.65)
+                }
+            }
+            .ant-table-pagination {
+                margin: 0px;
+                margin-top: 8px;
+            }
+        }
     }
 }

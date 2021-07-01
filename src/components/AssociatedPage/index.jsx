@@ -10,6 +10,7 @@ export default class Page extends Component {
         super(props);
         this.state = {
             show: false,
+            checkTag: false,
             tableShow: false,
             detailType: null,
             currentTab: '0',
@@ -77,17 +78,24 @@ export default class Page extends Component {
     checkValue = () => {
        
         const { selectLists, tabPanList } = this.state;
-        tabPanList.splice(1, tabPanList.length - 1);
-        if(selectLists.length && (selectLists[selectLists.length - 1].children.length || selectLists[selectLists.length - 1]?.linkType === 2 )) {
-            console.log("qiguai")
-
+        const { onResult } = this.props; 
+        this.setState({
+            show: false,
+            checkTag: false
+        })
+        
+        if(selectLists.length && (selectLists[selectLists.length - 1]?.children?.length || selectLists[selectLists.length - 1]?.linkType === 2 )) {
+            tabPanList.splice(1, tabPanList.length - 1);
             this.setState({
                 selectLists: [],
                 currentTab: '0',
                 tabPanList,
-                tableShow: false
+                tableShow: false,
+                checkTag: true
             })
+            return;
         }
+        onResult(selectLists)
     }
 
     changeTab = key => {
@@ -118,9 +126,7 @@ export default class Page extends Component {
             })
         } else {
             if (item.linkType === 1){
-                this.setState({
-                    show: false
-                })
+               this.checkValue()
             } else if(item.linkType === 2) {
                 this.setState({
                     tableShow: true,
@@ -148,16 +154,17 @@ export default class Page extends Component {
         
     }
     rowClick = (e, item) => {
-        console.log({item})
         const { selectLists } = this.state;
-        selectLists[selectLists.length] = {
+        let index = selectLists.length;
+        if (!!selectLists[selectLists.length - 1].detailUid) {
+            index = selectLists.length - 1
+        }
+        selectLists[index] = {
             name: item.name || item.title || item.articleTitle  || item.gongdiTitle || item.specialTitle || item.activityTitle,
             detailUid: item.uid || item.gongdiUid || item.articleUid || item.specialUid,
 
         }
-        this.setState({
-            show: false
-        })
+        this.checkValue()
     }
     pageChange = pageNum => {
         const { onChange, tabData: { detailType } } = this.props;
@@ -213,7 +220,8 @@ export default class Page extends Component {
 
 
     render() {
-        const { show, currentTab, selectLists, tabPanList, tableShow, pageSize, pageNum, searchText, tableLoading, currentarticleDicCode  } = this.state;
+        const { show, currentTab, selectLists, tabPanList, tableShow, pageSize, pageNum, 
+            searchText, tableLoading, currentarticleDicCode, checkTag  } = this.state;
         const { tabData: {tabHead, tabList, tabTotal, detailType }, articleDicOpts } = this.props;
         const placeholderArr = [
             '工地标题',
@@ -223,7 +231,7 @@ export default class Page extends Component {
             '专题标题',
             '小游戏标题'
         ];
-        console.log({tabPanList, selectLists,  tabHead, tabList})
+        // console.log({tabPanList, selectLists,  tabHead, tabList})
         const currentValue = selectLists.map(item => item.name).join('/')
         return (
             <div ref='wrap' className={sty.wrap}  onClick={this.wrapClick}  style={{minWidth: 200, display: 'inline-block', position: 'relative'}}>
@@ -231,14 +239,16 @@ export default class Page extends Component {
                     className={sty.myInput}
                     id='myInput'
                     value={currentValue}
+                    placeholder='请选择关联页面'
                     ref='myInput'
                      suffix={                     
                         <Icon type="down" id='mySvg' style={{transform: show ? 'rotate(180deg)' : 'none'}} />   
                       }
                     readOnly
                 />
-                <div ref='tabWrap'>
-                    {show && <Tabs onChange={this.changeTab} type="card" activeKey={currentTab}>
+                {checkTag && <div style={{fontSize: 12, color: '#f5222d', height: 22, lineHeight: '22px'}}>请选择关联页面</div>}
+                {show && <div ref='tabWrap' className={sty.tabWrap}>
+                    <Tabs onChange={this.changeTab} type="card" activeKey={currentTab}>
                         {
                             tabPanList.length && tabPanList.map( (item, index) => <TabPane key={index} tab={selectLists[index] ? selectLists[index].name : '请选择'} key={index + ''}>
                             {
@@ -285,8 +295,8 @@ export default class Page extends Component {
                                 }}
                             />
                         </TabPane>}
-                    </Tabs>}
-                </div>
+                    </Tabs>
+                </div>}
                
 
             </div>

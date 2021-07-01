@@ -38,7 +38,11 @@ export default class CreateEdit extends Component {
             // 插件参数
             plugDetailType: null,
             plugDataList: [],
-            plugDataTotal: 0
+            plugDataTotal: 0,
+
+            // 关联页面回调参数
+            paths: [],
+            detailUid: undefined
 
         }
     }
@@ -108,8 +112,10 @@ export default class CreateEdit extends Component {
     }
  
     handleSubmit =  e => {
+        console.log(123)
         const { form, isCreate, selectDetailData } = this.props
-        const { currentSelectRelatedPageOpt, modifyPaths, detailUid } = this.state;
+        const { currentSelectRelatedPageOpt, modifyPaths, detailUid, paths } = this.state;
+        
         const optArr = this.formatData();
         e.preventDefault();
         form.validateFields( (err, values) => {       
@@ -117,22 +123,22 @@ export default class CreateEdit extends Component {
               return
             }
            
-            let detailUid2;
-            let arr = optArr.map(item => item.code);
-            if (optArr[0]?.text === '专题' || optArr[0]?.text === '小游戏') {
-                detailUid2 = optArr[1].code;
-                arr = optArr.map(item => item.code).slice(0, arr.length - 1)
-            }
+            // let detailUid2;
+            // let arr = optArr.map(item => item.code);
+            // if (optArr[0]?.text === '专题' || optArr[0]?.text === '小游戏') {
+            //     detailUid2 = optArr[1].code;
+            //     arr = optArr.map(item => item.code).slice(0, arr.length - 1)
+            // }
 
-            if(arr.length === 3) {
-                detailUid2 = arr.pop()
-            }
+            // if(arr.length === 3) {
+            //     detailUid2 = arr.pop()
+            // }
         
             this.setState({
                 btnLoading: true
             })
             if (isCreate) {
-                let {   relatedPage, ...params } = { ...values, paths: arr, detailUid: detailUid2 }
+                let {   relatedPage, ...params } = { ...values, paths, detailUid }
                 
                 createChannel(params).then(res => {
                     if (res?.code === 200) {
@@ -147,7 +153,7 @@ export default class CreateEdit extends Component {
             
             } else {
                 const { currentEditUid } = this.props;
-                let {   relatedPage, ...params } = { ...values, paths: arr.length > 0 ?  arr : modifyPaths, detailUid: detailUid2 || detailUid, uid: currentEditUid }
+                let {   relatedPage, ...params } = { ...values, paths, detailUid, uid: currentEditUid }
                 editChannelApi(params).then(res => {
                     if (res?.code === 200) {
                         this.resetHandle();
@@ -450,7 +456,6 @@ export default class CreateEdit extends Component {
     }
 
     getTabData = async ({detailType, status = '1', searchText='', pageNum = 1, pageSize = 10, articleDicCode=''} ) => {
-        console.log({detailType})
         this.setState({
             plugDetailType: detailType,
             plugDataList: []
@@ -513,6 +518,14 @@ export default class CreateEdit extends Component {
             return Promise.reject()
         }
        
+    }
+    resultHandle = res => {
+        if (res?.length) {
+            this.setState({
+                detailUid: res[res.length - 1]?.detailUid,
+                paths: res.map(item => item.uid)
+            })
+        }
     }
     
 
@@ -704,18 +717,8 @@ export default class CreateEdit extends Component {
 
         return (
             <div className='createEdit' onClick={this.closeHanlde}>
-                <Page 
-                    options={relatedPageOption}
-                    onChange={this.getTabData}
-                    tabData = {{
-                        tabHead: ColumnsObj[`columns_${plugDetailType}`],
-                        tabList: plugDataList,
-                        tabTotal: plugDataTotal,
-                        detailType: plugDetailType
-                    }}
-                    articleDicOpts={articleDicOpts}
-                />
-                <Form labelCol={{ span: 6 }} wrapperCol={{ span: 13 }} onSubmit={this.handleSubmit}>
+                
+                <Form labelCol={{ span: 6 }} wrapperCol={{ span: 13 }} onSubmit={ () => {console.log(321)}}>
                     <Form.Item label="小程序频道名称">
                         {getFieldDecorator('appletsName', {
                             rules: [
@@ -745,75 +748,20 @@ export default class CreateEdit extends Component {
                             ],
                         })(<Input  placeholder='请输入频道介绍' />)}
                     </Form.Item>
-                    {/* <Form.Item label="关联页面">                      
-                        {getFieldDecorator('relatedPage', {
-                            rules: [{ required: true, message: '请选择关联页面!' }],
-                        })(
-                            <Input 
-                                className='targetInpu'
-                                readOnly placeholder='请选择关联页面' 
-                                onClick={ this.clickInputHandle}
-                                suffix={
-                                    <span id= 'icon'>
-                                        <Icon type="down"  onClick={ this.clickInputHandle} style={{transform: showSelectPanl ? 'rotate(180deg)' : 'rotate(0deg)'}} />
-                                    </span>
-                                    
-                                }
-                            />              
-                        )} 
-                        {showSelectPanl && <div ref='parentNode'  className={styles['card-container']}>
-                            <Tabs size='small' animated={false} type="card" tabBarGutter={0}  activeKey={currentKey} onChange={this.tabChange}>
-                                <TabPane tab={currentSelectRelatedPageOpt[0]?.name || '请选择'} key='0'>
-                                    {
-                                        relatedPageOption?.map(item => 
-                                            <div className={styles['card-item']} key={item.uid} onClick={() => this.selectedHandle(item, '0')}>{item.name}</div>
-                                        )
-                                    }
-                                </TabPane>
-                                {currentSelectRelatedPageOpt[0]?.children.length && <TabPane tab={currentSelectRelatedPageOpt[1]?.name || '请选择'} key='1'>
-                                    {
-                                        currentSelectRelatedPageOpt[0].children.map(item => 
-                                            <div className={styles['card-item']} key={item.uid} onClick={() => this.selectedHandle(item, '1')}>{item.name}</div>)
-                                    }
-                                </TabPane>}
-                                {(currentSelectRelatedPageOpt[1]?.linkType === 2 || currentSelectRelatedPageOpt[0]?.linkType === 2 ) && <TabPane tab='请选择' key= {currentSelectRelatedPageOpt[0]?.linkType === 2 ? '1' : '2'}>
-                                    <Search
-                                        style={{marginTop: 8}}
-                                        value={searchText}
-                                        placeholder={placeholderArr[+detailType - 1] ? `可通过${placeholderArr[(+detailType) - 1]}进行搜索` : '可输入关键字进行检索'}
-                                        onChange={  e => { const value = e.target.value; this.setState({searchText: value, pageNum: 1}); this.handleChange(value) }}
-                                    />
-                                    {detailType === 4 && <div>
-                                        <span style={{ display: 'inline-block', marginTop: 8}}>文章栏目:</span>
-                                        <Radio.Group style={{margin: 8}}   size='small' value={currentarticleDicCode} buttonStyle="solid"  onChange={this.radioGroupChange}>
-                                            {
-                                                articleDicOpts.map(item => <Radio.Button key={item.code} style={{marginTop: 4}} value={item.code}>{item.name}</Radio.Button>)
-                                            }
-                                        </Radio.Group>
-                                    </div>   }
-                                    <Table
-                                        size='middle'
-                                        style={{marginTop: 8, cursor: 'pointer'}}
-                                        columns={ ColumnsObj[`columns_${detailType}`] }
-                                        scroll={{ y: 240 }}
-                                        dataSource={dataList}
-                                        onRow={record => {
-                                            return {
-                                                onClick: e => this.rowClick(e, record)
-                                            }
-                                        }}
-                                        pagination={{
-                                            current: pageNum,
-                                            pageSize,
-                                            total: recordTotal,
-                                            onChange: this.pageChange
-
-                                        }}
-                                    />
-                                </TabPane>}
-                            </Tabs>
-                        </div>}
-                    </Form.Item> */}
+                    <Form.Item label="关联页面">                      
+                        <Page 
+                            options={relatedPageOption}
+                            onChange={this.getTabData}
+                            onResult={this.resultHandle}
+                            tabData = {{
+                                tabHead: ColumnsObj[`columns_${plugDetailType}`],
+                                tabList: plugDataList,
+                                tabTotal: plugDataTotal,
+                                detailType: plugDetailType
+                            }}
+                            articleDicOpts={articleDicOpts}
+                        />
+                    </Form.Item>
                     
                     <Form.Item label="频道说明">
                         {getFieldDecorator('description', {
