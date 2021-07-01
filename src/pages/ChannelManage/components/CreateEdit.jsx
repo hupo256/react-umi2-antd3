@@ -33,7 +33,12 @@ export default class CreateEdit extends Component {
             pageNum: 1,
             pageSize: 10,
             showSelectPanl: false,
-            btnLoading: false
+            btnLoading: false,
+
+            // 插件参数
+            plugDetailType: null,
+            plugDataList: [],
+            plugDataTotal: 0
 
         }
     }
@@ -444,6 +449,71 @@ export default class CreateEdit extends Component {
         this.getDataList({pageNum: page,  searchText, articleDicCode: currentarticleDicCode});
     }
 
+    getTabData = async ({detailType, status = '1', searchText='', pageNum = 1, pageSize = 10, articleDicCode=''} ) => {
+        console.log({detailType})
+        this.setState({
+            plugDetailType: detailType,
+            plugDataList: []
+        })
+        try {
+            let res;
+            detailType === 1 && (res = await siteListApi({
+                gongdiStatus: 0,
+                pageNum,
+                pageSize,
+                searchText
+            }))
+            detailType === 2 && (res = await designerListApi({
+                status,
+                searchWord: searchText,
+                pageNum,
+                pageSize
+            })
+            )
+            detailType === 3 && (res = await caseListApi({
+                status,
+                searchWord: searchText,
+                pageNum,
+                pageSize
+            }));
+            if (detailType === 4) {
+                // 没有文章栏目时请求一次
+                if (!this.state.articleDicOpts.length) {
+                    await this.getArticleDic();
+                }   
+                res = await articleListApi({
+                    searchText,
+                    articleDicCode: articleDicCode ||  this.state.currentarticleDicCode,
+                    pageNum,
+                    pageSize,
+                    articleStatus: status
+                });
+    
+            }
+            detailType === 5 && (res = await specialListApi({
+                specialStatus: status,
+                searchText,
+                pageNum,
+                pageSize
+            }));
+            detailType === 6 && (res = await activeListApi({
+                state: '',
+                activityTitle: searchText,
+                pageNum,
+                pageSize
+            }));
+            
+            this.setState( {
+                plugDataList: res?.data?.list,
+                plugDataTotal: res?.data?.recordTotal
+            })
+            return Promise.resolve()
+        } catch (error) {
+            message.error('请求出错！')
+            return Promise.reject()
+        }
+       
+    }
     
 
     render() {
@@ -451,7 +521,9 @@ export default class CreateEdit extends Component {
         const { form, isCreate  } = this.props;
         const { relatedPageOption, currentSelectRelatedPageOpt, currentKey, dataList,detailType, 
             articleDicOpts, currentarticleDicCode, searchText, showSelectPanl,
-            pageNum, pageSize, recordTotal, btnLoading
+            pageNum, pageSize, recordTotal, btnLoading, 
+            // 插件数据
+            plugDetailType, plugDataList, plugDataTotal
         } = this.state
         const { getFieldDecorator } = form
         
@@ -632,7 +704,17 @@ export default class CreateEdit extends Component {
 
         return (
             <div className='createEdit' onClick={this.closeHanlde}>
-                <Page options={relatedPageOption} />
+                <Page 
+                    options={relatedPageOption}
+                    onChange={this.getTabData}
+                    tabData = {{
+                        tabHead: ColumnsObj[`columns_${plugDetailType}`],
+                        tabList: plugDataList,
+                        tabTotal: plugDataTotal,
+                        detailType: plugDetailType
+                    }}
+                    articleDicOpts={articleDicOpts}
+                />
                 <Form labelCol={{ span: 6 }} wrapperCol={{ span: 13 }} onSubmit={this.handleSubmit}>
                     <Form.Item label="小程序频道名称">
                         {getFieldDecorator('appletsName', {
@@ -663,7 +745,7 @@ export default class CreateEdit extends Component {
                             ],
                         })(<Input  placeholder='请输入频道介绍' />)}
                     </Form.Item>
-                    <Form.Item label="关联页面">                      
+                    {/* <Form.Item label="关联页面">                      
                         {getFieldDecorator('relatedPage', {
                             rules: [{ required: true, message: '请选择关联页面!' }],
                         })(
@@ -731,7 +813,7 @@ export default class CreateEdit extends Component {
                                 </TabPane>}
                             </Tabs>
                         </div>}
-                    </Form.Item>
+                    </Form.Item> */}
                     
                     <Form.Item label="频道说明">
                         {getFieldDecorator('description', {
