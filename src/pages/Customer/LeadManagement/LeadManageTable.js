@@ -27,6 +27,7 @@ class LeadManageTable extends Component {
       changeVisible: false,
       clueVisible: false,
       recordVisible: false,
+      addVisble: false, 
       record: null,
     };
   }
@@ -139,6 +140,11 @@ class LeadManageTable extends Component {
         },
       },
       {
+        title: '留资方式',
+        dataIndex: 'trackInputTypeName',
+        width: 120,
+      },
+      {
         title: '推荐人',
         dataIndex: 'referrerName',
         width: 120,
@@ -156,7 +162,7 @@ class LeadManageTable extends Component {
         render: (t, r) => {
           return (
             <span className={styles.operate}>
-              {permissionsBtn.includes('MU900000020001') && (
+              {/* {permissionsBtn.includes('MU900000020001') && (
                 <span
                   onClick={() => {
                     router.push(`/customer/detail?uid=${r.uid}`);
@@ -164,7 +170,14 @@ class LeadManageTable extends Component {
                 >
                   详情
                 </span>
-              )}
+              )} */}
+               <span
+                  onClick={() => {
+                    router.push(`/customer/detail?uid=${r.uid}`);
+                  }}
+                >
+                  详情
+                </span>
               {permissionsBtn.includes('MU900000020001') &&
                 (permissionsBtn.includes('BTN210526000002') ||
                   permissionsBtn.includes('BTN210526000003')) && <span> | </span>}

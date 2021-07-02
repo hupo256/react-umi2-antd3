@@ -6,7 +6,7 @@ export async function trackAdd(params) {
   return request(baseurl + '/api/v1/sso/track/add', {
     method: 'POST',
     body: params,
-    systemCode: 'S003',
+    systemCode: 'S005',
   });
 }
 
@@ -15,7 +15,7 @@ export async function trackEdit(params) {
   return request(baseurl + '/api/v1/sso/track/edit', {
     method: 'POST',
     body: params,
-    systemCode: 'S003',
+    systemCode: 'S005',
   });
 }
 
@@ -24,7 +24,7 @@ export async function trackGet(params) {
   return request(baseurl + '/api/v1/sso/track/get', {
     method: 'POST',
     body: params,
-    systemCode: 'S003',
+    systemCode: 'S005',
   });
 }
 
@@ -33,7 +33,7 @@ export async function trackEditStatus(params) {
   return request(baseurl + '/api/v1/sso/track/editStatus', {
     method: 'POST',
     body: params,
-    systemCode: 'S003',
+    systemCode: 'S005',
   });
 }
 
@@ -44,7 +44,7 @@ export async function trackExportCriteria(params) {
     {
       method: 'POST',
       body: params,
-      systemCode: 'S003',
+      systemCode: 'S005',
     },
     true,
     `线索列表.xls`
@@ -55,7 +55,7 @@ export async function trackQuery(params) {
   return request(baseurl + '/api/v1/sso/track/queryCriteria', {
     method: 'POST',
     body: params,
-    systemCode: 'S003',
+    systemCode: 'S005',
   });
 }
 
@@ -64,7 +64,7 @@ export async function queryReferrer(params) {
   return request(baseurl + '/api/v1/sso/track/queryReferrer', {
     method: 'POST',
     body: params,
-    systemCode: 'S003',
+    systemCode: 'S005',
   });
 }
 
@@ -73,7 +73,7 @@ export async function queryReferrerSuggest(params) {
   return request(baseurl + '/api/v1/sso/track/queryReferrerSuggest', {
     method: 'POST',
     body: params,
-    systemCode: 'S003',
+    systemCode: 'S005',
   });
 }
 // 获取线索来源渠道树
@@ -81,7 +81,7 @@ export async function getTree(params) {
   return request(baseurl + '/api/v1/sso/track/source/getTree', {
     method: 'POST',
     body: params,
-    systemCode: 'S003',
+    systemCode: 'S005',
   });
 }
 
@@ -90,6 +90,6 @@ export async function trackstatuslog(params) {
   return request(baseurl + '/api/v1/sso/track/log/query', {
     method: 'POST',
     body: params,
-    systemCode: 'S003',
+    systemCode: 'S005',
   });
 }
