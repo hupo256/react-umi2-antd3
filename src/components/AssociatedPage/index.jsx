@@ -24,10 +24,11 @@ export default class Page extends Component {
     }
     
     componentDidMount() {
+        const { id = '' } = this.props;
         document.body.addEventListener('click', e => {
             // e.stopPropagation();
             e.preventDefault();
-            if (e.target.id==='myInput' || e.target.parentNode.id === 'mySvg') {
+            if (e.target.id===('myInput-' + id) || e.target.parentNode.id === ('mySvg-' + id)) {
                 this.setState(prevState => {
                     if (prevState.show) {
                         this.checkValue()
@@ -217,7 +218,7 @@ export default class Page extends Component {
     render() {
         const { show, currentTab, selectLists, tabPanList, tableShow, pageSize, pageNum, 
             searchText, tableLoading, currentarticleDicCode  } = this.state;
-        const { tabData: {tabHead, tabList, tabTotal, detailType }, articleDicOpts, initValue } = this.props;
+        const { tabData: {tabHead, tabList, tabTotal, detailType }, articleDicOpts, initValue, id='' } = this.props;
         const placeholderArr = [
             '工地标题',
             '设计师姓名',
@@ -231,12 +232,12 @@ export default class Page extends Component {
             <div ref='wrap' className={sty.wrap}  onClick={this.wrapClick}  style={{minWidth: 200, display: 'inline-block', position: 'relative'}}>
                 <Input  
                     className={sty.myInput}
-                    id='myInput'
+                    id={'myInput-' + id}
                     value={currentValue}
                     placeholder='请选择关联页面'
                     ref='myInput'
                      suffix={                     
-                        <Icon type="down" id='mySvg' style={{transform: show ? 'rotate(180deg)' : 'none'}} />   
+                        <Icon type="down" id={'mySvg-' + id} style={{transform: show ? 'rotate(180deg)' : 'none'}} />   
                       }
                     readOnly
                 />
