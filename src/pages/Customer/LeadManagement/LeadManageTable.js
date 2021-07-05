@@ -212,7 +212,7 @@ class LeadManageTable extends Component {
     return (
       <div style={{ marginTop: 20 }}>
         <Card bordered={false}>
-          <Button style={{ marginBottom: 16 }} onClick={() => this.setState({ addVisble: true })}>
+          <Button style={{ marginBottom: 16,marginRight:10 }} onClick={() => this.setState({ addVisble: true })}>
             <Icon type="plus" />
             创建线索
           </Button>

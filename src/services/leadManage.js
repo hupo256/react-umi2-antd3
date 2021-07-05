@@ -10,7 +10,7 @@ export async function trackAdd(params) {
   });
 }
 // 根据手机号查询线索
-export async function queryUserByMobile(params) {
+export async function checkMobile(params) {
   return request(baseurl + '/api/v1/sso/track/checkMobile', {
     method: 'POST',
     body: params,

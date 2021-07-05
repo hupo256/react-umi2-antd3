@@ -19,7 +19,7 @@ class LeadManageAdd extends Component {
       record: {
         address: '',
         area: null,
-        mobile: '13523524394',
+        mobile: '',
         name: '',
         referrerCode: '',
         referrerName: '',
@@ -52,8 +52,10 @@ class LeadManageAdd extends Component {
     }).then(async res => {
       if (res && res.code === 200) {
         // message.success('查询成功');
+        console.log('查询成功', res.data.length);
         if (res.data && res.data.length > 0) {
           await this.setState({ referrerNameList: res.data });
+          console.log('查询成功2', res.data, this.state);
         } else {
           await this.setState({ referrerNameList: [] });
         }
@@ -85,120 +87,131 @@ class LeadManageAdd extends Component {
 
   render() {
     const { record, referrerNameList } = this.state;
+    console.log('referrerNameList', referrerNameList);
     return (
       <Modal
-        title={<span style={{ fontWeight: 600 }}>编辑</span>}
+        title={<span style={{ fontWeight: 600 }}>创建</span>}
         visible={this.props.visible}
         onOk={this.handleOk}
         onCancel={this.props.handleCancel}
         okText="确认"
         maskClosable={false}
+        className='addTarckModal'
         width={600}
       >
-        <div className={styles.CluesEdit}>
-          <span className="beforeStar">客户姓名：</span>
-          <span style={{ flex: 1 }}>
-            <Input
-              placeholder="请输入客户姓名"
-              value={record.name}
-              onChange={e =>
-                this.setState({ record: { ...this.state.record, name: e.target.value } })
-              }
-            />
-          </span>
-        </div>
-        <div className={styles.CluesEdit}>
-          <span className="beforeStar">联系电话：</span>
-          <span style={{ flex: 1 }}>
-            <Input
-              placeholder="请输入联系电话"
-              value={record.mobile}
-              onChange={e =>
-                this.setState({ record: { ...this.state.record, mobile: e.target.value } })
-              }
-              onBlur={this.queryUserByMobile}
-            />
-          </span>
-        </div>
-        <div className={styles.CluesEdit}>
-          <span className="beforeStar">线索状态</span>
-          <span style={{ flex: 1 }}>
-            <Select
-              defaultValue={record.status}
-              style={{ width: 120 }}
-              onChange={value => this.setState({ record: { ...this.state.record, status: value } })}
-            >
-              <Option value="TS001">未联系</Option>
-              <Option value="TS002">跟进中</Option>
-              <Option value="TS003">已成交</Option>
-              <Option value="TS004">战败</Option>
-              <Option value="TS005">无效线索</Option>
-            </Select>
-          </span>
-        </div>
-        <div className={styles.CluesEdit}>
-          <span>来源渠道：</span>
-          <span style={{ flex: 1 }}>手动录入</span>
-        </div>
-        <div className={styles.CluesEdit}>
-          <span>推荐人：</span>
-          <span style={{ flex: 1, position: 'relative' }}>
-            <Input
-              value={record.referrerName}
-              onClick={() => this.clickTrackRefer()}
-              onChange={e => this.changeTrackRefer(e)}
-            />
-            <div
-              className={styles.referrerNameSelect}
-              style={{ display: referrerNameList.length > 1 ? 'block' : 'none' }}
-            >
-              {referrerNameList.length != 0
-                ? referrerNameList.map(item => {
-                    return (
-                      <div onClick={this.clickReferrerDiv.bind(this, item)}>{item.realName}</div>
-                    );
-                  })
-                : null}
-            </div>
-          </span>
-        </div>
-        <div className={styles.CluesEdit}>
-          <span>楼盘/楼宇：</span>
-          <span style={{ flex: 1 }}>
-            <Input
-              placeholder="请输入楼盘/楼宇"
-              value={record.address}
-              onChange={e =>
-                this.setState({ record: { ...this.state.record, address: e.target.value } })
-              }
-            />
-          </span>
-        </div>
-        <div className={styles.CluesEdit}>
-          <span>面积：</span>
-          <span style={{ flex: 1 }}>
-            <InputNumber
-              placeholder="请输入面积"
-              value={record.area}
-              precision={2}
-              style={{ width: '90%', marginRight: 8 }}
-              onChange={e => this.setState({ record: { ...this.state.record, area: e } })}
-            />
-            m²
-          </span>
-        </div>
-        <div className={styles.CluesEdit}>
-          <span>线索描述：</span>
-          <span style={{ flex: 1 }}>
-            <TextArea
-              placeholder="请输入线索描述"
-              value={record.trackDesc}
-              onChange={e =>
-                this.setState({ record: { ...this.state.record, trackDesc: e.target.value } })
-              }
-              rows={4}
-            />
-          </span>
+        <div onClick={() => this.setState({ referrerNameList: [] })} style={{padding: 24}}>
+          <div className={styles.CluesEdit}>
+            <span className="beforeStar">客户姓名：</span>
+            <span style={{ flex: 1 }}>
+              <Input
+                placeholder="请输入客户姓名"
+                value={record.name}
+                onChange={e =>
+                  this.setState({ record: { ...this.state.record, name: e.target.value } })
+                }
+              />
+            </span>
+          </div>
+          <div className={styles.CluesEdit}>
+            <span className="beforeStar">联系电话：</span>
+            <span style={{ flex: 1 }}>
+              <Input
+                placeholder="请输入联系电话"
+                value={record.mobile}
+                onChange={e =>
+                  this.setState({ record: { ...this.state.record, mobile: e.target.value } })
+                }
+                onBlur={this.queryUserByMobile}
+              />
+            </span>
+          </div>
+          <div className={styles.CluesEdit}>
+            <span className="beforeStar">线索状态</span>
+            <span style={{ flex: 1 }}>
+              <Select
+                defaultValue={record.status}
+                style={{ width: 402 }}
+                onChange={value =>
+                  this.setState({ record: { ...this.state.record, status: value } })
+                }
+              >
+                <Option value="TS001">未联系</Option>
+                <Option value="TS002">跟进中</Option>
+                <Option value="TS003">已成交</Option>
+                <Option value="TS004">战败</Option>
+                <Option value="TS005">无效线索</Option>
+              </Select>
+            </span>
+          </div>
+          <div className={styles.CluesEdit}>
+            <span>来源渠道：</span>
+            <span style={{ flex: 1 }}>手动录入</span>
+          </div>
+          <div className={styles.CluesEdit}>
+            <span>推荐人：</span>
+            <span style={{ flex: 1, position: 'relative' }}>
+              <Input
+                value={record.referrerName}
+                onClick={() => this.clickTrackRefer()}
+                onChange={e => this.changeTrackRefer(e)}
+              />
+              <div
+                className={styles.referrerNameSelect}
+                style={{ display: referrerNameList.length > 0 ? 'block' : 'none', padding: 5 }}
+              >
+                {referrerNameList && referrerNameList.length != 0
+                  ? referrerNameList.map(item => {
+                      return (
+                        <div
+                          onClick={this.clickReferrerDiv.bind(this, item)}
+                          style={{ cursor: 'pointer', padding: 2}}
+                        >
+                          {item.realName}
+                        </div>
+                      );
+                    })
+                  : null}
+              </div>
+            </span>
+          </div>
+          <div className={styles.CluesEdit}>
+            <span>楼盘/楼宇：</span>
+            <span style={{ flex: 1 }}>
+              <Input
+                placeholder="请输入楼盘/楼宇"
+                value={record.address}
+                onChange={e =>
+                  this.setState({ record: { ...this.state.record, address: e.target.value } })
+                }
+              />
+            </span>
+          </div>
+          <div className={styles.CluesEdit}>
+            <span>面积：</span>
+            <span style={{ flex: 1 }}>
+              <InputNumber
+                placeholder="请输入面积"
+                value={record.area}
+                precision={2}
+                style={{ width: '90%', marginRight: 8 }}
+                onChange={e => this.setState({ record: { ...this.state.record, area: e } })}
+              />
+              m²
+            </span>
+          </div>
+          <div className={styles.CluesEdit}>
+            <span>线索描述：</span>
+            <span style={{ flex: 1 }}>
+              <TextArea
+                placeholder="请输入线索描述"
+                value={record.trackDesc}
+                onChange={e =>
+                  this.setState({ record: { ...this.state.record, trackDesc: e.target.value } })
+                }
+                rows={4}
+              />
+            </span>
+          </div>
         </div>
       </Modal>
     );
@@ -206,7 +219,6 @@ class LeadManageAdd extends Component {
   async queryUserByMobile() {
     const { dispatch } = this.props;
     let { record } = this.state;
-    let newIfMoblie = false;
     record.mobile = record.mobile.trim();
     if (!regExpConfig.phoneAndLandline.test(record.mobile)) {
       message.error('手机号格式不正确');
@@ -214,26 +226,20 @@ class LeadManageAdd extends Component {
     }
     const parm = {
       mobile: record.mobile,
-      // trackSource: 'TSC060'
     };
     await dispatch({
-      type: 'LeadManage/queryUserByMobileModel',
+      type: 'LeadManage/checkMobileModel',
       payload: parm,
     }).then(async res => {
       if (res && res.code === 200) {
-        message.warning('该手机号已存在，无需重复录入。');
-        newIfMoblie = res.data
+        if (res.data == true) {
+          message.warning('该手机号已存在，无需重复录入。');
+        }
       }
     });
-    return newIfMoblie;
   }
-  handleOk = async() => {
+  handleOk = async () => {
     let { record } = this.state;
-    const reIf = await this.queryUserByMobile();
-    if(reIf){
-      message.warning('该手机号已存在，无需重复录入。');
-      return false
-    }
     record.name = record.name.trim();
     record.mobile = record.mobile.trim();
     record.trackDesc = record.trackDesc.trim();
@@ -244,7 +250,7 @@ class LeadManageAdd extends Component {
     } else if (record.name.length > 10) {
       message.error('客户姓名限制1-10字符长度');
       return false;
-    }else if (record.referrerName.length > 10) {
+    } else if (record.referrerName.length > 10) {
       message.error('推荐人限制0-10字符长度');
       return false;
     } else if (!record.mobile) {

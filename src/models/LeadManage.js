@@ -9,7 +9,7 @@ import {
   queryUserByName, //查询推荐人建议
   getTree, //获取线索来源渠道树
   trackstatuslog, //分页查询线索状态变更记录
-  queryUserByMobile, //根据手机号查重
+  checkMobile, //根据手机号查重
 } from '@/services/leadManage';
 
 export default {
@@ -69,8 +69,8 @@ export default {
       return response;
     },
     // 根据手机号查重
-    *queryUserByMobileModel({ payload }, { call, put }) {
-      const response = yield call(queryUserByMobile, {
+    *checkMobileModel({ payload }, { call, put }) {
+      const response = yield call(checkMobile, {
         ...payload,
       });
       return response;
