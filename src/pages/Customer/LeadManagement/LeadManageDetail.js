@@ -111,6 +111,7 @@ class LeadManageDetail extends Component {
         </PageHeaderWrapper>
         {this.state.clueVisible && (
           <CluesEdit
+            {...this.props}
             visible={this.state.clueVisible}
             record={this.state.record}
             handleOk={r => this.handleClueOk(r)}
@@ -123,9 +124,20 @@ class LeadManageDetail extends Component {
   // 编辑
   handleClueOk = r => {
     const { dispatch } = this.props;
+    const parm = {
+      mobile: r.mobile,
+      name: r.name,
+      trackAddress: r.address,
+      trackArea: r.area,
+      trackDesc: r.trackDesc,
+      trackReferCode: r.referrerCode,
+      trackReferName: r.referrerName,
+      trackReferPhone: r.referrerPhone,
+      uid: r.uid,
+    }
     dispatch({
       type: 'LeadManage/trackEditModel',
-      payload: { ...r },
+      payload: parm,
     }).then(res => {
       if (res && res.code === 200) {
         message.success('线索编辑成功');

@@ -3,7 +3,15 @@ import { baseurl } from './config';
 
 // 添加线索
 export async function trackAdd(params) {
-  return request(baseurl + '/api/v1/sso/track/add', {
+  return request(baseurl + '/api/v1/sso/track/addNew', {
+    method: 'POST',
+    body: params,
+    systemCode: 'S005',
+  });
+}
+// 根据手机号查询线索
+export async function queryUserByMobile(params) {
+  return request(baseurl + '/api/v1/sso/track/checkMobile', {
     method: 'POST',
     body: params,
     systemCode: 'S005',
@@ -12,7 +20,7 @@ export async function trackAdd(params) {
 
 // 编辑线索
 export async function trackEdit(params) {
-  return request(baseurl + '/api/v1/sso/track/edit', {
+  return request(baseurl + '/api/v1/sso/track/editNew', {
     method: 'POST',
     body: params,
     systemCode: 'S005',
@@ -69,8 +77,8 @@ export async function queryReferrer(params) {
 }
 
 // 查询推荐人建议
-export async function queryReferrerSuggest(params) {
-  return request(baseurl + '/api/v1/sso/track/queryReferrerSuggest', {
+export async function queryUserByName(params) {
+  return request(baseurl + '/api/v1/sso/user/queryUserByName', {
     method: 'POST',
     body: params,
     systemCode: 'S005',

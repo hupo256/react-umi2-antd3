@@ -13,16 +13,67 @@ const { TextArea } = Input;
 class CluesEdit extends Component {
   constructor(props) {
     super(props);
+    console.log(props);
     this.state = {
       record: {},
+      referrerNameList: [],
     };
+    this.queryUserByName = this.queryUserByName.bind(this);
+    this.queryUserByMobile = this.queryUserByMobile.bind(this);
   }
-  componentDidMount() {
-    this.setState({ record: this.props.record });
+  async componentDidMount() {
+    console.log('did', this.props);
+    await this.setState({ record: this.props.record });
+    console.log('did', this.state);
+  }
+  //推荐人模糊搜索
+  async queryUserByName(value) {
+    const { dispatch } = this.props;
+    console.log(value);
+    const parm = {
+      nickName: value,
+      pageNum: 1,
+      pageSize: 3,
+    };
+    await dispatch({
+      type: 'LeadManage/queryUserByName',
+      payload: parm,
+    }).then(async res => {
+      if (res && res.code === 200) {
+        message.success('查询成功');
+        if (res.data && res.data.length > 0) {
+          await this.setState({ referrerNameList: res.data });
+        } else {
+          await this.setState({ referrerNameList: [] });
+        }
+      }
+    });
+  }
+  //点击推荐模糊选项
+  clickReferrerDiv(value) {
+    this.setState({
+      record: {
+        ...this.state.record,
+        referrerName: value.realName,
+        referrerCode: value.userCode,
+        referrerPhone: value.mobile,
+      },
+      referrerNameList: [],
+    });
+  }
+  //点击推荐人输入框
+  async clickTrackRefer() {
+    await this.queryUserByName(this.state.record.referrerName);
+  }
+  //推荐人改变
+  async changeTrackRefer(e) {
+    console.log('12', e.target.value, this.state);
+    await this.setState({ record: { ...this.state.record, referrerName: e.target.value } });
+    this.queryUserByName(this.state.record.referrerName);
   }
 
   render() {
-    const { record } = this.state;
+    const { record, referrerNameList } = this.state;
     return (
       <Modal
         title={<span style={{ fontWeight: 600 }}>编辑</span>}
@@ -54,6 +105,7 @@ class CluesEdit extends Component {
               onChange={e =>
                 this.setState({ record: { ...this.state.record, mobile: e.target.value } })
               }
+              onBlur={this.queryUserByMobile}
             />
           </span>
         </div>
@@ -63,7 +115,29 @@ class CluesEdit extends Component {
         </div>
         <div className={styles.CluesEdit}>
           <span>推荐人：</span>
-          <span style={{ flex: 1 }}>{record.referrerName}</span>
+          {record.trackInputType == 2 && record.trackReferEdit ? (
+            <span style={{ flex: 1, position: 'relative' }}>
+              <Input
+                value={record.referrerName}
+                onClick={() => this.clickTrackRefer()}
+                onChange={e => this.changeTrackRefer(e)}
+              />
+              <div
+                className={styles.referrerNameSelect}
+                style={{ display: referrerNameList.length > 1 ? 'block' : 'none' }}
+              >
+                {referrerNameList.length != 0
+                  ? referrerNameList.map(item => {
+                      return (
+                        <div onClick={this.clickReferrerDiv.bind(this, item)}>{item.realName}</div>
+                      );
+                    })
+                  : null}
+              </div>
+            </span>
+          ) : (
+            <span style={{ flex: 1 }}>{record.referrerName}</span>
+          )}
         </div>
         <div className={styles.CluesEdit}>
           <span>楼盘/楼宇：</span>
@@ -106,9 +180,39 @@ class CluesEdit extends Component {
       </Modal>
     );
   }
-
-  handleOk = () => {
+  async queryUserByMobile() {
+    const { dispatch } = this.props;
     let { record } = this.state;
+    let newIfMoblie = false;
+    record.mobile = record.mobile.trim();
+    if (!regExpConfig.phoneAndLandline.test(record.mobile)) {
+      message.error('手机号格式不正确');
+      return false;
+    }
+    const parm = {
+      mobile: record.mobile,
+      // trackSource: 'TSC060',
+      uid: record.uid
+    };
+    await dispatch({
+      type: 'LeadManage/queryUserByMobileModel',
+      payload: parm,
+    }).then(async res => {
+      if (res && res.code === 200) {
+        message.success('查询成功');
+        console.log('res', res);
+        newIfMoblie = res.data
+      }
+    });
+    return newIfMoblie;
+  }
+  handleOk = async() => {
+    let { record } = this.state;
+    const reIf = await this.queryUserByMobile();
+    if(reIf){
+      message.warning('该手机号已存在，无需重复录入。');
+      return false
+    }
     record.name = record.name.trim();
     record.mobile = record.mobile.trim();
     record.trackDesc = record.trackDesc.trim();
@@ -121,7 +225,7 @@ class CluesEdit extends Component {
     } else if (!record.mobile) {
       message.error('请输入联系电话');
       return false;
-    } else if (!regExpConfig.phone.test(record.mobile)) {
+    } else if (!regExpConfig.phoneAndLandline.test(record.mobile)) {
       message.error('手机号格式不正确');
       return false;
     } else if (record.address && record.address.length > 30) {

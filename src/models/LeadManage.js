@@ -6,9 +6,10 @@ import {
   trackExportCriteria, //导出线索
   trackQuery, //分页查询线索
   queryReferrer, //分页查询推荐列表
-  queryReferrerSuggest, //查询推荐人建议
+  queryUserByName, //查询推荐人建议
   getTree, //获取线索来源渠道树
   trackstatuslog, //分页查询线索状态变更记录
+  queryUserByMobile, //根据手机号查重
 } from '@/services/leadManage';
 
 export default {
@@ -60,6 +61,20 @@ export default {
       });
       return response;
     },
+    // 创建线索
+    *trackAddModel({ payload }, { call, put }) {
+      const response = yield call(trackAdd, {
+        ...payload,
+      });
+      return response;
+    },
+    // 根据手机号查重
+    *queryUserByMobileModel({ payload }, { call, put }) {
+      const response = yield call(queryUserByMobile, {
+        ...payload,
+      });
+      return response;
+    },
     // 变更线索状态
     *trackEditStatusModel({ payload }, { call, put }) {
       const response = yield call(trackEditStatus, {
@@ -105,6 +120,12 @@ export default {
         type: 'upData',
         payload: { trackDataSearch: { ...payload } },
       });
+    },
+    *queryUserByName({ payload }, { call, put }) {
+      const response = yield call(queryUserByName, {
+        ...payload,
+      });
+      return response;
     },
   },
 
