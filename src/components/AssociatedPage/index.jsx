@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Input, Icon, Radio, Tooltip, Tabs, Table  } from 'antd';
+import { Input, Icon, Tooltip, Tabs, Table, Button ,  Radio } from 'antd';
 import sty from './index.less'
 import _ from 'lodash'
 const { TabPane } = Tabs;
@@ -27,7 +27,7 @@ export default class Page extends Component {
         const { id = '' } = this.props;
         document.body.addEventListener('click', e => {
             // e.stopPropagation();
-            e.preventDefault();
+            // e.preventDefault();
             if (e.target.id===('myInput-' + id) || e.target.parentNode.id === ('mySvg-' + id)) {
                 this.setState(prevState => {
                     if (prevState.show) {
@@ -52,7 +52,7 @@ export default class Page extends Component {
     }
 
     componentDidUpdate(prev) {
-        if (this.props.options.length && (prev.options !== this.props.options) ) {
+        if (this.props.options?.length && (prev.options !== this.props.options) ) {
             this.initData()
         }
 
