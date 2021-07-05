@@ -487,7 +487,6 @@ export default class CreateEdit extends Component {
                             onChange={this.getTabData}
                             onResult={this.resultHandle}
                             tabData = {{
-                                tabHead: ColumnsObj[`columns_${plugDetailType}`],
                                 tabList: plugDataList,
                                 tabTotal: plugDataTotal,
                                 detailType: plugDetailType
