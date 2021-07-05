@@ -218,7 +218,7 @@ export default class Page extends Component {
     render() {
         const { show, currentTab, selectLists, tabPanList, tableShow, pageSize, pageNum, 
             searchText, tableLoading, currentarticleDicCode  } = this.state;
-        const { tabData: {tabHead, tabList, tabTotal, detailType }, articleDicOpts, initValue, id='' } = this.props;
+        const { tabData: { tabList, tabTotal, detailType }, articleDicOpts, initValue, id='' } = this.props;
         const placeholderArr = [
             '工地标题',
             '设计师姓名',
@@ -227,6 +227,172 @@ export default class Page extends Component {
             '专题标题',
             '小游戏标题'
         ];
+        const ColumnsObj = {
+            // 工地详情页表头
+            columns_1: [
+                {
+                    title: <span style={{fontWeight: 600}}>工地</span>,
+                    key: 'gongdiTitle',
+                    dataIndex: 'gongdiTitle',
+                    // width: '30%',
+                    render: (text, r) =>  <Tooltip placement='topLeft' title={text}>
+                        <div style={{ maxWidth: 120, display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>{text}</div>
+                    </Tooltip> 
+                },
+                {
+                    title: <span style={{fontWeight: 600}}>工地信息</span>,
+                    key: 'buildingName',
+                    dataIndex: 'buildingName',
+                    // width: 200,
+                    render: (text, r) => 
+                        <Tooltip placement='topLeft' title={text}>
+                            <div style={{ maxWidth: 120, display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>{text}</div>
+                        </Tooltip> 
+                },
+                {
+                    title: <span style={{fontWeight: 600}}>阶段</span>,
+                    key: 'gongdiStageName',
+                    dataIndex: 'gongdiStageName',
+                }
+            ],
+
+            // 设计师表头
+            columns_2: [
+                {
+                    title: <span style={{fontWeight: 600}}>设计师</span>,
+                    key: 'name',
+                    dataIndex: 'name',
+                    // align: 'left',
+                    render: (text, record) => <div style={{display: 'flex', alignItems: 'center'}}>
+                        <img src={record?.headPicUrl} alt="" srcset="" style={{ width: 30, height: 30, borderRadius: '100%'}}/>
+                        <span style={{marginLeft: 8}}>{text}</span>
+                    </div>
+                },
+                {
+                    title: <span style={{fontWeight: 600}}>职级</span>,
+                    key: 'position',
+                    dataIndex: 'position',
+                },
+                {
+                    title: <span style={{fontWeight: 600}}>案例数</span>,
+                    key: 'caseNum',
+                    dataIndex: 'caseNum'
+                },
+            ],
+
+            // 案例表头
+            columns_3: [
+                {
+                    title: <span style={{fontWeight: 600}}>案例</span>,
+                    key: 'titleInfo',
+                    dataIndex: 'title',
+                    render: (text, r) => 
+                        <div  style={{maxWidth: 120,  display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>
+                            <Tooltip placement='topLeft' title={text}>
+                                {text}
+                            </Tooltip>
+                        </div>
+                },
+                {
+                    title: <span style={{fontWeight: 600}}>案例信息</span>,
+                    key: 'buildingName',
+                    dataIndex: 'buildingName',
+                    render: (text, r) => <Tooltip placement='topLeft' title={text}>
+                        <span style={{ maxWidth: 120, display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>{text}</span>
+                    </Tooltip> 
+                },
+                {
+                    title: <span style={{fontWeight: 600}}>设计师</span>,
+                    key: 'designerName',
+                    dataIndex: 'designerName',
+                    render: (text, r) => <Tooltip placement='topLeft' title={text}>
+                        <div style={{maxWidth: 120,  display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>{text}</div>
+                    </Tooltip> 
+                },
+            ],
+
+            // 文章表头
+            columns_4: [
+                {
+                    title: <span style={{fontWeight: 600}}>文章标题</span>,
+                    key: 'articleTitle',
+                    dataIndex: 'articleTitle',
+                    render: (text, r) => <Tooltip placement='topLeft' title={text}>
+                        <div style={{maxWidth: 120,  display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>{text}</div>
+                    </Tooltip> 
+                },
+                {
+                    title: <span style={{fontWeight: 600}}>发布人</span>,
+                    key: 'creatorName',
+                    dataIndex: 'creatorName',
+                    render: (text, r) => <Tooltip placement='topLeft' title={text}>
+                        <div style={{maxWidth: 120,  display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>{text}</div>
+                    </Tooltip> 
+                },
+                {
+                    title: <span style={{fontWeight: 600}}>更新时间</span>,
+                    key: 'updateTime',
+                    dataIndex: 'updateTime'
+                },
+            ],
+            // 专题表头
+            columns_5: [
+                {
+                    title: <span style={{fontWeight: 600}}>专题标题</span>,
+                    key: 'specialTitle',
+                    dataIndex: 'specialTitle',
+                    render: (text, r) => <Tooltip placement='topLeft' title={text}>
+                        <div style={{maxWidth: 120,  display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>{text}</div>
+                    </Tooltip> 
+                },
+                {
+                    title: <span style={{fontWeight: 600}}>创建人</span>,
+                    key: 'creatorName',
+                    dataIndex: 'creatorName',
+                    render: (text, r) => <Tooltip placement='topLeft' title={text}>
+                        <div style={{maxWidth: 120,  display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>{text}</div>
+                    </Tooltip> 
+                },
+                {
+                    title: <span style={{fontWeight: 600}}>更新时间</span>,
+                    key: 'updateTime',
+                    dataIndex: 'updateTime'
+                },
+            ],
+            // 小游戏表头
+            columns_6: [
+                {
+                    title: <span style={{fontWeight: 600}}>游戏标题</span>,
+                    key: 'activityTitle',
+                    dataIndex: 'activityTitle',
+                    render: (text, r) => <Tooltip placement='topLeft' title={text}>
+                        <div style={{maxWidth: 120,  display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>{text}</div>
+                    </Tooltip> 
+                },
+                {
+                    title: <span style={{fontWeight: 600}}>状态</span>,
+                    key: 'state',
+                    dataIndex: 'state',
+                    render: (text, r) => {
+                        let tex = '未开始';
+                        text === 1 && (tex = '进行中');
+                        text === 2 && (tex = '已结束');
+                        return tex;
+                    }
+                },
+                {
+                    title: <span style={{fontWeight: 600}}>创建人</span>,
+                    key: 'creater',
+                    dataIndex: 'creater',
+                    render: (text, r) => <Tooltip placement='topLeft' title={text}>
+                        <div style={{maxWidth: 120,  display: '-webkit-box', textOverflow: 'ellipsis',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>{text}</div>
+                    </Tooltip> 
+                },
+               
+               
+            ]
+
+        }
         const currentValue = selectLists.length ?  selectLists.map(item => item.name).join('/') : initValue
         return (
             <div ref='wrap' className={sty.wrap}  onClick={this.wrapClick}  style={{minWidth: 200, display: 'inline-block', position: 'relative'}}>
@@ -270,7 +436,7 @@ export default class Page extends Component {
                             <Table
                                 size='small'
                                 style={{marginTop: 8, cursor: 'pointer'}}
-                                columns={ tabHead }
+                                columns={ ColumnsObj[`columns_${detailType}`] }
                                 scroll={{ y: 240 }}
                                 dataSource={tabList}
                                 rowKey={record => record.uid}
