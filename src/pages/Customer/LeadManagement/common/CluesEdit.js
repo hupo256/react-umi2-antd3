@@ -81,10 +81,10 @@ class CluesEdit extends Component {
         onCancel={this.props.handleCancel}
         okText="确认"
         maskClosable={false}
-        className='addTarckModal'
+        className="addTarckModal"
         width={600}
       >
-        <div  onClick={() => this.setState({ referrerNameList: [] })} style={{padding: 24}}>
+        <div onClick={() => this.setState({ referrerNameList: [] })} style={{ padding: 24 }}>
           <div className={styles.CluesEdit}>
             <span className="beforeStar">客户姓名：</span>
             <span style={{ flex: 1 }}>
@@ -119,20 +119,32 @@ class CluesEdit extends Component {
             {record.trackInputType == 2 && record.trackReferEdit ? (
               <span style={{ flex: 1, position: 'relative' }}>
                 <Input
-                  value={record.referrerName}
+                  value={
+                    record.referrerName
+                      ? record.referrerName
+                      : record.referrerPhone
+                        ? record.referrerPhone
+                        : ''
+                  }
                   onClick={() => this.clickTrackRefer()}
                   onChange={e => this.changeTrackRefer(e)}
                 />
                 <div
                   className={styles.referrerNameSelect}
-                  style={{ display: referrerNameList.length > 0 ? 'block' : 'none', padding: 5  }}
+                  style={{ display: referrerNameList.length > 0 ? 'block' : 'none', padding: 5 }}
                 >
                   {referrerNameList.length != 0
                     ? referrerNameList.map(item => {
                         return (
-                          <div onClick={this.clickReferrerDiv.bind(this, item)}
-                          style={{ cursor: 'pointer', padding: 2 }}>
-                            {item.realName}
+                          <div
+                            onClick={this.clickReferrerDiv.bind(this, item)}
+                            style={{ cursor: 'pointer', padding: 2 }}
+                          >
+                            {item.realName && item.mobile
+                              ? item.realName + '(' + item.mobile + ')'
+                              : item.realName == ''
+                                ? item.mobile
+                                : item.realName}
                           </div>
                         );
                       })
@@ -140,7 +152,13 @@ class CluesEdit extends Component {
                 </div>
               </span>
             ) : (
-              <span style={{ flex: 1 }}>{record.referrerName}</span>
+              <span style={{ flex: 1 }}>
+                {record.referrerName && record.referrerPhone
+                  ? record.referrerName + '(' + record.referrerPhone + ')'
+                  : record.referrerPhone
+                    ? record.referrerPhone
+                    : record.referrerName}
+              </span>
             )}
           </div>
           <div className={styles.CluesEdit}>
@@ -238,8 +256,8 @@ class CluesEdit extends Component {
     } else if (record.area && (parseFloat(record.area) < 0.01 || parseInt(record.area) > 99999)) {
       message.error('面积限制输入0.01-99999范围内的数字（含两位小数）');
       return false;
-    } else if (record.trackDesc && record.trackDesc.length > 100) {
-      message.error('线索描述限制0-100字符长度');
+    } else if (record.trackDesc && record.trackDesc.length > 200) {
+      message.error('线索描述限制0-200字符长度');
       return false;
     }
     this.props.handleOk(record);

@@ -54,19 +54,19 @@ class LeadManageDetail extends Component {
                       编辑
                     </span>
                   )} */}
-                   <span
-                      style={{
-                        color: '#fe6a30',
-                        fontSize: 14,
-                        fontWeight: 400,
-                        marginLeft: 12,
-                        cursor: 'pointer',
-                      }}
-                      onClick={() => this.setState({ clueVisible: true, record: trackDetail })}
-                    >
-                      <Icon type="edit" />
-                      编辑
-                    </span>
+                  <span
+                    style={{
+                      color: '#fe6a30',
+                      fontSize: 14,
+                      fontWeight: 400,
+                      marginLeft: 12,
+                      cursor: 'pointer',
+                    }}
+                    onClick={() => this.setState({ clueVisible: true, record: trackDetail })}
+                  >
+                    <Icon type="edit" />
+                    编辑
+                  </span>
                 </span>
               }
             >
@@ -84,7 +84,13 @@ class LeadManageDetail extends Component {
               <Descriptions.Item label="来源渠道">
                 {trackDetail.sourceChannelName}{' '}
               </Descriptions.Item>
-              <Descriptions.Item label="推荐人">{trackDetail.referrerName}</Descriptions.Item>
+              <Descriptions.Item label="推荐人">
+                {trackDetail.referrerName && trackDetail.referrerPhone
+                  ? trackDetail.referrerName + '(' + trackDetail.referrerPhone + ')'
+                  : trackDetail.referrerPhone
+                    ? trackDetail.referrerPhone
+                    : trackDetail.referrerName}
+              </Descriptions.Item>
             </Descriptions>
             <Row style={{ marginBottom: 20 }}>
               <Col span={8} style={{ paddingRight: 12 }}>
@@ -134,7 +140,7 @@ class LeadManageDetail extends Component {
       trackReferName: r.referrerName,
       trackReferPhone: r.referrerPhone,
       uid: r.uid,
-    }
+    };
     dispatch({
       type: 'LeadManage/trackEditModel',
       payload: parm,
