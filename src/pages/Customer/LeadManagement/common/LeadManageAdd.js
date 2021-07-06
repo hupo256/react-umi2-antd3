@@ -87,7 +87,7 @@ class LeadManageAdd extends Component {
 
   render() {
     const { record, referrerNameList } = this.state;
-    console.log('referrerNameList', referrerNameList);
+    // console.log('referrerNameList', referrerNameList);
     return (
       <Modal
         title={<span style={{ fontWeight: 600 }}>创建</span>}
@@ -151,7 +151,7 @@ class LeadManageAdd extends Component {
             <span>推荐人：</span>
             <span style={{ flex: 1, position: 'relative' }}>
               <Input
-                value={record.referrerName !=  '' ? record.referrerName :record.referrerPhone!= ''? record.referrerPhone: '' }
+                value={record.referrerName !=  '' ? record.referrerName : '' }
                 onClick={() => this.clickTrackRefer()}
                 onChange={e => this.changeTrackRefer(e)}
               />
