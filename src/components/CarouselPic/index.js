@@ -14,9 +14,10 @@ export default class CarouselPic extends Component {
     const Inputs =
       inputData &&
       inputData.map((item, idx) => {
+        const type = item.originalFullUrl.split('.')[item.originalFullUrl.split('.').length - 1]
         return (
           <div key={idx.toString(36)} className={styles.slick}>
-            <img src={item[name] || item.originalFullUrl || item} alt="example" />
+            {type === 'mp4' ? <video src={item[name] || item.originalFullUrl || item} controls="controls" /> : <img src={item[name] || item.originalFullUrl || item} alt="example" />}
           </div>
         );
       });
