@@ -1,6 +1,6 @@
 /*
- * @Author: zqm 
- * @Date: 2020-07-10 15:03:59 
+ * @Author: zqm
+ * @Date: 2020-07-10 15:03:59
  * @Last Modified by: mikey.zhaopeng
  * @Last Modified time: 2021-03-23 16:40:26
  * 图片上传
@@ -117,7 +117,7 @@ class Uploads extends Component {
   }
   beforeUpload = (file, subType, type, bsId, f) => {
     const isLt2M = file.size / 1048576 < (this.props.size || 5);
-    const isType = !/\.(png|jpg|gif|jpeg|webp|PNG|JPG|GIF|JPEG|WEBP)$/.test(file.name);
+    const isType = !/\.(png|jpg|gif|jpeg|webp|PNG|JPG|GIF|JPEG|WEBP|mp4)$/.test(file.name);
     if (!isLt2M) {
       message.warning(`图片不能大于${this.props.size || 5}M!`, 2);
       return false;
