@@ -10,6 +10,7 @@ import { Modal, Row, Col, Input, message, Select, DatePicker, Icon } from 'antd'
 import { connect } from 'dva';
 import Upload from '@/components/Upload/Upload';
 import { getDay } from '@/utils/utils';
+import { editSiteDetailApi } from '@/services/siteLibrary'
 import RcViewer from 'rc-viewer';
 import moment from 'moment';
 const { TextArea } = Input;
@@ -35,7 +36,7 @@ class DynamicAdd extends Component {
     };
   }
   componentDidMount() {
-    const { dispatch, status } = this.props;
+    const { dispatch, status, initData } = this.props;
     dispatch({
       type: 'DictConfig/queryDicModel',
       payload: { dicModuleCodes: 'DM001' },
@@ -44,19 +45,29 @@ class DynamicAdd extends Component {
         const data = res.data['DM001']
           .filter(item => item.status === '1')
           .filter(item => item.code === status);
-        this.setState({ diaryDate: getDay(), gongdiStage: (data.length > 0 && status) || [] });
+        this.setState({ diaryDate: initData?.diaryDate ||  getDay()});
       }
     });
+    if (initData) {
+      this.setState({
+        diaryContent: initData.diaryContent,
+        gongdiStage: initData.gongdiStage,
+        diaryDate: initData.diaryDate,
+        diaryPics: initData.fileList ?  initData.fileList?.map(item => ({ path: item.fileUrl })) : [],
+      })
+    } 
+    
   }
   render() {
     const dateFormat = 'YYYY-MM-DD';
     const {
       DictConfig: { dicData },
+      initData
     } = this.props;
     const { diaryContent, uploadVisible, diaryDate, rep, diaryPics } = this.state;
     return (
       <Modal
-        title="创建动态"
+        title={(initData ? '编辑' : '创建') + '动态'}
         visible={this.props.visible}
         onOk={() => this.handleOk()}
         onCancel={this.handleCancel}
@@ -73,19 +84,29 @@ class DynamicAdd extends Component {
               onChange={this.handleSelectChange}
               style={{ width: '100%' }}
               placeholder="请选择所属阶段"
+              disabled={initData}
             >
               {dicData &&
                 dicData['DM001'] &&
                 dicData['DM001'].map(item => {
-                  if (item.status === '1') {
+                  if(initData && initData !== {}) {
                     return (
                       <Option value={item.code} key={item.uid}>
                         {item.name}
                       </Option>
                     );
                   } else {
-                    return null;
+                    if (item.status === '1') {
+                      return (
+                        <Option value={item.code} key={item.uid}>
+                          {item.name}
+                        </Option>
+                      );
+                    } else {
+                      return null;
+                    }
                   }
+                  
                 })}
             </Select>
           </Col>
@@ -113,7 +134,7 @@ class DynamicAdd extends Component {
               placeholder="请输入工作内容"
               onChange={e => this.handleChange(e.target.value, 'diaryContent', 200)}
               rows={4}
-              value={diaryContent}
+              value={ diaryContent}
             />
           </Col>
         </Row>
@@ -123,7 +144,7 @@ class DynamicAdd extends Component {
           </Col>
           <Col span={18}>
             <div className="coverImgs">
-              {diaryPics.length > 0 &&
+              {diaryPics && diaryPics.length > 0 &&
                 diaryPics.map((item, index) => {
                   return (
                     <div className="previewimg previewimgs" key={item.path}>
@@ -153,7 +174,7 @@ class DynamicAdd extends Component {
                   );
                 })}
 
-              {diaryPics.length < 9 && (
+              { (!!!diaryPics || diaryPics?.length) < 9 && (
                 <div
                   className="previewimgs"
                   style={{ border: '1px dashed #d9d9d9' }}
@@ -169,7 +190,7 @@ class DynamicAdd extends Component {
           <Upload
             visible={uploadVisible}
             selectNum={9}
-            selected={diaryPics.length}
+            selected={diaryPics?.length}
             rep={rep}
             size={10}
             handleOk={data => this.handleUploadOk(data)}
@@ -205,7 +226,7 @@ class DynamicAdd extends Component {
       this.setState({ [name]: value });
     }
   };
-  handleOk = () => {
+  handleOk = async () => {
     const { diaryContent, diaryDate, gongdiStage, diaryPics } = this.state;
     const imglist =
       (diaryPics.length > 0 && diaryPics.map(item => item.path).filter(item => item)) || [];
@@ -220,28 +241,53 @@ class DynamicAdd extends Component {
       return false;
     } else {
       // createDynamicModel
-      const { dispatch, record } = this.props;
-      dispatch({
-        type: 'SiteLibrary/createDynamicModel',
-        payload: {
-          diaryPics: imglist,
-          diaryContent,
-          diaryDate,
-          gongdiStage,
-          gongdiUid: record.gongdiUid,
-        },
-      }).then(res => {
-        if (res && res.code === 200) {
-          message.success('创建成功');
-          this.setState({
-            diaryContent: null,
-            diaryDate: null,
-            diaryPics: [],
-            gongdiStage: null,
-          });
-          this.props.handleOk();
-        }
-      });
+      const { dispatch, record, initData } = this.props;
+      if (initData) {
+          try {
+            const res = await editSiteDetailApi({
+              diaryContent: diaryContent,
+              diaryDate: diaryDate,
+              diaryPics: imglist,
+              gongdiStage: gongdiStage,
+              diaryUid: initData.diaryUid
+            });
+            if (res.code === 200 ) {
+              message.success('编辑成功！');
+              this.setState({
+                diaryContent: null,
+                diaryDate: null,
+                diaryPics: [],
+                gongdiStage: null,
+              });
+              this.props.handleOk();
+            }
+          } catch (error) {
+            message.error('请求出错！')
+          }
+      } else {
+        dispatch({
+          type: 'SiteLibrary/createDynamicModel',
+          payload: {
+            diaryPics: imglist,
+            diaryContent,
+            diaryDate,
+            gongdiStage,
+            gongdiUid: record.gongdiUid,
+          },
+        }).then(res => {
+          if (res && res.code === 200) {
+            message.success('创建成功');
+            this.setState({
+              diaryContent: null,
+              diaryDate: null,
+              diaryPics: [],
+              gongdiStage: null,
+            });
+            this.props.handleOk();
+          }
+        });
+      }
+      
       // this.props.handleOk({ name: name.trim(), extDescOne, extDescTwo });
     }
   };

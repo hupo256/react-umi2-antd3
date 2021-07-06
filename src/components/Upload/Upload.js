@@ -2,11 +2,11 @@
  * @Author: zqm 
  * @Date: 2021-02-23 18:59:56 
  * @Last Modified by: zqm
- * @Last Modified time: 2021-03-23 18:29:46
+ * @Last Modified time: 2021-06-24 09:20:05
  * 图片上传
  */
 import React, { Component } from 'react';
-import { Modal, Button, Tabs, Icon } from 'antd';
+import { Modal, Button, Tabs, Icon, message } from 'antd';
 import styles from './Upload.less';
 import AlreadyUpload from './AlreadyUpload';
 import ImageUpload from './ImageUpload';
@@ -30,7 +30,7 @@ class Upload extends Component {
         title={`上传图片  ${checkedData.length}/${num}`}
         visible={this.props.visible}
         onOk={this.handleOk}
-        onCancel={this.props.handleCancel}
+        onCancel={this.uploadCancel}
         footer={null}
         maskClosable={false}
         width={710}
@@ -80,7 +80,7 @@ class Upload extends Component {
               <Button onClick={() => this.handleOk()} type="primary" style={{ marginRight: 10 }}>
                 确认
               </Button>
-              <Button onClick={this.props.handleCancel}>取消</Button>
+              <Button onClick={this.uploadCancel}>取消</Button>
             </div>
           </div>
         </div>
@@ -100,16 +100,30 @@ class Upload extends Component {
   handleOk = () => {
     const { activeKey, checkedData } = this.state;
     if (activeKey === 'key2') {
-      this.props.handleOk(checkedData);
+      if (Array.isArray(checkedData) && checkedData.length == 0) {
+        message.error('请先上传图片');
+      } else {
+        this.props.handleOk(checkedData);
+      }
     } else {
       const data = checkedData.map(item => {
         item.path = item.addr;
         item.url = item.addr;
         return item;
       });
-      this.props.handleOk(data);
+      if (Array.isArray(data) && data.length == 0) {
+        message.error('请先上传图片');
+      } else {
+        this.props.handleOk(data);
+      }
     }
   };
+
+  uploadCancel = () => {
+    const { handleCancel } = this.props
+    this.setState({ checkedData: [] });
+    handleCancel && handleCancel()
+  }
 }
 
 export default Upload;

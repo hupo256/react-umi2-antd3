@@ -382,9 +382,6 @@ class ArticleLibraryAdd extends PureComponent {
     );
   };
   init = detail => {
-    console.log('====================================');
-    console.log(detail);
-    console.log('====================================');
     this.props.form.setFieldsValue({
       articleCoverImg: detail.articleCoverImg,
     });

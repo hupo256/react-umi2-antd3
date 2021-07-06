@@ -13,12 +13,13 @@ import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { paginations, getUrl, successIcon, waringInfo } from '@/utils/utils';
 import styles from './CaseLibrary.less';
 import { getauth } from '@/utils/authority';
-import QRCode from 'qrcode.react'
+import  Applets  from '../components/Applets'
 const { confirm, info } = Modal;
 const { Search } = Input;
 
-@connect(({ CaseLibrary, loading }) => ({
+@connect(({ CaseLibrary, ContentManage, loading }) => ({
   CaseLibrary,
+  ContentManage,
   Loading: loading.effects['CaseLibrary/queryDesignerListModel'],
 }))
 class CaseLibrary extends PureComponent {
@@ -39,6 +40,7 @@ class CaseLibrary extends PureComponent {
       Loading,
       CaseLibrary: { CaseList },
     } = this.props;
+    const isCompanyAuthWechatMini = JSON.parse(localStorage.getItem('isCompanyAuthWechatMini'))
     const permissionsBtn = getauth().permissions || [];
     const columns = [
       {
@@ -151,10 +153,15 @@ class CaseLibrary extends PureComponent {
                   {r.status === '1' ? '停用' : '启用'}{' '}
                 </span>
               )}
-              {/* <span className="operateLine" /> */}
-              {/* <span className="operateBtn" onClick={() => this.openWechatCode(r)}>
-                  {r.status === '1' && '小程序码'}
-                </span> */}
+              {r.status === '1' && permissionsBtn.includes('BTN210623000003') &&  
+              isCompanyAuthWechatMini && <span className="operateLine" />}
+              {r.status === '1' && 
+              permissionsBtn.includes('BTN210623000003') && 
+              isCompanyAuthWechatMini &&
+              <span className="operateBtn" onClick={() => this.getWechatCode(r)}>
+                小程序码
+              </span>}
+
             </div>
           );
         },
@@ -223,17 +230,7 @@ class CaseLibrary extends PureComponent {
               pagination={(CaseList && paginations(CaseList)) || false}
             />
           </Card>
-          <Modal
-            title='小程序码'
-            visible={this.state.visible}
-            onCancel={this.handleCancel}
-            width='360px'
-            footer={null}
-          >
-            <div style={{display: 'flex', justifyContent: 'center', padding: 20}}>
-              <QRCode style={{width: 200, height: 200}} value="http://facebook.github.io/react/" />,
-            </div>
-          </Modal>
+          <Applets />
         </PageHeaderWrapper>
       </div>
     );
@@ -243,10 +240,15 @@ class CaseLibrary extends PureComponent {
       visible: false
     })
   }
-  // 打开小程序码
-  openWechatCode = record => {
-    this.setState({
-      visible: true
+  // 获取小程序码
+  getWechatCode = record => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'ContentManage/getAppletsCode',
+      payload: {
+        qrCodePage: 'case',
+        uid: record.uid
+      }
     })
   }
   handleSrarchStatus = status => {

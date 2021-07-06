@@ -1,4 +1,4 @@
-@hightColor: rgba(222, 57, 45, 1);
+@hightColor: #ef6a30;
 @fontColor: #222;
 @fontGray: #a1a1a1;
 @borderRadius: 6px;
@@ -219,6 +219,7 @@
     .channelBox {
       padding-top: 0.5em;
       margin-bottom: -2.5em;
+      justify-content: space-between;
 
       > li {
         width: 58px;
@@ -615,7 +616,6 @@
         top: 37px;
         height: 46px;
       }
-      // background: url('@{picturePath}img_word_about@2x.png') no-repeat fixed right top;
       h3 {
         height: 27px;
       }
@@ -677,7 +677,7 @@
   .totopBox {
     position: absolute;
     right: 0.5em;
-    bottom: 2.5em;
+    bottom: 3em;
     z-index: 3;
     color: @hightColor;
     font-size: 24px;
@@ -685,7 +685,6 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    transition: all 0.4s ease;
     padding: 5px;
     box-sizing: content-box;
 
@@ -702,18 +701,26 @@
     }
 
     span:first-child {
-      font-size: 20px;
-      // background: @hightColor;
-      // color: #fff;
+      font-size: 18px;
+      background: @hightColor;
+      color: #fff;
+
+      &.hide{
+        display: none;
+      }
     }
 
     span:last-child {
       transition: all 0.4s ease;
       margin-top: 15px;
-      height: 0;
+      margin-bottom: -48px;
+      // display: none;
+      // height: 0;
 
       &.show {
-        height: 38px;
+        margin-bottom: 0;
+        // display: block;
+        // height: 38px;
       }
     }
   }
@@ -825,6 +832,9 @@
   }
   .totopBox {
     color: @themColor;
+    span:first-child {
+      background: @themColor;
+    }
   }
   .btn {
     background: @themColor;
@@ -863,6 +873,9 @@
   }
   .totopBox {
     color: @themColor;
+    span:first-child {
+      background: @themColor;
+    }
   }
   .btn {
     background: @themColor;
@@ -901,6 +914,9 @@
   }
   .totopBox {
     color: @themColor;
+    span:first-child {
+      background: @themColor;
+    }
   }
   .btn {
     background: @themColor;
@@ -940,6 +956,9 @@
   }
   .totopBox {
     color: @themColor;
+    span:first-child {
+      background: @themColor;
+    }
   }
   .btn {
     background: @themColor;
@@ -978,6 +997,9 @@
   }
   .totopBox {
     color: @themColor;
+    span:first-child {
+      background: @themColor;
+    }
   }
   .btn {
     background: @themColor;
@@ -1016,6 +1038,9 @@
   }
   .totopBox {
     color: @themColor;
+    span:first-child {
+      background: @themColor;
+    }
   }
   .btn {
     background: @themColor;
@@ -1054,6 +1079,9 @@
   }
   .totopBox {
     color: @themColor;
+    span:first-child {
+      background: @themColor;
+    }
   }
   .btn {
     background: @themColor;

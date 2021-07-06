@@ -234,7 +234,6 @@ export default class ChannelManage extends Component {
         const appTip = <img width='160'  src={require('@/assets/wechartNav.png')} alt="" srcset=""/>
         const webTip = <img height='50' src={require('@/assets/pcNav.png')} alt="" srcset=""/>
 
-
         let columns = [
             {
                 dataIndex: 'icon',

@@ -131,6 +131,19 @@ class CreateStepOne extends PureComponent {
         return '';
       }
     };
+
+    const selectAfter = stepOne.vrUrl ? stepOne.vrUrl.split('https://vr.realsee.cn/vr/')[1] : ''
+    console.log({stepOne,selectAfter})
+
+     // 截取vr值
+    const selectBefore =  getFieldDecorator('prefix',{
+      initialValue: stepOne.vrUrl ? 'https://vr.realsee.cn/vr/' :  '',
+    })(
+      <Select style={{ width: 180 }}>
+        <Option value="" disabled>请选择</Option>
+        <Option value="https://vr.realsee.cn/vr/">https://vr.realsee.cn/vr/</Option>
+      </Select>
+    )
     return (
       <div>
         <Form {...formItemLayout} onSubmit={this.handleSubmit}>
@@ -342,23 +355,26 @@ class CreateStepOne extends PureComponent {
               />
             )}
           </Form.Item>
-          {/* <Form.Item label="VR链接">
-            {getFieldDecorator('vrLink', {
-              initialValue: stepOne.vrLink || 'https://vr.realsee.cn/vr/',
+          <Form.Item label="VR链接">
+            {getFieldDecorator('vrUrl', {
+              initialValue: selectAfter,
               rules: [
                 {
                   max: 200,
-                  message: '请输入VR链接',
+                  message: '最多可输入200位字符!',
                 },
+                {
+                  whitespace: true,
+                  message: '不可含有空格！',
+                }
               ],
             })(
-              <Input
-                className="depFormInputAfter"
+              <Input 
+                addonBefore={selectBefore}  
                 style={{ width: 400 }}
-                placeholder="请输入VR链接"
-              />
+                placeholder="请输入链接后缀"/>
             )}
-          </Form.Item> */}
+          </Form.Item>
           <h4 className={styles.title}>TDK设置（用于搜索引擎收录）</h4>
           <Form.Item
             label={
@@ -474,9 +490,17 @@ class CreateStepOne extends PureComponent {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (err) throw err;
-      console.log(values);
       const { bedroom, liveroom, kitchen, bathroom, tags } = this.state;
       const { dispatch } = this.props;
+
+      // 取消前后空格
+      values.vrUrl = values.vrUrl.trim();
+
+      if(!!!values.vrUrl) {
+        this.props.form.setFieldsValue({
+          prefix: ''
+        })
+      }
       if (parseFloat(values.acreage) < 0.01 || parseFloat(values.acreage) > 99999.99) {
         message.error('面积限制输入0.01-99999.99范围内的数字');
         return false;
@@ -487,18 +511,23 @@ class CreateStepOne extends PureComponent {
         message.error('装修造价限制输入0-99999.99范围内的数字');
         return false;
       } else {
+        
+        let {prefix, ...copyValues} = values;
+
+        
         if (this.props.type === 'edit') {
           //
           dispatch({
             type: 'CaseLibrary/editCaseModel',
             payload: {
-              ...values,
+              ...copyValues,            
               bedroom,
               liveroom,
               kitchen,
               bathroom,
               uid: getQueryUrlVal('uid'),
               keywords: JSON.stringify(tags || []),
+              vrUrl: (!!!copyValues.vrUrl || !!!prefix) ?  '' :  prefix + copyValues.vrUrl,
             },
           }).then(res => {
             if (res && res.code === 200) {
@@ -510,10 +539,11 @@ class CreateStepOne extends PureComponent {
             type: 'CaseLibrary/setStepOneModel',
             payload: {
               stepOne: {
-                ...values,
+                ...copyValues,
                 bedroom,
                 liveroom,
                 kitchen,
+                vrUrl: !!!copyValues.vrUrl ?  '' :  prefix + copyValues.vrUrl,
                 bathroom,
                 keywords: JSON.stringify(tags || []),
               },

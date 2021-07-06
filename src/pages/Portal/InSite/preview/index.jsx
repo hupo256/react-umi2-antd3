@@ -61,13 +61,16 @@ const componentMap = {
 
 export default function Preview(props) {
   const { from } = props;
-  const { pageData, touchPageData, templateCode, navData } = useContext(ctx);
+  const { pageData, touchPageData, templateCode, wechatAuthed, setwechatAuthedInfor } = useContext(
+    ctx
+  );
   const [totopShow, settotopShow] = useState(false);
   const [curTheme, setcurTheme] = useState('WMHPT0001');
   const contentBox = useRef();
 
   useEffect(() => {
     touchPageData();
+    setwechatAuthedInfor();
   }, []);
 
   useEffect(
@@ -94,7 +97,7 @@ export default function Preview(props) {
     const { target } = e;
     const clientHeight = target.clientHeight; //可视区域高度
     const scrollTop = target.scrollTop; //滚动条滚动高度
-    settotopShow(scrollTop > clientHeight / 3);
+    settotopShow(scrollTop > clientHeight / 7);
   }
 
   function gotoRoute(key) {
@@ -139,21 +142,23 @@ export default function Preview(props) {
 
         {/* totopBox */}
         <div className={pageStyle.totopBox}>
-          {/* <span>
+          <span className={`${wechatAuthed?.isCompanyAuthWechatMini ? '' : pageStyle.hide}`}>
             <svg className="icon" aria-hidden="true">
               <use href="#icon-ic_share" />
             </svg>
-          </span> */}
+          </span>
           <span>
             <svg className="icon" aria-hidden="true">
               <use href="#icon-ic_call" />
             </svg>
           </span>
-          {/* <span>
-            <svg className="icon" aria-hidden="true">
-              <use href="#icon-ic_more" />
-            </svg>
-          </span> */}
+          {wechatAuthed?.wechatCustomerService && (
+            <span>
+              <svg className="icon" aria-hidden="true">
+                <use href="#icon-ic_message" />
+              </svg>
+            </span>
+          )}
           <span onClick={gotoTop} className={`${totopShow ? pageStyle.show : ''}`}>
             <svg className="icon" aria-hidden="true">
               <use href="#icon-ic_top" />

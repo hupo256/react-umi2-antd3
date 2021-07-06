@@ -1,6 +1,27 @@
+/*
+ * @Author: your name
+ * @Date: 2021-06-10 18:35:51
+ * @LastEditTime: 2021-06-28 17:21:29
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \front-wechat-saas\src\pages\Welcome.js
+ */
 import React, { PureComponent } from 'react';
 import welcome from '../assets/img_welcome@2x.png';
+import { getAuthInfo } from '@/services/miniProgram';
 class Welcome extends PureComponent {
+  componentDidMount() {
+    
+     // 查询小程序授权状态并存入缓存
+     const code = localStorage.getItem('auth');
+    const saasSellerCode = JSON.parse(code).companyCode;
+     getAuthInfo({ saasSellerCode }).then(res => {
+      if (res?.code === 200) {
+        localStorage.setItem('isCompanyAuthWechatMini', res.data.isAuthedWechatMini)
+      }
+    })
+
+  }
   render() {
     return (
       <div style={{ textAlign: 'center', paddingTop: 160 }}>

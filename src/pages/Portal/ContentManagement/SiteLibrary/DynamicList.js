@@ -14,6 +14,7 @@ import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import DynamicAdd from './DynamicAdd';
 import RcViewer from 'rc-viewer';
 import { getauth } from "@/utils/authority";
+import { getSiteDetaiyApi } from '@/services/siteLibrary'
 import emptyImage from '../../../../assets/emptyImage.png';
 
 const { confirm } = Modal;
@@ -23,7 +24,11 @@ class DynamicList extends Component {
     super(props);
     this.state = {
       visible: false,
-      status:null
+      status:null,
+      initData: null,
+      page: 1,
+      pageSize: 10,
+      isEdit: false,
     };
   }
 
@@ -39,7 +44,7 @@ class DynamicList extends Component {
     });
     dispatch({
       type: 'SiteLibrary/dynamicListModel',
-      payload: { gongdiUid: getQueryUrlVal('uid') },
+      payload: { gongdiUid: getQueryUrlVal('uid'),pageSize:5 },
     });
   }
 
@@ -60,7 +65,7 @@ class DynamicList extends Component {
               payload: { gongdiUid: getQueryUrlVal('uid') },
             }).then(res=>{
               if(res&&res.code===200){
-                this.setState({status:res.data.value,visible: true})
+                this.setState({status:res.data.value,visible: true,initData: null, isEdit: false })
               }
             });}}>
               <Icon type="plus" />
@@ -71,7 +76,7 @@ class DynamicList extends Component {
             Array.isArray(dynamicList) &&
             dynamicList.length > 0 && (
               <Card bordered={false} style={{ marginTop: 20 }}>
-                {dynamicList.map(item => {
+                {dynamicList?.map(item => {
                   return (
                     <div key={item.dicCode} style={{ marginBottom: 20 }}>
                       <p>
@@ -89,12 +94,13 @@ class DynamicList extends Component {
                           {item.dicName}
                         </span>
                       </p>
-                      {item.pageList.list.map(items => {
+                      {item.pageList?.list?.map(items => {
                         return (
                           <div key={items.diaryUid}>
                             <p>
                               <Radio checked={true} />
                               {items.diaryDate}
+                             
                               {permissionsBtn.includes('BTN210326000040')&&<span
                                 style={{ float: 'right', cursor: 'pointer' }}
                                 onClick={() => {
@@ -105,6 +111,16 @@ class DynamicList extends Component {
                                 <Icon type={items.appletsShow ? 'eye-invisible' : 'eye'} />
                                 {items.appletsShow ? '隐藏' : '显示'}
                               </span>}
+                              {permissionsBtn.includes('BTN210623000001') && <span
+                                style={{ float: 'right', cursor: 'pointer',marginRight: 16 }}
+                                onClick={() => {
+                                  this.editHandle(items)
+                                 
+                                }}
+                              >
+                                <Icon type="edit" />
+                                编辑
+                              </span>}
                             </p>
                             <p>{items.diaryContent}</p>
                             {items.fileList &&
@@ -114,7 +130,7 @@ class DynamicList extends Component {
                                   options={{ title: false }}
                                   style={{ display: 'inline-block', verticalAlign: 'top' }}
                                 >
-                                  {items.fileList.map((item, i) => {
+                                  {items.fileList?.map((item, i) => {
                                     return (
                                       <img
                                         className="rcviewer"
@@ -151,6 +167,7 @@ class DynamicList extends Component {
           <DynamicAdd
             record={{ gongdiUid: getQueryUrlVal('uid') }}
             visible={visible}
+            initData={this.state.initData}
             status={this.state.status}
             handleOk={() => this.handleOk()}
             handleCancel={() => this.handleCancel()}
@@ -159,9 +176,34 @@ class DynamicList extends Component {
       </div>
     );
   }
+
+  /**
+   * @description: 编辑动态
+   * @param {*} item
+   * @return {*}
+   */  
+  editHandle = async item => {
+    this.setState({
+      dicCode: item.gongdiStage
+    })
+    try {
+      const res = await getSiteDetaiyApi({diaryUid: item.diaryUid});
+      if (res.code === 200) {
+        this.setState({initData: res.data, visible: true, isEdit: true})
+      }
+    } catch (error) {
+      message.error('出错了！')
+    }
+    
+    
+  }
+
   // 分页
   handlePagination = (page, pageSize, dicCode) => {
-    // pageDynamicModel
+    this.setState({
+      page,
+      dicCode
+    })
     const { dispatch } = this.props;
     dispatch({
       type: 'SiteLibrary/pageDynamicModel',
@@ -169,6 +211,7 @@ class DynamicList extends Component {
         gongdiUid: getQueryUrlVal('uid'),
         gongdiStage: dicCode,
         pageNum: page,
+        pageSize:5
       },
     });
   };
@@ -192,10 +235,19 @@ class DynamicList extends Component {
   handleOk = () => {
     this.setState({ visible: false });
     const { dispatch } = this.props;
-    dispatch({
-      type: 'SiteLibrary/dynamicListModel',
-      payload: { gongdiUid: getQueryUrlVal('uid') },
-    });
+    const { isEdit, page, dicCode } = this.state;
+    if (isEdit) {
+      this.handlePagination(page, undefined, dicCode)
+    } else {
+      console.log(123)
+      dispatch({
+        type: 'SiteLibrary/dynamicListModel',
+        payload: { gongdiUid: getQueryUrlVal('uid') },
+      });
+    }
+    
+    
+    
   };
   handleCancel = () => {
     this.setState({ visible: false });
