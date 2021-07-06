@@ -1,6 +1,6 @@
 /*
- * @Author: zqm 
- * @Date: 2021-02-20 10:46:16 
+ * @Author: zqm
+ * @Date: 2021-02-20 10:46:16
  * @Last Modified by: zqm
  * @Last Modified time: 2021-04-08 14:54:41
  * 创建动态
@@ -55,8 +55,8 @@ class DynamicAdd extends Component {
         diaryDate: initData.diaryDate,
         diaryPics: initData.fileList ?  initData.fileList?.map(item => ({ path: item.fileUrl })) : [],
       })
-    } 
-    
+    }
+
   }
   render() {
     const dateFormat = 'YYYY-MM-DD';
@@ -84,7 +84,7 @@ class DynamicAdd extends Component {
               onChange={this.handleSelectChange}
               style={{ width: '100%' }}
               placeholder="请选择所属阶段"
-              disabled={initData}
+              // disabled={initData}
             >
               {dicData &&
                 dicData['DM001'] &&
@@ -106,7 +106,7 @@ class DynamicAdd extends Component {
                       return null;
                     }
                   }
-                  
+
                 })}
             </Select>
           </Col>
@@ -287,7 +287,7 @@ class DynamicAdd extends Component {
           }
         });
       }
-      
+
       // this.props.handleOk({ name: name.trim(), extDescOne, extDescTwo });
     }
   };
