@@ -166,10 +166,6 @@ class LeadManageAdd extends Component {
                           onClick={this.clickReferrerDiv.bind(this, item)}
                           style={{ cursor: 'pointer', padding: 2 }}
                         >
-                          {/* {item.realName}
-                          {item.mobile ? 
-                          '('+item.mobile+')'
-                          :null} */}
                           {item.realName && item.mobile
                             ? item.realName + '(' + item.mobile + ')'
                             : item.realName == ''

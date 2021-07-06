@@ -42,6 +42,7 @@ class LeadManageTable extends Component {
         title: '线索',
         dataIndex: 'name',
         width: 150,
+        fixed: 'left',
         render: (t, r) => {
           return (
             <div className={styles.tableName}>
@@ -166,10 +167,11 @@ class LeadManageTable extends Component {
         title: '操作',
         dataIndex: 'operate',
         width: 220,
+        fixed: 'right',
         render: (t, r) => {
           return (
             <span className={styles.operate}>
-              {/* {permissionsBtn.includes('MU900000020001') && (
+              {permissionsBtn.includes('MU900000020001') && (
                 <span
                   onClick={() => {
                     router.push(`/customer/detail?uid=${r.uid}`);
@@ -177,14 +179,14 @@ class LeadManageTable extends Component {
                 >
                   详情
                 </span>
-              )} */}
-              <span
+              )}
+              {/* <span
                 onClick={() => {
                   router.push(`/customer/detail?uid=${r.uid}`);
                 }}
               >
                 详情
-              </span>
+              </span> */}
               {permissionsBtn.includes('MU900000020001') &&
                 (permissionsBtn.includes('BTN210526000002') ||
                   permissionsBtn.includes('BTN210526000003')) && <span> | </span>}
