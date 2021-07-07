@@ -135,7 +135,7 @@ class DynamicAdd extends Component {
           <Col span={18}>
             <TextArea
               placeholder="请输入工作内容"
-              onChange={e => this.handleChange(e.target.value, 'diaryContent', 200)}
+              onChange={e => this.handleChange(e.target.value, 'diaryContent', 300)}
               rows={4}
               value={diaryContent}
             />
@@ -296,7 +296,7 @@ class DynamicAdd extends Component {
             diaryUid: initData.diaryUid,
           });
           if (res.code === 200) {
-            message.success('编辑成功！');
+            message.success('编辑已保存');
             this.setState({
               diaryContent: null,
               diaryDate: null,

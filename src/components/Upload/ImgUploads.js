@@ -156,10 +156,12 @@ class Uploads extends Component {
     });
   }
   beforeUpload = (file, subType, type, bsId, f) => {
-    const isLt2M = file.size / 1048576 < (this.props.size || 5);
-    const isType = !/\.(png|jpg|gif|jpeg|webp|PNG|JPG|GIF|JPEG|WEBP|mp4)$/.test(file.name);
+    const {video} = this.props
+    const isLt2M = file.size / 1048576 < (video ? 50 : this.props.size || 5);
+    const reg = video ? /\.(png|jpg|gif|jpeg|webp|PNG|JPG|GIF|JPEG|WEBP|mp4|MP4)$/ : /\.(png|jpg|gif|jpeg|webp|PNG|JPG|GIF|JPEG|WEBP)$/
+    const isType = !reg.test(file.name);
     if (!isLt2M) {
-      message.warning(`图片不能大于${this.props.size || 5}M!`, 2);
+      message.warning(video ? '限制上传不大于50Mb的视频文件' : `图片不能大于${this.props.size || 5}M!`, 2);
       return false;
     } else if (isType) {
       message.warning('图片格式不正确!', 2);
