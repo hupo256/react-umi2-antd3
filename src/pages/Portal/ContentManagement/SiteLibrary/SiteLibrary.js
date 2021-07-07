@@ -370,7 +370,7 @@ class SiteLibrary extends PureComponent {
 
   handleOk = () => {
     this.setState({ visible: false, record: null });
-    const pageNum = this.state
+    const {pageNum} = this.state
     this.getList({pageNum});
   };
   handleCancel = () => {
