@@ -1,6 +1,6 @@
 /*
- * @Author: zqm 
- * @Date: 2021-02-23 18:59:56 
+ * @Author: zqm
+ * @Date: 2021-02-23 18:59:56
  * @Last Modified by: zqm
  * @Last Modified time: 2021-06-24 09:20:05
  * 图片上传
@@ -23,11 +23,11 @@ class Upload extends Component {
   componentDidMount() {}
   render() {
     const { activeKey, checkedData } = this.state;
-    const { selected, selectNum, rep, destroy = false } = this.props;
+    const { selected, selectNum, rep, destroy = false, video } = this.props;
     const num = rep ? 1 : (selectNum || 1) - (selected || 0);
     return (
       <Modal
-        title={`上传图片  ${checkedData.length}/${num}`}
+        title={`上传${video ? '图片或者视频' : '图片'}  ${checkedData.length}/${num}`}
         visible={this.props.visible}
         onOk={this.handleOk}
         onCancel={this.uploadCancel}
@@ -49,7 +49,7 @@ class Upload extends Component {
                 tab={
                   <p style={{ margin: 0 }}>
                     <Icon type="cloud-upload" />
-                    上传新图片
+                    上传{video ? '' : '新图片'}
                   </p>
                 }
                 key="key1"
@@ -70,6 +70,7 @@ class Upload extends Component {
               <ImageUpload
                 size={this.props.size}
                 selectNum={num}
+                video={video}
                 handleOk={data => this.handleConfirm(data)}
               />
             )}
@@ -93,15 +94,23 @@ class Upload extends Component {
   };
 
   handleConfirm = checkedData => {
-    this.setState({ checkedData });
+    console.log(checkedData)
+    let flag = true
+    checkedData.map(e => {
+      if (Array.isArray(e)) {
+        flag = false
+      }
+    })
+    flag && this.setState({ checkedData });
   };
 
   // 确认
   handleOk = () => {
+    const {video} = this.props
     const { activeKey, checkedData } = this.state;
     if (activeKey === 'key2') {
-      if (Array.isArray(checkedData) && checkedData.length == 0) {
-        message.error('请先上传图片');
+      if (Array.isArray(checkedData) && checkedData.length === 0) {
+        message.error(`请先上传${video ? '图片或视频' : '图片'}`);
       } else {
         this.props.handleOk(checkedData);
       }
@@ -111,8 +120,9 @@ class Upload extends Component {
         item.url = item.addr;
         return item;
       });
-      if (Array.isArray(data) && data.length == 0) {
-        message.error('请先上传图片');
+
+      if (Array.isArray(data) && data.length === 0) {
+        message.error(`请先上传${video ? '图片或视频' : '图片'}`);
       } else {
         this.props.handleOk(data);
       }

@@ -22,9 +22,10 @@ class ImageUpload extends Component {
           name="Img"
           uploadSuccess={(data, name) => this.uploadSuccess(data, name, this.props.selectNum)}
           previewTitle="设计效果图"
+          video={this.props.video}
           type={'edit'}
           long={this.props.selectNum}
-          accept=".png,.jpg,.jpeg,.mp4"
+          accept=".png,.jpg,.jpeg"
           defauleUrl={[]}
           size={this.props.size}
         />||null}

@@ -9,7 +9,7 @@ import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Upload, message, Icon, Button } from 'antd';
 import CarouselPic from '@/components/CarouselPic';
-
+import style from './Upload.less'
 @connect(({ base }) => ({
   base,
 }))
@@ -41,15 +41,55 @@ class Uploads extends Component {
       code,
       subCode,
       accept,
+      video,
     } = this.props;
     const longs = long || 50;
     return (
-      <div style={{ marginRight: 12 }}>
+      <div style={{ marginRight: 12 }} className={style.uploadWrapper}>
+        {video && (
+          <div className="coverImgs" style={{display: 'inline-block'}}>
+            {this.state[name].length > 0 &&
+              this.state[name].map((item, index) => {
+                return (
+                  <div className="previewimg previewimgs" key={item.fileUid} style={{width: 101, height: 101}}>
+                    {item.status === 'done' ? (
+                      <>
+                        {item.type === 'video/mp4' ? (
+                          <video src={item.response?.data?.addr} style={{ width: 94, height: 94 }} />
+                        ) : (
+                          <img src={item.response?.data?.addr} style={{ width: 94, height: 94 }} />
+                        )}
+                        <div className="picmodel">
+                          <span
+                            onClick={() => {
+                              this.handlePreview(item, name);
+                            }}
+                          >
+                            <Icon type="eye" style={{ color: '#fff', margin: '0 5px' }} />
+                          </span>
+                          <span onClick={() => this.fileRemove(item, name)}>
+                            <Icon type="delete" style={{ color: '#fff' }} />
+                          </span>
+                        </div>
+                      </>
+                    ) : (
+                      <div style={{ lineHeight: '24px', marginTop: 30 }}>
+                        <Icon type="loading" />
+                        <br />
+                        上传中
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+          </div>
+        )}
         <Upload
+          className={video ? style.uploader : ''}
           multiple={true}
           listType="picture-card"
-          accept={accept || 'image/gif, image/jpeg, image/png'}
-          showUploadList={true}
+          accept={video ? 'image/gif, image/jpeg, image/png, video/mp4' : accept || 'image/gif, image/jpeg, image/png'}
+          showUploadList={!video}
           data={this.redata}
           fileList={
             this.state[name].length > longs ? this.state[name].slice(0, longs) : this.state[name]

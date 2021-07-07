@@ -160,7 +160,6 @@ class DynamicList extends Component {
                                       borderStyle: 'none',
                                     }}
                                     src={item.fileUrl}
-                                    controls="controls"
                                   />
                                 ) : (
                                   <img

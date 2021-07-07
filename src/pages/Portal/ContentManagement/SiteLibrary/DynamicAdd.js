@@ -10,9 +10,10 @@ import { Modal, Row, Col, Input, message, Select, DatePicker, Icon } from 'antd'
 import { connect } from 'dva';
 import Upload from '@/components/Upload/Upload';
 import { getDay } from '@/utils/utils';
-import { editSiteDetailApi } from '@/services/siteLibrary'
-import RcViewer from 'rc-viewer';
+import { editSiteDetailApi } from '@/services/siteLibrary';
 import moment from 'moment';
+import CarouselPic from '../../../../components/CarouselPic';
+
 const { TextArea } = Input;
 const { Option } = Select;
 
@@ -32,7 +33,9 @@ class DynamicAdd extends Component {
       coverImg: null,
       rep: false,
       editIndex: null,
-      // gongdiUid: 'string'
+      imgvisible: false,
+      imageList: [],
+      initialSlide: '',
     };
   }
   componentDidMount() {
@@ -45,7 +48,7 @@ class DynamicAdd extends Component {
         const data = res.data['DM001']
           .filter(item => item.status === '1')
           .filter(item => item.code === status);
-        this.setState({ diaryDate: initData?.diaryDate ||  getDay()});
+        this.setState({ diaryDate: initData?.diaryDate || getDay() });
       }
     });
     if (initData) {
@@ -53,16 +56,17 @@ class DynamicAdd extends Component {
         diaryContent: initData.diaryContent,
         gongdiStage: initData.gongdiStage,
         diaryDate: initData.diaryDate,
-        diaryPics: initData.fileList ?  initData.fileList?.map(item => ({ path: item.fileUrl })) : [],
-      })
+        diaryPics: initData.fileList
+          ? initData.fileList?.map(item => ({ path: item.fileUrl }))
+          : [],
+      });
     }
-
   }
   render() {
     const dateFormat = 'YYYY-MM-DD';
     const {
       DictConfig: { dicData },
-      initData
+      initData,
     } = this.props;
     const { diaryContent, uploadVisible, diaryDate, rep, diaryPics } = this.state;
     return (
@@ -89,7 +93,7 @@ class DynamicAdd extends Component {
               {dicData &&
                 dicData['DM001'] &&
                 dicData['DM001'].map(item => {
-                  if(initData && initData !== {}) {
+                  if (initData && initData !== {}) {
                     return (
                       <Option value={item.code} key={item.uid}>
                         {item.name}
@@ -106,7 +110,6 @@ class DynamicAdd extends Component {
                       return null;
                     }
                   }
-
                 })}
             </Select>
           </Col>
@@ -134,7 +137,7 @@ class DynamicAdd extends Component {
               placeholder="请输入工作内容"
               onChange={e => this.handleChange(e.target.value, 'diaryContent', 200)}
               rows={4}
-              value={ diaryContent}
+              value={diaryContent}
             />
           </Col>
         </Row>
@@ -144,37 +147,42 @@ class DynamicAdd extends Component {
           </Col>
           <Col span={18}>
             <div className="coverImgs">
-              {diaryPics && diaryPics.length > 0 &&
+              {diaryPics &&
+                diaryPics.length > 0 &&
                 diaryPics.map((item, index) => {
+                  // console.log(item);
+                  const type = item.path ? item.path.split('.')[item.path.split('.').length - 1] : '';
                   return (
-                    <div className="previewimg previewimgs" key={item.path}>
-                      <img src={item.path} />
+                    <div className="previewimg previewimgs" key={item.fileUid}>
+                      {type === 'mp4' ? (
+                        <video src={item.path} style={{ width: 94, height: 94 }} />
+                      ) : (
+                        <img src={item.path} style={{ width: 94, height: 94 }} />
+                      )}
                       <div className="picmodel">
                         <span
                           onClick={() =>
                             this.setState({ uploadVisible: true, rep: true, editIndex: index })
                           }
                         >
-                          <Icon type="edit" />
+                          <Icon type="edit" style={{ color: '#fff' }} />
                         </span>
                         <span
                           onClick={() => {
-                            this.setState({ rcviewer: item.path });
-                            const { viewer } = this.refs.viewer;
-                            viewer && viewer.show();
+                            this.handlePreview(diaryPics, index);
                           }}
                         >
-                          <Icon type="eye" />
+                          <Icon type="eye" style={{ color: '#fff', margin: '0 5px' }} />
                         </span>
                         <span onClick={() => this.handleDelete(index)}>
-                          <Icon type="delete" />
+                          <Icon type="delete" style={{ color: '#fff' }} />
                         </span>
                       </div>
                     </div>
                   );
                 })}
 
-              { (!!!diaryPics || diaryPics?.length) < 9 && (
+              { (!diaryPics || diaryPics?.length) < 9 && (
                 <div
                   className="previewimgs"
                   style={{ border: '1px dashed #d9d9d9' }}
@@ -190,6 +198,7 @@ class DynamicAdd extends Component {
           <Upload
             visible={uploadVisible}
             selectNum={9}
+            video={true}
             selected={diaryPics?.length}
             rep={rep}
             size={10}
@@ -197,21 +206,47 @@ class DynamicAdd extends Component {
             handleCancel={() => this.handleUploadCancel()}
           />
         )}
-        <RcViewer
-          ref="viewer"
-          options={{ title: false }}
-          style={{
-            display: 'none',
-            verticalAlign: 'top',
-            maxWidth: 300,
-            wordWrap: 'break-word',
-          }}
-        >
-          <img src={this.state.rcviewer} />
-        </RcViewer>
+        {this.state.imgvisible && (
+          <CarouselPic
+            ref="CarouselPic"
+            inputData={this.state.imageList || []}
+            visible={this.state.imgvisible}
+            handleCancel={this.handleImgCancel}
+            initialSlide={this.state.initialSlide}
+            previewTitle="预览"
+            name="addr"
+          />
+        )}
       </Modal>
     );
   }
+  handleImgCancel = () => {
+    this.setState({
+      imgvisible: false,
+      imageList: [],
+      initialSlide: '',
+    });
+  };
+  handlePreview = (fileList, index) => {
+    const arr = [];
+    fileList.map(e => {
+      arr.push({
+        originalFullUrl: e.path,
+      });
+    });
+    this.setState(
+      {
+        imgvisible: true,
+        imageList: arr,
+        initialSlide: index,
+      },
+      () => {
+        if (this.refs.CarouselPic.refs.prics) {
+          this.refs.CarouselPic.refs.prics.innerSlider.slickGoTo(index);
+        }
+      }
+    );
+  };
   handleSelectChange = value => {
     this.setState({ gongdiStage: value });
   };
@@ -228,47 +263,56 @@ class DynamicAdd extends Component {
   };
   handleOk = async () => {
     const { diaryContent, diaryDate, gongdiStage, diaryPics } = this.state;
+    console.log(diaryPics);
     const imglist =
       (diaryPics.length > 0 && diaryPics.map(item => item.path).filter(item => item)) || [];
+    const siteDiaryFiles = [];
+    imglist.map(item => {
+      const type = item.split('.')[item.split('.').length - 1];
+      siteDiaryFiles.push({
+        fileUrl: item,
+        businessPurpose: type === 'mp4' ? 5 : 4,
+      });
+    });
     if (!gongdiStage) {
       message.error('请选择所属阶段');
       return false;
     } else if (!diaryDate) {
       message.error('请选择施工日期');
       return false;
-    } else if (!diaryContent && imglist.length == 0) {
+    } else if (!diaryContent && siteDiaryFiles.length === 0) {
       message.error('请填写 工作内容 或上传 施工照片');
       return false;
     } else {
       // createDynamicModel
       const { dispatch, record, initData } = this.props;
       if (initData) {
-          try {
-            const res = await editSiteDetailApi({
-              diaryContent: diaryContent,
-              diaryDate: diaryDate,
-              diaryPics: imglist,
-              gongdiStage: gongdiStage,
-              diaryUid: initData.diaryUid
+        try {
+          const res = await editSiteDetailApi({
+            diaryContent: diaryContent,
+            diaryDate: diaryDate,
+            siteDiaryFiles,
+            gongdiStage: gongdiStage,
+            diaryUid: initData.diaryUid,
+          });
+          if (res.code === 200) {
+            message.success('编辑成功！');
+            this.setState({
+              diaryContent: null,
+              diaryDate: null,
+              diaryPics: [],
+              gongdiStage: null,
             });
-            if (res.code === 200 ) {
-              message.success('编辑成功！');
-              this.setState({
-                diaryContent: null,
-                diaryDate: null,
-                diaryPics: [],
-                gongdiStage: null,
-              });
-              this.props.handleOk();
-            }
-          } catch (error) {
-            message.error('请求出错！')
+            this.props.handleOk();
           }
+        } catch (error) {
+          message.error('请求出错！');
+        }
       } else {
         dispatch({
           type: 'SiteLibrary/createDynamicModel',
           payload: {
-            diaryPics: imglist,
+            siteDiaryFiles,
             diaryContent,
             diaryDate,
             gongdiStage,
