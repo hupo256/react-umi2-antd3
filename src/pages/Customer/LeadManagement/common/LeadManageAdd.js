@@ -52,10 +52,10 @@ class LeadManageAdd extends Component {
     }).then(async res => {
       if (res && res.code === 200) {
         // message.success('查询成功');
-        console.log('查询成功', res.data.length);
+        // console.log('查询成功', res.data.length);
         if (res.data && res.data.length > 0) {
           await this.setState({ referrerNameList: res.data });
-          console.log('查询成功2', res.data, this.state);
+          // console.log('查询成功2', res.data, this.state);
         } else {
           await this.setState({ referrerNameList: [] });
         }
@@ -125,12 +125,13 @@ class LeadManageAdd extends Component {
               />
             </span>
           </div>
-          <div className={styles.CluesEdit}>
+          <div className={styles.CluesEdit} id='CluesEditdiv'>
             <span className="beforeStar">线索状态</span>
             <span style={{ flex: 1 }}>
               <Select
                 defaultValue={record.status}
                 style={{ width: 402 }}
+                getPopupContainer={()=>document.getElementById('CluesEditdiv')}
                 onChange={value =>
                   this.setState({ record: { ...this.state.record, status: value } })
                 }
@@ -151,7 +152,8 @@ class LeadManageAdd extends Component {
             <span>推荐人：</span>
             <span style={{ flex: 1, position: 'relative' }}>
               <Input
-                value={record.referrerName !=  '' ? record.referrerName : '' }
+                placeholder="请输入/选择推荐人"
+                value={record.referrerName != '' ? record.referrerName : ''}
                 onClick={() => this.clickTrackRefer()}
                 onChange={e => this.changeTrackRefer(e)}
               />
@@ -244,10 +246,10 @@ class LeadManageAdd extends Component {
   }
   handleOk = async () => {
     let { record } = this.state;
-    record.name = record.name.trim();
-    record.mobile = record.mobile.trim();
-    record.trackDesc = record.trackDesc.trim();
-    record.referrerName = record.referrerName.trim();
+    record.name = record.name ? record.name.trim() : record.name;
+    record.mobile = record.mobile ? record.mobile.trim() : record.mobile;
+    record.trackDesc = record.trackDesc ? record.trackDesc.trim() : record.trackDesc;
+    record.referrerName = record.referrerName ? record.referrerName.trim() : record.referrerName;
     if (!record.name) {
       message.error('请输入客户姓名');
       return false;
@@ -264,13 +266,13 @@ class LeadManageAdd extends Component {
       message.error('手机号格式不正确');
       return false;
     } else if (record.address && record.address.length > 30) {
-      message.error('楼盘/楼宇限制1-30字符长度');
+      message.error('楼盘/楼宇限制0-30字符长度');
       return false;
     } else if (record.area && parseFloat(record.area) + '' === 'NaN') {
-      message.error('面积限制输入0.01-99999范围内的数字（含两位小数）');
+      message.error('面积限制输入0.01-99999.99范围内的数字（含两位小数）');
       return false;
     } else if (record.area && (parseFloat(record.area) < 0.01 || parseInt(record.area) > 99999)) {
-      message.error('面积限制输入0.01-99999范围内的数字（含两位小数）');
+      message.error('面积限制输入0.01-99999.99范围内的数字（含两位小数）');
       return false;
     } else if (record.trackDesc && record.trackDesc.length > 200) {
       message.error('线索描述限制0-200字符长度');

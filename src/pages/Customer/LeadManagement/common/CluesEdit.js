@@ -114,21 +114,17 @@ class CluesEdit extends Component {
             <span>来源渠道：</span>
             <span style={{ flex: 1 }}>{record.sourceChannelName}</span>
           </div>
-          <div className={styles.CluesEdit}>
+          <div className={styles.CluesEdit} id={record.trackInputType == 2 && record.trackReferEdit ? 'changeCluesEdit' : ''}>
             <span>推荐人：</span>
             {record.trackInputType == 2 && record.trackReferEdit ? (
               <span style={{ flex: 1, position: 'relative' }}>
                 <Input
-                  value={
-                    record.referrerName
-                      ? record.referrerName
-                      : record.referrerPhone
-                        ? record.referrerPhone
-                        : ''
-                  }
+                  placeholder="请输入/选择推荐人"
+                  value={record.referrerName != '' ? record.referrerName : ''}
                   onClick={() => this.clickTrackRefer()}
                   onChange={e => this.changeTrackRefer(e)}
                 />
+                <span className='spantitle'>6个月内仅可编辑一次，请谨慎修改</span>
                 <div
                   className={styles.referrerNameSelect}
                   style={{ display: referrerNameList.length > 0 ? 'block' : 'none', padding: 5 }}
@@ -228,10 +224,10 @@ class CluesEdit extends Component {
   }
   handleOk = async () => {
     let { record } = this.state;
-    record.name = record.name.trim();
-    record.mobile = record.mobile.trim();
-    record.trackDesc = record.trackDesc.trim();
-    record.referrerName = record.referrerName.trim();
+    record.name = record.name ? record.name.trim() : record.name;
+    record.mobile = record.mobile ? record.mobile.trim() : record.mobile;
+    record.trackDesc = record.trackDesc ? record.trackDesc.trim() : record.trackDesc;
+    record.referrerName = record.referrerName ? record.referrerName.trim() : record.referrerName;
     if (!record.name) {
       message.error('请输入客户姓名');
       return false;
@@ -244,21 +240,24 @@ class CluesEdit extends Component {
     } else if (!regExpConfig.phoneAndLandline.test(record.mobile)) {
       message.error('手机号格式不正确');
       return false;
-    } else if (record.referrerName.length > 10) {
+    } else if (record.referrerName && record.referrerName.length > 10) {
       message.error('推荐人限制0-10字符长度');
       return false;
     } else if (record.address && record.address.length > 30) {
-      message.error('楼盘/楼宇限制1-30字符长度');
+      message.error('楼盘/楼宇限制0-30字符长度');
       return false;
     } else if (record.area && parseFloat(record.area) + '' === 'NaN') {
-      message.error('面积限制输入0.01-99999范围内的数字（含两位小数）');
+      message.error('面积限制输入0.01-99999.99范围内的数字（含两位小数）');
       return false;
     } else if (record.area && (parseFloat(record.area) < 0.01 || parseInt(record.area) > 99999)) {
-      message.error('面积限制输入0.01-99999范围内的数字（含两位小数）');
+      message.error('面积限制输入0.01-99999.99范围内的数字（含两位小数）');
       return false;
     } else if (record.trackDesc && record.trackDesc.length > 200) {
       message.error('线索描述限制0-200字符长度');
       return false;
+    } else if (record.referrerName == '') {
+      record.referrerCode = '';
+      record.referrerPhone = '';
     }
     this.props.handleOk(record);
   };

@@ -148,7 +148,7 @@ class LeadManageSearch extends Component {
                       });
                     }}
                     style={{ width: '100%' }}
-                    placeholder="请输入推荐人姓名进行搜索"
+                    placeholder="请输入推荐人姓名/手机号进行搜索"
                     onBlur={() => this.handleBlur()}
                     onPressEnter={() => this.handleBlur()}
                   />
