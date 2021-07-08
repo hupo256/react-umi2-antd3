@@ -1,4 +1,4 @@
-import { queryNotices, feedbackAdd, isShow } from '@/services/api';
+import { queryNotices, feedbackAdd, isShow, cityGroupByLetter, cityMatch } from '@/services/api';
 import { getQueryUrlVal } from '@/utils/utils';
 
 import { setAuthority } from '@/utils/authority';
@@ -39,6 +39,14 @@ export default {
     },
     *isShow({ payload }, { call }) {
       const response = yield call(isShow, payload);
+      return response;
+    },
+    *cityGroupByLetterModel({ payload }, { call }) {
+      const response = yield call(cityGroupByLetter, payload);
+      return response;
+    },
+    *cityMatchModel({ payload }, { call }) {
+      const response = yield call(cityMatch, payload);
       return response;
     },
   },

@@ -167,3 +167,17 @@ export async function switchSystem(params) {
     body: params,
   });
 }
+// 高德市级分组信息
+export async function cityGroupByLetter(params) {
+  return request(baseurl + '/api/v1/saas/amapaddress/cityGroupByLetter', {
+    method: 'POST',
+    body: params,
+  });
+}
+// 高德市级信息匹配
+export async function cityMatch(params) {
+  return request(baseurl + '/api/v1/saas/amapaddress/cityMatch', {
+    method: 'POST',
+    body: params,
+  });
+}
