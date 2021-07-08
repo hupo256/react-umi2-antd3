@@ -5,27 +5,19 @@
  * @Last Modified time: 2021-07-07 13:09:12
  * banner 与 highlights共用的关联页面选择器
  */
-import React, { useEffect, useContext } from 'react';
-import { ctx } from '../context';
-import CascadeSelect from '@/pages/ChannelManage/components/CascadeSelect';
+import React from 'react';
+import LinkSelector from '@/components/LinkSelector';
 
 export default function Cascader(props) {
-  const { itemInd, tagList, forUpdatePageData } = props;
-  const { relatedPageOption, touchRelatedOpts } = useContext(ctx);
-
-  useEffect(() => {
-    touchRelatedOpts(5);
-  }, []);
+  const { itemInd, tagList, relatedPageOption, forUpdatePageData } = props;
 
   // 点击input
   function relevClick(num) {
     for (let i = 0, k = tagList.length; i < k; i++) {
       const tag = tagList[i];
-      const { paths = [], isEnd } = tag;
+      const { isEnd } = tag;
       tag.showSec = i === num;
-      if (paths?.length !== 2 || !isEnd) {
-        tag.linkDisplayName = ''; // 如果弟兄input没选到末点，就清空
-      }
+      isEnd || (tag.appletsName = ''); // 如果弟兄input没选到末点，就清空
     }
     forUpdatePageData();
   }
@@ -63,7 +55,7 @@ export default function Cascader(props) {
   }
 
   return (
-    <CascadeSelect
+    <LinkSelector
       curItem={tagList[itemInd]}
       cascadeClick={() => relevClick(itemInd)}
       callFun={arr => touchRelece(arr, itemInd)} // 对外暴露的回调，用来把数据传出去

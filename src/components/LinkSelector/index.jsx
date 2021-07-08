@@ -7,14 +7,24 @@
  */
 
 import React, { useState, useEffect } from 'react'
-import { siteListApi, designerListApi, caseListApi, articleListApi, articleDicApi, specialListApi, activeListApi  } from '@/services/channelManage'
+import { siteListApi, designerListApi, caseListApi, articleListApi, articleDicApi, specialListApi, activeListApi } from '@/services/channelManage'
 import { Input, Tabs, Table, Radio, Icon } from 'antd'
 import { ColumnsObj } from './CasColumn'
-import styles from '../index.less'
+import styles from './index.less'
 
 const { TabPane } = Tabs
 const { Search } = Input;
-export default function CascadeSelect(props){
+
+const placeholderArr = [
+    '工地标题',
+    '设计师姓名',
+    '案例标题',
+    '文章标题/内容',
+    '专题标题',
+    '小游戏标题'
+];
+
+export default function LinkSelector(props){
     const { curItem={}, cascadeClick, disabled, optsArr, curNavs=[], callFun } = props
     const {appletsName, linkDisplayName='', showSec=false} = curItem
 
@@ -207,7 +217,11 @@ export default function CascadeSelect(props){
                         </TabPane>}
                     {(currentSelectRelatedPageOpt[1]?.linkType === 2 || currentSelectRelatedPageOpt[0]?.linkType === 2 ) && 
                         <TabPane tab='请选择' key= {currentSelectRelatedPageOpt[0]?.linkType === 2 ? '1' : '2'}>
-                            <Search placeholder='可输入关键字进行检索'  onChange={handleChange}/>
+                            <Search
+                                style={{marginTop: 8}}
+                                placeholder={placeholderArr[+detailType - 1] ? `可通过${placeholderArr[(+detailType) - 1]}进行搜索` : '可输入关键字进行检索'}
+                                onChange={handleChange}
+                            />
                                 {detailType === 4 && 
                                     <Radio.Group style={{marginTop: 8}} buttonStyle='solid' size='small' value={currentarticleDicCode} buttonStyle="solid" onChange={radioGroupChange}>
                                         {articleDicOpts.map(item => <Radio.Button key={item.code} value={item.code}>{item.name}</Radio.Button>)}

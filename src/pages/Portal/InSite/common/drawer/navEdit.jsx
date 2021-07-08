@@ -9,7 +9,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { ctx } from '../context';
 import { Input, Icon, message, Form } from 'antd';
 import AddMore from './addMore';
-import CascadeSelect from '@/pages/ChannelManage/components/CascadeSelect';
+import LinkSelector from '@/components/LinkSelector';
 import styles from './drawerEditor.less';
 
 const maxLen = 5;
@@ -149,7 +149,7 @@ export default function NavEdit(props) {
                   </Form>
 
                   <p>关联页面</p>
-                  <CascadeSelect
+                  <LinkSelector
                     curItem={tag}
                     cascadeClick={() => relevClick(ind)}
                     callFun={arr => touchRelece(arr, ind)} // 对外暴露的回调，用来把数据传出去

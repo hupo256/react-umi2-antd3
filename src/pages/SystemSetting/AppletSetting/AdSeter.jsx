@@ -6,11 +6,11 @@
  * 广告设置
  */
 import React, { PureComponent } from 'react';
-import { message, Popover, Button, Input, Switch, Icon } from 'antd';
+import { message, Popover, Button, Switch, Icon } from 'antd';
 import router from 'umi/router';
 import { openadvGet, openadvSave } from '@/services/miniProgram';
 import { getRelatedPage } from '@/services/channelManage';
-import CascadeSelect from '@/pages/ChannelManage/components/CascadeSelect';
+import LinkSelector from '@/components/LinkSelector';
 import Upload from '@/components/Upload/Upload';
 import Prompt from './prompt';
 import styles from './index.less';
@@ -182,7 +182,7 @@ export default class AdSeter extends PureComponent {
               <li>
                 <p>弹屏广告关联页面 </p>
                 <div className={`${releErrer ? styles.releErrer : ''}`}>
-                  <CascadeSelect
+                  <LinkSelector
                     curItem={{ linkDisplayName, showSec }}
                     cascadeClick={() => this.releInpClick()}
                     callFun={arr => this.touchRelece(arr)} // 对外暴露的回调，用来把数据传出去

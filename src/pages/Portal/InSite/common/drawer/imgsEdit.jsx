@@ -18,12 +18,24 @@ const { Group } = Radio;
 const maxLen = 6;
 
 export default function TagsEdit(props) {
-  const { pageData, setpageData, curFlag, setcurInd, setimgEdtor, imgEdtor, curInd } = useContext(
-    ctx
-  );
+  const {
+    pageData,
+    setpageData,
+    curFlag,
+    setcurInd,
+    setimgEdtor,
+    imgEdtor,
+    curInd,
+    relatedPageOption,
+    touchRelatedOpts,
+  } = useContext(ctx);
   const [tagList = [], settagList] = useState(() => touchTagList());
   const [height, setHeight] = useState(176);
   const [imgHeightType, setimgHeightType] = useState(1);
+
+  useEffect(() => {
+    touchRelatedOpts(5);
+  }, []);
 
   useEffect(
     () => {
@@ -151,7 +163,12 @@ export default function TagsEdit(props) {
                       </a>
                     </div>
                   </div>
-                  <Cascader itemInd={ind} tagList={tagList} forUpdatePageData={forUpdatePageData} />
+                  <Cascader
+                    itemInd={ind}
+                    tagList={tagList}
+                    relatedPageOption={relatedPageOption}
+                    forUpdatePageData={forUpdatePageData}
+                  />
                 </div>
               </li>
             );

@@ -6,19 +6,25 @@
               {
                   "uid": "",
                   "type": "",
-                  "title": "",
+                  "linkType": null,
+                  "detailUid": "",
+                  "appletsLinkUrl": "",
                   "imgUrl": "https://img.inbase.in-deco.com/crm-saas/img/games/swiper/img_banner_orange.png"
               },
               {
                   "uid": "",
                   "type": "",
-                  "title": "",
+                  "linkType": null,
+                  "detailUid": "",
+                  "appletsLinkUrl": "",
                   "imgUrl": "https://img.inbase.in-deco.com/crm-saas/img/games/swiper/img_banner_red.png"
               },
               {
                   "uid": "",
                   "type": "",
-                  "title": "",
+                  "linkType": null,
+                  "detailUid": "",
+                  "appletsLinkUrl": "",
                   "imgUrl": "https://img.inbase.in-deco.com/crm-saas/img/games/swiper/img_banner_lake.png"
               }
           ],
@@ -34,6 +40,10 @@
                   "desc": "1v1服务对接 方便省心",
                   "type": "",
                   "bgImg": "https://img.inbase.in-deco.com/crm-saas/img/highlights/img_%201@2x.png",
+                  "imgUrl": "https://img.inbase.in-deco.com/crm-saas/img/highlights/img_%201@2x.png",
+                  "linkType": null,
+                  "detailUid": "",
+                  "appletsLinkUrl": "",
                   "title": "专属服务"
               },
               {
@@ -41,6 +51,10 @@
                   "desc": "100+设计师提供专业服务",
                   "type": "",
                   "bgImg": "https://img.inbase.in-deco.com/crm-saas/img/highlights/img_2@2x.png",
+                  "imgUrl": "https://img.inbase.in-deco.com/crm-saas/img/highlights/img_2@2x.png",
+                  "linkType": null,
+                  "detailUid": "",
+                  "appletsLinkUrl": "",
                   "title": "资深设计"
               },
               {
@@ -48,6 +62,10 @@
                   "desc": "品牌材料直供",
                   "type": "",
                   "bgImg": "https://img.inbase.in-deco.com/crm-saas/img/highlights/img_3@2x.png",
+                  "imgUrl": "https://img.inbase.in-deco.com/crm-saas/img/highlights/img_3@2x.png",
+                  "linkType": null,
+                  "detailUid": "",
+                  "appletsLinkUrl": "",
                   "title": "优质选材"
               },
               {
@@ -55,6 +73,10 @@
                   "desc": "全流程负责到底",
                   "type": "",
                   "bgImg": "https://img.inbase.in-deco.com/crm-saas/img/highlights/img_3@2x(1).png",
+                  "imgUrl": "https://img.inbase.in-deco.com/crm-saas/img/highlights/img_3@2x(1).png",
+                  "linkType": null,
+                  "detailUid": "",
+                  "appletsLinkUrl": "",
                   "title": "无忧服务"
               }
           ],

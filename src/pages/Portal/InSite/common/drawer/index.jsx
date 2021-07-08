@@ -30,6 +30,11 @@ export default function DrawerEditor(props) {
     // e.nativeEvent.stopImmediatePropagation();
 
     // 如果click到了这里，则认为input失焦
+    relInpBlur()
+  }
+
+  // 关联页面选择失焦
+  function relInpBlur() {
     if (curFlag === 'nav') {
       const arr = navData.map((nav, ind) => {
         const { paths } = nav;
@@ -65,6 +70,7 @@ export default function DrawerEditor(props) {
       });
       setpageData(newObj);
     }
+    relInpBlur()
     setcurFlag('editing');
   }
 

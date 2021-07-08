@@ -17,9 +17,13 @@ const maxLen = 8;
 const { Item } = Form;
 
 export default function TagsEdit(props) {
-  const { pageData, setpageData, curFlag } = useContext(ctx);
+  const { pageData, setpageData, curFlag, relatedPageOption, touchRelatedOpts } = useContext(ctx);
   const [tagList = [], settagList] = useState(() => touchTagList());
   const titInp = useRef();
+
+  useEffect(() => {
+    touchRelatedOpts(5);
+  }, []);
 
   function touchTagList() {
     const arr = pageData?.maps?.[curFlag]?.list;
@@ -139,7 +143,12 @@ export default function TagsEdit(props) {
                   </Form>
 
                   <p>关联页面</p>
-                  <Cascader itemInd={ind} tagList={tagList} forUpdatePageData={forUpdatePageData} />
+                  <Cascader
+                    itemInd={ind}
+                    tagList={tagList}
+                    relatedPageOption={relatedPageOption}
+                    forUpdatePageData={forUpdatePageData}
+                  />
                 </div>
               </li>
             );
