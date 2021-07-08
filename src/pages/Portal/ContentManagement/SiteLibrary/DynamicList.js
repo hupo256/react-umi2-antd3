@@ -128,7 +128,7 @@ class DynamicList extends Component {
                                 </span>
                               )}
                               {
-                                // permissionsBtn.includes('BTN210623000001') &&
+                                permissionsBtn.includes('BTN210623000001') &&
                                 <span
                                   style={{ float: 'right', cursor: 'pointer', marginRight: 16 }}
                                   onClick={() => {
@@ -149,18 +149,21 @@ class DynamicList extends Component {
                                   item.fileUrl.split('.').length - 1
                                 ];
                                 return type === 'mp4' ? (
-                                  <video
-                                    onClick={() => this.handlePreview(items.fileList, i)}
-                                    key={i}
-                                    className="rcviewer"
-                                    style={{
-                                      width: 102,
-                                      height: 102,
-                                      verticalAlign: 'middle',
-                                      borderStyle: 'none',
-                                    }}
-                                    src={item.fileUrl}
-                                  />
+                                  <div style={{position: 'relative',display: 'inline-block'}}>
+                                    <span style={{ position: 'absolute', left: 38, top: 30, border: '20px solid transparent', borderLeftWidth: 30, borderLeftColor: '#fff'}} />
+                                    <video
+                                      onClick={() => this.handlePreview(items.fileList, i)}
+                                      key={i}
+                                      className="rcviewer"
+                                      style={{
+                                        width: 102,
+                                        height: 102,
+                                        verticalAlign: 'middle',
+                                        borderStyle: 'none',
+                                      }}
+                                      src={item.fileUrl}
+                                    />
+                                  </div>
                                 ) : (
                                   <img
                                     onClick={() => this.handlePreview(items.fileList, i)}
