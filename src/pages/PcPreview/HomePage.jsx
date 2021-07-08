@@ -46,72 +46,72 @@ const Home = () => {
 
   useEffect(
     () => {
-      ;(async () => {
+      ; (async () => {
         const res = await getMenuList({ keyword: '', pageNum: 1, pageSize: 18 })
         setMenuList(_.get(res, 'data.list', []))
       })()
-      ;(async () => {
-        const res = await getPublishedData([{ key: 'article', pageNum: 1, pageSize: 4 }])
-        const rawCollection = _.get(res, 'data.templateJson.jsonData', [])
+        ; (async () => {
+          const res = await getPublishedData([{ key: 'article', pageNum: 1, pageSize: 4 }])
+          const rawCollection = _.get(res, 'data.templateJson.jsonData', [])
 
-        if (rawCollection) {
-          const filtered = {
-            banner: _.find(rawCollection, {
-              flag: 'banner',
-            }),
-            highlights: _.find(rawCollection, {
-              flag: 'highlights',
-            }),
-            case: _.find(rawCollection, {
-              flag: 'case',
-            }),
-            site: _.find(rawCollection, {
-              flag: 'site',
-            }),
-            design: _.find(rawCollection, { flag: 'design' }),
-            article: _.find(rawCollection, {
-              flag: 'article',
-            }),
+          if (rawCollection) {
+            const filtered = {
+              banner: _.find(rawCollection, {
+                flag: 'banner',
+              }),
+              highlights: _.find(rawCollection, {
+                flag: 'highlights',
+              }),
+              case: _.find(rawCollection, {
+                flag: 'case',
+              }),
+              site: _.find(rawCollection, {
+                flag: 'site',
+              }),
+              design: _.find(rawCollection, { flag: 'design' }),
+              article: _.find(rawCollection, {
+                flag: 'article',
+              }),
+            }
+
+            setPublishedData(filtered)
+          }
+        })()
+        ; (async () => {
+          const res = await getFooter()
+          setFooterData(_.get(res, 'data', []))
+
+          // admin独有，请勿删除
+          if (res?.data && document) {
+            const iconUrl = res.data.icon
+            document.head.querySelector('[rel=icon]').href = iconUrl
           }
 
-          setPublishedData(filtered)
-        }
-      })()
-      ;(async () => {
-        const res = await getFooter()
-        setFooterData(_.get(res, 'data', []))
+          if (document && res?.data) {
+            const data = res.data
+            const string = data.header,
+              temp = document.createElement('div')
 
-        // admin独有，请勿删除
-        if (res?.data && document) {
-          const iconUrl = res.data.icon
-          document.head.querySelector('[rel=icon]').href = iconUrl
-        }
+            temp.innerHTML = string
+            const elemScripts = temp.querySelectorAll('script')
 
-        if (document && res?.data) {
-          const data = res.data
-          const string = data.header,
-            temp = document.createElement('div')
-
-          temp.innerHTML = string
-          const elemScripts = temp.querySelectorAll('script')
-
-          _.forEach(elemScripts, async elem => {
-            const src = elem.src
-            if (src) {
-              try {
-                const res = await axios.get(src)
-                eval(res.data)
-              } catch (e) {}
-            } else {
-              eval(elem.text)
-            }
-          })
-        }
-      })()
-      ;(async () => {
-        const res = await getDomain()
-        setDynamicDomain(`http://${_.get(res, 'data.domain', '')}`)
-      })()
+            _.forEach(elemScripts, async elem => {
+              const src = elem.src
+              if (src) {
+                try {
+                  const res = await axios.get(src)
+                  eval(res.data)
+                } catch (e) { }
+              } else {
+                eval(elem.text)
+              }
+            })
+          }
+        })()
+        ; (async () => {
+          const res = await getDomain()
+          setDynamicDomain(`http://${_.get(res, 'data.domain', '')}`)
+        })()
     },
     [refresh],
   )
@@ -158,22 +158,31 @@ const Home = () => {
             <div
               key={`banner-${index}`}
               onClick={() => {
-                if (!item.uid) {
+                if (!item.appletsLinkUrl) {
                   return
                 }
-                if (item.type === 'games') {
+                if (item.appletsLinkUrl === 'mkt') {
                   message.destroy()
                   message.warning('PC端不允许跳转到小游戏')
                   return
                 }
-                if (item.type === 'special') {
-                  window.open(`${dynamicDomain}/img/PublicLibraryPc/special.html#/?uid=${item.uid}`, '页面预览')
+                if (item.appletsLinkUrl === 'ShowSpecial') {
+                  window.open(`${dynamicDomain}/img/PublicLibraryPc/special.html#/?${paramMap[item.appletsLinkUrl]}=${item.detailUid}`, '页面预览')
                   return
                 }
-                window.open(
-                  `${dynamicDomain}/${typeMap[item.type]}/details?${paramMap[item.type]}=${item.uid}`,
-                  '页面预览',
-                )
+
+                if (item.linkType === 1) {
+                  //列表
+                  window.open(`${dynamicDomain}/${typeMap[item.appletsLinkUrl]}`, '页面预览')
+                }
+
+                if (item.linkType === 2) {
+                  window.open(
+                    `${dynamicDomain}/${typeMap[item.appletsLinkUrl]}/details?${paramMap[item.appletsLinkUrl]}=${item.detailUid}`,
+                    '页面预览',
+                  )
+                }
+
               }}
             >
               <h3 className={styles.banner} style={{ backgroundImage: `url('${item?.imgUrl}')` }}>

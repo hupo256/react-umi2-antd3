@@ -19,7 +19,7 @@ const CaseProjects = ({ data, domain }) => {
       data[index]['text'] += ` | ${item.decorationCost}万元`
     }
     caseStyle[`image${index}`] = {
-      backgroundImage: `url(${item.coverPicUrl})`,
+      backgroundImage: `url('${item.coverPicUrl}')`,
     }
   })
 

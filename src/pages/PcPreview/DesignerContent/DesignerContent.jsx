@@ -30,7 +30,7 @@ const DesignerContent = ({ data, domain }) => {
               <div
                 style={{
                   background: _.get(value, 'caseList.list.0.coverPicUrl', null)
-                    ? `url(${value['caseList']['list'][0].coverPicUrl}) no-repeat center center`
+                    ? `url('${value['caseList']['list'][0].coverPicUrl}') no-repeat center center`
                     : `url(/img/designer/designer-placeholder.png) no-repeat center center`,
                   backgroundSize: 'cover',
                   cursor: 'pointer',
