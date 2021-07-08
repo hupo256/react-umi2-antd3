@@ -24,7 +24,7 @@
   position: absolute;
   right: -110%;
   top: 0;
-  width: 376px;
+  width: 468px;
   height: 100%;
   background: #fff;
   box-shadow: -2px 0 4px rgba(0, 21, 41, 0.08);
@@ -32,7 +32,10 @@
   overflow: hidden;
   overflow-y: auto;
   padding-bottom: 4em;
-  // border-bottom: 1px solid #ddd;
+
+  &::-webkit-scrollbar {
+    width: 0 !important;
+  }
 
   h3 {
     font-size: 14px;
@@ -72,18 +75,13 @@
     }
   }
 
-  .inpSuffix {
-    font-size: 12px;
-    padding-right: 3px;
-    color: rgba(153, 153, 153, 1);
-  }
-
   .addImg {
     line-height: 3;
     border: 1px solid #ccc;
     border-style: dashed;
     text-align: center;
     margin: 25px 16px 0;
+    border-radius: 2px;
     cursor: pointer;
   }
 
@@ -206,15 +204,13 @@
   .imgEditBox {
     li {
       display: flex;
-      justify-content: space-between;
-      // align-items: center;
       padding: 20px 16px;
 
       .minImgBox {
         width: 76px;
         height: 51px;
         border-radius: 2px;
-        margin-right: 8px;
+        margin-right: 16px;
         background: #ccc;
         overflow: hidden;
         cursor: pointer;
@@ -239,24 +235,24 @@
       }
 
       .inpBox {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        line-height: 20px;
+        width: 80%;
 
-        > span:nth-child(1) {
-          transform: translateY(-2px);
+        > div:nth-child(1) {
+          // transform: translateY(-7px);
+          margin-top: -7px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+
+          span {
+            font-size: 12px;
+          }
         }
-        // input {
-        //   width: 95%;
-        //   margin-right: 0;
-        // }
       }
     }
   }
 }
 .aboutUsBox {
-  //padding: 0 16px;
   .titBox {
     span {
       margin-bottom: 7px;

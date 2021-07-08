@@ -137,20 +137,21 @@ export default function TagsEdit(props) {
                   <img src={imgUrl || `${defaultImg}ic_Image.png`} alt="" />
                 </div>
                 <div className={styles.inpBox}>
-                  <span>关联页面</span>
+                  <div>
+                    <span>关联页面</span>
+                    <div className={styles.tbOpration}>
+                      <a disabled={ind === 0} onClick={() => toMove(ind, -1)}>
+                        <Icon type="arrow-up" />
+                      </a>
+                      <a disabled={ind === len - 1} onClick={() => toMove(ind, 1)}>
+                        <Icon type="arrow-down" />
+                      </a>
+                      <a disabled={len === 1} onClick={() => delImg(ind)}>
+                        <Icon type="delete" />
+                      </a>
+                    </div>
+                  </div>
                   <Cascader itemInd={ind} tagList={tagList} forUpdatePageData={forUpdatePageData} />
-                </div>
-
-                <div className={styles.tbOpration}>
-                  <a disabled={ind === 0} onClick={() => toMove(ind, -1)}>
-                    <Icon type="arrow-up" />
-                  </a>
-                  <a disabled={ind === len - 1} onClick={() => toMove(ind, 1)}>
-                    <Icon type="arrow-down" />
-                  </a>
-                  <a disabled={len === 1} onClick={() => delImg(ind)}>
-                    <Icon type="delete" />
-                  </a>
                 </div>
               </li>
             );

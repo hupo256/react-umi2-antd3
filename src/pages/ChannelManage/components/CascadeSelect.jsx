@@ -16,7 +16,7 @@ const { TabPane } = Tabs
 const { Search } = Input;
 export default function CascadeSelect(props){
     const { curItem={}, cascadeClick, disabled, optsArr, curNavs=[], callFun } = props
-    const {appletsName, title='', showSec=false} = curItem
+    const {appletsName, linkDisplayName='', showSec=false} = curItem
 
     const [showSelectPanl, setshowSelectPanl] = useState(false)  // 选择器的显示开关
     const [relatedPageOption, setrelatedPageOption] = useState([])  // 生成级联选择的数据
@@ -187,10 +187,10 @@ export default function CascadeSelect(props){
             <Input
                 readOnly
                 disabled={disabled}
-                value={appletsName}
+                value={appletsName || linkDisplayName}
                 onClick={cascadeClick}
                 placeholder="请选择关联页面"
-                suffix={<Icon type="down" className={styles.inpSuffix} />}
+                suffix={<Icon type="down" className={`${styles.inpSuffix} ${showSelectPanl ? styles.on : ''}`} />}
             />
             {showSelectPanl && <div className={styles['card-container']}>
                 <Tabs type="card" tabBarGutter={0} activeKey={currentKey} onChange={tabChange}>
