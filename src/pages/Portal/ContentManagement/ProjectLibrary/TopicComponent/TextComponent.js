@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-06-10 23:11:22
+ * @Last Modified time: 2021-07-09 16:30:15
  * 创建工地
  */
 import React, { PureComponent } from 'react';
@@ -47,6 +47,9 @@ class TextComponent extends PureComponent {
         return '';
       }
     };
+    let terminalType = localStorage.getItem('terminalType')
+      ? Number(localStorage.getItem('terminalType'))
+      : 0;
     return (
       <div>
         {data.checked === 1 ? (
@@ -317,6 +320,17 @@ class TextComponent extends PureComponent {
                   />
                 </em>
               </div>
+              {terminalType === 1 ? <div className={styles.fontw}>链接地址</div> : null}
+              {terminalType === 1 ? (
+                <div className={styles.FormContv}>
+                  <Input
+                    className={styles.FormInput}
+                    maxLength={100}
+                    value={data.elementUrl}
+                    onChange={e => this.handleUrlChange(e)}
+                  />
+                </div>
+              ) : null}
               {show ? (
                 <div className={styles.SketchWraps}>
                   <SketchPicker color={isStyle.color} onChange={this.handleColorChange} />
@@ -484,6 +498,21 @@ class TextComponent extends PureComponent {
       ProjectLibrary: { compentList },
     } = this.props;
     compentList[index].checked = 0;
+    dispatch({
+      type: 'ProjectLibrary/saveDataModel',
+      payload: {
+        key: 'compentList',
+        value: [...compentList],
+      },
+    });
+  }
+  handleUrlChange(e) {
+    const {
+      dispatch,
+      index,
+      ProjectLibrary: { compentList },
+    } = this.props;
+    compentList[index].elementUrl = e.target.value;
     dispatch({
       type: 'ProjectLibrary/saveDataModel',
       payload: {
