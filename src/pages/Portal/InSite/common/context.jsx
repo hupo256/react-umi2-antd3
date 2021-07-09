@@ -94,6 +94,11 @@ export function Provider({ children }) {
             pageNum: '1',
             pageSize: '4',
           },
+          {
+            key: 'channel',
+            pageNum: '1',
+            pageSize: '20',
+          },
         ];
         getHomePageEditData(param).then(res => {
           if (res?.code !== 200) return message.error(res?.message || '数据返回出错');
