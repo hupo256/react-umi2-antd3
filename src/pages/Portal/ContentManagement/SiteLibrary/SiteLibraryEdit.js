@@ -586,7 +586,7 @@ class SiteLibraryAdd extends PureComponent {
         if (res && res.code === 200) {
           dispatch({
             type: 'DictConfig/queryDicModel',
-            payload: { dicModuleCodes: 'DM007' },
+            payload: { dicModuleCodes: 'DM002,DM007' },
           }).then(r => {
             if (r && r.code === 200) {
               that.setState({buildingData: r.data['DM007']}, () => {
