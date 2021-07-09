@@ -80,14 +80,19 @@ class LeadManageAdd extends Component {
   }
   //推荐人改变
   async changeTrackRefer(e) {
-    console.log('12', e.target.value, this.state);
-    await this.setState({ record: { ...this.state.record, referrerName: e.target.value } });
+    await this.setState({
+      record: {
+        ...this.state.record,
+        referrerName: e.target.value,
+        referrerCode: "",
+        referrerPhone: "",
+      },
+    });
     this.queryUserByName(this.state.record.referrerName);
   }
 
   render() {
     const { record, referrerNameList } = this.state;
-    // console.log('referrerNameList', referrerNameList);
     return (
       <Modal
         title={<span style={{ fontWeight: 600 }}>创建</span>}

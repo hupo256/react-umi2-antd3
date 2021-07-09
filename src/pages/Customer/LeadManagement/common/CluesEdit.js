@@ -66,8 +66,16 @@ class CluesEdit extends Component {
   }
   //推荐人改变
   async changeTrackRefer(e) {
-    console.log('12', e.target.value, this.state);
-    await this.setState({ record: { ...this.state.record, referrerName: e.target.value } });
+    await this.setState({
+      record: {
+        ...this.state.record,
+        referrerName: e.target.value,
+        referrerCode: "",
+        referrerPhone: "",
+      },
+    });
+    // console.log('12', e.target.value, this.state);
+    // debugger;
     this.queryUserByName(this.state.record.referrerName);
   }
 
@@ -114,7 +122,10 @@ class CluesEdit extends Component {
             <span>来源渠道：</span>
             <span style={{ flex: 1 }}>{record.sourceChannelName}</span>
           </div>
-          <div className={styles.CluesEdit} id={record.trackInputType == 2 && record.trackReferEdit ? 'changeCluesEdit' : ''}>
+          <div
+            className={styles.CluesEdit}
+            id={record.trackInputType == 2 && record.trackReferEdit ? 'changeCluesEdit' : ''}
+          >
             <span>推荐人：</span>
             {record.trackInputType == 2 && record.trackReferEdit ? (
               <span style={{ flex: 1, position: 'relative' }}>
@@ -124,7 +135,7 @@ class CluesEdit extends Component {
                   onClick={() => this.clickTrackRefer()}
                   onChange={e => this.changeTrackRefer(e)}
                 />
-                <span className='spantitle'>6个月内仅可编辑一次，请谨慎修改</span>
+                <span className="spantitle">6个月内仅可编辑一次，请谨慎修改</span>
                 <div
                   className={styles.referrerNameSelect}
                   style={{ display: referrerNameList.length > 0 ? 'block' : 'none', padding: 5 }}
