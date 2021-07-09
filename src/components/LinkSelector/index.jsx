@@ -32,7 +32,7 @@ export default function LinkSelector(props){
     const [relatedPageOption, setrelatedPageOption] = useState([])  // 生成级联选择的数据
     const [currentSelectRelatedPageOpt, setcurrentSelectRelatedPageOpt] = useState([])  // 当前已选
     const [articleDicOpts, setarticleDicOpts] = useState([])  
-    const [currentarticleDicCode, setcurrentarticleDicCode] = useState(undefined)  
+    const [currentarticleDicCode, setcurrentarticleDicCode] = useState('')  
     const [currentKey, setcurrentKey] = useState('0')  
     const [detData, setdetData] = useState(null)  // 查询出来的详情列表
     const [detailType, setdetailType] = useState(0)   // 祥情页类型 
@@ -114,6 +114,7 @@ export default function LinkSelector(props){
         setcurrentSelectRelatedPageOpt(arr)
         setcurrentKey(+step + 1 + '')
         setdetailType(detailType)
+        setpageNum(1)
 
         if (!children.length && linkType === 1) hidePanel()
         if(callFun) callFun(formatData(arr))
@@ -122,6 +123,9 @@ export default function LinkSelector(props){
     // 获取表格数据
     async function getDataList (config){
         if(!detailType) return
+        let curCode = ''
+        // 没有文章栏目时先请求一次
+        if (detailType === 4 && !articleDicOpts.length) curCode = await getArticleDic();
         const status = detailType === 6 ? '' : '1'
         const searchText = config?.searchText || ''
         const prama = {
@@ -129,14 +133,13 @@ export default function LinkSelector(props){
             searchText,
             status,
             specialStatus: status,
+            articleStatus: status,
             searchWord: searchText,
             activityTitle: searchText,
-            articleDicCode: currentarticleDicCode,
+            articleDicCode: curCode || currentarticleDicCode,
             pageNum,
             pageSize: 10,
         }
-        // 没有文章栏目时先请求一次
-        if (detailType === 4 && !articleDicOpts.length) await getArticleDic();
         const apiKeys = [siteListApi, designerListApi, caseListApi, articleListApi, specialListApi, activeListApi]
         const { data, code } = await apiKeys[detailType-1]({...prama, ...config})
         if(code !== 200 ) return
@@ -147,13 +150,16 @@ export default function LinkSelector(props){
     async function getArticleDic(){
         const res = await articleDicApi({dicModuleCodes: 'DM006'});
         if(!res?.data) return
+        const curCode = res.data[0]?.code
         setarticleDicOpts(res.data)
-        setcurrentarticleDicCode(res.data[0]?.code)
+        setcurrentarticleDicCode(curCode)
+        return curCode
     }
 
     // 文章类型切换
     function radioGroupChange(e){
         const val = e.target.value
+        console.log(val)
         setcurrentarticleDicCode(val)
         getDataList({articleDicCode: val})
     }

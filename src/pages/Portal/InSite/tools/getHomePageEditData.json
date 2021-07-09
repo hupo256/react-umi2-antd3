@@ -113,17 +113,26 @@
               {
                   "uid": "",
                   "type": "",
+                  "linkType": null,
+                  "detailUid": "",
+                  "appletsLinkUrl": "",
                   "imgUrl": "https://img.inbase.in-deco.com/crm-saas/img/games/swiper/img_banner_orange_bottom.png"
               },
               {
                   "uid": "",
                   "type": "",
+                  "linkType": null,
+                  "detailUid": "",
+                  "appletsLinkUrl": "",
                   "imgUrl": "https://img.inbase.in-deco.com/crm-saas/img/games/swiper/img_banner_red_bottom.png"
 
               },
               {
                   "uid": "",
                   "type": "",
+                  "linkType": null,
+                  "detailUid": "",
+                  "appletsLinkUrl": "",
                   "imgUrl": "https://img.inbase.in-deco.com/crm-saas/img/games/swiper/img_banner_lake_bottom.png"
 
               }
