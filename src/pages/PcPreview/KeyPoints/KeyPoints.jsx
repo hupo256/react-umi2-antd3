@@ -5,7 +5,7 @@ import { typeMap, paramMap } from '../constants.js'
 import { message } from 'antd'
 
 const isHide = feature => {
-  return !feature.uid || !feature.type
+  return !feature.appletsLinkUrl
 }
 
 const KeyPoints = ({ pointsList, domain }) => {
@@ -19,19 +19,35 @@ const KeyPoints = ({ pointsList, domain }) => {
             if (isHide(feature)) {
               return
             }
-            if (feature.type === 'games') {
+
+            if (feature.appletsLinkUrl === 'mkt') {
               message.destroy()
               message.warning('PC端不允许跳转到小游戏')
               return
             }
-            if (feature.type === 'special') {
-              window.open(`${domain}/img/PublicLibraryPc/special.html#/?uid=${feature.uid}`, '页面预览')
+
+            if (feature.appletsLinkUrl === 'ShowSpecial') {
+              window.open(`${domain}/img/PublicLibraryPc/special.html#/?${paramMap[feature.appletsLinkUrl]}=${feature.detailUid}`, '页面预览')
               return
             }
-            window.open(
-              `${domain}/${typeMap[feature.type]}/details?${paramMap[feature.type]}=${feature.uid}`,
-              '页面预览',
-            )
+
+            if (feature.linkType === 1) {
+              //列表
+              window.open(
+                `${domain}/${typeMap[feature.appletsLinkUrl]}`,
+                '页面预览')
+
+            }
+
+            if (feature.linkType === 2) {
+              //详情
+              window.open(
+                `${domain}/${typeMap[feature.appletsLinkUrl]}/details?${paramMap[feature.appletsLinkUrl]}=${feature.detailUid}`,
+                '页面预览',
+              )
+            }
+
+
           }}
           style={{ cursor: isHide(feature) ? 'default' : 'pointer' }}
         >
