@@ -180,13 +180,6 @@ class LeadManageTable extends Component {
                   详情
                 </span>
               )}
-              {/* <span
-                onClick={() => {
-                  router.push(`/customer/detail?uid=${r.uid}`);
-                }}
-              >
-                详情
-              </span> */}
               {permissionsBtn.includes('MU900000020001') &&
                 (permissionsBtn.includes('BTN210526000002') ||
                   permissionsBtn.includes('BTN210526000003')) && <span> | </span>}

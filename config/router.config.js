@@ -285,7 +285,7 @@ export default [
       {
         path: '/customer',
         name: 'customer',
-        icon: 'MyIcon@icon-xiansuo',
+        icon: 'retweet',
         code: 'MU90000002',
         component: './Customer/LeadManagement/LeadManagement',
       },

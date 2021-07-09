@@ -22,9 +22,7 @@ class CluesEdit extends Component {
     this.queryUserByMobile = this.queryUserByMobile.bind(this);
   }
   async componentDidMount() {
-    console.log('did', this.props);
     await this.setState({ record: this.props.record });
-    console.log('did', this.state);
   }
   //推荐人模糊搜索
   async queryUserByName(value) {
