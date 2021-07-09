@@ -763,7 +763,9 @@ class SiteLibraryAdd extends PureComponent {
         toilet: data.houseType?.toilet || 0,
         coverImg: data.coverImg,
         tags: data.headKeywords || [],
-        addr: data.addr
+        addr: data.addr,
+        lat: data.lat,
+        lng: data.lng
       },
       () => {
         this.setState({ show: true });
