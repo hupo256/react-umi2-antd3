@@ -489,6 +489,13 @@ class SiteLibraryAdd extends PureComponent {
       </div>
     );
   }
+  //取消工地地址选择
+  handleCancelMap = () => {
+    this.setState({
+      mapVisible: false,
+      cityName: '',
+    });
+  };
   lockClose = e => {
     clearTimeout(this.lock);
     this.lock = setTimeout(() => {

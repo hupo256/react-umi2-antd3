@@ -241,17 +241,17 @@ class SiteLibraryAdd extends PureComponent {
                         return null;
                       }
                     })}
-                    {disabled.map(item => {
-                      // if (stepOne.styleDicCode && [stepOne.styleDicCode].includes(item.code)) {
-                        return (
-                          <Option disabled={true} value={item.code} key={item.uid}>
-                            {item.name}
-                          </Option>
-                        );
-                      // } else {
-                      //   return null;
-                      // }
-                    })}
+                    {/*{disabled.map(item => {*/}
+                    {/*  // if (stepOne.styleDicCode && [stepOne.styleDicCode].includes(item.code)) {*/}
+                    {/*    return (*/}
+                    {/*      <Option disabled={true} value={item.code} key={item.uid}>*/}
+                    {/*        {item.name}*/}
+                    {/*      </Option>*/}
+                    {/*    );*/}
+                    {/*  // } else {*/}
+                    {/*  //   return null;*/}
+                    {/*  // }*/}
+                    {/*})}*/}
                   </Select>
                 )}
               </Form.Item>
@@ -547,6 +547,13 @@ class SiteLibraryAdd extends PureComponent {
       </div>
     );
   }
+  //取消工地地址选择
+  handleCancelMap = () => {
+    this.setState({
+      mapVisible: false,
+      cityName: '',
+    });
+  };
   lockClose = e => {
     clearTimeout(this.lock);
     this.lock = setTimeout(() => {
