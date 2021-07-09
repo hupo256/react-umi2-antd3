@@ -93,16 +93,11 @@ function Activityer(props) {
       width: 260,
       render: (text, record, index) => (
         <p className={styles.actions}>
-          {permissionsBtn.includes('BTN210422000002') && <a onClick={() => toEdit(record.uid)}>编辑</a>}  
-          {permissionsBtn.includes('BTN210422000002') && permissionsBtn.includes('BTN210422000003') && <span className={styles.operateLine} />}
+          {permissionsBtn.includes('BTN210422000002') && <a onClick={() => toEdit(record.uid)}>编辑</a>}
+          {/* {permissionsBtn.includes('BTN210422000002') && permissionsBtn.includes('BTN210422000003') && <span className={styles.operateLine} />} */}
           {permissionsBtn.includes('BTN210422000003') && <a onClick={() => toRecod(record.activityCode)}>抽奖记录</a>}
-          {permissionsBtn.includes('BTN210623000007') && 
-          isCompanyAuthWechatMini && <span className={styles.operateLine}></span>}
-            {permissionsBtn.includes('BTN210623000007') && 
-            isCompanyAuthWechatMini &&
-            <a className="operateBtn" onClick={() => getWechatCode(record)}>
-              小程序码
-          </a>}
+          {/* {permissionsBtn.includes('BTN210623000007') && <span className={styles.operateLine}></span>} */}
+          {permissionsBtn.includes('BTN210623000007') && isCompanyAuthWechatMini && <a className="operateBtn" onClick={() => getWechatCode(record)}>小程序码</a>}
         </p>
       ),
     };

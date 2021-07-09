@@ -8,11 +8,11 @@
 
 import React from 'react';
 import { Tooltip } from 'antd';
-import styles from '../index.less';
+import styles from './index.less';
 
 const HeadTip = ({ text }) => (
   <Tooltip placement="topLeft" title={text}>
-    <p className={styles.cellCon}>{text}</p>
+    <p style={{maxWidth: 120,  display: '-webkit-box',"WebkitBoxOrient": 'vertical', overflow:'hidden',  "WebkitLineClamp": 1}}>{text}</p>
   </Tooltip>
 );
 

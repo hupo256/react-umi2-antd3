@@ -8,10 +8,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { ctx } from '../context';
 import { Input, Radio, InputNumber, Icon, message, Table, Popover, Button } from 'antd';
-import { defaultImg } from '../../tools/data';
-import Upload from '@/components/Upload/Upload';
-import LinkChoose from './linkChoose';
-import styles from './drawerEditor.less';
 import example from '../../../../../assets/example.png'
 
 const { Group } = Radio;

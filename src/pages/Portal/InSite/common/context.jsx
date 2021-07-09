@@ -2,8 +2,8 @@
  * @Author: tdd
  * @Date: 2021-03-23 18:49:12
  * @Last Modified by: tdd
- * @Last Modified time: 2021-03-24 18:49:12
- * mini program 里的store
+ * @Last Modified time: 2021-07-05 18:49:12
+ * 首页装修 里的store
  */
 import React, { useState, createContext } from 'react';
 import { message } from 'antd';
@@ -15,6 +15,7 @@ import {
   getAuthInfo,
   queryWechatMiniGlobal,
 } from '@/services/miniProgram';
+import { getRelatedPage } from '@/services/channelManage';
 import { highlightsBgImgs } from '../tools/data';
 import { getauth } from '@/utils/authority';
 import {
@@ -33,6 +34,7 @@ export function Provider({ children }) {
   const [templateName, settemplateName] = useState(''); //当前模板name
   const [navData, setNavData] = useState([]); //导航数据
   const [wechatAuthed, setwechatAuthed] = useState({}); //微信授权数据
+  const [relatedPageOption, setrelatedPageOption] = useState([]); // 关联页面，生成级联选择的数据
   const [choiceData, setChoiceData] = useState([
     {
       navModule: 'case',
@@ -197,8 +199,14 @@ export function Provider({ children }) {
       getAuthInfo({ saasSellerCode }),
       queryWechatMiniGlobal(),
     ]);
-    console.log(authInfo, wechatMini);
     setwechatAuthed({ ...authInfo?.data, ...wechatMini?.data });
+  }
+
+  function touchRelatedOpts(num) {
+    getRelatedPage({ sceneType: num }).then(res => {
+      if (!res?.data) return;
+      setrelatedPageOption(res?.data);
+    });
   }
 
   const value = {
@@ -226,6 +234,8 @@ export function Provider({ children }) {
     savePageData,
     wechatAuthed,
     setwechatAuthedInfor,
+    relatedPageOption,
+    touchRelatedOpts,
   };
 
   return <ctx.Provider value={value}>{children}</ctx.Provider>;

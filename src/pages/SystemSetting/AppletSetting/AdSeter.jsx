@@ -6,11 +6,11 @@
  * 广告设置
  */
 import React, { PureComponent } from 'react';
-import { message, Popover, Button, Input, Switch, Icon } from 'antd';
+import { message, Popover, Button, Switch, Icon } from 'antd';
 import router from 'umi/router';
 import { openadvGet, openadvSave } from '@/services/miniProgram';
 import { getRelatedPage } from '@/services/channelManage';
-import CascadeSelect from '@/pages/ChannelManage/components/CascadeSelect';
+import LinkSelector from '@/components/LinkSelector';
 import Upload from '@/components/Upload/Upload';
 import Prompt from './prompt';
 import styles from './index.less';
@@ -100,9 +100,10 @@ export default class AdSeter extends PureComponent {
     let detailUid = '';
 
     if (!picUrl) return this.setState({ imgErrer: true }); // 图片非空检验
-    if (len) {  // 已选择过关联页面，则校验之
-      if (!isEnd) return this.setState({ releErrer: true }); 
-      linkKey || (detailUid = paths.pop()); // 没有linkKey 表示选择了详情页, 
+    if (len) {
+      // 已选择过关联页面，则校验之
+      if (!isEnd) return this.setState({ releErrer: true });
+      linkKey || (detailUid = paths.pop()); // 没有linkKey 表示选择了详情页,
     }
     const param = { isOpen, paths, picUrl, detailUid };
     this.setState({ btnLoading: true });
@@ -180,25 +181,14 @@ export default class AdSeter extends PureComponent {
 
               <li>
                 <p>弹屏广告关联页面 </p>
-                <div
-                  className={`${releErrer ? styles.releErrer : ''}`}
-                  onClick={e => e.stopPropagation()}
-                >
-                  <Input
-                    readOnly
-                    value={linkDisplayName}
-                    placeholder="请选择关联页面"
-                    onFocus={() => this.releInpClick(true)}
-                    suffix={<Icon type="down" className={styles.inpSuffix} />}
+                <div className={`${releErrer ? styles.releErrer : ''}`}>
+                  <LinkSelector
+                    curItem={{ linkDisplayName, showSec }}
+                    cascadeClick={() => this.releInpClick()}
+                    callFun={arr => this.touchRelece(arr)} // 对外暴露的回调，用来把数据传出去
+                    optsArr={relatedPageOption} // 渲染组件需要的数据
                   />
                   <span className={styles.errMsg}>请正确填写弹屏广告关联页面</span>
-                  {showSec &&
-                    relatedPageOption.length > 0 && (
-                      <CascadeSelect
-                        callFun={arr => this.touchRelece(arr)} // 对外暴露的回调，用来把数据传出去
-                        optsArr={relatedPageOption} // 渲染组件需要的数据
-                      />
-                    )}
                 </div>
               </li>
             </ul>
