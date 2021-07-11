@@ -207,10 +207,16 @@ class LeadManageTable extends Component {
     return (
       <div style={{ marginTop: 20 }}>
         <Card bordered={false}>
-          <Button style={{ marginBottom: 16,marginRight:10 }} onClick={() => this.setState({ addVisble: true })}>
-            <Icon type="plus" />
-            创建线索
-          </Button>
+          {permissionsBtn.includes('BTN210711000002') && (
+            <Button
+              style={{ marginBottom: 16, marginRight: 10 }}
+              onClick={() => this.setState({ addVisble: true })}
+            >
+              <Icon type="plus" />
+              创建线索
+            </Button>
+          )}
+
           {permissionsBtn.includes('BTN210326000021') && (
             <Button style={{ marginBottom: 16 }} onClick={() => this.handleDownload()}>
               导出Excel

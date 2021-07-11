@@ -39,7 +39,7 @@ class LeadManageDetail extends Component {
               title={
                 <span>
                   基本信息
-                  {/* {permissionsBtn.includes('BTN210526000001') && (
+                  {permissionsBtn.includes('BTN210526000001') && (
                     <span
                       style={{
                         color: '#fe6a30',
@@ -53,20 +53,7 @@ class LeadManageDetail extends Component {
                       <Icon type="edit" />
                       编辑
                     </span>
-                  )} */}
-                  <span
-                    style={{
-                      color: '#fe6a30',
-                      fontSize: 14,
-                      fontWeight: 400,
-                      marginLeft: 12,
-                      cursor: 'pointer',
-                    }}
-                    onClick={() => this.setState({ clueVisible: true, record: trackDetail })}
-                  >
-                    <Icon type="edit" />
-                    编辑
-                  </span>
+                  )}
                 </span>
               }
             >
