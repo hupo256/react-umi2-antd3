@@ -131,7 +131,7 @@ class LeadManageAdd extends Component {
             </span>
           </div>
           <div className={styles.CluesEdit} id='CluesEditdiv'>
-            <span className="beforeStar">线索状态</span>
+            <span className="beforeStar">线索状态：</span>
             <span style={{ flex: 1 }}>
               <Select
                 defaultValue={record.status}
