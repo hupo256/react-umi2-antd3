@@ -244,7 +244,7 @@ class LeadManageAdd extends Component {
     }).then(async res => {
       if (res && res.code === 200) {
         if (res.data == true) {
-          message.warning('该手机号已存在，无需重复录入。');
+          message.warning('该线索已存在，无需重复录入。');
         }
       }
     });

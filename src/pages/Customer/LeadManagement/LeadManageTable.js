@@ -209,6 +209,7 @@ class LeadManageTable extends Component {
         <Card bordered={false}>
           {permissionsBtn.includes('BTN210711000002') && (
             <Button
+              type="primary"
               style={{ marginBottom: 16, marginRight: 10 }}
               onClick={() => this.setState({ addVisble: true })}
             >
@@ -219,8 +220,8 @@ class LeadManageTable extends Component {
 
           {permissionsBtn.includes('BTN210326000021') && (
             <Button style={{ marginBottom: 16 }} onClick={() => this.handleDownload()}>
-              导出Excel
               <Icon type="download" />
+              导出Excel
             </Button>
           )}
 
