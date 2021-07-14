@@ -25,11 +25,15 @@ export default function DrawerEditor(props) {
   const isShow = canEditTags.includes(curFlag);
 
   function blockPropagation(e) {
-    e.stopPropagation();
     // 阻止与原生事件的冒泡
-    // e.nativeEvent.stopImmediatePropagation();
-
+    e.stopPropagation();
+    
     // 如果click到了这里，则认为input失焦
+    relInpBlur()
+  }
+
+  // 关联页面选择失焦
+  function relInpBlur() {
     if (curFlag === 'nav') {
       const arr = navData.map((nav, ind) => {
         const { paths } = nav;
@@ -41,6 +45,17 @@ export default function DrawerEditor(props) {
         return nav;
       });
       setNavData(arr);
+    }
+    if(curFlag === 'banner' || curFlag === 'highlights' || curFlag === 'advertising' ){
+      const newObj = { ...pageData };
+      const arr = newObj.maps[curFlag].list?.map(item => {
+        const {appletsName, isEnd} = item
+        item.showSec = false;
+        item.appletsName = isEnd ? appletsName : ''  //没到末节点，则清空
+        return item;
+      });
+      newObj.maps[curFlag].list = arr
+      setpageData(newObj);
     }
   }
 
@@ -54,6 +69,7 @@ export default function DrawerEditor(props) {
       });
       setpageData(newObj);
     }
+    relInpBlur();
     setcurFlag('editing');
   }
 

@@ -16,7 +16,8 @@ export default function ForPrompt(props) {
   const { curFlag, setcurFlag, pageData, templateCode, savePageData } = useContext(ctx);
 
   // flag为editing，表示还有未保存的数据
-  let isPrompt = curFlag === 'editing';
+  // let isPrompt = curFlag === 'editing';
+  let isPrompt = !!curFlag;
 
   function goLeave(key, bool) {
     setcurFlag('');

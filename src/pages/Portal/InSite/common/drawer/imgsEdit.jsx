@@ -7,11 +7,11 @@
  */
 import React, { useState, useEffect, useContext } from 'react';
 import { ctx } from '../context';
-import { Input, Radio, InputNumber, Icon, message } from 'antd';
+import { Radio, InputNumber, Icon, message } from 'antd';
 import { defaultImg } from '../../tools/data';
 import AddMore from './addMore';
 import Upload from '@/components/Upload/Upload';
-import LinkChoose from './linkChoose';
+import Cascader from './cascader';
 import styles from './drawerEditor.less';
 
 const { Group } = Radio;
@@ -22,17 +22,20 @@ export default function TagsEdit(props) {
     pageData,
     setpageData,
     curFlag,
-    setlinkEdtor,
     setcurInd,
     setimgEdtor,
     imgEdtor,
     curInd,
+    relatedPageOption,
+    touchRelatedOpts,
   } = useContext(ctx);
-  const [tagList = [], settagList] = useState(() => pageData?.maps?.[curFlag]?.list);
+  const [tagList = [], settagList] = useState(() => touchTagList());
   const [height, setHeight] = useState(176);
   const [imgHeightType, setimgHeightType] = useState(1);
 
-  console.log(tagList);
+  useEffect(() => {
+    touchRelatedOpts(5);
+  }, []);
 
   useEffect(
     () => {
@@ -48,33 +51,23 @@ export default function TagsEdit(props) {
     [curFlag]
   );
 
-  // useEffect(
-  //   () => {
-  //     const hgt = curFlag === 'banner' ? 176 : 85;
-  //     setHeight(hgt);
-  //   },
-  //   [imgHeightType]
-  // );
+  function touchTagList() {
+    const arr = pageData?.maps?.[curFlag]?.list;
+    return arr?.map(item => ({ ...item, showSec: false }));
+  }
 
   function addNewImgs() {
     if (tagList.length === maxLen) {
       message.warning(`最多可添加${maxLen}张图片`);
       return;
     }
-    const newObj = { ...pageData };
-    newObj.maps[curFlag].list = [...tagList, {}];
-    settagList([...tagList, {}]);
-    setpageData(newObj);
+    tagList.push({});
+    forUpdatePageData();
   }
 
   function toChooseImg(num) {
     setcurInd(num);
     setimgEdtor(true);
-  }
-
-  function toChooseLink(num) {
-    setcurInd(num);
-    setlinkEdtor(true);
   }
 
   function forUpdatePageData() {
@@ -98,7 +91,6 @@ export default function TagsEdit(props) {
   function radioChage(e) {
     const { value } = e.target;
     const newObj = { ...pageData };
-    console.log(curFlag);
     const defaultHei = curFlag === 'banner' ? 176 : 85;
     newObj.maps[curFlag].height = defaultHei;
     setimgHeightType(value);
@@ -114,17 +106,16 @@ export default function TagsEdit(props) {
   // 图片选择
   function handleUploadOk(data) {
     console.log(data[0].path);
-    const newObj = { ...pageData };
     tagList[curInd].imgUrl = data[0].path;
-    newObj.maps[curFlag].list = tagList;
-    setpageData(newObj);
     setimgEdtor(false);
+    forUpdatePageData();
   }
 
   return (
     <>
-       <div style={{marginBottom: '1em', fontSize: 12, paddingLeft: 17, width: '100%'}}>
-        <Icon type="info-circle" style={{color: '#c1c1c1'}} /> 为保证网站显示效果，图片建议尺寸：1920px*952px
+      <div style={{ marginBottom: '1em', fontSize: 12, paddingLeft: 17, width: '100%' }}>
+        <Icon type="info-circle" style={{ color: '#c1c1c1' }} />{' '}
+        为保证网站显示效果，图片建议尺寸：1920px*952px
       </div>
       <div className={styles.widthBox}>
         图片高度：
@@ -147,7 +138,7 @@ export default function TagsEdit(props) {
       <ul className={styles.imgEditBox}>
         {tagList.length > 0 &&
           tagList.map((tag, ind) => {
-            const { title, imgUrl = '' } = tag;
+            const { imgUrl = '' } = tag;
             const len = tagList.length;
             return (
               <li key={ind}>
@@ -158,25 +149,26 @@ export default function TagsEdit(props) {
                   <img src={imgUrl || `${defaultImg}ic_Image.png`} alt="" />
                 </div>
                 <div className={styles.inpBox}>
-                  <span>关联页面</span>
-                  <Input
-                    placeholder="请选择关联页面"
-                    value={title}
-                    onClick={() => toChooseLink(ind)}
-                    suffix={<Icon type="right" className={styles.inpSuffix} />}
+                  <div>
+                    <span>关联页面</span>
+                    <div className={styles.tbOpration}>
+                      <a disabled={ind === 0} onClick={() => toMove(ind, -1)}>
+                        <Icon type="arrow-up" />
+                      </a>
+                      <a disabled={ind === len - 1} onClick={() => toMove(ind, 1)}>
+                        <Icon type="arrow-down" />
+                      </a>
+                      <a disabled={len === 1} onClick={() => delImg(ind)}>
+                        <Icon type="delete" />
+                      </a>
+                    </div>
+                  </div>
+                  <Cascader
+                    itemInd={ind}
+                    tagList={tagList}
+                    relatedPageOption={relatedPageOption}
+                    forUpdatePageData={forUpdatePageData}
                   />
-                </div>
-
-                <div className={styles.tbOpration}>
-                  <a disabled={ind === 0} onClick={() => toMove(ind, -1)}>
-                    <Icon type="arrow-up" />
-                  </a>
-                  <a disabled={ind === len - 1} onClick={() => toMove(ind, 1)}>
-                    <Icon type="arrow-down" />
-                  </a>
-                  <a disabled={len === 1} onClick={() => delImg(ind)}>
-                    <Icon type="delete" />
-                  </a>
                 </div>
               </li>
             );
@@ -192,8 +184,6 @@ export default function TagsEdit(props) {
         handleOk={data => handleUploadOk(data)}
         handleCancel={() => setimgEdtor(false)}
       />
-
-      <LinkChoose dList={tagList} />
     </>
   );
 }

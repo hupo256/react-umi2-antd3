@@ -2,26 +2,37 @@
  * @Author: tdd 
  * @Date: 2020-06-17 14:35:33 
  * @Last Modified by: tdd
- * @Last Modified time: 2021-06-17 15:09:47
+ * @Last Modified time: 2021-07-05 11:09:47
  * 关联页面级联选择器
  */
 
 import React, { useState, useEffect } from 'react'
-import { siteListApi, designerListApi, caseListApi, articleListApi, articleDicApi, specialListApi, activeListApi  } from '@/services/channelManage'
-import { Input, Tabs, Table, Radio } from 'antd'
+import { siteListApi, designerListApi, caseListApi, articleListApi, articleDicApi, specialListApi, activeListApi } from '@/services/channelManage'
+import { Input, Tabs, Table, Radio, Icon } from 'antd'
 import { ColumnsObj } from './CasColumn'
-import styles from '../index.less'
+import styles from './index.less'
 
 const { TabPane } = Tabs
 const { Search } = Input;
-export default function CascadeSelect(props){
-    const { optsArr, curNavs=[], callFun } = props
+
+const placeholderArr = [
+    '工地标题',
+    '设计师姓名',
+    '案例标题',
+    '文章标题/内容',
+    '专题标题',
+    '小游戏标题'
+];
+
+export default function LinkSelector(props){
+    const { curItem={}, cascadeClick, disabled, optsArr, curNavs=[], callFun } = props
+    const {appletsName, linkDisplayName='', showSec=false} = curItem
 
     const [showSelectPanl, setshowSelectPanl] = useState(false)  // 选择器的显示开关
     const [relatedPageOption, setrelatedPageOption] = useState([])  // 生成级联选择的数据
     const [currentSelectRelatedPageOpt, setcurrentSelectRelatedPageOpt] = useState([])  // 当前已选
     const [articleDicOpts, setarticleDicOpts] = useState([])  
-    const [currentarticleDicCode, setcurrentarticleDicCode] = useState(undefined)  
+    const [currentarticleDicCode, setcurrentarticleDicCode] = useState('')  
     const [currentKey, setcurrentKey] = useState('0')  
     const [detData, setdetData] = useState(null)  // 查询出来的详情列表
     const [detailType, setdetailType] = useState(0)   // 祥情页类型 
@@ -29,14 +40,15 @@ export default function CascadeSelect(props){
 
     useEffect(() => {
         showSelect()
-    }, [])
+    }, [showSec])
 
     useEffect(() => {
         detailType && getDataList();
     }, [detailType])
 
     function showSelect(){
-        setshowSelectPanl(true)
+        setshowSelectPanl(showSec)
+        setcurrentKey('0')
         setcurrentSelectRelatedPageOpt([])
         setrelatedPageOption(filterLevelOps())
     }
@@ -56,8 +68,8 @@ export default function CascadeSelect(props){
       return newOpts
     }
 
-     // 解构重组后台数据 
-     function format(data){
+    // 解构重组后台数据 
+    function format(data){
         if (!Array.isArray(data)) return;
         let newArr = [];
         for (const item of data) {            
@@ -72,17 +84,18 @@ export default function CascadeSelect(props){
 
     // 格式化回显
     function formatData(opts){
-        // console.log(opts)
         let arr = [];
         opts.forEach((opt, ind) => {
             const {name, title, articleTitle,gongdiTitle,specialTitle, activityTitle,
                 uid, gongdiUid, articleUid, specialUid, icon, appletsLink, linkKey, linkType } = opt;
             // linkType 1 详情页,  2 列表页
+            // linkKey 为空则表示选到了详情页
+            // linkKey 标注是否到的详情页，isEnd标注是否到的末页
             const isEnd = (ind === 1 && linkType === 1) || linkKey==='home' || ind === 2 // 顺便处理是否到末级的逻辑
             arr.push({
                 text: name || title || articleTitle  || gongdiTitle || specialTitle || activityTitle,
                 code: uid || gongdiUid || articleUid || specialUid,
-                icon, linkKey, linkType, appletsLink,  isEnd
+                icon, linkKey, linkType, appletsLink, isEnd
             })
         })
         return arr;
@@ -101,6 +114,7 @@ export default function CascadeSelect(props){
         setcurrentSelectRelatedPageOpt(arr)
         setcurrentKey(+step + 1 + '')
         setdetailType(detailType)
+        setpageNum(1)
 
         if (!children.length && linkType === 1) hidePanel()
         if(callFun) callFun(formatData(arr))
@@ -109,6 +123,9 @@ export default function CascadeSelect(props){
     // 获取表格数据
     async function getDataList (config){
         if(!detailType) return
+        let curCode = ''
+        // 没有文章栏目时先请求一次
+        if (detailType === 4 && !articleDicOpts.length) curCode = await getArticleDic();
         const status = detailType === 6 ? '' : '1'
         const searchText = config?.searchText || ''
         const prama = {
@@ -116,14 +133,13 @@ export default function CascadeSelect(props){
             searchText,
             status,
             specialStatus: status,
+            articleStatus: status,
             searchWord: searchText,
             activityTitle: searchText,
-            articleDicCode: currentarticleDicCode,
+            articleDicCode: curCode || currentarticleDicCode,
             pageNum,
             pageSize: 10,
         }
-        // 没有文章栏目时先请求一次
-        if (detailType === 4 && !articleDicOpts.length) await getArticleDic();
         const apiKeys = [siteListApi, designerListApi, caseListApi, articleListApi, specialListApi, activeListApi]
         const { data, code } = await apiKeys[detailType-1]({...prama, ...config})
         if(code !== 200 ) return
@@ -134,13 +150,16 @@ export default function CascadeSelect(props){
     async function getArticleDic(){
         const res = await articleDicApi({dicModuleCodes: 'DM006'});
         if(!res?.data) return
+        const curCode = res.data[0]?.code
         setarticleDicOpts(res.data)
-        setcurrentarticleDicCode(res.data[0]?.code)
+        setcurrentarticleDicCode(curCode)
+        return curCode
     }
 
     // 文章类型切换
     function radioGroupChange(e){
         const val = e.target.value
+        console.log(val)
         setcurrentarticleDicCode(val)
         getDataList({articleDicCode: val})
     }
@@ -180,11 +199,19 @@ export default function CascadeSelect(props){
     }
 
     return (
-        <>  
+        <div onClick={e => e.stopPropagation()}>
+            <Input
+                readOnly
+                disabled={disabled}
+                value={appletsName || linkDisplayName}
+                onClick={cascadeClick}
+                placeholder="请选择关联页面"
+                suffix={<Icon type="down" className={`${styles.inpSuffix} ${showSelectPanl ? styles.on : ''}`} />}
+            />
             {showSelectPanl && <div className={styles['card-container']}>
                 <Tabs type="card" tabBarGutter={0} activeKey={currentKey} onChange={tabChange}>
                     <TabPane tab={currentSelectRelatedPageOpt[0]?.name || '请选择'} key='0'>
-                        {relatedPageOption?.map(item => 
+                        {relatedPageOption?.map(item =>
                             <p style={{cursor: 'pointer'}} key={item.uid} onClick={() => selectedHandle(item, '0')}>{item.name}</p>
                         )}
                     </TabPane>
@@ -196,7 +223,11 @@ export default function CascadeSelect(props){
                         </TabPane>}
                     {(currentSelectRelatedPageOpt[1]?.linkType === 2 || currentSelectRelatedPageOpt[0]?.linkType === 2 ) && 
                         <TabPane tab='请选择' key= {currentSelectRelatedPageOpt[0]?.linkType === 2 ? '1' : '2'}>
-                            <Search placeholder='可输入关键字进行检索'  onChange={handleChange}/>
+                            <Search
+                                style={{marginTop: 8}}
+                                placeholder={placeholderArr[+detailType - 1] ? `可通过${placeholderArr[(+detailType) - 1]}进行搜索` : '可输入关键字进行检索'}
+                                onChange={handleChange}
+                            />
                                 {detailType === 4 && 
                                     <Radio.Group style={{marginTop: 8}} buttonStyle='solid' size='small' value={currentarticleDicCode} buttonStyle="solid" onChange={radioGroupChange}>
                                         {articleDicOpts.map(item => <Radio.Button key={item.code} value={item.code}>{item.name}</Radio.Button>)}
@@ -220,6 +251,6 @@ export default function CascadeSelect(props){
                     }
                 </Tabs>
             </div>}
-        </>
+        </div>
     )
 }
