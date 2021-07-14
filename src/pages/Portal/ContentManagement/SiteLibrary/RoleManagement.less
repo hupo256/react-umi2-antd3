@@ -1,0 +1,281 @@
+.roleManagement {
+  :global {
+    .antd-pro-components-page-header-wrapper-index-content {
+      margin: 0;
+      padding: 0;
+      .ant-tabs-nav-wrap {
+        //padding: 0 30px;
+        //background-color: #fff;
+      }
+      .ant-tabs-content {
+        //margin: 12px 18px 0;
+        //padding: 5px 18px 0;
+      }
+    }
+  }
+}
+.roleWrap {
+  .roleContLeft {
+    margin-right: 1px;
+    background: #fff;
+    text-align: center;
+    padding: 20px 0;
+    .roles {
+      min-height: 100px;
+      text-align: left;
+      .roleItem {
+        height: 46px;
+        line-height: 46px;
+        margin: 0;
+        cursor: pointer;
+        .roleItemName {
+          padding-left: 20px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          word-wrap: break-word;
+          display: inline-block;
+          max-width: 70%;
+        }
+        .roleItemIcon {
+          float: right;
+          padding-right: 20px;
+          display: none;
+        }
+      }
+      .roleItemCur {
+        color: #fe6a30;
+        background: #f0f2f5;
+        .roleItemIcon {
+          display: block;
+        }
+      }
+      .roleItem:hover {
+        height: 46px;
+        color: #fe6a30;
+        background: #f0f2f5;
+        .roleItemIcon {
+          display: block;
+        }
+      }
+    }
+  }
+  .roleContRight {
+    background-color: #fff;
+    .roleTabs {
+      :global {
+        .ant-tabs-bar {
+          margin: 0!important;
+          border-bottom: none;
+          .ant-tabs-nav-wrap{
+            background-color: #f0f2f5;
+            .ant-tabs-tab {
+              margin-right: 0!important;
+              border: none!important;
+              background: transparent!important;
+              border-bottom: 1px solid #e8e8e8!important;
+              border-radius: 0!important;
+            }
+            .ant-tabs-tab-active {
+              border-radius: 0!important;
+              border-color: #fff!important;
+              background: #fff!important;
+            }
+          }
+        }
+      }
+    }
+    .personnelRole {
+      background-color: #fff;
+      padding: 20px;
+      min-height: 300px;
+    }
+  }
+}
+
+.treeLeft {
+  width: 49%;
+  border: 1px solid #f5f5f5;
+  margin-top: 10px;
+  height: 400px;
+  float: left;
+  :global {
+    li.ant-tree-treenode-disabled > span:not(.ant-tree-switcher),
+    li.ant-tree-treenode-disabled > .ant-tree-node-content-wrapper,
+    li.ant-tree-treenode-disabled > .ant-tree-node-content-wrapper span {
+      color: rgba(0, 0, 0, 0.65);
+      cursor: not-allowed;
+    }
+    .ant-tree-checkbox-disabled > .ant-tree-checkbox-inner::after {
+      position: absolute;
+      display: table;
+      border: 2px solid #fff;
+      border-top: 0;
+      border-left: 0;
+      width: 5px;
+      height: 9px;
+      border-color: rgba(0, 0, 0, 0.25) !important;
+      -webkit-transform: rotate(45deg) scale(1) translate(-50%, -50%);
+      -ms-transform: rotate(45deg) scale(1) translate(-50%, -50%);
+      transform: rotate(45deg) scale(1) translate(-50%, -50%);
+      opacity: 1;
+      -webkit-transition: all 0.2s cubic-bezier(0.12, 0.4, 0.29, 1.46) 0.1s;
+      transition: all 0.2s cubic-bezier(0.12, 0.4, 0.29, 1.46) 0.1s;
+      content: ' ';
+    }
+  }
+}
+.treeRight {
+  width: 50%;
+  border: 1px solid #f5f5f5;
+  margin-top: 10px;
+  height: 400px;
+  display: inline-block;
+  overflow-y: auto;
+  float: right;
+}
+
+.RolePersonnelWrap {
+  .rolePerTitle {
+    display: flex;
+    margin-bottom: 20px;
+    .rolePerSearch,
+    .rolePerButton {
+      flex: 1;
+    }
+    .rolePerButton {
+      text-align: left;
+    }
+    .rolePerSearch {
+      text-align: right;
+    }
+  }
+}
+.RolePermissionTitle {
+  margin-top: 30px;
+  font-size: 18px;
+  border-bottom: 1px solid #ccc;
+  line-height: 30px;
+  padding: 10px 0;
+}
+
+.remark {
+  width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  -webkit-box-orient: vertical;
+  .remarkspan {
+    overflow: hidden;
+    text-overflow: clip;
+    word-break: break-all;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+  }
+}
+.imgWrap {
+  float: left;
+}
+.contSpan {
+  float: left;
+  width: 260px;
+  margin-left: 16px;
+}
+.treeRight {
+  :global {
+    .ant-list-item-action {
+      margin-left: 0;
+    }
+    .ant-list-item-action > li {
+      padding: 0 36px 0 0;
+    }
+  }
+}
+
+.treeSearch {
+  padding: 10px;
+  position: relative;
+  z-index: 1;
+  padding-top: 40px;
+
+  .treeInput {
+    position: fixed;
+    background: #fff;
+    margin-top: -40px;
+    z-index: 1;
+    padding-top: 10px;
+    width: 300px;
+
+    .treeInputs {
+      padding: 0 30px;
+    }
+
+    .treeInputSearch {
+      position: absolute;
+      left: 10px;
+      bottom: 10px;
+    }
+
+    .treeSearchClose {
+      position: absolute;
+      right: 10px;
+      bottom: 8px;
+      cursor: pointer;
+    }
+  }
+
+  .leftMask {
+    position: fixed;
+    width: 300px;
+    height: 369px;
+    top: 233px;
+    z-index: 2;
+    bottom: 0;
+    background: #fff;
+    padding: 10px 0px;
+    overflow: auto;
+
+    .filterItem {
+      cursor: pointer;
+      height: 22px;
+      // line-height: 32px;
+      margin: 8px 0 6px 0;
+      padding: 0;
+
+      p {
+        height: 18px;
+        margin: 0;
+      }
+
+      .checkboxs {
+        display: inline-block;
+        vertical-align: inherit;
+      }
+
+      .checkWrap {
+        display: flex;
+        align-items: center;
+      }
+
+      :global {
+        .ant-checkbox {
+          vertical-align: super;
+        }
+      }
+    }
+  }
+
+  :global {
+    .ant-input-affix-wrapper .ant-input-suffix {
+      left: 10px;
+      right: 0;
+    }
+
+    .ant-input-affix-wrapper .ant-input:not(:last-child) {
+      padding-left: 30px;
+    }
+  }
+}

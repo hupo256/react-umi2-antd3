@@ -105,3 +105,31 @@ export const editSiteDetailApi  = body => {
     body
   })
 }
+// 查询已选工地（我的工地）uid列表
+export const queryProjectUids = body => request(`${baseurl}/api/v1/wechat/site/queryProjectUids`, {
+    method: 'POST',
+    body
+  })
+
+// 查询已有工地列表
+export const queryProjectOtherSys = body => request(`${baseurl}/api/v1/saas/project/queryProjectOtherSys`, {
+  method: 'POST',
+  body
+})
+// 获取工地工程节点关联关系
+export const engineeringMap = body => request(`${baseurl}/api/v1/wechat/site/engineeringMap`, {
+    method: 'POST',
+    body
+  })
+//  获取工地可关联工程节点
+export const engineeringTask = body => request(`${baseurl}/api/v1/saas/project/engineeringTask`, {
+  method: 'POST',
+  body
+})
+// 更新工地工程节点关联关系
+export const updateEngineeringMap = body => request(`${baseurl}/api/v1/wechat/site/updateEngineeringMap`, {
+    method: 'POST',
+    body
+  })
+
+

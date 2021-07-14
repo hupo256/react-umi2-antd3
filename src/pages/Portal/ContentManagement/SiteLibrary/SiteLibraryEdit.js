@@ -59,6 +59,7 @@ class SiteLibraryAdd extends PureComponent {
       lng: '',
       open: false,
       buildingData: [],
+      disabledBuildingData: [],
       name: ''
     };
   }
@@ -73,7 +74,8 @@ class SiteLibraryAdd extends PureComponent {
       if (res && res.code === 200) {
         const disabled = res.data['DM002'].filter(item => item.status === '2');
         const buildingData = res.data['DM007'];
-        this.setState({ disabled, buildingData });
+        const disabledBuildingData = buildingData.filter(item => item.status === '2');
+        this.setState({ disabled, buildingData, disabledBuildingData });
       }
     });
     console.log(getQueryUrlVal('uid'));
@@ -94,7 +96,7 @@ class SiteLibraryAdd extends PureComponent {
   }
 
   render() {
-    const { uploadVisible, coverImg, disabled, show, tags, mapVisible, cityName, buildingData } = this.state;
+    const { uploadVisible, coverImg, disabled, show, tags, mapVisible, cityName, buildingData, disabledBuildingData } = this.state;
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
@@ -241,17 +243,17 @@ class SiteLibraryAdd extends PureComponent {
                         return null;
                       }
                     })}
-                    {/*{disabled.map(item => {*/}
-                    {/*  // if (stepOne.styleDicCode && [stepOne.styleDicCode].includes(item.code)) {*/}
-                    {/*    return (*/}
-                    {/*      <Option disabled={true} value={item.code} key={item.uid}>*/}
-                    {/*        {item.name}*/}
-                    {/*      </Option>*/}
-                    {/*    );*/}
-                    {/*  // } else {*/}
-                    {/*  //   return null;*/}
-                    {/*  // }*/}
-                    {/*})}*/}
+                    {disabledBuildingData.map(item => {
+                      if (siteDetail.buildingCode && [siteDetail.buildingCode].includes(item.code)) {
+                        return (
+                          <Option disabled value={item.code} key={item.uid}>
+                            {item.name}
+                          </Option>
+                        );
+                      } else {
+                        return null;
+                      }
+                    })}
                   </Select>
                 )}
               </Form.Item>
@@ -366,7 +368,7 @@ class SiteLibraryAdd extends PureComponent {
                     {disabled.map(item => {
                       if (siteDetail.houseStyle && [siteDetail.houseStyle].includes(item.code)) {
                         return (
-                          <Option disabled={true} value={item.code} key={item.uid}>
+                          <Option disabled value={item.code} key={item.uid}>
                             {item.name}
                           </Option>
                         );

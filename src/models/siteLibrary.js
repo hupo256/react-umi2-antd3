@@ -9,8 +9,8 @@ import {
   pageDynamic, //动态列表
   createDynamic, //创建动态
   dynamicShow, //显示/隐藏
-  dynamicStatus,//查询动态状态
-} from '@/services/siteLibrary';
+  dynamicStatus, queryProjectUids, queryProjectOtherSys, engineeringMap, engineeringTask, updateEngineeringMap,//查询动态状态
+} from '../services/siteLibrary';
 
 export default {
   namespace: 'SiteLibrary',
@@ -22,6 +22,7 @@ export default {
     dynamicList: [],
     FromProjectList: {},
     FromProjectQuery: {},
+    relateNodeTreeList: []
   },
 
   effects: {
@@ -141,6 +142,57 @@ export default {
       });
       return response;
     },
+    // 查询已选工地（我的工地）uid列表
+    *queryProjectUidsModel({ payload }, { call, put }) {
+      const response = yield call(queryProjectUids, {
+        ...payload,
+      });
+      return response;
+    },
+    // 查询已有工地列表
+    *queryProjectOtherSysModel({ payload }, { call, put }) {
+      const response = yield call(queryProjectOtherSys, {
+        ...payload,
+      });
+      yield put({
+        type: 'upData',
+        payload: {
+          FromProjectList: (response && response.data) || {},
+          FromProjectQuery: { ...payload },
+        },
+      });
+      return response;
+    },
+    // 获取工地工程节点关联关系
+    *engineeringMapModel({ payload }, { call, put }) {
+      const response = yield call(engineeringMap, {
+        ...payload,
+      });
+      return response;
+    },
+    // 获取工地可关联工程节点
+    *engineeringTaskModel({ payload }, { call, put }) {
+      const response = yield call(engineeringTask, {
+        ...payload,
+      });
+      yield put({
+        type: 'upData',
+        payload: {
+          relateNodeTreeList: (response && response.data) || [],
+        },
+      });
+      return response;
+    },
+    // 更新工地工程节点关联关系
+    *updateEngineeringMapModel({ payload }, { call, put }) {
+      const response = yield call(updateEngineeringMap, {
+        ...payload,
+      });
+      return response;
+    },
+
+
+
     // 切换动态状态
     *toggleStatusModel({ payload }, { call, put }) {
       yield put({

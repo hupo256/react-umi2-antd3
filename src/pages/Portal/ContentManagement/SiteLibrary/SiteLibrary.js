@@ -1,6 +1,6 @@
 /*
- * @Author: zqm 
- * @Date: 2021-02-15 15:47:07 
+ * @Author: zqm
+ * @Date: 2021-02-15 15:47:07
  * @Last Modified by: zqm
  * @Last Modified time: 2021-06-08 14:08:05
  * 工地库
@@ -15,12 +15,13 @@ import styles from './SiteLibrary.less';
 import DynamicAdd from './DynamicAdd';
 import { getauth } from '@/utils/authority';
 import FromProjectModel from './FromProjectModel';
-import  Applets  from '../components/Applets'
+import Applets from '../components/Applets';
 const { confirm } = Modal;
 const { Search } = Input;
 
-@connect(({ SiteLibrary, loading }) => ({
+@connect(({ SiteLibrary, login, loading }) => ({
   SiteLibrary,
+  login,
   maintainListLoading: loading.effects['Maintain/maintainQueryModel'],
 }))
 class SiteLibrary extends PureComponent {
@@ -33,12 +34,14 @@ class SiteLibrary extends PureComponent {
       porjectVisible: false,
       searchWord: null,
       pageNum: 1,
+      hasGongdi: false,
     };
   }
 
   componentDidMount() {
     const {
       SiteLibrary: { siteListQuery },
+      login: { switchSystemList },
     } = this.props;
 
     this.setState(
@@ -46,6 +49,7 @@ class SiteLibrary extends PureComponent {
         searchWord: siteListQuery.searchText,
         status: siteListQuery.gongdiStatus || null,
         pageNum: siteListQuery.pageNum || 1,
+        hasGongdi: switchSystemList.find(e => e.systemCode === 'S001'),
       },
       () => {
         this.getList({ pageNum: this.state.pageNum });
@@ -54,7 +58,7 @@ class SiteLibrary extends PureComponent {
   }
 
   render() {
-    const { status, visible, record, porjectVisible } = this.state;
+    const { status, visible, record, porjectVisible, hasGongdi } = this.state;
     const {
       SiteLibrary: { siteList, siteListQuery },
     } = this.props;
@@ -144,30 +148,30 @@ class SiteLibrary extends PureComponent {
         render: (t, r) => {
           return (
             <div className="operateWrap">
-              {permissionsBtn.includes('BTN210326000036') && (
-                <span
-                  className="operateBtn"
-                  onClick={() =>
-                    this.props
-                      .dispatch({
-                        type: 'SiteLibrary/dynamicStatusModel',
-                        payload: { gongdiUid: r.gongdiUid },
-                      })
-                      .then(res => {
-                        if (res && res.code === 200) {
-                          // this.setState({status:res.data.value,visible: true})
-                          this.setState({ record: { ...r, gongdiStage: res.data.value } }, () => {
-                            this.setState({ visible: true });
-                          });
-                        }
-                      })
-                  }
-                >
-                  创建动态
-                </span>
-              )}
-              {permissionsBtn.includes('BTN210326000036') &&
-                permissionsBtn.includes('BTN210326000037') && <span className="operateLine" />}
+              {/*{permissionsBtn.includes('BTN210326000036') && (*/}
+              {/*  <span*/}
+              {/*    className="operateBtn"*/}
+              {/*    onClick={() =>*/}
+              {/*      this.props*/}
+              {/*        .dispatch({*/}
+              {/*          type: 'SiteLibrary/dynamicStatusModel',*/}
+              {/*          payload: { gongdiUid: r.gongdiUid },*/}
+              {/*        })*/}
+              {/*        .then(res => {*/}
+              {/*          if (res && res.code === 200) {*/}
+              {/*            // this.setState({status:res.data.value,visible: true})*/}
+              {/*            this.setState({ record: { ...r, gongdiStage: res.data.value } }, () => {*/}
+              {/*              this.setState({ visible: true });*/}
+              {/*            });*/}
+              {/*          }*/}
+              {/*        })*/}
+              {/*    }*/}
+              {/*  >*/}
+              {/*    创建动态*/}
+              {/*  </span>*/}
+              {/*)}*/}
+              {/*{permissionsBtn.includes('BTN210326000036') &&*/}
+              {/*  permissionsBtn.includes('BTN210326000037') && <span className="operateLine" />}*/}
               {permissionsBtn.includes('BTN210326000037') && (
                 <span
                   className="operateBtn"
@@ -205,20 +209,25 @@ class SiteLibrary extends PureComponent {
                   工地动态
                 </span>
               )}
-              {permissionsBtn.includes('BTN210623000002') && r.gongdiStatus !== 1 && 
-              isCompanyAuthWechatMini && <span className="operateLine" />}
-              {permissionsBtn.includes('BTN210623000002') && 
-              r.gongdiStatus !== 1 && 
-              isCompanyAuthWechatMini &&
+              {permissionsBtn.includes('BTN210623000002') &&
+                r.gongdiStatus !== 1 &&
+                isCompanyAuthWechatMini && <span className="operateLine" />}
+              {permissionsBtn.includes('BTN210623000002') &&
+                r.gongdiStatus !== 1 &&
+                isCompanyAuthWechatMini && (
+                  <span className="operateBtn" onClick={() => this.getWechatCode(r)}>
+                    小程序码
+                  </span>
+                )}
+              <span className="operateLine" />
               <span className="operateBtn" onClick={() => this.getWechatCode(r)}>
-                 小程序码
-              </span>}
+                关联工程节点
+              </span>
             </div>
           );
         },
       },
     ];
-    const isCompany = false;
     const menu = (
       <Menu>
         <Menu.Item>
@@ -233,7 +242,7 @@ class SiteLibrary extends PureComponent {
         </Menu.Item>
         <Menu.Item>
           <p
-            style={{ margin: 0, display: 'none' }}
+            style={{ margin: 0 }}
             onClick={() => {
               this.setState({ porjectVisible: true });
             }}
@@ -281,25 +290,27 @@ class SiteLibrary extends PureComponent {
           </Card>
 
           <Card bordered={false} style={{ marginTop: 20 }}>
-            {permissionsBtn.includes('BTN210326000035') &&
-              !isCompany && (
-                <Button
-                  type="primary"
-                  onClick={() => {
-                    router.push(`/portal/contentmanagement/sitelibrary/add`);
-                  }}
-                >
-                  <Icon type="plus" />
-                  创建工地
-                </Button>
-              )}
-            {isCompany && (
-              <Dropdown trigger={['click']} overlay={menu}>
-                <Button type="primary">
-                  <Icon type="plus" />
-                  创建工地
-                </Button>
-              </Dropdown>
+            {permissionsBtn.includes('BTN210326000035') && (
+              <>
+                {hasGongdi ? (
+                  <Dropdown trigger={['click']} overlay={menu}>
+                    <Button type="primary">
+                      <Icon type="plus" />
+                      创建工地
+                    </Button>
+                  </Dropdown>
+                ) : (
+                  <Button
+                    type="primary"
+                    onClick={() => {
+                      router.push(`/portal/contentmanagement/sitelibrary/add`);
+                    }}
+                  >
+                    <Icon type="plus" />
+                    创建工地
+                  </Button>
+                )}
+              </>
             )}
             <Table
               loading={false}
@@ -336,10 +347,10 @@ class SiteLibrary extends PureComponent {
       type: 'ContentManage/getAppletsCode',
       payload: {
         qrCodePage: 'site',
-        uid: record.gongdiUid
-      }
-    })
-  }
+        uid: record.gongdiUid,
+      },
+    });
+  };
 
   handleSrarchStatus = status => {
     this.setState({ status }, () => {
@@ -370,8 +381,8 @@ class SiteLibrary extends PureComponent {
 
   handleOk = () => {
     this.setState({ visible: false, record: null });
-    const {pageNum} = this.state
-    this.getList({pageNum});
+    const { pageNum } = this.state;
+    this.getList({ pageNum });
   };
   handleCancel = () => {
     this.setState({ visible: false, record: null });
