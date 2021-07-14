@@ -3,26 +3,39 @@
  * @Date: 2021-01-28 17:56:05 
  * @Last Modified by: zqm
  * @Last Modified time: 2021-05-25 11:38:06
- * 状态变更
+ * 添加线索
  */
 import React, { Component } from 'react';
-import { Modal, message, Input, InputNumber } from 'antd';
+import { Modal, message, Input, InputNumber, Select } from 'antd';
 import styles from '../LeadManage.less';
 import { regExpConfig } from '../../../../utils/regular.config';
 const { TextArea } = Input;
-class CluesEdit extends Component {
+const { Option } = Select;
+class LeadManageAdd extends Component {
   constructor(props) {
     super(props);
     console.log(props);
     this.state = {
-      record: {},
+      record: {
+        address: '',
+        area: null,
+        mobile: '',
+        name: '',
+        referrerCode: '',
+        referrerName: '',
+        referrerPhone: '',
+        sourceChannelName: '手动录入',
+        status: 'TS001',
+        statusName: '未联系',
+        trackDesc: '',
+        trackInputType: 2,
+        trackInputTypeName: '手动录入',
+        trackReferEdit: false,
+      },
       referrerNameList: [],
     };
     this.queryUserByName = this.queryUserByName.bind(this);
     this.queryUserByMobile = this.queryUserByMobile.bind(this);
-  }
-  async componentDidMount() {
-    await this.setState({ record: this.props.record });
   }
   //推荐人模糊搜索
   async queryUserByName(value) {
@@ -38,8 +51,11 @@ class CluesEdit extends Component {
       payload: parm,
     }).then(async res => {
       if (res && res.code === 200) {
+        // message.success('查询成功');
+        // console.log('查询成功', res.data.length);
         if (res.data && res.data.length > 0) {
           await this.setState({ referrerNameList: res.data });
+          // console.log('查询成功2', res.data, this.state);
         } else {
           await this.setState({ referrerNameList: [] });
         }
@@ -72,8 +88,6 @@ class CluesEdit extends Component {
         referrerPhone: "",
       },
     });
-    // console.log('12', e.target.value, this.state);
-    // debugger;
     this.queryUserByName(this.state.record.referrerName);
   }
 
@@ -81,7 +95,7 @@ class CluesEdit extends Component {
     const { record, referrerNameList } = this.state;
     return (
       <Modal
-        title={<span style={{ fontWeight: 600 }}>编辑</span>}
+        title={<span style={{ fontWeight: 600 }}>创建</span>}
         visible={this.props.visible}
         onOk={this.handleOk}
         onCancel={this.props.handleCancel}
@@ -116,55 +130,60 @@ class CluesEdit extends Component {
               />
             </span>
           </div>
+          <div className={styles.CluesEdit} id='CluesEditdiv'>
+            <span className="beforeStar">线索状态：</span>
+            <span style={{ flex: 1 }}>
+              <Select
+                defaultValue={record.status}
+                style={{ width: 402 }}
+                getPopupContainer={()=>document.getElementById('CluesEditdiv')}
+                onChange={value =>
+                  this.setState({ record: { ...this.state.record, status: value } })
+                }
+              >
+                <Option value="TS001">未联系</Option>
+                <Option value="TS002">跟进中</Option>
+                <Option value="TS003">已成交</Option>
+                <Option value="TS004">战败</Option>
+                <Option value="TS005">无效线索</Option>
+              </Select>
+            </span>
+          </div>
           <div className={styles.CluesEdit}>
             <span>来源渠道：</span>
-            <span style={{ flex: 1 }}>{record.sourceChannelName}</span>
+            <span style={{ flex: 1 }}>手动录入</span>
           </div>
-          <div
-            className={styles.CluesEdit}
-            id={record.trackInputType == 2 && record.trackReferEdit ? 'changeCluesEdit' : ''}
-          >
+          <div className={styles.CluesEdit}>
             <span>推荐人：</span>
-            {record.trackInputType == 2 && record.trackReferEdit ? (
-              <span style={{ flex: 1, position: 'relative' }}>
-                <Input
-                  placeholder="请输入/选择推荐人"
-                  value={record.referrerName != '' ? record.referrerName : ''}
-                  onClick={() => this.clickTrackRefer()}
-                  onChange={e => this.changeTrackRefer(e)}
-                />
-                <span className="spantitle">6个月内仅可编辑一次，请谨慎修改</span>
-                <div
-                  className={styles.referrerNameSelect}
-                  style={{ display: referrerNameList.length > 0 ? 'block' : 'none', padding: 5 }}
-                >
-                  {referrerNameList.length != 0
-                    ? referrerNameList.map(item => {
-                        return (
-                          <div
-                            onClick={this.clickReferrerDiv.bind(this, item)}
-                            style={{ cursor: 'pointer', padding: 2 }}
-                          >
-                            {item.realName && item.mobile
-                              ? item.realName + '(' + item.mobile + ')'
-                              : item.realName == ''
-                                ? item.mobile
-                                : item.realName}
-                          </div>
-                        );
-                      })
-                    : null}
-                </div>
-              </span>
-            ) : (
-              <span style={{ flex: 1 }}>
-                {record.referrerName && record.referrerPhone
-                  ? record.referrerName + '(' + record.referrerPhone + ')'
-                  : record.referrerPhone
-                    ? record.referrerPhone
-                    : record.referrerName}
-              </span>
-            )}
+            <span style={{ flex: 1, position: 'relative' }}>
+              <Input
+                placeholder="请输入/选择推荐人"
+                value={record.referrerName != '' ? record.referrerName : ''}
+                onClick={() => this.clickTrackRefer()}
+                onChange={e => this.changeTrackRefer(e)}
+              />
+              <div
+                className={styles.referrerNameSelect}
+                style={{ display: referrerNameList.length > 0 ? 'block' : 'none', padding: 5 }}
+              >
+                {referrerNameList && referrerNameList.length != 0
+                  ? referrerNameList.map(item => {
+                      return (
+                        <div
+                          onClick={this.clickReferrerDiv.bind(this, item)}
+                          style={{ cursor: 'pointer', padding: 2 }}
+                        >
+                          {item.realName && item.mobile
+                            ? item.realName + '(' + item.mobile + ')'
+                            : item.realName == ''
+                              ? item.mobile
+                              : item.realName}
+                        </div>
+                      );
+                    })
+                  : null}
+              </div>
+            </span>
           </div>
           <div className={styles.CluesEdit}>
             <span>楼盘/楼宇：</span>
@@ -218,7 +237,6 @@ class CluesEdit extends Component {
     }
     const parm = {
       mobile: record.mobile,
-      uid: record.uid,
     };
     await dispatch({
       type: 'LeadManage/checkMobileModel',
@@ -243,14 +261,14 @@ class CluesEdit extends Component {
     } else if (record.name.length > 10) {
       message.error('客户姓名限制1-10字符长度');
       return false;
+    } else if (record.referrerName.length > 10) {
+      message.error('推荐人限制0-10字符长度');
+      return false;
     } else if (!record.mobile) {
       message.error('请输入联系电话');
       return false;
     } else if (!regExpConfig.phoneAndLandline.test(record.mobile)) {
       message.error('手机号格式不正确');
-      return false;
-    } else if (record.referrerName && record.referrerName.length > 10) {
-      message.error('推荐人限制0-10字符长度');
       return false;
     } else if (record.address && record.address.length > 30) {
       message.error('楼盘/楼宇限制0-30字符长度');
@@ -264,12 +282,9 @@ class CluesEdit extends Component {
     } else if (record.trackDesc && record.trackDesc.length > 200) {
       message.error('线索描述限制0-200字符长度');
       return false;
-    } else if (record.referrerName == '') {
-      record.referrerCode = '';
-      record.referrerPhone = '';
     }
     this.props.handleOk(record);
   };
 }
 
-export default CluesEdit;
+export default LeadManageAdd;

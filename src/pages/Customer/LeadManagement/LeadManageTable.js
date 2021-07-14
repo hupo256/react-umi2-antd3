@@ -12,7 +12,7 @@ import { Card, Table, Button, Icon, message, Tooltip } from 'antd';
 import styles from './LeadManage.less';
 import ChangeStatus from './common/ChangeStatus';
 import ChangeRecord from './common/ChangeRecord';
-import CluesEdit from './common/CluesEdit';
+import LeadManageAdd from './common/LeadManageAdd';
 import { paginations } from '@/utils/utils';
 import { getauth } from '@/utils/authority';
 
@@ -25,8 +25,8 @@ class LeadManageTable extends Component {
     super(props);
     this.state = {
       changeVisible: false,
-      clueVisible: false,
       recordVisible: false,
+      addVisble: false,
       record: null,
     };
   }
@@ -42,6 +42,7 @@ class LeadManageTable extends Component {
         title: '线索',
         dataIndex: 'name',
         width: 150,
+        fixed: 'left',
         render: (t, r) => {
           return (
             <div className={styles.tableName}>
@@ -139,9 +140,22 @@ class LeadManageTable extends Component {
         },
       },
       {
+        title: '留资方式',
+        dataIndex: 'trackInputTypeName',
+        width: 120,
+      },
+      {
         title: '推荐人',
         dataIndex: 'referrerName',
         width: 120,
+        render: (t, r) => {
+          return (
+            <div className={styles.tableName}>
+              <p>{r.referrerName}</p>
+              <p>{r.referrerPhone}</p>
+            </div>
+          );
+        },
       },
       {
         title: '更新时间',
@@ -153,6 +167,7 @@ class LeadManageTable extends Component {
         title: '操作',
         dataIndex: 'operate',
         width: 220,
+        fixed: 'right',
         render: (t, r) => {
           return (
             <span className={styles.operate}>
@@ -169,7 +184,6 @@ class LeadManageTable extends Component {
                 (permissionsBtn.includes('BTN210526000002') ||
                   permissionsBtn.includes('BTN210526000003')) && <span> | </span>}
               {permissionsBtn.includes('BTN210526000002') && (
-                // <span onClick={() => this.setState({ clueVisible: true, record: r })}>编辑</span>
                 <span onClick={() => this.setState({ changeVisible: true, record: r })}>
                   写跟进
                 </span>
@@ -193,10 +207,21 @@ class LeadManageTable extends Component {
     return (
       <div style={{ marginTop: 20 }}>
         <Card bordered={false}>
+          {permissionsBtn.includes('BTN210711000002') && (
+            <Button
+              type="primary"
+              style={{ marginBottom: 16, marginRight: 10 }}
+              onClick={() => this.setState({ addVisble: true })}
+            >
+              <Icon type="plus" />
+              创建线索
+            </Button>
+          )}
+
           {permissionsBtn.includes('BTN210326000021') && (
             <Button style={{ marginBottom: 16 }} onClick={() => this.handleDownload()}>
-              导出Excel
               <Icon type="download" />
+              导出Excel
             </Button>
           )}
 
@@ -219,9 +244,10 @@ class LeadManageTable extends Component {
             handleCancel={() => this.handleChangeCancel()}
           />
         )}
-        {this.state.clueVisible && (
-          <CluesEdit
-            visible={this.state.clueVisible}
+        {this.state.addVisble && (
+          <LeadManageAdd
+            {...this.props}
+            visible={this.state.addVisble}
             record={this.state.record}
             handleOk={r => this.handleClueOk(r)}
             handleCancel={() => this.handleClueCancel()}
@@ -276,15 +302,28 @@ class LeadManageTable extends Component {
   handleChangeCancel = () => {
     this.setState({ changeVisible: false, record: null });
   };
-  // 编辑
+  // 新建
+
   handleClueOk = r => {
     const { dispatch } = this.props;
+    const parm = {
+      mobile: r.mobile,
+      name: r.name,
+      status: r.status,
+      trackAddress: r.address,
+      trackArea: r.area,
+      trackDesc: r.trackDesc,
+      trackReferCode: r.referrerCode,
+      trackReferName: r.referrerName,
+      trackReferPhone: r.referrerPhone,
+      trackSource: r.trackInputType,
+    };
     dispatch({
-      type: 'LeadManage/trackEditModel',
-      payload: { ...r },
+      type: 'LeadManage/trackAddModel',
+      payload: parm,
     }).then(res => {
       if (res && res.code === 200) {
-        message.success('线索编辑成功');
+        message.success('创建成功');
         this.handleClueCancel();
         // 刷新列表
         this.queryTrackData({});
@@ -292,7 +331,7 @@ class LeadManageTable extends Component {
     });
   };
   handleClueCancel = () => {
-    this.setState({ clueVisible: false, record: null });
+    this.setState({ addVisble: false });
   };
   // 变更记录
   handleRecordCancel = () => {

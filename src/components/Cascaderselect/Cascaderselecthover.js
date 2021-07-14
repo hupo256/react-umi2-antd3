@@ -93,12 +93,13 @@ export default class Cascaderselecthover extends Component {
   };
 
   render() {
-    const { CompanyArr, errors } = this.state;
+    const { CompanyArr, errors,codesArr } = this.state;
     const { options, fieldNames, placeholder, multiple } = this.props;
     return (
       <div className={styles.company}>
         {multiple ? (
           <Cascader
+            value={codesArr}
             autoFocus={true}
             options={options}
             fieldNames={fieldNames}

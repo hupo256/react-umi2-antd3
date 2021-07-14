@@ -7,7 +7,6 @@ import BasicMessage from './BasicMessage';
 import EnterpriseMessage from './EnterpriseMessage';
 import { getauth } from '@/utils/authority';
 import './WebSetting.less';
-import { timesSeries } from 'async';
 
 const { confirm } = Modal;
 @connect(({ WebSettingStroe }) => ({

@@ -71,7 +71,13 @@ class LeadManageDetail extends Component {
               <Descriptions.Item label="来源渠道">
                 {trackDetail.sourceChannelName}{' '}
               </Descriptions.Item>
-              <Descriptions.Item label="推荐人">{trackDetail.referrerName}</Descriptions.Item>
+              <Descriptions.Item label="推荐人">
+                {trackDetail.referrerName && trackDetail.referrerPhone
+                  ? trackDetail.referrerName + '(' + trackDetail.referrerPhone + ')'
+                  : trackDetail.referrerPhone
+                    ? trackDetail.referrerPhone
+                    : trackDetail.referrerName}
+              </Descriptions.Item>
             </Descriptions>
             <Row style={{ marginBottom: 20 }}>
               <Col span={8} style={{ paddingRight: 12 }}>
@@ -85,15 +91,20 @@ class LeadManageDetail extends Component {
               </Col>
             </Row>
             <Row style={{ marginBottom: 20 }}>
-              <Col span={24}>
+              <Col span={8}>
                 <span style={{ color: 'rgba(0, 0, 0, 0.85)' }}>线索描述</span> : {'    '}
                 {trackDetail.trackDesc}
+              </Col>
+              <Col span={16}>
+                <span style={{ color: 'rgba(0, 0, 0, 0.85)' }}>留资方式</span> :{'    '}
+                {trackDetail.trackInputTypeName}
               </Col>
             </Row>
           </Card>
         </PageHeaderWrapper>
         {this.state.clueVisible && (
           <CluesEdit
+            {...this.props}
             visible={this.state.clueVisible}
             record={this.state.record}
             handleOk={r => this.handleClueOk(r)}
@@ -106,9 +117,20 @@ class LeadManageDetail extends Component {
   // 编辑
   handleClueOk = r => {
     const { dispatch } = this.props;
+    const parm = {
+      mobile: r.mobile,
+      name: r.name,
+      trackAddress: r.address,
+      trackArea: r.area,
+      trackDesc: r.trackDesc,
+      trackReferCode: r.referrerCode,
+      trackReferName: r.referrerName,
+      trackReferPhone: r.referrerPhone,
+      uid: r.uid,
+    };
     dispatch({
       type: 'LeadManage/trackEditModel',
-      payload: { ...r },
+      payload: parm,
     }).then(res => {
       if (res && res.code === 200) {
         message.success('线索编辑成功');
