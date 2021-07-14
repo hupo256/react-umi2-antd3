@@ -1,8 +1,8 @@
 /*
- * @Author: tdd 
- * @Date: 2021-03-23 13:49:12 
- * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-06-10 23:14:40
+ * @Author: tdd
+ * @Date: 2021-03-23 13:49:12
+ * @Last Modified by: zqm
+ * @Last Modified time: 2021-07-09 19:58:04
  * 营销活动管理 活动列表
  */
 import React, { useState, useEffect } from 'react';
@@ -14,7 +14,7 @@ import { Card, Button, Table, Input, Icon, message } from 'antd';
 import { getauth } from '@/utils/authority';
 import { actColumns, searchTags } from '../tools/data';
 import styles from './activity.less';
-import Applets from  '../../ContentManagement/components/Applets';
+import Applets from '../../ContentManagement/components/Applets';
 import { connect } from 'dva';
 
 const { Search } = Input;
@@ -93,28 +93,38 @@ function Activityer(props) {
       width: 260,
       render: (text, record, index) => (
         <p className={styles.actions}>
-          {permissionsBtn.includes('BTN210422000002') && <a onClick={() => toEdit(record.uid)}>编辑</a>}
+          {permissionsBtn.includes('BTN210422000002') && (
+            <a onClick={() => toEdit(record.uid)}>编辑</a>
+          )}
           {/* {permissionsBtn.includes('BTN210422000002') && permissionsBtn.includes('BTN210422000003') && <span className={styles.operateLine} />} */}
-          {permissionsBtn.includes('BTN210422000003') && <a onClick={() => toRecod(record.activityCode)}>抽奖记录</a>}
-          {/* {permissionsBtn.includes('BTN210623000007') && <span className={styles.operateLine}></span>} */}
-          {permissionsBtn.includes('BTN210623000007') && isCompanyAuthWechatMini && <a className="operateBtn" onClick={() => getWechatCode(record)}>小程序码</a>}
+          {permissionsBtn.includes('BTN210422000003') && (
+            <a onClick={() => toRecod(record.activityCode)}>抽奖记录</a>
+          )}
+          {permissionsBtn.includes('BTN210623000007') &&
+            isCompanyAuthWechatMini && <span className={styles.operateLine} />}
+          {permissionsBtn.includes('BTN210623000007') &&
+            isCompanyAuthWechatMini && (
+              <a className="operateBtn" onClick={() => getWechatCode(record)}>
+                小程序码
+              </a>
+            )}
         </p>
       ),
     };
     settbColumns([...actColumns, col]);
   }
 
-   // 获取小程序码
-  const  getWechatCode = record => {
+  // 获取小程序码
+  const getWechatCode = record => {
     const { dispatch } = props;
     dispatch({
       type: 'ContentManage/getAppletsCode',
       payload: {
         qrCodePage: 'game',
-        uid: record.uid
-      }
-    })
-  }
+        uid: record.uid,
+      },
+    });
+  };
 
   function copyLink(id) {
     const inp = document.getElementById(id);
@@ -234,8 +244,11 @@ function Activityer(props) {
 
 const mapStateToProps = state => {
   return {
-    ...state.ContentManage
-  }
-}
+    ...state.ContentManage,
+  };
+};
 
-export default connect(mapStateToProps, null)(Activityer)
+export default connect(
+  mapStateToProps,
+  null
+)(Activityer);
