@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-17 17:03:48 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-07-09 16:30:15
+ * @Last Modified time: 2021-07-09 17:32:01
  * 创建工地
  */
 import React, { PureComponent } from 'react';
@@ -322,7 +322,7 @@ class TextComponent extends PureComponent {
               </div>
               {terminalType === 1 ? <div className={styles.fontw}>链接地址</div> : null}
               {terminalType === 1 ? (
-                <div className={styles.FormContv}>
+                <div className={styles.FormContv} style={{ marginTop: 20, marginBottom: 20 }}>
                   <Input
                     className={styles.FormInput}
                     maxLength={100}
