@@ -2,7 +2,7 @@
  * @Author: zqm 
  * @Date: 2021-02-15 15:51:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2021-06-10 23:12:06
+ * @Last Modified time: 2021-07-09 16:28:52
  * 专题库
  */
 import React, { PureComponent, Fragment } from 'react';
@@ -495,6 +495,9 @@ class ProjectLibrary extends PureComponent {
         ite.elementButtonTextColor = '#fff';
         ite.elementButtonText = '立即预约';
       } else if (ite.elementType === 'MODAL_TEXT') {
+        if (terminalType === 1) {
+          ite.elementUrl = '';
+        }
         ite.elementStyle = JSON.stringify({
           top: textTop,
           left: terminalType === 0 ? 113 : 597,
