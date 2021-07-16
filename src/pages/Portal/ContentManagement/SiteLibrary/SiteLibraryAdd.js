@@ -85,7 +85,13 @@ class SiteLibraryAdd extends PureComponent {
         payload: { uid: isFromProject },
       }).then(r => {
         if (r && r.code === 200) {
-          this.setState({ defaultData: r.data, addr: r.data.addr, isaAddr: false });
+          this.setState({
+            defaultData: r.data,
+            addr: r.data.addr,
+            isaAddr: false,
+            lat: r.data.lat,
+            lng: r.data.lng,
+          });
         }
       });
     }
