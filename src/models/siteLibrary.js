@@ -14,7 +14,8 @@ import {
   queryProjectOtherSys,
   engineeringMap,
   engineeringTask,
-  updateEngineeringMap, //查询动态状态
+  updateEngineeringMap,
+  getProjectDetail, //查询动态状态
 } from '../services/siteLibrary';
 
 export default {
@@ -249,7 +250,13 @@ export default {
       });
       return response;
     },
-
+    // 从已有工地列表单条详情
+    *getProjectDetailModel({ payload }, { call, put }) {
+      const response = yield call(getProjectDetail, {
+        ...payload,
+      });
+      return response;
+    },
     // 切换动态状态
     *toggleStatusModel({ payload }, { call, put }) {
       yield put({

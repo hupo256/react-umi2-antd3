@@ -41,7 +41,7 @@ class FromProjectModel extends Component {
   render() {
     const columns = [
       {
-        title: '工地',
+        title: '工地标题',
         dataIndex: 'projectName',
       },
       {
@@ -111,6 +111,10 @@ class FromProjectModel extends Component {
       >
         <Input.Search
           onChange={e => {
+            if (e.target.value.length > 15) {
+              message.warning('请输入15字以下的搜索内容');
+              return;
+            }
             this.setState({ searchText: e.target.value }, () => {
               if (this.state.searchText === '') {
                 this.loadQuery({ searchText: '' });
@@ -169,7 +173,7 @@ class FromProjectModel extends Component {
     console.log(selectedRows);
     console.log(selectedRowKeys);
     if (!selectedRowKeys) {
-      message.warning('请先选择项目');
+      message.warning('请先选择一个工地进行创建');
     } else {
       const { dispatch } = this.props;
       dispatch({

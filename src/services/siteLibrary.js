@@ -81,7 +81,6 @@ export async function pageDynamic(params) {
   });
 }
 
-
 // 上条记录的阶段
 export async function dynamicStatus(params) {
   return request(baseurl + '/api/v1/wechat/site/diary/getLastStatus', {
@@ -94,42 +93,51 @@ export async function dynamicStatus(params) {
 export const getSiteDetaiyApi = body => {
   return request(`${baseurl}/api/v1/wechat/site/diary/get`, {
     method: 'POST',
-    body
-  })
-}
+    body,
+  });
+};
 
 // 修改工地动态
-export const editSiteDetailApi  = body => {
+export const editSiteDetailApi = body => {
   return request(`${baseurl}/api/v1/wechat/site/diary/update`, {
     method: 'POST',
-    body
-  })
-}
+    body,
+  });
+};
 // 查询已选工地（我的工地）uid列表
-export const queryProjectUids = body => request(`${baseurl}/api/v1/wechat/site/queryProjectUids`, {
+export const queryProjectUids = body =>
+  request(`${baseurl}/api/v1/wechat/site/queryProjectUids`, {
     method: 'POST',
-    body
-  })
+    body,
+  });
 
 // 查询已有工地列表
-export const queryProjectOtherSys = body => request(`${baseurl}/api/v1/saas/project/queryProjectOtherSys`, {
-  method: 'POST',
-  body
-})
+export const queryProjectOtherSys = body =>
+  request(`${baseurl}/api/v1/saas/project/queryProjectOtherSys`, {
+    method: 'POST',
+    body,
+  });
 // 获取工地工程节点关联关系
-export const engineeringMap = body => request(`${baseurl}/api/v1/wechat/site/engineeringMap`, {
+export const engineeringMap = body =>
+  request(`${baseurl}/api/v1/wechat/site/engineeringMap`, {
     method: 'POST',
-    body
-  })
+    body,
+  });
 //  获取工地可关联工程节点
-export const engineeringTask = body => request(`${baseurl}/api/v1/saas/project/engineeringTask`, {
-  method: 'POST',
-  body
-})
-// 更新工地工程节点关联关系
-export const updateEngineeringMap = body => request(`${baseurl}/api/v1/wechat/site/updateEngineeringMap`, {
+export const engineeringTask = body =>
+  request(`${baseurl}/api/v1/saas/project/engineeringTask`, {
     method: 'POST',
-    body
-  })
-
-
+    body,
+  });
+// 更新工地工程节点关联关系
+export const updateEngineeringMap = body =>
+  request(`${baseurl}/api/v1/wechat/site/updateEngineeringMap`, {
+    method: 'POST',
+    body,
+  });
+// 从已有工地列表单条详情
+export const getProjectDetail = body =>
+  request(`${baseurl}/api/v1/saas/project/get`, {
+    method: 'POST',
+    body,
+  });

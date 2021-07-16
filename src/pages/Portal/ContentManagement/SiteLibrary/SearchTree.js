@@ -50,6 +50,7 @@ class SearchTree extends React.Component {
       autoExpandParent: false,
     });
   };
+
   componentDidMount() {
     const {
       selectedNodes,
@@ -90,6 +91,7 @@ class SearchTree extends React.Component {
       }
     });
   }
+
   onChange = e => {
     let { value } = e.target;
     value = _.trim(value.substring(0, 30));
@@ -192,6 +194,7 @@ class SearchTree extends React.Component {
       );
     }
   }
+
   handleDelRightTree(item) {
     const {
       treeInitData,
@@ -270,6 +273,7 @@ class SearchTree extends React.Component {
       });
     });
   }
+
   treeDataFlat() {
     // const {
     //   SiteLibrary: { relateNodeTreeList },
@@ -310,6 +314,7 @@ class SearchTree extends React.Component {
       allDataListFlat,
     });
   }
+
   renderName = (name, search) => {
     if (search.length && name.indexOf(search) > -1 && search !== name) {
       const temp = name.split(search);
@@ -330,6 +335,7 @@ class SearchTree extends React.Component {
       return <span style={{ color: search === name ? '#f50' : null }}>{name}</span>;
     }
   };
+
   render() {
     const {
       searchValue,
@@ -407,7 +413,10 @@ class SearchTree extends React.Component {
                     <div key={index} className={styles.filterItem}>
                       <Checkbox
                         className={styles.checkWrap}
-                        checked={checkedKeySel.includes(item.uid)}
+                        checked={
+                          checkedKeySel.includes(item.uid) ||
+                          disabledNodes.find(i => i.uid === item.uid)
+                        }
                         disabled={disabledNodes.find(i => i.uid === item.uid)}
                         onChange={e => this.handleChoice(item, e)}
                       >

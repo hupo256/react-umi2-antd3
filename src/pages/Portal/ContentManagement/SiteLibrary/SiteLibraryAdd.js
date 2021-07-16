@@ -66,16 +66,29 @@ class SiteLibraryAdd extends PureComponent {
       relateNodeModalVisible: false,
       gongdiTitle: '',
       buildingName: '',
+      defaultData: {},
     };
   }
 
   componentDidMount() {
     const isMap = getQueryUrlVal('isMap');
+    const isFromProject = getQueryUrlVal('projectUid');
+
     this.setState({ isMap }, () => {
       console.log(this.state.isMap);
     });
     // 获取字典数据 queryDicModel
     const { dispatch } = this.props;
+    if (isFromProject) {
+      dispatch({
+        type: 'SiteLibrary/getProjectDetailModel',
+        payload: { uid: isFromProject },
+      }).then(r => {
+        if (r && r.code === 200) {
+          this.setState({ defaultData: r.data, addr: r.data.addr, isaAddr: false });
+        }
+      });
+    }
     dispatch({
       type: 'DictConfig/queryDicModel',
       payload: { dicModuleCodes: isMap === '1' ? 'DM001,DM002,DM007' : 'DM002,DM007' },
@@ -95,6 +108,7 @@ class SiteLibraryAdd extends PureComponent {
       relateNodeModalVisible,
       gongdiTitle,
       buildingName,
+      defaultData,
     } = this.state;
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
@@ -131,7 +145,7 @@ class SiteLibraryAdd extends PureComponent {
         <Option value="https://vr.realsee.cn/vr/">https://vr.realsee.cn/vr/</Option>
       </Select>
     );
-
+    const isFromProject = getQueryUrlVal('projectUid');
     return (
       <div>
         <PageHeaderWrapper>
@@ -162,6 +176,7 @@ class SiteLibraryAdd extends PureComponent {
                   }
                 >
                   {getFieldDecorator('gongdiTitle', {
+                    initialValue: isFromProject ? defaultData.projectName : '',
                     rules: [
                       {
                         required: true,
@@ -253,6 +268,7 @@ class SiteLibraryAdd extends PureComponent {
                 </Form.Item>
                 <Form.Item label="面积">
                   {getFieldDecorator('buildingArea', {
+                    initialValue: isFromProject ? defaultData.buildArea : '',
                     rules: [
                       {
                         required: true,
@@ -802,6 +818,8 @@ class SiteLibraryAdd extends PureComponent {
           engineeringMaps.push(item);
         });
         const buildingName = dicData['DM007'].find(e => e.code === copyValues.buildingCode).name;
+        const projectUid = getQueryUrlVal('projectUid');
+
         const payload = {
           ...copyValues,
           buildingName,
@@ -812,14 +830,13 @@ class SiteLibraryAdd extends PureComponent {
           addr,
           lat,
           lng,
-          gongdiFromType: isMap === '1' ? 1 : 0,
+          gongdiFromType: projectUid ? 1 : 0,
           engineeringMaps,
         };
-
-        const projectUid = getQueryUrlVal('projectUid');
         if (projectUid) {
           payload.projectUid = projectUid;
         }
+
         dispatch({
           type: 'SiteLibrary/createSiteModel',
           payload,

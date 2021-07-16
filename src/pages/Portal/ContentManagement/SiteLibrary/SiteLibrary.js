@@ -35,7 +35,7 @@ class SiteLibrary extends PureComponent {
       porjectVisible: false,
       searchWord: null,
       pageNum: 1,
-      hasGongdi: false,
+      hasGongdi: null,
       relateNodeModalVisible: false,
     };
   }
@@ -158,30 +158,6 @@ class SiteLibrary extends PureComponent {
         render: (t, r) => {
           return (
             <div className="operateWrap">
-              {/*{permissionsBtn.includes('BTN210326000036') && (*/}
-              {/*  <span*/}
-              {/*    className="operateBtn"*/}
-              {/*    onClick={() =>*/}
-              {/*      this.props*/}
-              {/*        .dispatch({*/}
-              {/*          type: 'SiteLibrary/dynamicStatusModel',*/}
-              {/*          payload: { gongdiUid: r.gongdiUid },*/}
-              {/*        })*/}
-              {/*        .then(res => {*/}
-              {/*          if (res && res.code === 200) {*/}
-              {/*            // this.setState({status:res.data.value,visible: true})*/}
-              {/*            this.setState({ record: { ...r, gongdiStage: res.data.value } }, () => {*/}
-              {/*              this.setState({ visible: true });*/}
-              {/*            });*/}
-              {/*          }*/}
-              {/*        })*/}
-              {/*    }*/}
-              {/*  >*/}
-              {/*    创建动态*/}
-              {/*  </span>*/}
-              {/*)}*/}
-              {/*{permissionsBtn.includes('BTN210326000036') &&*/}
-              {/*  permissionsBtn.includes('BTN210326000037') && <span className="operateLine" />}*/}
               {permissionsBtn.includes('BTN210326000037') && (
                 <span
                   className="operateBtn"
@@ -229,7 +205,10 @@ class SiteLibrary extends PureComponent {
                     小程序码
                   </span>
                 )}
-              {r.gongdiFromType === 1 && <span className="operateLine" />}
+              {(permissionsBtn.includes('BTN210326000037') ||
+                permissionsBtn.includes('BTN210326000038') ||
+                permissionsBtn.includes('BTN210623000002')) &&
+                r.gongdiFromType === 1 && <span className="operateLine" />}
               {r.gongdiFromType === 1 && (
                 <span
                   className="operateBtn"
@@ -308,28 +287,29 @@ class SiteLibrary extends PureComponent {
           </Card>
 
           <Card bordered={false} style={{ marginTop: 20 }}>
-            {permissionsBtn.includes('BTN210326000035') && (
-              <>
-                {hasGongdi ? (
-                  <Dropdown trigger={['click']} overlay={menu}>
-                    <Button type="primary">
+            {permissionsBtn.includes('BTN210326000035') &&
+              hasGongdi !== null && (
+                <>
+                  {hasGongdi ? (
+                    <Dropdown trigger={['click']} overlay={menu}>
+                      <Button type="primary">
+                        <Icon type="plus" />
+                        创建工地
+                      </Button>
+                    </Dropdown>
+                  ) : (
+                    <Button
+                      type="primary"
+                      onClick={() => {
+                        router.push(`/portal/contentmanagement/sitelibrary/add`);
+                      }}
+                    >
                       <Icon type="plus" />
                       创建工地
                     </Button>
-                  </Dropdown>
-                ) : (
-                  <Button
-                    type="primary"
-                    onClick={() => {
-                      router.push(`/portal/contentmanagement/sitelibrary/add`);
-                    }}
-                  >
-                    <Icon type="plus" />
-                    创建工地
-                  </Button>
-                )}
-              </>
-            )}
+                  )}
+                </>
+              )}
             <Table
               loading={false}
               style={{ marginTop: 20 }}
