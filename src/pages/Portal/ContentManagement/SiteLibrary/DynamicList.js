@@ -127,8 +127,7 @@ class DynamicList extends Component {
                                   {items.appletsShow ? '隐藏' : '显示'}
                                 </span>
                               )}
-                              {
-                                permissionsBtn.includes('BTN210623000001') &&
+                              {permissionsBtn.includes('BTN210623000001') && (
                                 <span
                                   style={{ float: 'right', cursor: 'pointer', marginRight: 16 }}
                                   onClick={() => {
@@ -138,7 +137,7 @@ class DynamicList extends Component {
                                   <Icon type="edit" />
                                   编辑
                                 </span>
-                              }
+                              )}
                             </p>
                             <p>{items.diaryContent}</p>
                             {items.fileList &&
@@ -149,8 +148,17 @@ class DynamicList extends Component {
                                   item.fileUrl.split('.').length - 1
                                 ];
                                 return type === 'mp4' ? (
-                                  <div style={{position: 'relative',display: 'inline-block'}}>
-                                    <span style={{ position: 'absolute', left: 38, top: 30, border: '20px solid transparent', borderLeftWidth: 30, borderLeftColor: '#fff'}} />
+                                  <div style={{ position: 'relative', display: 'inline-block' }}>
+                                    <span
+                                      style={{
+                                        position: 'absolute',
+                                        left: 38,
+                                        top: 30,
+                                        border: '20px solid transparent',
+                                        borderLeftWidth: 30,
+                                        borderLeftColor: '#fff',
+                                      }}
+                                    />
                                     <video
                                       onClick={() => this.handlePreview(items.fileList, i)}
                                       key={i}
@@ -201,7 +209,7 @@ class DynamicList extends Component {
             visible={visible}
             initData={this.state.initData}
             status={this.state.status}
-            handleOk={() => this.handleOk()}
+            handleOk={gongdiStage => this.handleOk(gongdiStage)}
             handleCancel={() => this.handleCancel()}
           />
         )}
@@ -299,12 +307,17 @@ class DynamicList extends Component {
       }
     });
   };
-  handleOk = () => {
+  handleOk = gongdiStage => {
     this.setState({ visible: false });
     const { dispatch } = this.props;
     const { isEdit, page, dicCode } = this.state;
     if (isEdit) {
-      this.handlePagination(page, undefined, dicCode);
+      if (gongdiStage !== dicCode) {
+        this.handlePagination(page, undefined, gongdiStage);
+        this.handlePagination(1, undefined, dicCode);
+      } else {
+        this.handlePagination(page, undefined, gongdiStage);
+      }
     } else {
       console.log(123);
       dispatch({

@@ -762,7 +762,18 @@ class SiteLibraryAdd extends PureComponent {
           prefix: '',
         });
       }
-      const { coverImg, bedroom, parlor, kitchen, toilet, tags, addr, lat, lng } = this.state;
+      const {
+        coverImg,
+        bedroom,
+        parlor,
+        kitchen,
+        toilet,
+        tags,
+        addr,
+        lat,
+        lng,
+        isMap,
+      } = this.state;
       if (!addr) {
         message.error('请输入详细地址');
         return false;
@@ -801,7 +812,7 @@ class SiteLibraryAdd extends PureComponent {
           addr,
           lat,
           lng,
-          gongdiFromType: 0,
+          gongdiFromType: isMap === '1' ? 1 : 0,
           engineeringMaps,
         };
 
@@ -815,7 +826,9 @@ class SiteLibraryAdd extends PureComponent {
         }).then(res => {
           if (res && res.code === 200) {
             message.success('创建成功');
-            // history.go(-1);
+            if (isMap !== '1') {
+              history.go(-1);
+            }
             this.setState({
               step: 2,
               relateNodeModalVisible: false,

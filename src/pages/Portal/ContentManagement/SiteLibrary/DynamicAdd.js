@@ -151,7 +151,9 @@ class DynamicAdd extends Component {
                 diaryPics.length > 0 &&
                 diaryPics.map((item, index) => {
                   // console.log(item);
-                  const type = item.path ? item.path.split('.')[item.path.split('.').length - 1] : '';
+                  const type = item.path
+                    ? item.path.split('.')[item.path.split('.').length - 1]
+                    : '';
                   return (
                     <div className="previewimg previewimgs" key={item.fileUid}>
                       {type === 'mp4' ? (
@@ -182,7 +184,7 @@ class DynamicAdd extends Component {
                   );
                 })}
 
-              { (!diaryPics || diaryPics?.length) < 9 && (
+              {(!diaryPics || diaryPics?.length) < 9 && (
                 <div
                   className="previewimgs"
                   style={{ border: '1px dashed #d9d9d9' }}
@@ -303,7 +305,7 @@ class DynamicAdd extends Component {
               diaryPics: [],
               gongdiStage: null,
             });
-            this.props.handleOk();
+            this.props.handleOk(gongdiStage);
           }
         } catch (error) {
           message.error('请求出错！');

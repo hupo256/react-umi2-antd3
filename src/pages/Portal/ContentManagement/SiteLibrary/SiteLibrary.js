@@ -154,6 +154,7 @@ class SiteLibrary extends PureComponent {
       {
         title: '操作',
         dataIndex: 'operate',
+        // align: 'center',
         render: (t, r) => {
           return (
             <div className="operateWrap">
@@ -228,16 +229,18 @@ class SiteLibrary extends PureComponent {
                     小程序码
                   </span>
                 )}
-              <span className="operateLine" />
-              <span
-                className="operateBtn"
-                onClick={() => {
-                  this.setState({ record: r });
-                  this.relateNode(r);
-                }}
-              >
-                关联工程节点
-              </span>
+              {r.gongdiFromType === 1 && <span className="operateLine" />}
+              {r.gongdiFromType === 1 && (
+                <span
+                  className="operateBtn"
+                  onClick={() => {
+                    this.setState({ record: r });
+                    this.relateNode(r);
+                  }}
+                >
+                  关联工程节点
+                </span>
+              )}
             </div>
           );
         },
@@ -358,7 +361,7 @@ class SiteLibrary extends PureComponent {
             onOk={this.handleSaveRelateNode}
             onCancel={() => this.setState({ relateNodeModalVisible: false })}
           >
-            <RelateNode type="edit" projectUid={record?.gongdiUid} />
+            <RelateNode type="edit" projectUid={record?.projectUid} />
           </Modal>
         )}
         <Applets />
