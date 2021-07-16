@@ -57,8 +57,11 @@ export default function LinkSelector(props){
     function filterLevelOps(){
         const len = curNavs.length  
         const optArr = format(optsArr)
-        const arr = optArr.filter(ar => ar.children?.length > 0)
-        return len > 0 ? arr  : optArr // curNavs如果大于0，则表示要去重
+        const arr = optArr.filter(ar => {
+            const {children, appletsLink, uid} =  ar
+            return (children?.length > 0 || appletsLink === 'ShowSpecial' || appletsLink === 'mkt')
+        })
+        return len > 0 ? arr : optArr // curNavs如果大于0，则表示要去重
     }
 
     // 过滤二级掉已有的nav

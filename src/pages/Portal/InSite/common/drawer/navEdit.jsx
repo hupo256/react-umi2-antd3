@@ -72,12 +72,13 @@ export default function NavEdit(props) {
   function relevClick(num) {
     const arr = ['fd8d01f1a35111eb999e00505694ddf5']; // 首页
     const navs = navData.map((nav, ind) => {
-      const { paths = [] } = nav;
-      const id = paths?.[1];
+      const { paths = [], navModule, isEnd=true } = nav;
+      const isSpecial = navModule === 'ShowSpecial' || navModule === 'mkt'
+      const id = isSpecial ? paths?.[0] : paths?.[1];
       ind !== num && !!id && arr.push(id); // 把自己也排除，取末级的uid,去重时也从末级开始
       nav.showSec = ind === num;
-      if (ind !== 0 && paths?.length !== 2) {
-        // 如果同时有没选到末点的，就关掉并清空
+      if (!isEnd) {
+        // 同时，有没选到末点的，就关掉并清空
         nav.linkDisplayName = '';
         nav.icon = '';
       }
@@ -88,18 +89,36 @@ export default function NavEdit(props) {
     setNavData(navs);
   }
 
+  // 点击选择器
   function touchRelece(arr, num) {
     console.log(arr);
     const len = arr.length;
     const paths = arr.map(p => p.code);
     const nav = navData[num];
-    nav.icon = arr[len - 1]?.icon;
-    nav.navModule = arr[len - 1]?.appletsLink;
-    nav.linkKey = arr[len - 1]?.linkKey;
-    nav.paths = paths;
-    nav.linkDisplayName = arr.map(p => p.text).join('/');
-    if (paths.length === 2) nav.showSec = false;
+    if (isEnd) {
+      const { appletsLink, linkType, icon, linkKey } = arr?.[0];
+      const paths = arr.map(p => p.code);
+      linkKey || paths.pop(); // 没有linkKey 表示选择了详情页,
+      nav.icon = icon;
+      nav.navModule = appletsLink;
+      nav.linkKey = linkKey;
+      nav.paths = paths;
+      nav.isEnd = true
+    } 
+    nav.linkDisplayName = linkDisplayName;
+    nav.showSec = !isEnd
+
     updateNavData();
+  }
+
+  // 找出选择中特定的uid，并返回它们
+  function pickSpecialId(list){
+    const arr = []
+    list?.forEach(item => {
+      const { appletsLink,  code} = item
+      if (appletsLink === 'ShowSpecial' || appletsLink === 'mkt') arr.push(code)
+    })
+    return arr
   }
 
   return (
