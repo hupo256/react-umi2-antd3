@@ -47,7 +47,7 @@ const Home = () => {
   useEffect(
     () => {
       ; (async () => {
-        const res = await getMenuList({ keyword: '', pageNum: 1, pageSize: 18 })
+        const res = await getMenuList({ keyword: '', pageNum: 1, pageSize: 20 })
         setMenuList(_.get(res, 'data.list', []))
       })()
         ; (async () => {
