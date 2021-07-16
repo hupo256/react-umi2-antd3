@@ -20,7 +20,8 @@ import {
   Icon,
   Tooltip,
   Divider,
-  Steps, Result,
+  Steps,
+  Result,
 } from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import TagGroup from '@/components/TagSelect/TagGroup';
@@ -30,11 +31,13 @@ import { getQueryUrlVal } from '@/utils/utils';
 import styles from './SiteLibrary.less';
 import RcViewer from 'rc-viewer';
 import RelateNode from './RelateNode';
+import { router } from 'umi';
 const { TextArea } = Input;
 const { Option } = Select;
 
-@connect(({ DictConfig, loading }) => ({
+@connect(({ DictConfig, loading, SiteLibrary }) => ({
   DictConfig,
+  SiteLibrary,
   maintainListLoading: loading.effects['Maintain/maintainQueryModel'],
 }))
 @Form.create()
@@ -59,8 +62,10 @@ class SiteLibraryAdd extends PureComponent {
       open: false,
       name: '',
       isMap: false,
-      step: 1,
-      relateNodeModalVisible: true
+      step: 0,
+      relateNodeModalVisible: false,
+      gongdiTitle: '',
+      buildingName: '',
     };
   }
 
@@ -74,7 +79,7 @@ class SiteLibraryAdd extends PureComponent {
     dispatch({
       type: 'DictConfig/queryDicModel',
       payload: { dicModuleCodes: isMap === '1' ? 'DM001,DM002,DM007' : 'DM002,DM007' },
-    })
+    });
   }
 
   render() {
@@ -87,7 +92,9 @@ class SiteLibraryAdd extends PureComponent {
       cityName,
       isMap,
       step,
-      relateNodeModalVisible
+      relateNodeModalVisible,
+      gongdiTitle,
+      buildingName,
     } = this.state;
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
@@ -212,18 +219,18 @@ class SiteLibraryAdd extends PureComponent {
                       }}
                     >
                       {dicData &&
-                      dicData['DM007'] &&
-                      dicData['DM007'].map(item => {
-                        if (item.status === '1') {
-                          return (
-                            <Option value={item.code} key={item.uid}>
-                              {item.name}
-                            </Option>
-                          );
-                        } else {
-                          return null;
-                        }
-                      })}
+                        dicData['DM007'] &&
+                        dicData['DM007'].map(item => {
+                          if (item.status === '1') {
+                            return (
+                              <Option value={item.code} key={item.uid}>
+                                {item.name}
+                              </Option>
+                            );
+                          } else {
+                            return null;
+                          }
+                        })}
                     </Select>
                   )}
                 </Form.Item>
@@ -445,36 +452,42 @@ class SiteLibraryAdd extends PureComponent {
                   })(<TextArea rows={4} style={{ width: 400 }} placeholder="请输入工地说明" />)}
                 </Form.Item>
               </div>
-              {relateNodeModalVisible && <RelateNode type='add' projectUid={getQueryUrlVal('projectUid')} />}
+              {relateNodeModalVisible && (
+                <RelateNode type="add" projectUid={getQueryUrlVal('projectUid')} />
+              )}
               {step === 2 && (
                 <Result
                   status="success"
                   title="创建成功"
-                  subTitle="快去你的站点看看吧"
+                  subTitle={
+                    <div>
+                      快去你的站点看看吧
+                      <Card
+                        bordered={false}
+                        style={{ background: '#f9f9f9', width: 600, margin: '10px auto 0' }}
+                      >
+                        工地标题：
+                        {gongdiTitle}
+                        <br />
+                        楼盘/楼宇：
+                        {buildingName}
+                      </Card>
+                    </div>
+                  }
                   extra={[
                     <Button
                       type="primary"
-                      key={"oneMore"}
+                      key={'oneMore'}
                       onClick={() => {
-                        form.resetFields();
-                        // this.upload.clearFiles();
-                        this.props.dispatch({
-                          type: "",
-                          payload: {
-                            companyName: "",
-                          },
-                        });
-                        this.setState({ step: 0, contractFile: null });
+                        this.setState({ step: 0 });
                       }}
                     >
                       再创建一个
                     </Button>,
                     <Button
-                      key={"gongdi"}
+                      key={'gongdi'}
                       onClick={() => {
-                        // router.push(
-                        //   `/order/applyManagement/detail?uid=${this.state.uid}`
-                        // );
+                        router.push(`/portal/contentmanagement/sitelibrary`);
                       }}
                     >
                       返回工地库
@@ -483,13 +496,13 @@ class SiteLibraryAdd extends PureComponent {
                 />
               )}
               <Row>
-                <Col span={24} style={{textAlign: 'center'}}>
+                <Col span={24} style={{ textAlign: 'center' }}>
                   {isMap === '1' ? (
                     <>
                       {step === 0 && (
                         <Button
                           onClick={() => {
-                            this.setState({ step: 1, relateNodeModalVisible: true });
+                            this.handleNext();
                           }}
                         >
                           下一步
@@ -503,7 +516,7 @@ class SiteLibraryAdd extends PureComponent {
                           &nbsp;&nbsp;
                           <Button
                             onClick={() => {
-                              this.setState({ step: 0 });
+                              this.setState({ step: 0, relateNodeModalVisible: false });
                             }}
                           >
                             上一步
@@ -599,10 +612,8 @@ class SiteLibraryAdd extends PureComponent {
             payload: { dicModuleCodes: 'DM002,DM007' },
           }).then(r => {
             if (r && r.code === 200) {
-              that.setState({ buildingData: r.data['DM007'] }, () => {
-                that.props.form.setFieldsValue({
-                  buildingCode: res.data.code,
-                });
+              that.props.form.setFieldsValue({
+                buildingCode: res.data.code,
               });
             }
           });
@@ -683,9 +694,64 @@ class SiteLibraryAdd extends PureComponent {
       </span>
     );
   }
+
+  handleNext = () => {
+    const {
+      DictConfig: { dicData },
+      form,
+    } = this.props;
+    form.validateFieldsAndScroll((err, values) => {
+      if (err) throw err;
+      // 取消前后空格
+      values.vrLink = values.vrLink?.trim();
+
+      if (!!!values.vrLink) {
+        this.props.form.setFieldsValue({
+          prefix: '',
+        });
+      }
+      const { coverImg, bedroom, parlor, kitchen, toilet, tags, addr, lat, lng } = this.state;
+      if (!addr) {
+        message.error('请输入详细地址');
+        return false;
+      }
+      if (parseFloat(values.buildingArea) < 0.01 || parseFloat(values.buildingArea) > 99999.99) {
+        message.error('面积限制输入0.01-99999.99范围内的数字');
+        return false;
+      } else if (
+        parseFloat(values.renovationCosts) < 0.01 ||
+        parseFloat(values.renovationCosts) > 99999.99
+      ) {
+        message.error('装修造价限制输入0.01-99999.99范围内的数字');
+        return false;
+      } else {
+        let { prefix, ...copyValues } = values;
+        const payload = {
+          ...copyValues,
+
+          buildingName: dicData['DM007'].find(e => e.code === copyValues.buildingCode).name,
+          // coverImg: (coverImg && coverImg[0].response.data.addr) || '',
+          houseType: { bedroom, parlor, kitchen, toilet },
+          headKeywords: tags,
+          vrLink: !!!copyValues.vrLink || !!!prefix ? '' : prefix + copyValues.vrLink,
+          addr,
+          lat,
+          lng,
+          gongdiFromType: 0,
+        };
+        this.setState({ step: 1, relateNodeModalVisible: true });
+      }
+    });
+  };
   handleSubmit = e => {
     e.preventDefault();
-    this.props.form.validateFieldsAndScroll((err, values) => {
+    const {
+      DictConfig: { dicData },
+      form,
+      dispatch,
+      SiteLibrary: { engineeringMapData },
+    } = this.props;
+    form.validateFieldsAndScroll((err, values) => {
       if (err) throw err;
 
       // 取消前后空格
@@ -701,7 +767,6 @@ class SiteLibraryAdd extends PureComponent {
         message.error('请输入详细地址');
         return false;
       }
-      const { dispatch } = this.props;
       if (parseFloat(values.buildingArea) < 0.01 || parseFloat(values.buildingArea) > 99999.99) {
         message.error('面积限制输入0.01-99999.99范围内的数字');
         return false;
@@ -713,26 +778,53 @@ class SiteLibraryAdd extends PureComponent {
         return false;
       } else {
         let { prefix, ...copyValues } = values;
+        const engineeringMaps = [];
+        engineeringMapData.map(e => {
+          const item = {
+            dicCode: e.dicCode,
+            dicName: e.dicName,
+            taskNames: [],
+          };
+          e.taskNodes.map(i => {
+            item.taskNames.push(i.taskName);
+          });
+          engineeringMaps.push(item);
+        });
+        const buildingName = dicData['DM007'].find(e => e.code === copyValues.buildingCode).name;
+        const payload = {
+          ...copyValues,
+          buildingName,
+          // coverImg: (coverImg && coverImg[0].response.data.addr) || '',
+          houseType: { bedroom, parlor, kitchen, toilet },
+          headKeywords: tags,
+          vrLink: !copyValues.vrLink || !prefix ? '' : prefix + copyValues.vrLink,
+          addr,
+          lat,
+          lng,
+          gongdiFromType: 0,
+          engineeringMaps,
+        };
 
+        const projectUid = getQueryUrlVal('projectUid');
+        if (projectUid) {
+          payload.projectUid = projectUid;
+        }
         dispatch({
           type: 'SiteLibrary/createSiteModel',
-          payload: {
-            ...copyValues,
-            buildingName: this.state.buildingData.find(e => e.code === copyValues.buildingCode)
-              .name,
-            // coverImg: (coverImg && coverImg[0].response.data.addr) || '',
-            houseType: { bedroom, parlor, kitchen, toilet },
-            headKeywords: tags,
-            vrLink: !!!copyValues.vrLink || !!!prefix ? '' : prefix + copyValues.vrLink,
-            addr,
-            lat,
-            lng,
-            gongdiFromType: 0,
-          },
+          payload,
         }).then(res => {
           if (res && res.code === 200) {
             message.success('创建成功');
-            history.go(-1);
+            // history.go(-1);
+            this.setState({
+              step: 2,
+              relateNodeModalVisible: false,
+              gongdiTitle: copyValues.gongdiTitle,
+              buildingName,
+              addr: '',
+              isaAddr: true,
+            });
+            form.resetFields();
           }
           // this.setState({ submitLoading: false });
           // if (res && res.code === 200) {

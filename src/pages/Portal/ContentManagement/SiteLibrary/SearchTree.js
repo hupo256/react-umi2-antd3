@@ -11,7 +11,7 @@ const getParentKey = (key, tree) => {
   for (let i = 0; i < tree.length; i++) {
     const node = tree[i];
     if (node.children) {
-      if (node.children.some((item) => item.uid === key)) {
+      if (node.children.some(item => item.uid === key)) {
         parentKey = node.uid;
       } else if (getParentKey(key, node.children)) {
         parentKey = getParentKey(key, node.children);
@@ -36,50 +36,70 @@ class SearchTree extends React.Component {
     selectedKeys: [],
     allDataListFlat: [], //搜索
     expandTrees: [],
-
     SearchShow: false, //搜索model
     filterData: [], //过滤数据
     searchVal: '', //搜索输入值
     CheckboxChecked: false, //是否全选
     checkSelect: false, //是否选择全选
+    disabledNodes: [],
   };
 
-  onExpand = (expandedKeys) => {
+  onExpand = expandedKeys => {
     this.setState({
       expandedKeys,
       autoExpandParent: false,
     });
   };
   componentDidMount() {
-    const { activeLeft, dispatch, projectUid } = this.props;
-
+    const {
+      selectedNodes,
+      dispatch,
+      projectUid,
+      SiteLibrary: { engineeringMapData },
+      dicCode,
+    } = this.props;
     const { active } = this.state;
     dispatch({
       type: 'SiteLibrary/engineeringTaskModel',
       payload: {
-        projectUid
+        projectUid,
       },
-    }).then((res) => {
+    }).then(res => {
       if (res && res.code === 200) {
-        this.setState({ treeInitData: res.data }, () => {
+        const disabledNodes = [];
+        engineeringMapData.map(e => {
+          if (e.dicCode !== dicCode) {
+            disabledNodes.push(...e.taskNodes);
+          }
+        });
+        this.setState({ treeInitData: res.data, disabledNodes }, () => {
           this.treeDataFlat();
-          // const expandTrees = this.expandTree(res.data, []);
-          // const data = arrReduce(expandTrees, 'code');
-          // this.setState({ expandTrees: data });
+          const expandTrees = this.expandTree(res.data, []);
+          const data = arrReduce(expandTrees, 'code');
+          const checkedKeySel = [];
+          selectedNodes.map(e => {
+            checkedKeySel.push(e.uid);
+          });
+          dispatch({
+            type: 'SiteLibrary/setSelectedTreeNodesModel',
+            payload: { dataList: selectedNodes },
+          });
+          // 设置默认选中的值
+          this.setState({ expandTrees: data, checkedKeySel, selectTreeList: selectedNodes });
         });
       }
     });
   }
-  onChange = (e) => {
+  onChange = e => {
     let { value } = e.target;
     value = _.trim(value.substring(0, 30));
     const { activeLeft, dispatch, projectUid } = this.props;
     dispatch({
       type: 'SiteLibrary/engineeringTaskModel',
       payload: {
-        projectUid
+        projectUid,
       },
-    }).then((res) => {
+    }).then(res => {
       if (res && res.code === 200) {
         this.setState(
           {
@@ -90,7 +110,7 @@ class SearchTree extends React.Component {
             const { allDataListFlat, treeInitData } = this.state;
             console.log(allDataListFlat, 'allDataListFlat');
             const expandedKeys = allDataListFlat
-              .map((item) => {
+              .map(item => {
                 if (
                   item.name.indexOf(value) > -1 ||
                   (item.mobile && item.mobile.indexOf(value) > -1)
@@ -117,15 +137,16 @@ class SearchTree extends React.Component {
 
   onCheck(checkedKeys, e) {
     let selectData = [];
+    const { dispatch } = this.props;
     console.log('checkedKeys', checkedKeys);
     this.setState({ checkedKeySel: checkedKeys });
     const { treeData } = this.state;
     console.log(checkedKeys, 'checkedKeys选中的uid');
     console.log(treeData, 'treeData所有左侧type==2的数据');
 
-    const getRightTreeData = (data) => {
+    const getRightTreeData = data => {
       for (let i = 0; i < data.length; i++) {
-        const dataTree = treeData.filter((item) => {
+        const dataTree = treeData.filter(item => {
           return data[i] == item.uid;
         });
         if (dataTree && dataTree[0]) {
@@ -145,9 +166,14 @@ class SearchTree extends React.Component {
           const { selectTreeList } = this.state;
           const finishSelectTree = [];
           selectTreeList.forEach((item, index) => {
-            finishSelectTree.push(item.code);
+            finishSelectTree.push(item);
           });
           sessionStorage.setItem('selectRightTree', JSON.stringify(finishSelectTree));
+          console.log('finishSelectTree', finishSelectTree);
+          dispatch({
+            type: 'SiteLibrary/setSelectedTreeNodesModel',
+            payload: { dataList: finishSelectTree },
+          });
         }
       );
     } else {
@@ -158,6 +184,10 @@ class SearchTree extends React.Component {
         },
         () => {
           sessionStorage.setItem('selectRightTree', JSON.stringify([]));
+          dispatch({
+            type: 'SiteLibrary/setSelectedTreeNodesModel',
+            payload: { dataList: [] },
+          });
         }
       );
     }
@@ -170,9 +200,10 @@ class SearchTree extends React.Component {
       selectTreeList,
       allDataListFlat,
     } = this.state;
+    const { dispatch } = this.props;
     let newSelectTreeNode = [];
 
-    let getDeldataParentUid = (data) => {
+    let getDeldataParentUid = data => {
       let parentCode = [];
       let delParentCode = data.filter((s, k) => {
         return s.uid == item.uid;
@@ -180,7 +211,7 @@ class SearchTree extends React.Component {
       let delParentUid;
       if (delParentCode) {
         delParentUid = data.filter((t, n) => {
-          return t.code == delParentCode[0].parentCode;
+          return t.code === delParentCode[0].parentCode;
         });
       }
       return delParentUid;
@@ -189,17 +220,16 @@ class SearchTree extends React.Component {
     // 获取删除uid的父级
     const ParUid = getDeldataParentUid(allDataListFlat);
     checkedKeySel.forEach((t, index) => {
-      if (t != item.uid && t != ParUid[0].uid) {
+      if (t !== item.uid && t !== ParUid[0].uid) {
         newSelectTreeNode.push(t);
       }
     });
 
     this.setState({ checkedKeySel: newSelectTreeNode }, () => {
       console.log(newSelectTreeNode, 'newSelectTreeNode');
-      const newselTre = selectTreeList.filter((n) => {
-        return n.uid != item.uid;
+      const newselTre = selectTreeList.filter(n => {
+        return n.uid !== item.uid;
       });
-      //sessionStorage.setItem('selectRightTree', JSON.stringify(newSelectTreeNode));
       this.setState({ selectTreeList: newselTre }, () => {
         const { selectTreeList } = this.state;
         // 点击删除时右侧剩下的code
@@ -209,6 +239,10 @@ class SearchTree extends React.Component {
         });
         // 右侧点击每行删除时剩下的code
         sessionStorage.setItem('selectRightTree', JSON.stringify(RightCodedel));
+        dispatch({
+          type: 'SiteLibrary/setSelectedTreeNodesModel',
+          payload: { dataList: RightCodedel },
+        });
       });
     });
   }
@@ -218,7 +252,7 @@ class SearchTree extends React.Component {
     const { dispatch } = this.props;
     this.handleDelRightTree(item);
 
-    const data = this.state.filterData.filter((items) => items.code == item.code);
+    const data = this.state.filterData.filter(items => items.code == item.code);
     if (data.length > 0) {
       this.setState({ checkSelect: false });
     }
@@ -227,8 +261,13 @@ class SearchTree extends React.Component {
   delRightTree() {
     // 清空按钮
     const { selectTreeList } = this.state;
+    const { dispatch } = this.props;
     this.setState({ selectTreeList: [], checkedKeySel: [], checkSelect: false }, () => {
       sessionStorage.setItem('selectRightTree', JSON.stringify([]));
+      dispatch({
+        type: 'SiteLibrary/setSelectedTreeNodesModel',
+        payload: { dataList: [] },
+      });
     });
   }
   treeDataFlat() {
@@ -238,7 +277,7 @@ class SearchTree extends React.Component {
     const { treeInitData } = this.state;
     const dataList = [];
     const allDataListFlat = [];
-    const generateList = (data) => {
+    const generateList = data => {
       for (let i = 0; i < data.length; i++) {
         const node = data[i];
         const { code } = node;
@@ -249,7 +288,6 @@ class SearchTree extends React.Component {
           uid: node.uid,
           parentCode: node.parentCode,
         });
-
         if (!node.children.length) {
           dataList.push({
             code,
@@ -306,14 +344,15 @@ class SearchTree extends React.Component {
       filterData,
       CheckboxChecked,
       checkSelect,
+      disabledNodes,
     } = this.state;
     const {
       SiteLibrary: { relateNodeTreeList },
     } = this.props;
     console.log(relateNodeTreeList, '左侧返回的数据');
 
-    const loop = (data) =>
-      data.map((item) => {
+    const loop = data =>
+      data.map(item => {
         let tle = item.taskName;
         const title = this.renderName(tle, searchValue);
 
@@ -342,7 +381,7 @@ class SearchTree extends React.Component {
               placeholder="搜索工程节点"
               onClick={this.handleSearchShow}
               value={searchVal}
-              onChange={(e) => {
+              onChange={e => {
                 this.handleSearch(e.target.value);
               }}
             />
@@ -355,7 +394,6 @@ class SearchTree extends React.Component {
               />
             )}
           </div>
-          {console.log(SearchShow)}
           {SearchShow && (
             <div className={styles.leftMask}>
               {filterData.length > 0 && (
@@ -370,12 +408,11 @@ class SearchTree extends React.Component {
                       <Checkbox
                         className={styles.checkWrap}
                         checked={checkedKeySel.includes(item.uid)}
-                        onChange={(e) => this.handleChoice(item, e)}
+                        disabled={disabledNodes.find(i => i.uid === item.uid)}
+                        onChange={e => this.handleChoice(item, e)}
                       >
                         <div className={styles.checkboxs}>
-                          <p>
-                            {item.taskName}
-                          </p>
+                          <p>{item.taskName}</p>
                         </div>
                       </Checkbox>
                     </div>
@@ -383,7 +420,6 @@ class SearchTree extends React.Component {
                 })}
             </div>
           )}
-          {console.log(relateNodeTreeList)}
           {relateNodeTreeList && relateNodeTreeList.length > 0 ? (
             <Tree
               defaultExpandAll={true}
@@ -392,7 +428,12 @@ class SearchTree extends React.Component {
               onCheck={this.onCheck.bind(this)}
               checkable
               showIcon
-              style={{ height: '350px', overflowY: 'auto', scrollbarTrackColor: '#f2f2f2' }}
+              style={{
+                height: '350px',
+                overflowY: 'auto',
+                scrollbarTrackColor: '#f2f2f2',
+                opacity: SearchShow ? 0 : 1,
+              }}
             >
               {loop(relateNodeTreeList)}
             </Tree>
@@ -411,8 +452,8 @@ class SearchTree extends React.Component {
                 const that = this;
                 (function confirm() {
                   Modal.confirm({
-                    title: `确认要清空已选用户吗？`,
-                    content: `清空后，可重新添加用户`,
+                    title: `确认要清空已选工程节点吗？`,
+                    content: `清空后，可重新添加工程节点`,
                     okText: '确认',
                     cancelText: '取消',
                     onOk() {
@@ -429,7 +470,7 @@ class SearchTree extends React.Component {
           <List
             itemLayout="horizontal"
             dataSource={selectTreeList}
-            renderItem={(item) => (
+            renderItem={item => (
               <List.Item
                 actions={[<Icon type="delete" onClick={this.delTreeUser.bind(this, item)} />]}
               >
@@ -448,13 +489,27 @@ class SearchTree extends React.Component {
 
   // 展开tree
   expandTree = (treedata, arr) => {
-    treedata.forEach((item) => {
+    const { disabledNodes } = this.state;
+    treedata.forEach(item => {
       if (Array.isArray(item.children) && item.children.length > 0) {
         this.expandTree(item.children, arr);
-      } else {
-        if (item.type == 2 && !item.flag) {
-          arr.push(item);
+        const matchedList = [];
+        item.children.map(e => {
+          const every = disabledNodes?.find(i => i.uid === e.uid);
+          if (every) {
+            matchedList.push(every);
+          }
+        });
+        if (matchedList.length === item.children.length) {
+          item.flag = true;
         }
+        console.log();
+      } else {
+        console.log('disabledNodes', disabledNodes);
+        if (disabledNodes?.find(e => e.uid === item.uid)) {
+          item.flag = true;
+        }
+        arr.push(item);
       }
     });
     return arr;
@@ -474,7 +529,7 @@ class SearchTree extends React.Component {
     });
   };
   // 搜索
-  handleSearch = (v) => {
+  handleSearch = v => {
     const { expandTrees } = this.state;
     this.setState({ searchVal: v }, () => {
       const data = this.fuzzyQuery(v, expandTrees);
@@ -490,11 +545,8 @@ class SearchTree extends React.Component {
     let filterArr = [];
     if (v) {
       const filterData = (v, data) => {
-        data.forEach((item) => {
-          if (item.name?.indexOf(v) !== -1) {
-            filterArr.push(item);
-          }
-          if (item.mobile?.indexOf(v) !== -1) {
+        data.forEach(item => {
+          if (item.taskName?.indexOf(v) !== -1) {
             filterArr.push(item);
           }
         });
@@ -503,18 +555,21 @@ class SearchTree extends React.Component {
     } else {
       filterArr = [];
     }
-
     return filterArr;
   };
   // 查询全选
-  handleCheckedAll = (e) => {
-    const { checkedKeySel, selectTreeList, filterData } = this.state;
+  handleCheckedAll = e => {
+    const { checkedKeySel, selectTreeList, filterData, disabledNodes } = this.state;
     // // 左侧添加数据
     // // 右侧添加数据
     if (e.target.checked) {
       // 去重
-      const data = filterData.filter((item) => !checkedKeySel.includes(item.uid));
-      const datauid = data.map((item) => item.uid);
+      const data = filterData.filter(
+        item =>
+          !checkedKeySel.includes(item.uid) && !disabledNodes.find(every => every.uid === item.uid)
+      );
+      console.log(data);
+      const datauid = data.map(item => item.uid);
       this.setState(
         {
           checkedKeySel: [...checkedKeySel, ...datauid],

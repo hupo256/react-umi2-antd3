@@ -21,7 +21,7 @@ class FromProjectModel extends Component {
     super(props);
     this.state = {
       inputVal: '',
-      projectUids: []
+      projectUids: [],
     };
   }
 
@@ -31,12 +31,11 @@ class FromProjectModel extends Component {
       type: 'SiteLibrary/queryProjectUidsModel',
     }).then(e => {
       if (e && e.code === 200) {
-        this.setState({projectUids: e.data.projectUids}, () => {
+        this.setState({ projectUids: e.data.projectUids }, () => {
           this.loadQuery({ pageNum: 1 });
-        })
+        });
       }
     });
-
   }
 
   render() {
@@ -79,11 +78,11 @@ class FromProjectModel extends Component {
         console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
         this.setState({ selectedRowKeys, selectedRows });
       },
-      getCheckboxProps: (record) => {
+      getCheckboxProps: record => {
         return {
           disabled: record.isSelected === 1,
         };
-      }
+      },
     };
     const {
       Loading,
@@ -177,7 +176,11 @@ class FromProjectModel extends Component {
         type: 'SiteLibrary/setSiteDetailModel',
         payload: { ...selectedRows[0] },
       }).then(res => {
-        router.push(`/portal/contentmanagement/sitelibrary/add?isMap=${selectedRows[0].isMap}&projectUid=${selectedRows[0].uid}`);
+        router.push(
+          `/portal/contentmanagement/sitelibrary/add?isMap=${selectedRows[0].isMap}&projectUid=${
+            selectedRows[0].uid
+          }`
+        );
       });
     }
   };

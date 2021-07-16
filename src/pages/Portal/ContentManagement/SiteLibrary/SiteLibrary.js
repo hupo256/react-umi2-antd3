@@ -13,6 +13,7 @@ import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { paginations, getUrl, successIcon, waringInfo } from '@/utils/utils';
 import styles from './SiteLibrary.less';
 import DynamicAdd from './DynamicAdd';
+import RelateNode from './RelateNode';
 import { getauth } from '@/utils/authority';
 import FromProjectModel from './FromProjectModel';
 import Applets from '../components/Applets';
@@ -35,6 +36,7 @@ class SiteLibrary extends PureComponent {
       searchWord: null,
       pageNum: 1,
       hasGongdi: false,
+      relateNodeModalVisible: false,
     };
   }
 
@@ -58,7 +60,14 @@ class SiteLibrary extends PureComponent {
   }
 
   render() {
-    const { status, visible, record, porjectVisible, hasGongdi } = this.state;
+    const {
+      status,
+      visible,
+      record,
+      porjectVisible,
+      hasGongdi,
+      relateNodeModalVisible,
+    } = this.state;
     const {
       SiteLibrary: { siteList, siteListQuery },
     } = this.props;
@@ -220,7 +229,13 @@ class SiteLibrary extends PureComponent {
                   </span>
                 )}
               <span className="operateLine" />
-              <span className="operateBtn" onClick={() => this.getWechatCode(r)}>
+              <span
+                className="operateBtn"
+                onClick={() => {
+                  this.setState({ record: r });
+                  this.relateNode(r);
+                }}
+              >
                 关联工程节点
               </span>
             </div>
@@ -335,11 +350,65 @@ class SiteLibrary extends PureComponent {
         {porjectVisible && (
           <FromProjectModel visible={porjectVisible} handleCancel={() => this.handleFromCancel()} />
         )}
+        {relateNodeModalVisible && (
+          <Modal
+            title="关联工程节点"
+            visible={relateNodeModalVisible}
+            width={800}
+            onOk={this.handleSaveRelateNode}
+            onCancel={() => this.setState({ relateNodeModalVisible: false })}
+          >
+            <RelateNode type="edit" projectUid={record?.gongdiUid} />
+          </Modal>
+        )}
         <Applets />
       </div>
     );
   }
-
+  relateNode = record => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'SiteLibrary/engineeringMapModel',
+      payload: {
+        gongdiUid: record.gongdiUid,
+      },
+    }).then(r => {
+      if (r && r.code === 200) {
+        this.setState({ relateNodeModalVisible: true });
+      }
+    });
+  };
+  handleSaveRelateNode = () => {
+    const { record, pageNum } = this.state;
+    const {
+      dispatch,
+      SiteLibrary: { engineeringMapData },
+    } = this.props;
+    const engineeringMaps = [];
+    engineeringMapData.map(e => {
+      const item = {
+        dicCode: e.dicCode,
+        dicName: e.dicName,
+        taskNames: [],
+      };
+      e.taskNodes.map(i => {
+        item.taskNames.push(i.taskName);
+      });
+      engineeringMaps.push(item);
+    });
+    dispatch({
+      type: 'SiteLibrary/updateEngineeringMapModel',
+      payload: {
+        engineeringMaps,
+        gongdiUid: record.gongdiUid,
+      },
+    }).then(r => {
+      if (r && r.code === 200) {
+        this.setState({ relateNodeModalVisible: false });
+        this.getList({ pageNum });
+      }
+    });
+  };
   // 获取小程序码
   getWechatCode = record => {
     const { dispatch } = this.props;

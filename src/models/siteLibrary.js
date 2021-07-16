@@ -9,7 +9,12 @@ import {
   pageDynamic, //动态列表
   createDynamic, //创建动态
   dynamicShow, //显示/隐藏
-  dynamicStatus, queryProjectUids, queryProjectOtherSys, engineeringMap, engineeringTask, updateEngineeringMap,//查询动态状态
+  dynamicStatus,
+  queryProjectUids,
+  queryProjectOtherSys,
+  engineeringMap,
+  engineeringTask,
+  updateEngineeringMap, //查询动态状态
 } from '../services/siteLibrary';
 
 export default {
@@ -22,13 +27,23 @@ export default {
     dynamicList: [],
     FromProjectList: {},
     FromProjectQuery: {},
-    relateNodeTreeList: []
+    relateNodeTreeList: [],
+    engineeringMapData: [],
+    selectedTreeNodes: [],
   },
 
   effects: {
     *resetSearchModel({ payload }, { call, put }) {
       yield put({
-        type: 'upData',payload: {siteListQuery: { ...payload }},
+        type: 'upData',
+        payload: { siteListQuery: { ...payload } },
+      });
+    },
+    *setSelectedTreeNodesModel({ payload }, { call, put }) {
+      const { dataList } = payload;
+      yield put({
+        type: 'upData',
+        payload: { selectedTreeNodes: dataList },
       });
     },
     // 上条记录的阶段
@@ -72,10 +87,10 @@ export default {
       });
       return response;
     },
-     *setSiteDetailModel({ payload }, { call, put }) {
+    *setSiteDetailModel({ payload }, { call, put }) {
       yield put({
         type: 'upData',
-        payload: { siteDetail:  {...payload} },
+        payload: { siteDetail: { ...payload } },
       });
       return true;
     },
@@ -168,7 +183,51 @@ export default {
       const response = yield call(engineeringMap, {
         ...payload,
       });
+      yield put({
+        type: 'upData',
+        payload: {
+          engineeringMapData: (response && response.data) || [],
+        },
+      });
+
       return response;
+    },
+    // 初始化对应阶段关联的节点数据结构
+    *initEngineeringMapModel({ payload }, { call, put }) {
+      const { baseData } = payload;
+      const array = baseData.filter(e => e.status === '1');
+      const engineeringMapData = [];
+      array.map(e => {
+        engineeringMapData.push({
+          dicCode: e.code,
+          dicName: e.name,
+          taskNodes: [],
+        });
+      });
+      yield put({
+        type: 'upData',
+        payload: {
+          engineeringMapData,
+        },
+      });
+      return engineeringMapData;
+    },
+    // 初始化对应阶段关联的节点数据结构
+    *setEngineeringMapModel({ payload }, { call, put }) {
+      const { selectedTreeNodes, dicCode, engineeringMapData } = payload;
+      engineeringMapData.map(e => {
+        if (e.dicCode === dicCode) {
+          e.taskNodes = selectedTreeNodes;
+        }
+      });
+      console.log(engineeringMapData);
+      yield put({
+        type: 'upData',
+        payload: {
+          engineeringMapData,
+        },
+      });
+      return engineeringMapData;
     },
     // 获取工地可关联工程节点
     *engineeringTaskModel({ payload }, { call, put }) {
@@ -190,8 +249,6 @@ export default {
       });
       return response;
     },
-
-
 
     // 切换动态状态
     *toggleStatusModel({ payload }, { call, put }) {

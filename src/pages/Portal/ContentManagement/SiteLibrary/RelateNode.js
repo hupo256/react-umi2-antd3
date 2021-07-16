@@ -1,13 +1,14 @@
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
 import router from 'umi/router';
-import { Card, Button, Icon, Tabs, Table, Input, Modal } from 'antd';
+import { Card, Button, Icon, Tabs, Table, Input, Modal, Tag } from 'antd';
 import styles from './RelateNode.less';
 import RelateNodeModal from './RelateNodeModal';
 import { getauth } from '@/utils/authority';
 const { TabPane } = Tabs;
-@connect(({ DictConfig, loading }) => ({
+@connect(({ DictConfig, loading, SiteLibrary }) => ({
   DictConfig,
+  SiteLibrary,
   DicModuleLoading: loading.effects['Advertising/queryDicModuleListModel'],
 }))
 class Advertising extends PureComponent {
@@ -19,60 +20,106 @@ class Advertising extends PureComponent {
       record: null,
       visible: false,
       width: 1980,
+      dataSource: [],
     };
   }
 
   componentDidMount() {
     const {
       DictConfig: { dicData },
+      SiteLibrary: { engineeringMapData },
       type,
+      dispatch,
     } = this.props;
+
     if (type === 'add') {
       if (dicData && dicData['DM001']) {
         const result = dicData['DM001'].find((item, index) => {
           return item.status === '1';
         });
         if (result) {
-          this.setState({ activeKey: result.uid });
+          this.setState({ activeKey: result.code });
         }
+        dispatch({
+          type: 'SiteLibrary/initEngineeringMapModel',
+          payload: {
+            baseData: dicData['DM001'],
+          },
+        }).then(e => console.log(e));
+      } else {
+        dispatch({
+          type: 'DictConfig/queryDicModel',
+          payload: { dicModuleCodes: 'DM001,DM002,DM007' },
+        }).then(res => {
+          if (res && res.code === 200) {
+            const result = res.data['DM001'].find(item => {
+              return item.status === '1';
+            });
+            if (result) {
+              this.setState({ activeKey: result.code });
+            }
+            dispatch({
+              type: 'SiteLibrary/initEngineeringMapModel',
+              payload: {
+                baseData: res.data['DM001'],
+              },
+            }).then(e => console.log(e));
+          }
+        });
       }
+    } else if (type === 'edit') {
+      dispatch({
+        type: 'DictConfig/queryDicModel',
+        payload: { dicModuleCodes: 'DM001' },
+      }).then(res => {
+        if (res && res.code === 200) {
+          const result = res.data['DM001'].find(item => {
+            return item.status === '1';
+          });
+          const r = engineeringMapData.find(item => {
+            return item.dicCode === result.code;
+          });
+          console.log(r);
+          if (result) {
+            this.setState({ activeKey: result.code, dataSource: r.taskNodes });
+          }
+        }
+      });
     }
 
-    // this.props
-    //   .dispatch({
-    //     type: "operate/queryPositionModel",
-    //     payload: {
-    //       companyName: "",
-    //       type: 1, //1装修广告位 2:材料广告位
-    //     },
-    //   })
-    //   .then((res) => {
-    //     if (res && res.code === 200) {
-    //     }
-    //   });
     this.setState({ width: document.body.clientWidth });
   }
   render() {
-    const { activeKey, visible } = this.state;
+    const { activeKey, visible, dataSource } = this.state;
     const {
       DictConfig: { dicData },
-      projectUid
+      projectUid,
     } = this.props;
     const permissionsBtn = getauth().permissions || [];
     const columns = [
       {
         title: '工程节点名称',
-        dataIndex: 'companyName',
-        width: 200,
+        dataIndex: 'taskName',
+        width: 300,
+        render: (t, r) => {
+          return (
+            <div className="operateWrap">
+              {t}
+              &nbsp;&nbsp;&nbsp;
+              {r.isEffective === '0' && <Tag color="volcano">已失效</Tag>}
+            </div>
+          );
+        },
       },
       {
         title: '操作',
         dataIndex: 'operate',
         width: 140,
+        align: 'center',
         render: (t, record) => {
           return (
             <div className="operateWrap">
-              <span className="operateBtn" onClick={() => {}}>
+              <span className="operateBtn" onClick={() => this.handleDelete(record)}>
                 移除
               </span>
             </div>
@@ -95,7 +142,7 @@ class Advertising extends PureComponent {
                   dicData['DM001'] &&
                   dicData['DM001'].map((item, index) => {
                     if (item.status === '1') {
-                      return <TabPane tab={item.name} key={item.uid} />;
+                      return <TabPane tab={item.name} key={item.code} />;
                     } else {
                       return null;
                     }
@@ -111,7 +158,7 @@ class Advertising extends PureComponent {
               </div>
               <Table
                 columns={columns}
-                dataSource={[]}
+                dataSource={dataSource}
                 onChange={this.handleTableChange}
                 pagination={false}
               />
@@ -123,8 +170,10 @@ class Advertising extends PureComponent {
             visible={visible}
             title="关联工程节点"
             projectUid={projectUid}
+            dicCode={activeKey}
+            selectedNodes={dataSource}
             type={+this.state.activeKey}
-            handleOk={value => this.handleCreateOk(value)}
+            handleOk={value => this.handleOk(value)}
             handleCancel={() => this.handleCancel()}
           />
         )}
@@ -135,74 +184,61 @@ class Advertising extends PureComponent {
   handleTableChange = pagination => {
     this.queryList({ pageNum: pagination.current });
   };
-  // 搜索
-  handleSrarch = () => {
-    const { searchWord } = this.state;
-    this.queryList({
-      searchWord: searchWord && searchWord.substring(0, 30),
-      pageNum: 1,
-    });
-  };
-  // 字段模块切换
+
+  // 左侧阶段切换
   handleChangeTab = activeKey => {
-    this.setState({ activeKey, searchWord: null });
-    // 重置搜索数据
-    const { dispatch } = this.props;
-    // dispatch({
-    //   type: "Advertising/resetModel",
-    //   payload: {
-    //     DicList: {},
-    //     DicQuery: {},
-    //   },
-    // }).then((res) => {
-    this.queryList({ type: +activeKey, pageNum: 1, pageSize: 10 });
-    // });
-  };
-  // 拖拽排序
-  moveRow = (dragIndex, hoverIndex) => {
     const {
-      dispatch,
-      operate: { positionListData },
+      DictConfig: { dicData },
+      SiteLibrary: { engineeringMapData },
+      type,
     } = this.props;
-    let data = [...positionListData];
-    const dragRow = data[dragIndex];
-    const hoverRow = data[hoverIndex];
-    const uid = dragRow.uid;
-    const targetSeq = hoverRow.seq;
-    dispatch({
-      type: 'operate/moveShopBusinessModel',
-      payload: { uid, targetSeq },
-    }).then(res => {
-      if (res && res.code === 200) {
-        this.queryList({});
+    // 重置搜索数据
+    const result = dicData['DM001'].find(item => {
+      return item.code === activeKey;
+    });
+    const r = engineeringMapData.find(item => item.dicCode === result.code);
+    this.setState({ activeKey, dataSource: r.taskNodes });
+  };
+  // 移除
+  handleDelete = record => {
+    const {
+      SiteLibrary: { engineeringMapData },
+      dispatch,
+    } = this.props;
+    const { activeKey, dataSource } = this.state;
+    const selectedTreeNodes = [];
+    dataSource.map(e => {
+      if (record.code !== e.code) {
+        selectedTreeNodes.push(e);
       }
     });
-  };
-  handleDeleteShop = e => {
-    const { dispatch } = this.props;
     dispatch({
-      type: 'operate/deleteShopBusinessModel',
+      type: 'SiteLibrary/setEngineeringMapModel',
       payload: {
-        uid: e.uid,
+        selectedTreeNodes,
+        dicCode: activeKey,
+        engineeringMapData,
       },
     }).then(r => {
-      if (r && r.code === 200) {
-        this.queryList();
-      }
+      this.updateDataSource(r);
     });
-  };
-  // 编辑字典
-  handleEdit = record => {
-    this.setState({ record, visible: true });
   };
   // 新建关闭model
   handleCancel = () => {
     this.setState({ visible: false });
   };
   // 新建
-  handleCreateOk = value => {
+  handleOk = engineeringMapData => {
     this.handleCancel();
-    this.queryList({});
+    this.updateDataSource(engineeringMapData);
+  };
+  updateDataSource = engineeringMapData => {
+    const { activeKey } = this.state;
+    const r = engineeringMapData.find(item => {
+      return item.dicCode === activeKey;
+    });
+    console.log(r);
+    this.setState({ dataSource: r.taskNodes });
   };
   // 查询字段列表
   queryList = obj => {
