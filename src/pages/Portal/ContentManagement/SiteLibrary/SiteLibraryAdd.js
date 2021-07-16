@@ -837,8 +837,10 @@ class SiteLibraryAdd extends PureComponent {
           lat,
           lng,
           gongdiFromType: projectUid ? 1 : 0,
-          engineeringMaps,
         };
+        if (isMap === '1') {
+          payload.engineeringMaps = engineeringMaps;
+        }
         if (projectUid) {
           payload.projectUid = projectUid;
         }
