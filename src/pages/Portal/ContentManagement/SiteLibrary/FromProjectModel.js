@@ -6,7 +6,7 @@
  * 从已有工地选择
  */
 import React, { Component } from 'react';
-import { Modal, Button, Table, ConfigProvider, Empty, Input, message } from 'antd';
+import { Modal, Button, Table, ConfigProvider, Empty, Input, message, Tag } from 'antd';
 import { connect } from 'dva';
 import router from 'umi/router';
 import empty from '../../../../assets/empty.png';
@@ -51,13 +51,11 @@ class FromProjectModel extends Component {
           return (
             <div>
               <p style={{ margin: 0 }}>{r.addr}</p>
-              {r.buildingArea && (
-                <p>
-                  <span className={`${styles.siteTag} ${styles.siteTag2}`}>
-                    {r.buildingArea}
-                    m²
-                  </span>
-                </p>
+              {r.buildArea && (
+                <Tag color="blue">
+                  {r.buildArea}
+                  m²
+                </Tag>
               )}
             </div>
           );
