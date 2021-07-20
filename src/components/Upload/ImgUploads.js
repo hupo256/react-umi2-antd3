@@ -46,51 +46,41 @@ class Uploads extends Component {
     const longs = long || 50;
     return (
       <div style={{ marginRight: 12 }} className={style.uploadWrapper}>
-        {video && (
-          <div className="coverImgs" style={{ display: 'inline-block' }}>
-            {this.state[name].length > 0 &&
-              this.state[name].map((item, index) => {
-                return (
-                  <div
-                    className="previewimg previewimgs"
-                    key={item.fileUid}
-                    style={{ width: 101, height: 101 }}
-                  >
-                    {item.status === 'done' ? (
-                      <>
-                        {item.type === 'video/mp4' ? (
-                          <video
-                            src={item.response?.data?.addr}
-                            style={{ width: 94, height: 94 }}
-                          />
-                        ) : (
-                          <img src={item.response?.data?.addr} style={{ width: 94, height: 94 }} />
-                        )}
-                        <div className="picmodel">
-                          <span
-                            onClick={() => {
-                              this.handlePreview(item, name);
-                            }}
-                          >
-                            <Icon type="eye" style={{ color: '#fff', margin: '0 5px' }} />
-                          </span>
-                          <span onClick={() => this.fileRemove(item, name)}>
-                            <Icon type="delete" style={{ color: '#fff' }} />
-                          </span>
-                        </div>
-                      </>
+        {video &&
+          this.state[name].length > 0 &&
+          this.state[name].map((item, index) => {
+            return (
+              <div className={style.previewimg} key={item.fileUid}>
+                {item.status === 'done' ? (
+                  <>
+                    {item.type === 'video/mp4' ? (
+                      <video src={item.response?.data?.addr} style={{ width: 94, height: 94 }} />
                     ) : (
-                      <div style={{ lineHeight: '24px', marginTop: 30 }}>
-                        <Icon type="loading" />
-                        <br />
-                        上传中
-                      </div>
+                      <img src={item.response?.data?.addr} style={{ width: 94, height: 94 }} />
                     )}
+                    <div className={style.picmodel}>
+                      <span
+                        onClick={() => {
+                          this.handlePreview(item, name);
+                        }}
+                      >
+                        <Icon type="eye" style={{ color: '#fff', margin: '0 5px' }} />
+                      </span>
+                      <span onClick={() => this.fileRemove(item, name)}>
+                        <Icon type="delete" style={{ color: '#fff' }} />
+                      </span>
+                    </div>
+                  </>
+                ) : (
+                  <div style={{ lineHeight: '24px', marginTop: 30 }}>
+                    <Icon type="loading" />
+                    <br />
+                    上传中
                   </div>
-                );
-              })}
-          </div>
-        )}
+                )}
+              </div>
+            );
+          })}
         <Upload
           className={video ? style.uploader : ''}
           multiple={true}
