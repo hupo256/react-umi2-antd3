@@ -475,7 +475,9 @@ class SiteLibraryAdd extends PureComponent {
                 </Form.Item>
               </div>
               {relateNodeModalVisible && (
-                <RelateNode type="add" projectUid={getQueryUrlVal('projectUid')} />
+                <div hidden={step !== 1}>
+                  <RelateNode type="add" projectUid={getQueryUrlVal('projectUid')} />
+                </div>
               )}
               {step === 2 && (
                 <Result
@@ -497,15 +499,6 @@ class SiteLibraryAdd extends PureComponent {
                     </div>
                   }
                   extra={[
-                    <Button
-                      type="primary"
-                      key={'oneMore'}
-                      onClick={() => {
-                        this.setState({ step: 0 });
-                      }}
-                    >
-                      再创建一个
-                    </Button>,
                     <Button
                       key={'gongdi'}
                       onClick={() => {
@@ -538,7 +531,7 @@ class SiteLibraryAdd extends PureComponent {
                           &nbsp;&nbsp;
                           <Button
                             onClick={() => {
-                              this.setState({ step: 0, relateNodeModalVisible: false });
+                              this.setState({ step: 0 });
                             }}
                           >
                             上一步
