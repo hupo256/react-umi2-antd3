@@ -9,7 +9,7 @@ import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Upload, message, Icon, Button } from 'antd';
 import CarouselPic from '@/components/CarouselPic';
-import style from './Upload.less'
+import style from './Upload.less';
 @connect(({ base }) => ({
   base,
 }))
@@ -47,15 +47,22 @@ class Uploads extends Component {
     return (
       <div style={{ marginRight: 12 }} className={style.uploadWrapper}>
         {video && (
-          <div className="coverImgs" style={{display: 'inline-block'}}>
+          <div className="coverImgs" style={{ display: 'inline-block' }}>
             {this.state[name].length > 0 &&
               this.state[name].map((item, index) => {
                 return (
-                  <div className="previewimg previewimgs" key={item.fileUid} style={{width: 101, height: 101}}>
+                  <div
+                    className="previewimg previewimgs"
+                    key={item.fileUid}
+                    style={{ width: 101, height: 101 }}
+                  >
                     {item.status === 'done' ? (
                       <>
                         {item.type === 'video/mp4' ? (
-                          <video src={item.response?.data?.addr} style={{ width: 94, height: 94 }} />
+                          <video
+                            src={item.response?.data?.addr}
+                            style={{ width: 94, height: 94 }}
+                          />
                         ) : (
                           <img src={item.response?.data?.addr} style={{ width: 94, height: 94 }} />
                         )}
@@ -88,7 +95,11 @@ class Uploads extends Component {
           className={video ? style.uploader : ''}
           multiple={true}
           listType="picture-card"
-          accept={video ? 'image/gif, image/jpeg, image/png, video/mp4' : accept || 'image/gif, image/jpeg, image/png'}
+          accept={
+            video
+              ? 'image/gif, image/jpeg, image/png, video/mp4'
+              : accept || 'image/gif, image/jpeg, image/png'
+          }
           showUploadList={!video}
           data={this.redata}
           fileList={
@@ -156,12 +167,17 @@ class Uploads extends Component {
     });
   }
   beforeUpload = (file, subType, type, bsId, f) => {
-    const {video} = this.props
-    const isLt2M = file.size / 1048576 < (video ? 50 : this.props.size || 5);
-    const reg = video ? /\.(png|jpg|gif|jpeg|webp|PNG|JPG|GIF|JPEG|WEBP|mp4|MP4)$/ : /\.(png|jpg|gif|jpeg|webp|PNG|JPG|GIF|JPEG|WEBP)$/
+    const { video } = this.props;
+    const isLt2M = file.size / 1048576 < (file.type === 'video/mp4' ? 50 : this.props.size || 5);
+    const reg = video
+      ? /\.(png|jpg|gif|jpeg|webp|PNG|JPG|GIF|JPEG|WEBP|mp4|MP4)$/
+      : /\.(png|jpg|gif|jpeg|webp|PNG|JPG|GIF|JPEG|WEBP)$/;
     const isType = !reg.test(file.name);
     if (!isLt2M) {
-      message.warning(video ? '限制上传不大于50Mb的视频文件' : `图片不能大于${this.props.size || 5}M!`, 2);
+      message.warning(
+        video ? '限制上传不大于50Mb的视频文件' : `图片不能大于${this.props.size || 5}M!`,
+        2
+      );
       return false;
     } else if (isType) {
       message.warning('图片格式不正确!', 2);
@@ -239,7 +255,7 @@ class Uploads extends Component {
         type: 'base/photoxImg',
         payload: subType,
       }).then(data => {
-        console.log('1',data)
+        console.log('1', data);
         if (data && data.code === 200) {
           if (data.data.fileName !== '') {
             filenames = `${data.data.fileName}.${fiename}`;
