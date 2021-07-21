@@ -539,13 +539,24 @@ class SearchTree extends React.Component {
   };
   // 搜索
   handleSearch = v => {
-    const { expandTrees } = this.state;
+    const { expandTrees, selectTreeList } = this.state;
     this.setState({ searchVal: v }, () => {
       const data = this.fuzzyQuery(v, expandTrees);
+      const notAllChecked = data.filter(e => !e.flag);
+      let checkSelect = false;
+      if (notAllChecked.length) {
+        checkSelect = notAllChecked.every(e => {
+          return selectTreeList.find(i => i.uid === e.uid);
+        });
+      } else {
+        checkSelect = !notAllChecked.length;
+      }
+
+      console.log(notAllChecked);
       this.setState({
         filterData: data,
         CheckboxChecked: false,
-        checkSelect: false,
+        checkSelect,
       });
     });
   };
@@ -591,6 +602,28 @@ class SearchTree extends React.Component {
       );
     } else {
       // 移除操作
+      const notAllChecked = filterData.filter(e => !e.flag);
+      if (!notAllChecked.length) return;
+      const resCheckedKeySel = [];
+      checkedKeySel.map(item => {
+        if (!notAllChecked.find(e => e.uid === item)) {
+          resCheckedKeySel.push(item);
+        }
+      });
+      console.log(resCheckedKeySel);
+      const resSelectTreeList = [];
+      resCheckedKeySel.map(item => {
+        if (selectTreeList.find(e => e.uid === item.uid)) {
+          resSelectTreeList.push(e);
+        }
+      });
+      this.setState(
+        { checkSelect: false, checkedKeySel: resCheckedKeySel, selectTreeList: resSelectTreeList },
+        () => {
+          this.onCheck(resCheckedKeySel, null);
+        }
+      );
+      console.log(notAllChecked, filterData);
     }
   };
   // 查询选择
@@ -598,14 +631,48 @@ class SearchTree extends React.Component {
     const { checkedKeySel, selectTreeList, filterData } = this.state;
     // 左侧添加数据
     // 右侧添加数据
+    const notAllChecked = filterData.filter(e => !e.flag);
+    let checkSelect = false;
+    if (notAllChecked.length) {
+      checkSelect = notAllChecked.every(e => {
+        return [...selectTreeList, { ...item, checked: null }].find(i => i.uid === e.uid);
+      });
+    } else {
+      checkSelect = !notAllChecked.length;
+    }
+
+    console.log(notAllChecked, filterData);
     if (checkedKeySel.includes(item.uid)) {
-      message.info('请勿重复选择');
+      // message.info('请勿重复选择');
+      const resCheckedKeySel = [];
+      checkedKeySel.map(e => {
+        if (e !== item.uid) {
+          resCheckedKeySel.push(e);
+        }
+      });
+      const resSelectTreeList = [];
+      selectTreeList.map(e => {
+        if (e.uid !== item.uid) {
+          resSelectTreeList.push(e);
+        }
+      });
+      this.setState(
+        {
+          checkedKeySel: resCheckedKeySel,
+          checkSelect: false,
+          selectTreeList: resSelectTreeList,
+        },
+        () => {
+          this.onCheck(resCheckedKeySel, null);
+        }
+      );
     } else {
       this.setState(
         {
           checkedKeySel: [...checkedKeySel, item.uid],
           selectTreeList: [...selectTreeList, { ...item, checked: null }],
           filterData,
+          checkSelect,
         },
         () => {
           this.onCheck([...checkedKeySel, item.uid], null);
