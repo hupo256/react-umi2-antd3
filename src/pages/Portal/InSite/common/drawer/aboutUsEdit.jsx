@@ -17,7 +17,7 @@ const maxLen = 6;
 const { Item } = Form;
 
 export default function TagsEdit(props) {
-  const { pageData, setpageData, curFlag, setlinkEdtor, setcurInd, setimgEdtor, imgEdtor } = useContext(ctx);
+  const { pageData, setpageData, curFlag, setimgEdtor, imgEdtor } = useContext(ctx);
   // const nameObj = {
   //   vaStatus : 'success',
   //   errMsg : '',
