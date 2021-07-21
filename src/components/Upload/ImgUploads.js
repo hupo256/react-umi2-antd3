@@ -165,7 +165,9 @@ class Uploads extends Component {
     const isType = !reg.test(file.name);
     if (!isLt2M) {
       message.warning(
-        video ? '限制上传不大于50Mb的视频文件' : `图片不能大于${this.props.size || 5}M!`,
+        file.type === 'video/mp4'
+          ? '限制上传不大于50Mb的视频文件'
+          : `图片不能大于${this.props.size || 5}M!`,
         2
       );
       return false;
