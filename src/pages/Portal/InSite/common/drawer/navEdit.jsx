@@ -93,8 +93,9 @@ export default function NavEdit(props) {
   function touchRelece(arr, num) {
     console.log(arr);
     const len = arr.length;
-    const paths = arr.map(p => p.code);
     const nav = navData[num];
+    const { isEnd } = arr?.[len-1]
+    const linkDisplayName = arr.map(p => p.text).join('/');
     if (isEnd) {
       const { appletsLink, linkType, icon, linkKey } = arr?.[0];
       const paths = arr.map(p => p.code);
