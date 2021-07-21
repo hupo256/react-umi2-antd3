@@ -43,6 +43,18 @@ class FromProjectModel extends Component {
       {
         title: '工地标题',
         dataIndex: 'projectName',
+        render: (t, r) => {
+          return (
+            <div>
+              {t}
+              {r.isSelected === 1 && (
+                <Tag color="red" style={{ marginLeft: 10 }}>
+                  已关联
+                </Tag>
+              )}
+            </div>
+          );
+        },
       },
       {
         title: '工地信息',
@@ -115,12 +127,12 @@ class FromProjectModel extends Component {
             }
             this.setState({ searchText: e.target.value }, () => {
               if (this.state.searchText === '') {
-                this.loadQuery({ searchText: '' });
+                this.loadQuery({ searchText: '', pageNum: 1 });
               }
             });
           }}
-          onBlur={() => this.loadQuery({ searchText })}
-          onPressEnter={() => this.loadQuery({ searchText })}
+          onBlur={() => this.loadQuery({ searchText, pageNum: 1 })}
+          onPressEnter={() => this.loadQuery({ searchText, pageNum: 1 })}
           value={searchText}
           placeholder="可通过工地标题 / 业主姓名 / 联系电话进行搜索"
           style={{
