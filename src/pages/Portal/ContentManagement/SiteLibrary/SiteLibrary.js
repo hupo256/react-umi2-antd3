@@ -470,6 +470,8 @@ class SiteLibrary extends PureComponent {
           ? '停用后，将无法在工地模块显示当前工地！'
           : '启用后，将会在工地模块显示当前工地！',
       icon: status === '1' ? successIcon : waringInfo,
+      buttonText: '确定',
+      cancelText: '取消',
       onOk() {
         dispatch({
           type: 'SiteLibrary/siteDisableModel',

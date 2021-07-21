@@ -345,6 +345,8 @@ class DynamicList extends Component {
         ? '隐藏后，将无法在工地详情中显示当前动态！'
         : '显示后，将会在工地详情中显示当前动态！',
       icon: !status ? successIcon : waringInfo,
+      buttonText: '确定',
+      cancelText: '取消',
       onOk() {
         that.handleDiaryShow(r.diaryUid, r.appletsShow, item.dicCode);
       },
