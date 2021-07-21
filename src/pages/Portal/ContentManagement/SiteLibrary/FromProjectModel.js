@@ -149,6 +149,7 @@ class FromProjectModel extends Component {
             columns={columns}
             dataSource={FromProjectList && FromProjectList.list}
             loading={Loading}
+            rowKey={e => e.uid}
             pagination={{
               pageSize: 10,
               hideOnSinglePage: true,
