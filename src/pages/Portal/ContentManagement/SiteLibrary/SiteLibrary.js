@@ -44,19 +44,35 @@ class SiteLibrary extends PureComponent {
     const {
       SiteLibrary: { siteListQuery },
       login: { switchSystemList },
+      dispatch,
     } = this.props;
-
+    const { pageNum } = this.state;
     this.setState(
       {
         searchWord: siteListQuery.searchText,
         status: siteListQuery.gongdiStatus || null,
         pageNum: siteListQuery.pageNum || 1,
-        hasGongdi: switchSystemList.find(e => e.systemCode === 'S001'),
       },
       () => {
-        this.getList({ pageNum: this.state.pageNum });
+        this.getList({ pageNum });
       }
     );
+    if (switchSystemList.length) {
+      this.setState({
+        hasGongdi: switchSystemList.find(e => e.systemCode === 'S001'),
+      });
+    } else {
+      dispatch({
+        type: 'login/switchSystemModel',
+        payload: {},
+      }).then(r => {
+        if (r && r.code === 200) {
+          this.setState({
+            hasGongdi: r.data.find(e => e.systemCode === 'S001'),
+          });
+        }
+      });
+    }
   }
 
   render() {
