@@ -313,6 +313,10 @@ class DynamicList extends Component {
     const { isEdit, page, dicCode } = this.state;
     if (isEdit) {
       if (gongdiStage !== dicCode) {
+        dispatch({
+          type: 'SiteLibrary/dynamicListModel',
+          payload: { gongdiUid: getQueryUrlVal('uid'), pageSize: 5 },
+        });
         this.handlePagination(page, undefined, gongdiStage);
         this.handlePagination(1, undefined, dicCode);
       } else {
