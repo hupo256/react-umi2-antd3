@@ -490,11 +490,17 @@ class SiteLibraryAdd extends PureComponent {
                         bordered={false}
                         style={{ background: '#f9f9f9', width: 600, margin: '10px auto 0' }}
                       >
-                        工地标题：
-                        {gongdiTitle}
-                        <br />
-                        楼盘/楼宇：
-                        {buildingName}
+                        <div style={{ width: 300, margin: '0 auto', textAlign: 'left' }}>
+                          <span style={{ display: 'inline-block', width: 100, textAlign: 'right' }}>
+                            工地标题：
+                          </span>
+                          {gongdiTitle}
+                          <br />
+                          <span style={{ display: 'inline-block', width: 100, textAlign: 'right' }}>
+                            楼盘/楼宇：
+                          </span>
+                          {buildingName}
+                        </div>
                       </Card>
                     </div>
                   }
