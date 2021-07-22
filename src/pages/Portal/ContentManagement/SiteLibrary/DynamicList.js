@@ -148,15 +148,35 @@ class DynamicList extends Component {
                                   item.fileUrl.split('.').length - 1
                                 ];
                                 return type === 'mp4' ? (
-                                  <div style={{ position: 'relative', display: 'inline-block' }}>
-                                    <span
+                                  <div
+                                    style={{
+                                      position: 'relative',
+                                      display: 'inline-block',
+                                      margin: '0 15px 15px 0',
+                                    }}
+                                  >
+                                    {/*<span*/}
+                                    {/*  style={{*/}
+                                    {/*    position: 'absolute',*/}
+                                    {/*    left: 38,*/}
+                                    {/*    top: 30,*/}
+                                    {/*    border: '20px solid transparent',*/}
+                                    {/*    borderLeftWidth: 30,*/}
+                                    {/*    borderLeftColor: '#fff',*/}
+                                    {/*  }}*/}
+                                    {/*/>*/}
+                                    <img
+                                      src={
+                                        'https://test.img.inbase.in-deco.com/crm_saas/dev/20210420/6010cfb58de8476abe146c4ed6feb0e5/ic_play.png'
+                                      }
                                       style={{
+                                        width: 50,
+                                        height: 50,
                                         position: 'absolute',
-                                        left: 38,
-                                        top: 30,
-                                        border: '20px solid transparent',
-                                        borderLeftWidth: 30,
-                                        borderLeftColor: '#fff',
+                                        left: '50%',
+                                        top: '50%',
+                                        transform: 'translate3d(-50%, -50%, 0)',
+                                        pointerEvents: 'none',
                                       }}
                                     />
                                     <video
@@ -168,18 +188,27 @@ class DynamicList extends Component {
                                         height: 102,
                                         verticalAlign: 'middle',
                                         borderStyle: 'none',
+                                        margin: 0,
                                       }}
                                       src={item.fileUrl}
                                     />
                                   </div>
                                 ) : (
-                                  <img
-                                    onClick={() => this.handlePreview(items.fileList, i)}
-                                    className="rcviewer"
-                                    style={{ width: 102, height: 102 }}
-                                    key={i}
-                                    src={item.fileUrl}
-                                  />
+                                  <div
+                                    style={{
+                                      position: 'relative',
+                                      display: 'inline-block',
+                                      margin: '0 15px 15px 0',
+                                    }}
+                                  >
+                                    <img
+                                      onClick={() => this.handlePreview(items.fileList, i)}
+                                      className="rcviewer"
+                                      style={{ width: 102, height: 102 }}
+                                      key={i}
+                                      src={item.fileUrl}
+                                    />
+                                  </div>
                                 );
                               })}
                           </div>
