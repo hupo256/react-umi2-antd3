@@ -91,6 +91,7 @@ class SiteLibraryAdd extends PureComponent {
             isaAddr: false,
             lat: r.data.lat,
             lng: r.data.lng,
+            coverImg: r.data.defaultImage || null,
           });
         }
       });
