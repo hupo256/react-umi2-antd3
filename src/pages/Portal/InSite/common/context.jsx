@@ -181,6 +181,12 @@ export function Provider({ children }) {
       }
 
       const arr = navData.filter(nav => nav?.paths);
+      arr.forEach(item => {
+        if (item.linkKey === 'games' || item.linkKey === "special") {
+          item.detailUid = item.paths.pop()
+        }
+      })
+      console.log({arr})
       saveNavEditData(arr).then(r => {
         r.code === 200 && callBack && callBack();
       });
@@ -188,10 +194,11 @@ export function Provider({ children }) {
   }
 
   function validationData() {
+    console.log({navData})
     const arr = navData.filter(nav => {
       const { paths, navModule } = nav;
       const len = paths?.length;
-      return navModule !== 'index' && len === 1;
+      return navModule !== 'index' && navModule !== 'mkt' && navModule !== 'ShowSpecial' && len === 1;
     });
     return arr;
   }

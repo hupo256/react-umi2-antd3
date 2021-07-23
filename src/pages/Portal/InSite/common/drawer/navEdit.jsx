@@ -72,10 +72,10 @@ export default function NavEdit(props) {
   function relevClick(num) {
     const arr = ['fd8d01f1a35111eb999e00505694ddf5']; // 首页
     const navs = navData.map((nav, ind) => {
-      const { paths = [], navModule, isEnd=true } = nav;
-      const isSpecial = navModule === 'ShowSpecial' || navModule === 'mkt'
-      const id = isSpecial ? paths?.[0] : paths?.[1];
-      ind !== num && !!id && arr.push(id); // 把自己也排除，取末级的uid,去重时也从末级开始
+      const { paths = [], navModule, isEnd = true } = nav;
+      const isSpecial = navModule === 'ShowSpecial' || navModule === 'mkt';
+      const id = isSpecial ? paths?.[0] : paths?.[1]; // 对没有二级选项的情况作处理
+      ind !== num && !!id && arr.push(id); // 把自己也排除，取末级的uid
       nav.showSec = ind === num;
       if (!isEnd) {
         // 同时，有没选到末点的，就关掉并清空
@@ -94,32 +94,22 @@ export default function NavEdit(props) {
     console.log(arr);
     const len = arr.length;
     const nav = navData[num];
-    const { isEnd } = arr?.[len-1]
+    const { isEnd } = arr?.[len - 1];
     const linkDisplayName = arr.map(p => p.text).join('/');
+    const { appletsLink, linkType, icon, linkKey } = arr?.[0];
     if (isEnd) {
-      const { appletsLink, linkType, icon, linkKey } = arr?.[0];
       const paths = arr.map(p => p.code);
       linkKey || paths.pop(); // 没有linkKey 表示选择了详情页,
       nav.icon = icon;
-      nav.navModule = appletsLink;
       nav.linkKey = linkKey;
       nav.paths = paths;
-      nav.isEnd = true
-    } 
+    }
     nav.linkDisplayName = linkDisplayName;
-    nav.showSec = !isEnd
+    nav.navModule = appletsLink;
+    nav.showSec = !isEnd;
+    nav.isEnd = isEnd;
 
     updateNavData();
-  }
-
-  // 找出选择中特定的uid，并返回它们
-  function pickSpecialId(list){
-    const arr = []
-    list?.forEach(item => {
-      const { appletsLink,  code} = item
-      if (appletsLink === 'ShowSpecial' || appletsLink === 'mkt') arr.push(code)
-    })
-    return arr
   }
 
   return (
