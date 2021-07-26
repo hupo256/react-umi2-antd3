@@ -46,12 +46,8 @@ class FromProjectModel extends Component {
         render: (t, r) => {
           return (
             <div>
-              {t}
-              {r.isSelected === 1 && (
-                <Tag color="red" style={{ marginLeft: 10 }}>
-                  已关联
-                </Tag>
-              )}
+              <p style={{ margin: 0 }}>{t}</p>
+              {r.isSelected === 1 && <Tag color="red">已关联</Tag>}
             </div>
           );
         },
