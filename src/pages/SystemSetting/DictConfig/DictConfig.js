@@ -1,6 +1,6 @@
 /*
- * @Author: zqm 
- * @Date: 2021-02-17 10:30:18 
+ * @Author: zqm
+ * @Date: 2021-02-17 10:30:18
  * @Last Modified by: zqm
  * @Last Modified time: 2021-06-16 02:06:30
  * 字典配置
@@ -400,6 +400,8 @@ class DictConfig extends PureComponent {
           ? `停用后，无法在案例、工地等功能【${name}】中选择当前字段（已选择不受影响）`
           : `启用后，将可以在案例、工地等功能【${name}】中选择当前字段`,
       icon: status === '2' ? successIcon : waringInfo,
+      buttonText: '确定',
+      cancelText: '取消',
       onOk() {
         dispatch({
           type: 'DictConfig/updateDicStatusModel',

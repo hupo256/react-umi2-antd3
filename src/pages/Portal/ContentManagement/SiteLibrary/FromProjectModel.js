@@ -1,12 +1,12 @@
 /*
- * @Author: zqm 
- * @Date: 2021-02-23 09:52:19 
+ * @Author: zqm
+ * @Date: 2021-02-23 09:52:19
  * @Last Modified by: zqm
  * @Last Modified time: 2021-02-24 18:36:21
  * 从已有工地选择
  */
 import React, { Component } from 'react';
-import { Modal, Button, Table, ConfigProvider, Empty, Icon, message } from 'antd';
+import { Modal, Button, Table, ConfigProvider, Empty, Input, message, Tag } from 'antd';
 import { connect } from 'dva';
 import router from 'umi/router';
 import empty from '../../../../assets/empty.png';
@@ -21,18 +21,36 @@ class FromProjectModel extends Component {
     super(props);
     this.state = {
       inputVal: '',
+      projectUids: [],
     };
   }
 
   componentDidMount() {
-    this.loadQuery({ pageNum: 1 });
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'SiteLibrary/queryProjectUidsModel',
+    }).then(e => {
+      if (e && e.code === 200) {
+        this.setState({ projectUids: e.data.projectUids }, () => {
+          this.loadQuery({ pageNum: 1 });
+        });
+      }
+    });
   }
 
   render() {
     const columns = [
       {
-        title: '工地',
-        dataIndex: 'gongdiTitle',
+        title: '工地标题',
+        dataIndex: 'projectName',
+        render: (t, r) => {
+          return (
+            <div>
+              <p style={{ margin: 0 }}>{t}</p>
+              {r.isSelected === 1 && <Tag color="red">已关联</Tag>}
+            </div>
+          );
+        },
       },
       {
         title: '工地信息',
@@ -40,14 +58,12 @@ class FromProjectModel extends Component {
         render: (t, r) => {
           return (
             <div>
-              <p style={{ margin: 0 }}>{r.buildingName}</p>
-              {r.buildingArea && (
-                <p>
-                  <span className={`${styles.siteTag} ${styles.siteTag2}`}>
-                    {r.buildingArea}
-                    m²
-                  </span>
-                </p>
+              <p style={{ margin: 0 }}>{r.addr}</p>
+              {r.buildArea && (
+                <Tag color="blue">
+                  {r.buildArea}
+                  m²
+                </Tag>
               )}
             </div>
           );
@@ -55,7 +71,7 @@ class FromProjectModel extends Component {
       },
       {
         title: '状态',
-        dataIndex: 'projectStatus',
+        dataIndex: 'statusName',
       },
       {
         title: '更新时间',
@@ -68,11 +84,17 @@ class FromProjectModel extends Component {
         console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
         this.setState({ selectedRowKeys, selectedRows });
       },
+      getCheckboxProps: record => {
+        return {
+          disabled: record.isSelected === 1,
+        };
+      },
     };
     const {
       Loading,
       SiteLibrary: { FromProjectList },
     } = this.props;
+    const { searchText } = this.state;
     const customizeRenderEmpty = () => {
       return (
         <Empty
@@ -93,12 +115,37 @@ class FromProjectModel extends Component {
         width={780}
         maskClosable={false}
       >
+        <Input.Search
+          onChange={e => {
+            if (e.target.value.length > 15) {
+              message.warning('请输入15字以下的搜索内容');
+              return;
+            }
+            this.setState({ searchText: e.target.value }, () => {
+              if (this.state.searchText === '') {
+                this.loadQuery({ searchText: '', pageNum: 1 });
+              }
+            });
+          }}
+          onBlur={() => this.loadQuery({ searchText, pageNum: 1 })}
+          onPressEnter={() => this.loadQuery({ searchText, pageNum: 1 })}
+          value={searchText}
+          placeholder="可通过工地标题 / 业主姓名 / 联系电话进行搜索"
+          style={{
+            width: 410,
+            float: 'right',
+            marginTop: -10,
+            marginBottom: 13,
+            zIndex: 2,
+          }}
+        />
         <ConfigProvider renderEmpty={customizeRenderEmpty}>
           <Table
             rowSelection={rowSelection}
             columns={columns}
             dataSource={FromProjectList && FromProjectList.list}
             loading={Loading}
+            rowKey={e => e.uid}
             pagination={{
               pageSize: 10,
               hideOnSinglePage: true,
@@ -117,13 +164,14 @@ class FromProjectModel extends Component {
     this.loadQuery({ pageNum: pagination.current, pageSize: pagination.pageSize });
   };
   loadQuery = obj => {
+    const { searchText, projectUids } = this.state;
     const {
       dispatch,
       SiteLibrary: { FromProjectQuery },
     } = this.props;
     dispatch({
-      type: 'SiteLibrary/queryFromProjectModel',
-      payload: { ...FromProjectQuery, ...obj },
+      type: 'SiteLibrary/queryProjectOtherSysModel',
+      payload: { ...FromProjectQuery, ...obj, searchText, projectUids },
     });
   };
 
@@ -132,14 +180,18 @@ class FromProjectModel extends Component {
     console.log(selectedRows);
     console.log(selectedRowKeys);
     if (!selectedRowKeys) {
-      message.warning('请先选择项目');
+      message.warning('请先选择一个工地进行创建');
     } else {
       const { dispatch } = this.props;
       dispatch({
         type: 'SiteLibrary/setSiteDetailModel',
         payload: { ...selectedRows[0] },
       }).then(res => {
-        router.push(`/portal/contentmanagement/sitelibrary/edit?uid=${selectedRows[0].gongdiUid}`);
+        router.push(
+          `/portal/contentmanagement/sitelibrary/add?isMap=${selectedRows[0].isMap}&projectUid=${
+            selectedRows[0].uid
+          }`
+        );
       });
     }
   };

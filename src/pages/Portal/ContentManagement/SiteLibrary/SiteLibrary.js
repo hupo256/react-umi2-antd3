@@ -1,6 +1,6 @@
 /*
- * @Author: zqm 
- * @Date: 2021-02-15 15:47:07 
+ * @Author: zqm
+ * @Date: 2021-02-15 15:47:07
  * @Last Modified by: zqm
  * @Last Modified time: 2021-06-08 14:08:05
  * 工地库
@@ -13,14 +13,16 @@ import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { paginations, getUrl, successIcon, waringInfo } from '@/utils/utils';
 import styles from './SiteLibrary.less';
 import DynamicAdd from './DynamicAdd';
+import RelateNode from './RelateNode';
 import { getauth } from '@/utils/authority';
 import FromProjectModel from './FromProjectModel';
-import  Applets  from '../components/Applets'
+import Applets from '../components/Applets';
 const { confirm } = Modal;
 const { Search } = Input;
 
-@connect(({ SiteLibrary, loading }) => ({
+@connect(({ SiteLibrary, login, loading }) => ({
   SiteLibrary,
+  login,
   maintainListLoading: loading.effects['Maintain/maintainQueryModel'],
 }))
 class SiteLibrary extends PureComponent {
@@ -33,14 +35,18 @@ class SiteLibrary extends PureComponent {
       porjectVisible: false,
       searchWord: null,
       pageNum: 1,
+      hasGongdi: null,
+      relateNodeModalVisible: false,
     };
   }
 
   componentDidMount() {
     const {
       SiteLibrary: { siteListQuery },
+      login: { switchSystemList },
+      dispatch,
     } = this.props;
-
+    const { pageNum } = this.state;
     this.setState(
       {
         searchWord: siteListQuery.searchText,
@@ -48,13 +54,36 @@ class SiteLibrary extends PureComponent {
         pageNum: siteListQuery.pageNum || 1,
       },
       () => {
-        this.getList({ pageNum: this.state.pageNum });
+        this.getList({ pageNum });
       }
     );
+    if (switchSystemList.length) {
+      this.setState({
+        hasGongdi: switchSystemList.find(e => e.systemCode === 'S001'),
+      });
+    } else {
+      dispatch({
+        type: 'login/switchSystemModel',
+        payload: {},
+      }).then(r => {
+        if (r && r.code === 200) {
+          this.setState({
+            hasGongdi: r.data.find(e => e.systemCode === 'S001'),
+          });
+        }
+      });
+    }
   }
 
   render() {
-    const { status, visible, record, porjectVisible } = this.state;
+    const {
+      status,
+      visible,
+      record,
+      porjectVisible,
+      hasGongdi,
+      relateNodeModalVisible,
+    } = this.state;
     const {
       SiteLibrary: { siteList, siteListQuery },
     } = this.props;
@@ -141,33 +170,10 @@ class SiteLibrary extends PureComponent {
       {
         title: '操作',
         dataIndex: 'operate',
+        // align: 'center',
         render: (t, r) => {
           return (
             <div className="operateWrap">
-              {permissionsBtn.includes('BTN210326000036') && (
-                <span
-                  className="operateBtn"
-                  onClick={() =>
-                    this.props
-                      .dispatch({
-                        type: 'SiteLibrary/dynamicStatusModel',
-                        payload: { gongdiUid: r.gongdiUid },
-                      })
-                      .then(res => {
-                        if (res && res.code === 200) {
-                          // this.setState({status:res.data.value,visible: true})
-                          this.setState({ record: { ...r, gongdiStage: res.data.value } }, () => {
-                            this.setState({ visible: true });
-                          });
-                        }
-                      })
-                  }
-                >
-                  创建动态
-                </span>
-              )}
-              {permissionsBtn.includes('BTN210326000036') &&
-                permissionsBtn.includes('BTN210326000037') && <span className="operateLine" />}
               {permissionsBtn.includes('BTN210326000037') && (
                 <span
                   className="operateBtn"
@@ -205,20 +211,36 @@ class SiteLibrary extends PureComponent {
                   工地动态
                 </span>
               )}
-              {permissionsBtn.includes('BTN210623000002') && r.gongdiStatus !== 1 && 
-              isCompanyAuthWechatMini && <span className="operateLine" />}
-              {permissionsBtn.includes('BTN210623000002') && 
-              r.gongdiStatus !== 1 && 
-              isCompanyAuthWechatMini &&
-              <span className="operateBtn" onClick={() => this.getWechatCode(r)}>
-                 小程序码
-              </span>}
+              {permissionsBtn.includes('BTN210623000002') &&
+                r.gongdiStatus !== 1 &&
+                isCompanyAuthWechatMini && <span className="operateLine" />}
+              {permissionsBtn.includes('BTN210623000002') &&
+                r.gongdiStatus !== 1 &&
+                isCompanyAuthWechatMini && (
+                  <span className="operateBtn" onClick={() => this.getWechatCode(r)}>
+                    小程序码
+                  </span>
+                )}
+              {(permissionsBtn.includes('BTN210326000037') ||
+                permissionsBtn.includes('BTN210326000038') ||
+                permissionsBtn.includes('BTN210623000002')) &&
+                r.gongdiFromType === 1 && <span className="operateLine" />}
+              {r.gongdiFromType === 1 && (
+                <span
+                  className="operateBtn"
+                  onClick={() => {
+                    this.setState({ record: r });
+                    this.relateNode(r);
+                  }}
+                >
+                  关联工程节点
+                </span>
+              )}
             </div>
           );
         },
       },
     ];
-    const isCompany = false;
     const menu = (
       <Menu>
         <Menu.Item>
@@ -233,7 +255,7 @@ class SiteLibrary extends PureComponent {
         </Menu.Item>
         <Menu.Item>
           <p
-            style={{ margin: 0, display: 'none' }}
+            style={{ margin: 0 }}
             onClick={() => {
               this.setState({ porjectVisible: true });
             }}
@@ -282,25 +304,28 @@ class SiteLibrary extends PureComponent {
 
           <Card bordered={false} style={{ marginTop: 20 }}>
             {permissionsBtn.includes('BTN210326000035') &&
-              !isCompany && (
-                <Button
-                  type="primary"
-                  onClick={() => {
-                    router.push(`/portal/contentmanagement/sitelibrary/add`);
-                  }}
-                >
-                  <Icon type="plus" />
-                  创建工地
-                </Button>
+              hasGongdi !== null && (
+                <>
+                  {hasGongdi ? (
+                    <Dropdown trigger={['click']} overlay={menu}>
+                      <Button type="primary">
+                        <Icon type="plus" />
+                        创建工地
+                      </Button>
+                    </Dropdown>
+                  ) : (
+                    <Button
+                      type="primary"
+                      onClick={() => {
+                        router.push(`/portal/contentmanagement/sitelibrary/add`);
+                      }}
+                    >
+                      <Icon type="plus" />
+                      创建工地
+                    </Button>
+                  )}
+                </>
               )}
-            {isCompany && (
-              <Dropdown trigger={['click']} overlay={menu}>
-                <Button type="primary">
-                  <Icon type="plus" />
-                  创建工地
-                </Button>
-              </Dropdown>
-            )}
             <Table
               loading={false}
               style={{ marginTop: 20 }}
@@ -324,11 +349,65 @@ class SiteLibrary extends PureComponent {
         {porjectVisible && (
           <FromProjectModel visible={porjectVisible} handleCancel={() => this.handleFromCancel()} />
         )}
+        {relateNodeModalVisible && (
+          <Modal
+            title="关联工程节点"
+            visible={relateNodeModalVisible}
+            width={800}
+            onOk={this.handleSaveRelateNode}
+            onCancel={() => this.setState({ relateNodeModalVisible: false })}
+          >
+            <RelateNode type="edit" projectUid={record?.projectUid} />
+          </Modal>
+        )}
         <Applets />
       </div>
     );
   }
-
+  relateNode = record => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'SiteLibrary/engineeringMapModel',
+      payload: {
+        gongdiUid: record.gongdiUid,
+      },
+    }).then(r => {
+      if (r && r.code === 200) {
+        this.setState({ relateNodeModalVisible: true });
+      }
+    });
+  };
+  handleSaveRelateNode = () => {
+    const { record, pageNum } = this.state;
+    const {
+      dispatch,
+      SiteLibrary: { engineeringMapData },
+    } = this.props;
+    const engineeringMaps = [];
+    engineeringMapData.map(e => {
+      const item = {
+        dicCode: e.dicCode,
+        dicName: e.dicName,
+        taskNames: [],
+      };
+      e.taskNodes.map(i => {
+        item.taskNames.push(i.taskName);
+      });
+      engineeringMaps.push(item);
+    });
+    dispatch({
+      type: 'SiteLibrary/updateEngineeringMapModel',
+      payload: {
+        engineeringMaps,
+        gongdiUid: record.gongdiUid,
+      },
+    }).then(r => {
+      if (r && r.code === 200) {
+        this.setState({ relateNodeModalVisible: false });
+        this.getList({ pageNum });
+      }
+    });
+  };
   // 获取小程序码
   getWechatCode = record => {
     const { dispatch } = this.props;
@@ -336,10 +415,10 @@ class SiteLibrary extends PureComponent {
       type: 'ContentManage/getAppletsCode',
       payload: {
         qrCodePage: 'site',
-        uid: record.gongdiUid
-      }
-    })
-  }
+        uid: record.gongdiUid,
+      },
+    });
+  };
 
   handleSrarchStatus = status => {
     this.setState({ status }, () => {
@@ -370,8 +449,8 @@ class SiteLibrary extends PureComponent {
 
   handleOk = () => {
     this.setState({ visible: false, record: null });
-    const {pageNum} = this.state
-    this.getList({pageNum});
+    const { pageNum } = this.state;
+    this.getList({ pageNum });
   };
   handleCancel = () => {
     this.setState({ visible: false, record: null });
@@ -391,6 +470,8 @@ class SiteLibrary extends PureComponent {
           ? '停用后，将无法在工地模块显示当前工地！'
           : '启用后，将会在工地模块显示当前工地！',
       icon: status === '1' ? successIcon : waringInfo,
+      buttonText: '确定',
+      cancelText: '取消',
       onOk() {
         dispatch({
           type: 'SiteLibrary/siteDisableModel',

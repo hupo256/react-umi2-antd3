@@ -127,8 +127,7 @@ class DynamicList extends Component {
                                   {items.appletsShow ? '隐藏' : '显示'}
                                 </span>
                               )}
-                              {
-                                permissionsBtn.includes('BTN210623000001') &&
+                              {permissionsBtn.includes('BTN210623000001') && (
                                 <span
                                   style={{ float: 'right', cursor: 'pointer', marginRight: 16 }}
                                   onClick={() => {
@@ -138,7 +137,7 @@ class DynamicList extends Component {
                                   <Icon type="edit" />
                                   编辑
                                 </span>
-                              }
+                              )}
                             </p>
                             <p>{items.diaryContent}</p>
                             {items.fileList &&
@@ -149,8 +148,37 @@ class DynamicList extends Component {
                                   item.fileUrl.split('.').length - 1
                                 ];
                                 return type === 'mp4' ? (
-                                  <div style={{position: 'relative',display: 'inline-block'}}>
-                                    <span style={{ position: 'absolute', left: 38, top: 30, border: '20px solid transparent', borderLeftWidth: 30, borderLeftColor: '#fff'}} />
+                                  <div
+                                    style={{
+                                      position: 'relative',
+                                      display: 'inline-block',
+                                      margin: '0 15px 15px 0',
+                                    }}
+                                  >
+                                    {/*<span*/}
+                                    {/*  style={{*/}
+                                    {/*    position: 'absolute',*/}
+                                    {/*    left: 38,*/}
+                                    {/*    top: 30,*/}
+                                    {/*    border: '20px solid transparent',*/}
+                                    {/*    borderLeftWidth: 30,*/}
+                                    {/*    borderLeftColor: '#fff',*/}
+                                    {/*  }}*/}
+                                    {/*/>*/}
+                                    <img
+                                      src={
+                                        'https://test.img.inbase.in-deco.com/crm_saas/dev/20210420/6010cfb58de8476abe146c4ed6feb0e5/ic_play.png'
+                                      }
+                                      style={{
+                                        width: 50,
+                                        height: 50,
+                                        position: 'absolute',
+                                        left: '50%',
+                                        top: '50%',
+                                        transform: 'translate3d(-50%, -50%, 0)',
+                                        pointerEvents: 'none',
+                                      }}
+                                    />
                                     <video
                                       onClick={() => this.handlePreview(items.fileList, i)}
                                       key={i}
@@ -160,18 +188,27 @@ class DynamicList extends Component {
                                         height: 102,
                                         verticalAlign: 'middle',
                                         borderStyle: 'none',
+                                        margin: 0,
                                       }}
                                       src={item.fileUrl}
                                     />
                                   </div>
                                 ) : (
-                                  <img
-                                    onClick={() => this.handlePreview(items.fileList, i)}
-                                    className="rcviewer"
-                                    style={{ width: 102, height: 102 }}
-                                    key={i}
-                                    src={item.fileUrl}
-                                  />
+                                  <div
+                                    style={{
+                                      position: 'relative',
+                                      display: 'inline-block',
+                                      margin: '0 15px 15px 0',
+                                    }}
+                                  >
+                                    <img
+                                      onClick={() => this.handlePreview(items.fileList, i)}
+                                      className="rcviewer"
+                                      style={{ width: 102, height: 102 }}
+                                      key={i}
+                                      src={item.fileUrl}
+                                    />
+                                  </div>
                                 );
                               })}
                           </div>
@@ -201,7 +238,7 @@ class DynamicList extends Component {
             visible={visible}
             initData={this.state.initData}
             status={this.state.status}
-            handleOk={() => this.handleOk()}
+            handleOk={gongdiStage => this.handleOk(gongdiStage)}
             handleCancel={() => this.handleCancel()}
           />
         )}
@@ -299,12 +336,21 @@ class DynamicList extends Component {
       }
     });
   };
-  handleOk = () => {
+  handleOk = gongdiStage => {
     this.setState({ visible: false });
     const { dispatch } = this.props;
     const { isEdit, page, dicCode } = this.state;
     if (isEdit) {
-      this.handlePagination(page, undefined, dicCode);
+      if (gongdiStage !== dicCode) {
+        dispatch({
+          type: 'SiteLibrary/dynamicListModel',
+          payload: { gongdiUid: getQueryUrlVal('uid'), pageSize: 5 },
+        });
+        this.handlePagination(page, undefined, gongdiStage);
+        this.handlePagination(1, undefined, dicCode);
+      } else {
+        this.handlePagination(page, undefined, gongdiStage);
+      }
     } else {
       console.log(123);
       dispatch({
@@ -328,6 +374,8 @@ class DynamicList extends Component {
         ? '隐藏后，将无法在工地详情中显示当前动态！'
         : '显示后，将会在工地详情中显示当前动态！',
       icon: !status ? successIcon : waringInfo,
+      buttonText: '确定',
+      cancelText: '取消',
       onOk() {
         that.handleDiaryShow(r.diaryUid, r.appletsShow, item.dicCode);
       },
