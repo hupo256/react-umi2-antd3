@@ -19,7 +19,8 @@ import {
   Row,
   Col,
   InputNumber,
-  Icon, Divider,
+  Icon,
+  Divider,
 } from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import TagGroup from '@/components/TagSelect/TagGroup';
@@ -53,6 +54,7 @@ class SiteLibraryAdd extends PureComponent {
       show: false,
       addr: '',
       isaAddr: true,
+      isaAddrs: false,
       mapVisible: false,
       cityName: '',
       lat: '',
@@ -60,7 +62,7 @@ class SiteLibraryAdd extends PureComponent {
       open: false,
       buildingData: [],
       disabledBuildingData: [],
-      name: ''
+      name: '',
     };
   }
 
@@ -96,7 +98,18 @@ class SiteLibraryAdd extends PureComponent {
   }
 
   render() {
-    const { uploadVisible, coverImg, disabled, show, tags, mapVisible, cityName, buildingData, disabledBuildingData } = this.state;
+    const {
+      uploadVisible,
+      coverImg,
+      disabled,
+      show,
+      tags,
+      mapVisible,
+      cityName,
+      buildingData,
+      disabledBuildingData,
+      addr,
+    } = this.state;
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
@@ -190,7 +203,7 @@ class SiteLibraryAdd extends PureComponent {
               {/*</Form.Item>*/}
               <Form.Item label="楼盘/楼宇名称">
                 {getFieldDecorator('buildingCode', {
-                  initialValue:  siteDetail.buildingCode,
+                  initialValue: siteDetail.buildingCode,
                   rules: [{ required: true, message: '请输入楼盘/楼宇名称' }],
                 })(
                   <Select
@@ -224,9 +237,9 @@ class SiteLibraryAdd extends PureComponent {
                               style={{ color: '#fe6a30', marginLeft: 10 }}
                               onClick={() => this.handleAddDic()}
                             >
-                          <Icon type="plus-circle" />
-                          添加选项
-                        </span>
+                              <Icon type="plus-circle" />
+                              添加选项
+                            </span>
                           </div>
                         </div>
                       );
@@ -244,7 +257,10 @@ class SiteLibraryAdd extends PureComponent {
                       }
                     })}
                     {disabledBuildingData.map(item => {
-                      if (siteDetail.buildingCode && [siteDetail.buildingCode].includes(item.code)) {
+                      if (
+                        siteDetail.buildingCode &&
+                        [siteDetail.buildingCode].includes(item.code)
+                      ) {
                         return (
                           <Option disabled value={item.code} key={item.uid}>
                             {item.name}
@@ -258,21 +274,38 @@ class SiteLibraryAdd extends PureComponent {
                 )}
               </Form.Item>
               <Form.Item label={this.star('工地地址')}>
-                <div className={styles.pointwrap}>
-                  <TextArea
-                    placeholder="请选择具体位置"
-                    name="addr"
-                    value={this.state.addr}
-                    disabled={this.state.isaAddr}
-                    onChange={this.handleAddrChange}
-                    style={{ paddingRight: 24 }}
-                    rows={2}
-                    maxLength={100}
-                  />
-                  <span className={styles.poit} onClick={this.addPoint}>
-                    <Icon type="environment" theme="filled" />
-                  </span>
-                </div>
+                {this.state.isaAddr ? (
+                  <div className={styles.pointwrap}>
+                    <TextArea
+                      placeholder="请选择具体位置"
+                      name="addr"
+                      style={{ paddingRight: 24 }}
+                      rows={2}
+                      maxLength={100}
+                      onClick={this.addPoint}
+                    />
+                    <span className={styles.poit} onClick={this.addPoint}>
+                      <Icon type="environment" theme="filled" />
+                    </span>
+                  </div>
+                ) : (
+                  <div className={styles.pointwrap}>
+                    <TextArea
+                      placeholder="请选择具体位置"
+                      name="addr"
+                      value={this.state.addr}
+                      disabled={this.state.isaAddrs}
+                      onChange={this.handleAddrChange}
+                      onBlur={this.handleAddrBlur}
+                      style={{ paddingRight: 24 }}
+                      rows={2}
+                      maxLength={100}
+                    />
+                    <span className={styles.poit} onClick={this.addPoint}>
+                      <Icon type="environment" theme="filled" />
+                    </span>
+                  </div>
+                )}
               </Form.Item>
               <Form.Item label="面积">
                 {getFieldDecorator('buildingArea', {
@@ -500,7 +533,7 @@ class SiteLibraryAdd extends PureComponent {
                       message: '',
                     },
                   ],
-                })(<Input type='hidden' style={{ width: 400 }} />)}
+                })(<Input type="hidden" style={{ width: 400 }} />)}
               </Form.Item>
               <Row>
                 <Col span={8} />
@@ -568,7 +601,7 @@ class SiteLibraryAdd extends PureComponent {
   };
   // 添加字典
   handleAddDic = () => {
-    const that = this
+    const that = this;
     const { name } = this.state;
     const { dispatch } = this.props;
     if (!name) {
@@ -591,13 +624,13 @@ class SiteLibraryAdd extends PureComponent {
             payload: { dicModuleCodes: 'DM002,DM007' },
           }).then(r => {
             if (r && r.code === 200) {
-              that.setState({buildingData: r.data['DM007']}, () => {
+              that.setState({ buildingData: r.data['DM007'] }, () => {
                 that.props.form.setFieldsValue({
                   buildingCode: res.data.code,
                 });
-              })
+              });
             }
-          })
+          });
           this.setState({ open: false, name: null });
         }
       });
@@ -610,8 +643,24 @@ class SiteLibraryAdd extends PureComponent {
       this.setState({ addr: e.target.value });
     }
   };
+  handleAddrBlur = e => {
+    const { addr } = this.state;
+    if (addr === '') {
+      this.setState({
+        lat: '',
+        lng: '',
+        cityName: '',
+        isaAddr: true,
+      });
+    } else {
+      this.setState({
+        isaAddrs: true,
+      });
+    }
+  };
+  //工地地址选择弹窗打开
   addPoint = () => {
-    //实例化城市查询类
+    //实 例化城市查询类
     const { cityName } = this.state;
     if (cityName === '') {
       const _that = this;
@@ -636,14 +685,14 @@ class SiteLibraryAdd extends PureComponent {
   };
 
   // 城市选择
-  handleCity = (name) => {
+  handleCity = name => {
     this.setState({
       cityName: name,
     });
-  }
+  };
 
   // 工地地址选择
-  handleAddPoint = (data) => {
+  handleAddPoint = data => {
     this.setState({
       mapVisible: false,
       addr: data.addressCont,
@@ -651,8 +700,9 @@ class SiteLibraryAdd extends PureComponent {
       lng: data.lng,
       cityName: '',
       isaAddr: false,
+      isaAddrs: false,
     });
-  }
+  };
 
   star(txt) {
     return (
@@ -714,7 +764,8 @@ class SiteLibraryAdd extends PureComponent {
           type: 'SiteLibrary/modifySiteModel',
           payload: {
             ...copyValues,
-            buildingName: this.state.buildingData.find(e => e.code === copyValues.buildingCode).name,
+            buildingName: this.state.buildingData.find(e => e.code === copyValues.buildingCode)
+              .name,
             // coverImg: (coverImg && coverImg[0].response.data.addr) || '',
             houseType: { bedroom, parlor, kitchen, toilet },
             gongdiUid: getQueryUrlVal('uid') === 'null' ? null : getQueryUrlVal('uid'),
@@ -767,7 +818,9 @@ class SiteLibraryAdd extends PureComponent {
         tags: data.headKeywords || [],
         addr: data.addr,
         lat: data.lat,
-        lng: data.lng
+        lng: data.lng,
+        isaAddr: !data.addr,
+        isaAddrs: !!data.addr,
       },
       () => {
         this.setState({ show: true });

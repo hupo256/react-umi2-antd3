@@ -55,6 +55,7 @@ class SiteLibraryAdd extends PureComponent {
       tags: [],
       addr: '',
       isaAddr: true,
+      isaAddrs: false,
       mapVisible: false,
       cityName: '',
       lat: '',
@@ -88,7 +89,7 @@ class SiteLibraryAdd extends PureComponent {
           this.setState({
             defaultData: r.data,
             addr: r.data.addr,
-            isaAddr: false,
+            // isaAddr: false,
             lat: r.data.lat,
             lng: r.data.lng,
             coverImg: r.data.defaultImage || null,
@@ -257,21 +258,38 @@ class SiteLibraryAdd extends PureComponent {
                   )}
                 </Form.Item>
                 <Form.Item label={this.star('工地地址')}>
-                  <div className={styles.pointwrap}>
-                    <TextArea
-                      placeholder="请选择具体位置"
-                      name="addr"
-                      value={this.state.addr}
-                      disabled={this.state.isaAddr}
-                      onChange={this.handleAddrChange}
-                      style={{ paddingRight: 24 }}
-                      rows={2}
-                      maxLength={100}
-                    />
-                    <span className={styles.poit} onClick={this.addPoint}>
-                      <Icon type="environment" theme="filled" />
-                    </span>
-                  </div>
+                  {this.state.isaAddr ? (
+                    <div className={styles.pointwrap}>
+                      <TextArea
+                        placeholder="请选择具体位置"
+                        name="addr"
+                        style={{ paddingRight: 24 }}
+                        rows={2}
+                        maxLength={100}
+                        onClick={this.addPoint}
+                      />
+                      <span className={styles.poit} onClick={this.addPoint}>
+                        <Icon type="environment" theme="filled" />
+                      </span>
+                    </div>
+                  ) : (
+                    <div className={styles.pointwrap}>
+                      <TextArea
+                        placeholder="请选择具体位置"
+                        name="addr"
+                        value={this.state.addr}
+                        disabled={this.state.isaAddrs}
+                        onChange={this.handleAddrChange}
+                        onBlur={this.handleAddrBlur}
+                        style={{ paddingRight: 24 }}
+                        rows={2}
+                        maxLength={100}
+                      />
+                      <span className={styles.poit} onClick={this.addPoint}>
+                        <Icon type="environment" theme="filled" />
+                      </span>
+                    </div>
+                  )}
                 </Form.Item>
                 <Form.Item label="面积">
                   {getFieldDecorator('buildingArea', {
@@ -644,11 +662,28 @@ class SiteLibraryAdd extends PureComponent {
       });
     }
   };
+
   handleAddrChange = e => {
     if (e.target.value.length > 100) {
       message.error('最多可输入100位字符');
     } else {
       this.setState({ addr: e.target.value });
+    }
+  };
+
+  handleAddrBlur = e => {
+    const { addr } = this.state;
+    if (addr === '') {
+      this.setState({
+        lat: '',
+        lng: '',
+        cityName: '',
+        isaAddr: true,
+      });
+    } else {
+      this.setState({
+        isaAddrs: true,
+      });
     }
   };
   addPoint = () => {
@@ -675,7 +710,6 @@ class SiteLibraryAdd extends PureComponent {
       });
     }
   };
-
   // 城市选择
   handleCity = name => {
     this.setState({
@@ -692,6 +726,7 @@ class SiteLibraryAdd extends PureComponent {
       lng: data.lng,
       cityName: '',
       isaAddr: false,
+      isaAddrs: false,
     });
   };
 
