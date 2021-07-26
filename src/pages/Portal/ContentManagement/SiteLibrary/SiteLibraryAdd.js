@@ -1,6 +1,6 @@
 /*
- * @Author: zqm 
- * @Date: 2021-02-17 17:03:48 
+ * @Author: zqm
+ * @Date: 2021-02-17 17:03:48
  * @Last Modified by: zqm
  * @Last Modified time: 2021-06-08 14:12:15
  * 创建工地
@@ -19,9 +19,11 @@ import {
   InputNumber,
   Icon,
   Tooltip,
+  Divider
 } from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import TagGroup from '@/components/TagSelect/TagGroup';
+import MapModal from '@/components/MapModal';
 import Upload from '@/components/Upload/Upload';
 import styles from './SiteLibrary.less';
 import RcViewer from 'rc-viewer';
@@ -45,6 +47,15 @@ class SiteLibraryAdd extends PureComponent {
       uploadVisible: false,
       coverImg: null,
       tags: [],
+      addr: '',
+      isaAddr: true,
+      mapVisible: false,
+      cityName: '',
+      lat: '',
+      lng: '',
+      open: false,
+      buildingData: [],
+      name: ''
     };
   }
 
@@ -53,12 +64,17 @@ class SiteLibraryAdd extends PureComponent {
     const { dispatch } = this.props;
     dispatch({
       type: 'DictConfig/queryDicModel',
-      payload: { dicModuleCodes: 'DM002' },
+      payload: { dicModuleCodes: 'DM002,DM007' },
+    }).then(res => {
+      if (res && res.code === 200) {
+        const buildingData = res.data['DM007'];
+        this.setState({ buildingData });
+      }
     });
   }
 
   render() {
-    const { status, uploadVisible, coverImg, tags } = this.state;
+    const { status, uploadVisible, coverImg, tags, mapVisible, cityName, buildingData } = this.state;
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
@@ -127,19 +143,105 @@ class SiteLibraryAdd extends PureComponent {
                   ],
                 })(<Input style={{ width: 400 }} placeholder="请输入工地标题" />)}
               </Form.Item>
+              {/*<Form.Item label="楼盘/楼宇名称">*/}
+              {/*  {getFieldDecorator('buildingName', {*/}
+              {/*    rules: [*/}
+              {/*      {*/}
+              {/*        required: true,*/}
+              {/*        message: '请输入楼盘/楼宇名称',*/}
+              {/*      },*/}
+              {/*      {*/}
+              {/*        max: 30,*/}
+              {/*        message: '限制1-30字符长度',*/}
+              {/*      },*/}
+              {/*    ],*/}
+              {/*  })(<Input style={{ width: 400 }} placeholder="请输入楼盘/楼宇名称" />)}*/}
+              {/*</Form.Item>*/}
               <Form.Item label="楼盘/楼宇名称">
-                {getFieldDecorator('buildingName', {
-                  rules: [
-                    {
-                      required: true,
-                      message: '请输入楼盘/楼宇名称',
-                    },
-                    {
-                      max: 30,
-                      message: '限制1-30字符长度',
-                    },
-                  ],
-                })(<Input style={{ width: 400 }} placeholder="请输入楼盘/楼宇名称" />)}
+                {getFieldDecorator('buildingCode', {
+                  initialValue: '',
+                  rules: [{ required: true, message: '请输入楼盘/楼宇名称' }],
+                })(
+                  <Select
+                    style={{ width: 400 }}
+                    placeholder="请输入楼盘/楼宇名称"
+                    onDropdownVisibleChange={this.onDropdownVisibleChange}
+                    open={this.state.open}
+                    showSearch
+                    filterOption={(input, option) =>
+                      option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                    }
+                    dropdownRender={menu => {
+                      return (
+                        <div>
+                          {menu}
+                          <Divider style={{ margin: '4px 0' }} />
+                          <div
+                            style={{ padding: '4px 8px', cursor: 'pointer' }}
+                            onMouseDown={this.lockClose}
+                            onMouseUp={this.lockClose}
+                          >
+                            <Input
+                              value={this.state.name}
+                              onChange={e => {
+                                this.setState({ name: e.target.value });
+                              }}
+                              placeholder="请输入选项"
+                              style={{ width: '70%', marginBottom: 6 }}
+                            />
+                            <span
+                              style={{ color: '#fe6a30', marginLeft: 10 }}
+                              onClick={() => this.handleAddDic()}
+                            >
+                          <Icon type="plus-circle" />
+                          添加选项
+                        </span>
+                          </div>
+                        </div>
+                      );
+                    }}
+                  >
+                    {buildingData.map(item => {
+                      if (item.status === '1') {
+                        return (
+                          <Option value={item.code} key={item.uid}>
+                            {item.name}
+                          </Option>
+                        );
+                      } else {
+                        return null;
+                      }
+                    })}
+                    {/*{disabled.map(item => {*/}
+                    {/*  if (stepOne.styleDicCode && [stepOne.styleDicCode].includes(item.code)) {*/}
+                    {/*  return (*/}
+                    {/*    <Option disabled={true} value={item.code} key={item.uid}>*/}
+                    {/*      {item.name}*/}
+                    {/*    </Option>*/}
+                    {/*  );*/}
+                    {/*  } else {*/}
+                    {/*    return null;*/}
+                    {/*  }*/}
+                    {/*})}*/}
+                  </Select>
+                )}
+              </Form.Item>
+              <Form.Item label={this.star('工地地址')}>
+                <div className={styles.pointwrap}>
+                  <TextArea
+                    placeholder="请选择具体位置"
+                    name="addr"
+                    value={this.state.addr}
+                    disabled={this.state.isaAddr}
+                    onChange={this.handleAddrChange}
+                    style={{ paddingRight: 24 }}
+                    rows={2}
+                    maxLength={100}
+                  />
+                  <span className={styles.poit} onClick={this.addPoint}>
+                    <Icon type="environment" theme="filled" />
+                  </span>
+                </div>
               </Form.Item>
               <Form.Item label="面积">
                 {getFieldDecorator('buildingArea', {
@@ -216,6 +318,7 @@ class SiteLibraryAdd extends PureComponent {
                   rules: [{ required: true, message: '请选择风格' }],
                 })(
                   <Select style={{ width: 400 }} placeholder="请选择风格">
+                    {console.log(dicData)}
                     {dicData &&
                       dicData['DM002'] &&
                       dicData['DM002'].map(item => {
@@ -288,8 +391,8 @@ class SiteLibraryAdd extends PureComponent {
                     }
                   ],
                 })(
-                  <Input 
-                    addonBefore={selectBefore}  
+                  <Input
+                    addonBefore={selectBefore}
                     style={{ width: 400 }}
                     placeholder="请输入链接后缀"/>
                 )}
@@ -370,7 +473,146 @@ class SiteLibraryAdd extends PureComponent {
         >
           <img src={this.state.rcviewer} />
         </RcViewer>
+        {mapVisible && (
+          <MapModal
+            visible={mapVisible}
+            cityName={cityName}
+            handleCity={name => {
+              this.handleCity(name);
+            }}
+            handleAddPoint={data => {
+              this.handleAddPoint(data);
+            }}
+            handleCancel={this.handleCancelMap}
+          />
+        )}
       </div>
+    );
+  }
+  //取消工地地址选择
+  handleCancelMap = () => {
+    this.setState({
+      mapVisible: false,
+      cityName: '',
+    });
+  };
+  lockClose = e => {
+    clearTimeout(this.lock);
+    this.lock = setTimeout(() => {
+      this.lock = null;
+    }, 100);
+  };
+  onDropdownVisibleChange = open => {
+    if (this.lock) return;
+    this.setState({ open });
+  };
+  // 添加字典
+  handleAddDic = () => {
+    const that = this
+    const { name } = this.state;
+    const { dispatch } = this.props;
+    if (!name) {
+      message.warning('请输入楼盘/楼宇名称');
+      return false;
+    } else if (name && name.trim().length === 0) {
+      message.warning('请输入楼盘/楼宇名称');
+      return false;
+    } else if (name && name.length > 20) {
+      message.warning('最多输入20位字符');
+      return false;
+    } else {
+      dispatch({
+        type: 'DictConfig/createDicModel',
+        payload: { name, dicModuleCode: 'DM007' },
+      }).then(res => {
+        if (res && res.code === 200) {
+          dispatch({
+            type: 'DictConfig/queryDicModel',
+            payload: { dicModuleCodes: 'DM002,DM007' },
+          }).then(r => {
+            if (r && r.code === 200) {
+              that.setState({buildingData: r.data['DM007']}, () => {
+                that.props.form.setFieldsValue({
+                  buildingCode: res.data.code,
+                });
+              })
+            }
+          })
+          this.setState({ open: false, name: null });
+        }
+      });
+    }
+  };
+  handleAddrChange = e => {
+    if (e.target.value.length > 100) {
+      message.error('最多可输入100位字符');
+    } else {
+      this.setState({ addr: e.target.value });
+    }
+  };
+  addPoint = () => {
+    //实例化城市查询类
+    const { cityName } = this.state;
+    if (cityName === '') {
+      const _that = this;
+      let citysearch = new AMap.CitySearch();
+      //自动获取用户IP，返回当前城市
+      citysearch.getLocalCity(function(status, result) {
+        if (status === 'complete' && result.info === 'OK') {
+          if (result && result.city && result.bounds) {
+            var cityinfo = result.city;
+            _that.setState({
+              mapVisible: true,
+              cityName: cityinfo,
+            });
+          }
+        }
+      });
+    } else {
+      this.setState({
+        mapVisible: true,
+      });
+    }
+  };
+
+  // 城市选择
+  handleCity = (name) => {
+    this.setState({
+      cityName: name,
+    });
+  }
+
+  // 工地地址选择
+  handleAddPoint = (data) => {
+    this.setState({
+      mapVisible: false,
+      addr: data.addressCont,
+      lat: data.lat,
+      lng: data.lng,
+      cityName: '',
+      isaAddr: false,
+    });
+  }
+
+  star(txt) {
+    return (
+      <span>
+        <b
+          style={{
+            display: 'inline-block',
+            marginRight: ' 4px',
+            content: '*',
+            fontFamily: ' SimSun',
+            lineHeight: 1,
+            fontSize: '14px',
+            color: '#f5222d',
+            fontWeight: 'normal',
+          }}
+        >
+          *
+        </b>
+        {txt}
+      </span>
     );
   }
   handleSubmit = e => {
@@ -380,14 +622,18 @@ class SiteLibraryAdd extends PureComponent {
 
       // 取消前后空格
       values.vrLink = values.vrLink?.trim();
-      
+
 
       if(!!!values.vrLink) {
         this.props.form.setFieldsValue({
           prefix: ''
         })
       }
-      const { coverImg, bedroom, parlor, kitchen, toilet, tags } = this.state;
+      const { coverImg, bedroom, parlor, kitchen, toilet, tags, addr, lat, lng } = this.state;
+      if (!addr) {
+        message.error('请输入详细地址');
+        return false;
+      }
       const { dispatch } = this.props;
       if (parseFloat(values.buildingArea) < 0.01 || parseFloat(values.buildingArea) > 99999.99) {
         message.error('面积限制输入0.01-99999.99范围内的数字');
@@ -405,10 +651,15 @@ class SiteLibraryAdd extends PureComponent {
           type: 'SiteLibrary/createSiteModel',
           payload: {
             ...copyValues,
+            buildingName: this.state.buildingData.find(e => e.code === copyValues.buildingCode).name,
             // coverImg: (coverImg && coverImg[0].response.data.addr) || '',
             houseType: { bedroom, parlor, kitchen, toilet },
             headKeywords: tags,
             vrLink: (!!!copyValues.vrLink || !!!prefix) ?  '' :  prefix + copyValues.vrLink,
+            addr,
+            lat,
+            lng,
+            gongdiFromType: 0
           },
         }).then(res => {
           if (res && res.code === 200) {

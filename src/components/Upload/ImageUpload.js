@@ -1,6 +1,6 @@
 /*
- * @Author: zqm 
- * @Date: 2021-02-24 10:49:10 
+ * @Author: zqm
+ * @Date: 2021-02-24 10:49:10
  * @Last Modified by: zqm
  * @Last Modified time: 2021-03-23 18:34:12
  * 图片上传
@@ -22,6 +22,7 @@ class ImageUpload extends Component {
           name="Img"
           uploadSuccess={(data, name) => this.uploadSuccess(data, name, this.props.selectNum)}
           previewTitle="设计效果图"
+          video={this.props.video}
           type={'edit'}
           long={this.props.selectNum}
           accept=".png,.jpg,.jpeg"

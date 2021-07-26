@@ -10,7 +10,7 @@
       text-align:left;
     }
   }
-  
+
   .uploadright{
     flex:1;
     height:420px;
@@ -71,5 +71,17 @@
     position:absolute;
     right:0;
     bottom:-2px;
+  }
+}
+.uploadWrapper {
+  .uploader{
+    width: auto;
+    :global{
+      .ant-upload-select{
+        margin-bottom: 16px;
+        width: 101px;
+        height: 101px;
+      }
+    }
   }
 }

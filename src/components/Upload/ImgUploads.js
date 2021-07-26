@@ -1,6 +1,6 @@
 /*
- * @Author: zqm 
- * @Date: 2020-07-10 15:03:59 
+ * @Author: zqm
+ * @Date: 2020-07-10 15:03:59
  * @Last Modified by: mikey.zhaopeng
  * @Last Modified time: 2021-03-23 16:40:26
  * 图片上传
@@ -9,7 +9,7 @@ import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Upload, message, Icon, Button } from 'antd';
 import CarouselPic from '@/components/CarouselPic';
-
+import style from './Upload.less'
 @connect(({ base }) => ({
   base,
 }))
@@ -41,15 +41,55 @@ class Uploads extends Component {
       code,
       subCode,
       accept,
+      video,
     } = this.props;
     const longs = long || 50;
     return (
-      <div style={{ marginRight: 12 }}>
+      <div style={{ marginRight: 12 }} className={style.uploadWrapper}>
+        {video && (
+          <div className="coverImgs" style={{display: 'inline-block'}}>
+            {this.state[name].length > 0 &&
+              this.state[name].map((item, index) => {
+                return (
+                  <div className="previewimg previewimgs" key={item.fileUid} style={{width: 101, height: 101}}>
+                    {item.status === 'done' ? (
+                      <>
+                        {item.type === 'video/mp4' ? (
+                          <video src={item.response?.data?.addr} style={{ width: 94, height: 94 }} />
+                        ) : (
+                          <img src={item.response?.data?.addr} style={{ width: 94, height: 94 }} />
+                        )}
+                        <div className="picmodel">
+                          <span
+                            onClick={() => {
+                              this.handlePreview(item, name);
+                            }}
+                          >
+                            <Icon type="eye" style={{ color: '#fff', margin: '0 5px' }} />
+                          </span>
+                          <span onClick={() => this.fileRemove(item, name)}>
+                            <Icon type="delete" style={{ color: '#fff' }} />
+                          </span>
+                        </div>
+                      </>
+                    ) : (
+                      <div style={{ lineHeight: '24px', marginTop: 30 }}>
+                        <Icon type="loading" />
+                        <br />
+                        上传中
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+          </div>
+        )}
         <Upload
+          className={video ? style.uploader : ''}
           multiple={true}
           listType="picture-card"
-          accept={accept || 'image/gif, image/jpeg, image/png'}
-          showUploadList={true}
+          accept={video ? 'image/gif, image/jpeg, image/png, video/mp4' : accept || 'image/gif, image/jpeg, image/png'}
+          showUploadList={!video}
           data={this.redata}
           fileList={
             this.state[name].length > longs ? this.state[name].slice(0, longs) : this.state[name]
@@ -116,10 +156,12 @@ class Uploads extends Component {
     });
   }
   beforeUpload = (file, subType, type, bsId, f) => {
-    const isLt2M = file.size / 1048576 < (this.props.size || 5);
-    const isType = !/\.(png|jpg|gif|jpeg|webp|PNG|JPG|GIF|JPEG|WEBP)$/.test(file.name);
+    const {video} = this.props
+    const isLt2M = file.size / 1048576 < (video ? 50 : this.props.size || 5);
+    const reg = video ? /\.(png|jpg|gif|jpeg|webp|PNG|JPG|GIF|JPEG|WEBP|mp4|MP4)$/ : /\.(png|jpg|gif|jpeg|webp|PNG|JPG|GIF|JPEG|WEBP)$/
+    const isType = !reg.test(file.name);
     if (!isLt2M) {
-      message.warning(`图片不能大于${this.props.size || 5}M!`, 2);
+      message.warning(video ? '限制上传不大于50Mb的视频文件' : `图片不能大于${this.props.size || 5}M!`, 2);
       return false;
     } else if (isType) {
       message.warning('图片格式不正确!', 2);
