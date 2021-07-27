@@ -53,7 +53,12 @@ export default class CarouselPic extends Component {
         zIndex={1300}
       >
         <div className={styles.picWrap}>
-          <Carousel ref="prics" initialSlide={initialSlide || 0} className={styles.imgPrefiew}>
+          <Carousel
+            ref="prics"
+            dots={false}
+            initialSlide={initialSlide || 0}
+            className={styles.imgPrefiew}
+          >
             {Inputs}
           </Carousel>
           {inputData.length > 1 ? (
