@@ -5,12 +5,19 @@ import styles from './CarouselPic.less';
 export default class CarouselPic extends Component {
   handlePrev = () => {
     this.refs.prics.prev(); //ref = img
+    const videoList = document.querySelectorAll('.videos');
+    // console.log({ videoList });
+    videoList.forEach(item => item.pause());
   };
   handleNext = () => {
     this.refs.prics.next();
+    const videoList = document.querySelectorAll('.videos');
+    // console.log({ videoList });
+    videoList.forEach(item => item.pause());
   };
   render() {
     const { inputData, visible, initialSlide, handleCancel, name } = this.props;
+    console.log(inputData);
     const Inputs =
       inputData &&
       inputData.map((item, idx) => {
@@ -20,8 +27,10 @@ export default class CarouselPic extends Component {
           <div key={idx.toString(36)} className={styles.slick}>
             {type === 'mp4' ? (
               <video
+                ref={`video-${idx}`}
                 src={item[name] || item.originalFullUrl || item}
                 controls
+                className={'videos'}
                 disablePictureInPicture
                 controlsList="nodownload noremoteplayback"
               >
