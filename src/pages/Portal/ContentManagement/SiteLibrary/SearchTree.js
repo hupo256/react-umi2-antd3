@@ -212,7 +212,7 @@ class SearchTree extends React.Component {
         return s.uid == item.uid;
       });
       let delParentUid;
-      if (delParentCode) {
+      if (delParentCode.length) {
         delParentUid = data.filter((t, n) => {
           return t.code === delParentCode[0].parentCode;
         });
@@ -223,7 +223,7 @@ class SearchTree extends React.Component {
     // 获取删除uid的父级
     const ParUid = getDeldataParentUid(allDataListFlat);
     checkedKeySel.forEach((t, index) => {
-      if (t !== item.uid && t !== ParUid[0].uid) {
+      if (ParUid.length ? t !== item.uid && t !== ParUid[0].uid : t !== item.uid) {
         newSelectTreeNode.push(t);
       }
     });
@@ -238,7 +238,7 @@ class SearchTree extends React.Component {
         // 点击删除时右侧剩下的code
         const RightCodedel = [];
         selectTreeList.forEach((item, index) => {
-          RightCodedel.push(item.code);
+          RightCodedel.push(item);
         });
         // 右侧点击每行删除时剩下的code
         sessionStorage.setItem('selectRightTree', JSON.stringify(RightCodedel));
