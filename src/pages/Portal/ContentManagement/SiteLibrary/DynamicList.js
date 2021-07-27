@@ -136,7 +136,7 @@ class DynamicList extends Component {
                                 </span>
                               )}
                             </p>
-                            <p>{items.diaryContent}</p>
+                            <p style={{ wordBreak: 'break-all' }}>{items.diaryContent}</p>
                             {items.fileList &&
                               Array.isArray(items.fileList) &&
                               items.fileList.length > 0 &&
@@ -152,16 +152,6 @@ class DynamicList extends Component {
                                       margin: '0 15px 15px 0',
                                     }}
                                   >
-                                    {/*<span*/}
-                                    {/*  style={{*/}
-                                    {/*    position: 'absolute',*/}
-                                    {/*    left: 38,*/}
-                                    {/*    top: 30,*/}
-                                    {/*    border: '20px solid transparent',*/}
-                                    {/*    borderLeftWidth: 30,*/}
-                                    {/*    borderLeftColor: '#fff',*/}
-                                    {/*  }}*/}
-                                    {/*/>*/}
                                     <img
                                       src={
                                         'https://test.img.inbase.in-deco.com/crm_saas/dev/20210420/6010cfb58de8476abe146c4ed6feb0e5/ic_play.png'
