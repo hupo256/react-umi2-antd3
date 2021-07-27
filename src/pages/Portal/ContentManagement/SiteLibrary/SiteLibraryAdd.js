@@ -89,7 +89,8 @@ class SiteLibraryAdd extends PureComponent {
           this.setState({
             defaultData: r.data,
             addr: r.data.addr,
-            // isaAddr: false,
+            isaAddr: !r.data.addr,
+            isaAddrs: !!r.data.addr,
             lat: r.data.lat,
             lng: r.data.lng,
             coverImg: r.data.defaultImage || null,
