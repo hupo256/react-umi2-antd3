@@ -7,15 +7,12 @@
  */
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import router from 'umi/router';
 import { Card, Radio, Pagination, Button, Icon, Modal, message } from 'antd';
 import { paginations, getQueryUrlVal, successIcon, waringInfo } from '@/utils/utils';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import DynamicAdd from './DynamicAdd';
-import RcViewer from 'rc-viewer';
 import { getauth } from '@/utils/authority';
 import { getSiteDetaiyApi } from '@/services/siteLibrary';
-import emptyImage from '../../../../assets/emptyImage.png';
 import CarouselPic from '@/components/CarouselPic';
 
 const { confirm } = Modal;
@@ -204,7 +201,7 @@ class DynamicList extends Component {
                                     <img
                                       onClick={() => this.handlePreview(items.fileList, i)}
                                       className="rcviewer"
-                                      style={{ width: 102, height: 102 }}
+                                      style={{ width: 102, height: 102, margin: '0' }}
                                       key={i}
                                       src={item.fileUrl}
                                     />
