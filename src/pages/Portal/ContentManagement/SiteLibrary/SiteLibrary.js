@@ -224,18 +224,21 @@ class SiteLibrary extends PureComponent {
               {(permissionsBtn.includes('BTN210326000037') ||
                 permissionsBtn.includes('BTN210326000038') ||
                 permissionsBtn.includes('BTN210623000002')) &&
-                r.gongdiFromType === 1 && <span className="operateLine" />}
-              {r.gongdiFromType === 1 && (
-                <span
-                  className="operateBtn"
-                  onClick={() => {
-                    this.setState({ record: r });
-                    this.relateNode(r);
-                  }}
-                >
-                  关联工程节点
-                </span>
-              )}
+                r.gongdiFromType === 1 &&
+                permissionsBtn.includes('BTN210728000001') && <span className="operateLine" />}
+
+              {r.gongdiFromType === 1 &&
+                permissionsBtn.includes('BTN210728000001') && (
+                  <span
+                    className="operateBtn"
+                    onClick={() => {
+                      this.setState({ record: r });
+                      this.relateNode(r);
+                    }}
+                  >
+                    关联工程节点
+                  </span>
+                )}
             </div>
           );
         },
