@@ -115,7 +115,7 @@ export default function TagsEdit(props) {
     <>
       <div style={{ marginBottom: '1em', fontSize: 12, paddingLeft: 17, width: '100%' }}>
         <Icon type="info-circle" style={{ color: '#c1c1c1' }} />{' '}
-        为保证网站显示效果，图片建议尺寸：1920px*952px
+        为保证网站显示效果，图片建议尺寸：1110px*500px
       </div>
       <div className={styles.widthBox}>
         图片高度：
